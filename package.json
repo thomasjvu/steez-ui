@@ -3,6 +3,10 @@
   "private": true,
   "version": "0.1.0",
   "packageManager": "bun@1.3.8",
+  "engines": {
+    "bun": ">=1.3.8",
+    "node": ">=20.10.0"
+  },
   "workspaces": [
     "packages/*",
     "apps/*"
@@ -11,9 +15,24 @@
     "build": "bun run build:packages && bun run build:registry",
     "build:packages": "bun run --filter '@steez-ui/theme' build && bun run --filter '@steez-ui/icons' build && bun run --filter '@steez-ui/ui' build",
     "build:registry": "bun run generate:registry && bun run --filter '@steez-ui/registry' build",
+    "check:release": "bun run build && bun run test && bun run test:install-smoke && bun run publish:packages:dry-run",
+    "deploy:registry": "bun run build:registry && wrangler pages deploy apps/registry/dist --project-name steez-ui --branch main",
     "generate:registry": "node ./scripts/generate-registry.mjs",
+    "publish:packages": "node ./scripts/publish-packages.mjs",
+    "publish:packages:dry-run": "node ./scripts/publish-packages.mjs --dry-run",
     "test": "vitest run --config ./vitest.config.ts",
     "test:install-smoke": "node ./scripts/registry-install-smoke.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "@types/react": "^18.3.24",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react": "^5.0.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.5",
+    "vitest": "^3.2.4",
+    "wrangler": "^4.54.0"
   }
 }
-

@@ -23,5 +23,8 @@
   },
   "scripts": {
     "build": "tsc -p ./tsconfig.json && node ../../scripts/copy-static-assets.mjs ."
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

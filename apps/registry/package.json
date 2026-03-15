@@ -3,8 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "dependencies": {
+    "@steez-ui/icons": "workspace:*",
+    "@steez-ui/theme": "workspace:*",
+    "@steez-ui/ui": "workspace:*",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
   "scripts": {
     "build": "vite build"
   }
 }
-
