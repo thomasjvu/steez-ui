@@ -9,11 +9,17 @@ const rootPackage = JSON.parse(await fs.readFile(rootPackagePath, "utf8"));
 
 const args = new Set(process.argv.slice(2));
 const dryRun = args.has("--dry-run");
+const skipBuild = args.has("--skip-build");
 const npmTagIndex = process.argv.indexOf("--tag");
 const npmTag =
   npmTagIndex >= 0 && process.argv.length > npmTagIndex + 1
     ? process.argv[npmTagIndex + 1]
     : undefined;
+const otpIndex = process.argv.indexOf("--otp");
+const npmOtp =
+  otpIndex >= 0 && process.argv.length > otpIndex + 1
+    ? process.argv[otpIndex + 1]
+    : process.env.NPM_CONFIG_OTP;
 
 const packageDirs = [
   path.join(repoRoot, "packages/theme"),
@@ -66,7 +72,9 @@ function run(command, commandArgs, options) {
   }
 }
 
-run("bun", ["run", "build:packages"], { cwd: repoRoot });
+if (!skipBuild) {
+  run("bun", ["run", "build:packages"], { cwd: repoRoot });
+}
 
 const stagingRoot = await fs.mkdtemp(path.join(os.tmpdir(), "steez-ui-publish-"));
 const npmCacheDir = path.join(stagingRoot, "npm-cache");
@@ -115,6 +123,10 @@ for (const packageDir of packageDirs) {
 
   if (npmTag) {
     publishArgs.push("--tag", npmTag);
+  }
+
+  if (npmOtp) {
+    publishArgs.push("--otp", npmOtp);
   }
 
   run("npm", publishArgs, { cwd: stagingDir, env: process.env });
