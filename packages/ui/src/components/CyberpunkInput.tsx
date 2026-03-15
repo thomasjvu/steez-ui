@@ -1,6 +1,6 @@
 import React, { InputHTMLAttributes, ReactNode } from "react";
 
-import { useStableId } from "../hooks/useStableId";
+import { useStableId } from "../hooks/useStableId.js";
 import styles from "./CyberpunkInput.module.css";
 
 export interface CyberpunkInputProps
@@ -42,4 +42,3 @@ export function CyberpunkInput({
     </div>
   );
 }
-

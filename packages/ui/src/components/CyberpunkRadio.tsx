@@ -1,6 +1,6 @@
 import React, { InputHTMLAttributes } from "react";
 
-import { useStableId } from "../hooks/useStableId";
+import { useStableId } from "../hooks/useStableId.js";
 import styles from "./CyberpunkRadio.module.css";
 
 export interface CyberpunkRadioProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -48,4 +48,3 @@ export function CyberpunkRadioGroup({
     </div>
   );
 }
-

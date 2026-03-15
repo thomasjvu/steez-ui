@@ -1,6 +1,6 @@
 import React from "react";
 
-import { PageHeader, type PageHeaderProps } from "./PageHeader";
+import { PageHeader, type PageHeaderProps } from "./PageHeader.js";
 import styles from "./PageTemplate.module.css";
 
 interface SubTab {

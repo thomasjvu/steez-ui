@@ -1,6 +1,6 @@
 import React, { InputHTMLAttributes } from "react";
 
-import { useStableId } from "../hooks/useStableId";
+import { useStableId } from "../hooks/useStableId.js";
 import styles from "./CyberpunkCheckbox.module.css";
 
 export interface CyberpunkCheckboxProps
@@ -31,4 +31,3 @@ export function CyberpunkCheckbox({
     </label>
   );
 }
-

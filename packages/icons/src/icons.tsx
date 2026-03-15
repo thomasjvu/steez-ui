@@ -1,7 +1,7 @@
 import React from "react";
 
-import { useSteezIconDefaults } from "./IconProvider";
-import type { SteezIconProps } from "./types";
+import { useSteezIconDefaults } from "./IconProvider.js";
+import type { SteezIconProps } from "./types.js";
 
 function createIcon(
   render: (
@@ -280,4 +280,3 @@ export const MoonIcon = createIcon(({ width, height, color, className, style, ..
     <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79Z" />
   </svg>
 ));
-

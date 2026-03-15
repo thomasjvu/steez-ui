@@ -1,6 +1,6 @@
 import React, { TextareaHTMLAttributes } from "react";
 
-import { useStableId } from "../hooks/useStableId";
+import { useStableId } from "../hooks/useStableId.js";
 import styles from "./CyberpunkTextarea.module.css";
 
 export interface CyberpunkTextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -30,4 +30,3 @@ export function CyberpunkTextarea({
     </div>
   );
 }
-

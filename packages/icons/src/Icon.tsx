@@ -13,8 +13,8 @@ import {
   SlidersIcon,
   SunIcon,
   WarningIcon,
-} from "./icons";
-import type { SteezIconName, SteezIconProps } from "./types";
+} from "./icons.js";
+import type { SteezIconName, SteezIconProps } from "./types.js";
 
 const ICONS: Record<SteezIconName, React.ComponentType<SteezIconProps>> = {
   check: CheckIcon,
@@ -39,4 +39,3 @@ export function Icon({ icon, ...props }: IconProps) {
   const Component = ICONS[icon];
   return <Component {...props} />;
 }
-

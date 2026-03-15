@@ -1,6 +1,6 @@
 import React, { SelectHTMLAttributes } from "react";
 
-import { useStableId } from "../hooks/useStableId";
+import { useStableId } from "../hooks/useStableId.js";
 import styles from "./CyberpunkSelect.module.css";
 
 export interface CyberpunkSelectOption {
@@ -47,4 +47,3 @@ export function CyberpunkSelect({
     </div>
   );
 }
-

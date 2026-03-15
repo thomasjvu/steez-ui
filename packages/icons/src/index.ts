@@ -1,6 +1,6 @@
-export type { SteezIconName, SteezIconProps } from "./types";
-export { Icon } from "./Icon";
-export { SteezIconProvider, useSteezIconDefaults } from "./IconProvider";
+export type { SteezIconName, SteezIconProps } from "./types.js";
+export { Icon } from "./Icon.js";
+export { SteezIconProvider, useSteezIconDefaults } from "./IconProvider.js";
 export {
   CheckIcon,
   ChevronLeftIcon,
@@ -14,4 +14,4 @@ export {
   SlidersIcon,
   SunIcon,
   WarningIcon,
-} from "./icons";
+} from "./icons.js";
