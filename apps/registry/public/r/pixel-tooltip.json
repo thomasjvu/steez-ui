@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "pixel-tooltip",
+  "type": "registry:component",
+  "title": "Pixel Tooltip",
+  "description": "Compact hover tooltip for terse control hints.",
+  "dependencies": [
+    "@steez-ui/theme"
+  ],
+  "registryDependencies": [
+    "theme-tokens"
+  ],
+  "files": [
+    {
+      "path": "components/steez/PixelTooltip.tsx",
+      "type": "registry:component",
+      "content": "import React from \"react\";\n\nimport styles from \"./PixelTooltip.module.css\";\n\nexport interface PixelTooltipProps {\n  content: string;\n  children: React.ReactNode;\n  position?: \"top\" | \"bottom\" | \"left\" | \"right\";\n  delay?: number;\n}\n\nexport function PixelTooltip({\n  content,\n  children,\n  position = \"top\",\n  delay = 200,\n}: PixelTooltipProps) {\n  const [isVisible, setIsVisible] = React.useState(false);\n  const [coords, setCoords] = React.useState({ x: 0, y: 0, width: 0 });\n  const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);\n  const triggerRef = React.useRef<HTMLDivElement>(null);\n\n  const handleMouseEnter = React.useCallback(() => {\n    timeoutRef.current = setTimeout(() => {\n      if (triggerRef.current) {\n        const rect = triggerRef.current.getBoundingClientRect();\n        setCoords({\n          x: rect.left,\n          y: rect.bottom,\n          width: rect.width,\n        });\n      }\n      setIsVisible(true);\n    }, delay);\n  }, [delay]);\n\n  const handleMouseLeave = React.useCallback(() => {\n    if (timeoutRef.current) {\n      clearTimeout(timeoutRef.current);\n      timeoutRef.current = null;\n    }\n    setIsVisible(false);\n  }, []);\n\n  React.useEffect(\n    () => () => {\n      if (timeoutRef.current) {\n        clearTimeout(timeoutRef.current);\n      }\n    },\n    [],\n  );\n\n  return (\n    <>\n      <div\n        ref={triggerRef}\n        className={styles.trigger}\n        onMouseEnter={handleMouseEnter}\n        onMouseLeave={handleMouseLeave}\n      >\n        {children}\n      </div>\n\n      {isVisible ? (\n        <div\n          className={`${styles.tooltip} ${styles[position]} ${styles.show}`.trim()}\n          style={{\n            left: `${coords.x + 5}px`,\n            top: `${coords.y + 8}px`,\n            width: `${Math.max(coords.width - 20, 60)}px`,\n          }}\n        >\n          <div className={styles.pixelContainer}>\n            <div className={styles.content}>{content}</div>\n          </div>\n        </div>\n      ) : null}\n    </>\n  );\n}\n\nexport default PixelTooltip;\n",
+      "source": "packages/ui/src/components/PixelTooltip.tsx"
+    },
+    {
+      "path": "components/steez/PixelTooltip.module.css",
+      "type": "registry:style",
+      "content": ".trigger {\n  display: inline-flex;\n  align-items: center;\n  cursor: help;\n}\n\n.tooltip {\n  position: fixed;\n  z-index: var(--z-tooltip);\n  pointer-events: none;\n  opacity: 0;\n  transition:\n    opacity 250ms ease-in-out,\n    transform 250ms ease-in-out;\n}\n\n.tooltip.show {\n  opacity: 1;\n  animation: tooltipFadeIn 250ms ease-out forwards;\n}\n\n.pixelContainer {\n  position: relative;\n  width: fit-content;\n  max-width: 150px;\n  padding: 6px 10px;\n  background: var(--accent-primary);\n  border: 1px solid var(--accent-primary);\n  white-space: normal;\n  image-rendering: pixelated;\n  image-rendering: -moz-crisp-edges;\n  image-rendering: crisp-edges;\n}\n\n.content {\n  position: relative;\n  z-index: 1;\n  color: #fff;\n  font-family: var(--font-mono);\n  font-size: 11px;\n  line-height: 1.3;\n  text-align: left;\n}\n\n.tooltip.top {\n  margin-top: -8px;\n  transform: translateY(-100%);\n}\n\n.tooltip.bottom {\n  margin-top: 0;\n  transform: translateY(0);\n}\n\n.tooltip.left {\n  margin-left: -8px;\n  transform: translateX(-100%) translateY(-50%);\n}\n\n.tooltip.right {\n  margin-left: 8px;\n  transform: translateY(-50%);\n}\n\n@keyframes tooltipFadeIn {\n  0% {\n    opacity: 0;\n    transform: translateY(-4px) scale(0.95);\n  }\n\n  100% {\n    opacity: 1;\n    transform: translateY(0) scale(1);\n  }\n}\n\n@media (max-width: 768px) {\n  .tooltip {\n    display: none;\n  }\n}\n",
+      "source": "packages/ui/src/components/PixelTooltip.module.css"
+    }
+  ]
+}

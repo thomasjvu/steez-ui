@@ -16,10 +16,14 @@ import {
   ErrorMessage,
   HeartbeatPulse,
   HexagonGrid,
+  LoadingOverlayCrystalline,
   LoadingProgressBar,
+  LoadingScreen,
   MarqueeStrip,
+  OverlayButton,
   PageHeader,
   PageTemplate,
+  PixelTooltip,
   QuickInfoCard,
   RuntimeOrbitDiagram,
   Section,
@@ -31,6 +35,7 @@ import {
   TabbedPanel,
   ThemedCard,
   ThemeToggle,
+  WidgetCard,
 } from "@steez-ui/ui";
 import { CheckIcon, EyeIcon, InfoIcon, RefreshIcon, SlidersIcon } from "@steez-ui/icons";
 
@@ -285,6 +290,33 @@ function LoadingProgressBarPreview() {
   return <LoadingProgressBar progress={72} valueLabel="72% synced" />;
 }
 
+function LoadingScreenPreview() {
+  return (
+    <div className={styles.loadingScreenPreview}>
+      <LoadingScreen
+        progress={68}
+        message="Syncing runtime"
+        title="SYNC"
+        fullscreen={false}
+        themeMode="dark"
+      />
+    </div>
+  );
+}
+
+function LoadingOverlayCrystallinePreview() {
+  return (
+    <div className={styles.loadingOverlayPreview}>
+      <div className={styles.loadingOverlayCanvas} />
+      <LoadingOverlayCrystalline
+        message="Preparing avatar"
+        subtext="Loading model assets"
+        icon={<RefreshIcon width={18} height={18} />}
+      />
+    </div>
+  );
+}
+
 function StatusMessagePreview() {
   return (
     <div className={styles.previewColumn}>
@@ -372,6 +404,32 @@ function MarqueeStripPreview() {
   );
 }
 
+function WidgetCardPreview() {
+  return (
+    <div className={styles.widgetPreviewGrid}>
+      <WidgetCard
+        title="Scene"
+        size="xs-a"
+        icon={<EyeIcon width={18} height={18} />}
+        overlay={
+          <div className={styles.widgetOverlay}>
+            <OverlayButton aria-label="Inspect">
+              <InfoIcon width={14} height={14} />
+            </OverlayButton>
+          </div>
+        }
+      >
+        <p className={styles.previewText}>
+          Reusable admin widget shell for viewer and dashboard grids.
+        </p>
+      </WidgetCard>
+      <WidgetCard title="Queue" size="xs-a">
+        <StatCard label="Jobs" value="12" subvalue="3 active" />
+      </WidgetCard>
+    </div>
+  );
+}
+
 function SectionPreview() {
   return (
     <Section title="Browse services">
@@ -381,6 +439,42 @@ function SectionPreview() {
         </p>
       </ThemedCard>
     </Section>
+  );
+}
+
+function OverlayButtonPreview() {
+  const [active, setActive] = React.useState(true);
+
+  return (
+    <div className={styles.previewRow}>
+      <OverlayButton
+        aria-label="Toggle viewer"
+        active={active}
+        onClick={() => setActive((current) => !current)}
+      >
+        <EyeIcon width={16} height={16} />
+      </OverlayButton>
+      <OverlayButton aria-label="Refresh">
+        <RefreshIcon width={16} height={16} />
+      </OverlayButton>
+    </div>
+  );
+}
+
+function PixelTooltipPreview() {
+  return (
+    <div className={styles.previewRow}>
+      <PixelTooltip content="Save configuration" position="top">
+        <OverlayButton aria-label="Save">
+          <CheckIcon width={16} height={16} />
+        </OverlayButton>
+      </PixelTooltip>
+      <PixelTooltip content="Open viewer details" position="bottom">
+        <OverlayButton aria-label="Inspect">
+          <InfoIcon width={16} height={16} />
+        </OverlayButton>
+      </PixelTooltip>
+    </div>
   );
 }
 
@@ -454,8 +548,12 @@ const PREVIEW_MAP: Record<string, React.ComponentType> = {
   "theme-toggle": ThemeTogglePreview,
   "heartbeat-pulse": HeartbeatPulsePreview,
   "hexagon-grid": HexagonGridPreview,
+  "loading-overlay-crystalline": LoadingOverlayCrystallinePreview,
   "loading-progress-bar": LoadingProgressBarPreview,
+  "loading-screen": LoadingScreenPreview,
   "marquee-strip": MarqueeStripPreview,
+  "overlay-button": OverlayButtonPreview,
+  "pixel-tooltip": PixelTooltipPreview,
   "quick-info-card": QuickInfoCardPreview,
   "runtime-orbit-diagram": RuntimeOrbitDiagramPreview,
   section: SectionPreview,
@@ -464,6 +562,7 @@ const PREVIEW_MAP: Record<string, React.ComponentType> = {
   "status-message": StatusMessagePreview,
   "error-message": ErrorMessagePreview,
   "stroked-text": StrokedTextPreview,
+  "widget-card": WidgetCardPreview,
 };
 
 export function ComponentPreview({ slug }: { slug: string }) {

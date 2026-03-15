@@ -120,6 +120,18 @@
     "description": "Shared dark and light theme toggle."
   },
   {
+    "name": "loading-screen",
+    "type": "registry:component",
+    "title": "Loading Screen",
+    "description": "Fullscreen or contained loading shell with progress, cross field, and neutral branding hooks."
+  },
+  {
+    "name": "loading-overlay-crystalline",
+    "type": "registry:component",
+    "title": "Loading Overlay Crystalline",
+    "description": "Compact centered loading overlay for viewer and media surfaces."
+  },
+  {
     "name": "loading-progress-bar",
     "type": "registry:component",
     "title": "Loading Progress Bar",
@@ -138,10 +150,28 @@
     "description": "Animated hex field backdrop for avatars, hero surfaces, and ambient panels."
   },
   {
+    "name": "overlay-button",
+    "type": "registry:component",
+    "title": "Overlay Button",
+    "description": "Compact floating control button for viewer and media overlays."
+  },
+  {
+    "name": "pixel-tooltip",
+    "type": "registry:component",
+    "title": "Pixel Tooltip",
+    "description": "Compact hover tooltip for terse control hints."
+  },
+  {
     "name": "quick-info-card",
     "type": "registry:component",
     "title": "Quick Info Card",
     "description": "Compact multi-stat summary surface with an optional storage meter."
+  },
+  {
+    "name": "widget-card",
+    "type": "registry:component",
+    "title": "Widget Card",
+    "description": "Dashboard widget shell with size presets and optional overlay content."
   },
   {
     "name": "marquee-strip",

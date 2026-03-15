@@ -215,6 +215,26 @@
   background: color-mix(in srgb, var(--bg-primary) 92%, transparent);
 }
 
+.loadingScreenPreview,
+.loadingOverlayPreview {
+  position: relative;
+  min-height: 18rem;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.loadingOverlayCanvas {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, transparent, color-mix(in srgb, var(--bg-secondary) 48%, transparent)),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 2.25rem,
+      color-mix(in srgb, var(--border-color) 40%, transparent) 2.25rem 2.35rem
+    );
+}
+
 .inlineCode,
 .codeBlock {
   display: block;
@@ -238,6 +258,19 @@
 
 .orbitPreviewShell {
   width: min(100%, 24rem);
+}
+
+.widgetPreviewGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+  width: min(100%, 28rem);
+}
+
+.widgetOverlay {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
 }
 
 .statPreviewGrid {
@@ -341,5 +374,10 @@
 
   .statPreviewGrid {
     grid-template-columns: 1fr;
+  }
+
+  .widgetPreviewGrid {
+    grid-template-columns: 1fr;
+    width: 100%;
   }
 }

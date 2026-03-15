@@ -37,13 +37,31 @@ export {
 } from "./components/HeartbeatPulse.js";
 export { HexagonGrid, type HexagonGridProps } from "./components/HexagonGrid.js";
 export {
+  LoadingOverlayCrystalline,
+  type LoadingOverlayCrystallineProps,
+} from "./components/LoadingOverlayCrystalline.js";
+export {
   LOADING_PROGRESS_SEGMENT_COUNT,
   LoadingProgressBar,
   type LoadingProgressBarProps,
 } from "./components/LoadingProgressBar.js";
+export {
+  LoadingScreen,
+  type LoadingScreenProps,
+  type LoadingStage,
+  useLoadingProgress,
+} from "./components/LoadingScreen.js";
 export { MarqueeStrip, type MarqueeStripProps } from "./components/MarqueeStrip.js";
+export {
+  OverlayButton,
+  type OverlayButtonProps,
+} from "./components/OverlayButton.js";
 export { PageHeader, type PageHeaderProps } from "./components/PageHeader.js";
 export { PageTemplate, type PageTemplateProps } from "./components/PageTemplate.js";
+export {
+  PixelTooltip,
+  type PixelTooltipProps,
+} from "./components/PixelTooltip.js";
 export {
   QuickInfoCard,
   type QuickInfoCardProps,
@@ -71,3 +89,4 @@ export { StrokedText, type StrokedTextProps } from "./components/StrokedText.js"
 export { TabbedPanel, type TabbedPanelProps, type TabbedPanelTab } from "./components/TabbedPanel.js";
 export { ThemedCard, type ThemedCardProps } from "./components/ThemedCard.js";
 export { ThemeToggle, type ThemeToggleProps } from "./components/ThemeToggle.js";
+export { WidgetCard, type WidgetCardProps, type WidgetSize } from "./components/WidgetCard.js";

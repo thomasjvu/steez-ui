@@ -1,0 +1,108 @@
+.screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow: hidden;
+  font-family: var(--font-primary);
+}
+
+.fullscreen {
+  position: fixed;
+}
+
+.contained {
+  position: absolute;
+  border: 1px solid var(--border-color);
+}
+
+.lightTheme {
+  background: #fafbfc;
+  color: #1a1a1a;
+}
+
+.darkTheme {
+  background: #0a0a0a;
+  color: #cbcbcc;
+}
+
+@keyframes crossFall {
+  0% {
+    transform: translateY(-450px) rotate(var(--rotation));
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(calc(var(--screen-height, 100vh) - var(--ground) - 50px))
+      rotate(var(--rotation));
+    opacity: 1;
+  }
+}
+
+.crossContainer {
+  position: absolute;
+  top: 0;
+  left: var(--cross-left, 0px);
+  z-index: 1;
+  will-change: transform;
+  animation: crossFall 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation-delay: var(--cross-delay, 0ms);
+}
+
+.crossSvg {
+  transform: scale(var(--cross-scale, 1));
+  transform-origin: center top;
+  opacity: var(--cross-opacity, 0.6);
+}
+
+.crossLanded .crossSvg {
+  opacity: 1 !important;
+}
+
+.crossShape {
+  color: currentColor;
+}
+
+.centerStack {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.logoWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  font-size: clamp(24px, 8vw, 48px);
+  font-weight: 700;
+  letter-spacing: 8px;
+}
+
+.progressRow {
+  position: relative;
+  z-index: 10;
+}
+
+.footerMessage {
+  position: absolute;
+  right: 40px;
+  bottom: 40px;
+  z-index: 10;
+  opacity: 0.5;
+  font-family: var(--font-mono);
+  font-size: 14px;
+}

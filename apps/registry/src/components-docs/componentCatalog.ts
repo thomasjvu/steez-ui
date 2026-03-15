@@ -318,6 +318,38 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
     tags: ["progress", "loading"],
   },
   {
+    slug: "loading-screen",
+    title: "Loading Screen",
+    category: "feedback",
+    summary: "Fullscreen or contained loading shell with progress, cross field, and optional branding slots.",
+    description: "Use LoadingScreen when an app needs a complete loading state with neutral branding hooks instead of baking product names, logos, and sound behavior into the component itself.",
+    packageImport: 'import { LoadingScreen, useLoadingProgress } from "@steez-ui/ui";',
+    usage: `<LoadingScreen
+  progress={68}
+  message="Syncing runtime"
+  title="LOADING"
+  logo={<img src="/logo.svg" alt="" />}
+  fullscreen={false}
+/>`,
+    related: ["loading-progress-bar", "loading-overlay-crystalline"],
+    tags: ["loading", "shell", "progress"],
+  },
+  {
+    slug: "loading-overlay-crystalline",
+    title: "Loading Overlay Crystalline",
+    category: "feedback",
+    summary: "Compact centered loading card for viewers, canvases, and media shells.",
+    description: "Use LoadingOverlayCrystalline when only one surface is loading and you need a small overlay message instead of a full-screen takeover.",
+    packageImport: 'import { LoadingOverlayCrystalline } from "@steez-ui/ui";',
+    usage: `<LoadingOverlayCrystalline
+  message="Preparing avatar"
+  subtext="Loading model assets"
+  icon={<RefreshIcon width={18} height={18} />}
+/>`,
+    related: ["loading-screen", "status-message"],
+    tags: ["overlay", "loading", "viewer"],
+  },
+  {
     slug: "status-message",
     title: "Status Message",
     category: "feedback",
@@ -385,6 +417,19 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
     tags: ["summary", "stats", "status"],
   },
   {
+    slug: "widget-card",
+    title: "Widget Card",
+    category: "surfaces",
+    summary: "Dashboard widget shell with grid-size presets, header slot, and overlay support.",
+    description: "Use WidgetCard when grid-driven admin or monitoring surfaces need a flat reusable widget frame instead of one-off card markup.",
+    packageImport: 'import { WidgetCard } from "@steez-ui/ui";',
+    usage: `<WidgetCard title="Scene" size="sm-b" overlay={<OverlayButton>+</OverlayButton>}>
+  <div>Widget body</div>
+</WidgetCard>`,
+    related: ["stat-card", "themed-card"],
+    tags: ["dashboard", "widget", "grid"],
+  },
+  {
     slug: "marquee-strip",
     title: "Marquee Strip",
     category: "layout",
@@ -411,6 +456,32 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
 </Section>`,
     related: ["section-header", "themed-card"],
     tags: ["group", "layout", "content"],
+  },
+  {
+    slug: "overlay-button",
+    title: "Overlay Button",
+    category: "actions",
+    summary: "Compact floating control button for viewer tools and absolute-positioned UI.",
+    description: "Use OverlayButton for media, avatar, or preview controls that need to sit on top of another surface without pulling in a full toolbar system.",
+    packageImport: 'import { OverlayButton } from "@steez-ui/ui";',
+    usage: `<OverlayButton aria-label="Expand viewer" active>
+  <EyeIcon width={16} height={16} />
+</OverlayButton>`,
+    related: ["button", "pixel-tooltip"],
+    tags: ["overlay", "viewer", "control"],
+  },
+  {
+    slug: "pixel-tooltip",
+    title: "Pixel Tooltip",
+    category: "feedback",
+    summary: "Compact hover tooltip with crisp monospace styling for short contextual hints.",
+    description: "Use PixelTooltip when controls need inline explanations without adding a larger floating-popover system to the page.",
+    packageImport: 'import { PixelTooltip } from "@steez-ui/ui";',
+    usage: `<PixelTooltip content="Save configuration" position="top">
+  <OverlayButton aria-label="Save">S</OverlayButton>
+</PixelTooltip>`,
+    related: ["overlay-button", "status-message"],
+    tags: ["tooltip", "hover", "hint"],
   },
   {
     slug: "section-header",

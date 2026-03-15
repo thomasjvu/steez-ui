@@ -1,0 +1,81 @@
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  cursor: help;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: var(--z-tooltip);
+  pointer-events: none;
+  opacity: 0;
+  transition:
+    opacity 250ms ease-in-out,
+    transform 250ms ease-in-out;
+}
+
+.tooltip.show {
+  opacity: 1;
+  animation: tooltipFadeIn 250ms ease-out forwards;
+}
+
+.pixelContainer {
+  position: relative;
+  width: fit-content;
+  max-width: 150px;
+  padding: 6px 10px;
+  background: var(--accent-primary);
+  border: 1px solid var(--accent-primary);
+  white-space: normal;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.3;
+  text-align: left;
+}
+
+.tooltip.top {
+  margin-top: -8px;
+  transform: translateY(-100%);
+}
+
+.tooltip.bottom {
+  margin-top: 0;
+  transform: translateY(0);
+}
+
+.tooltip.left {
+  margin-left: -8px;
+  transform: translateX(-100%) translateY(-50%);
+}
+
+.tooltip.right {
+  margin-left: 8px;
+  transform: translateY(-50%);
+}
+
+@keyframes tooltipFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.95);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 768px) {
+  .tooltip {
+    display: none;
+  }
+}

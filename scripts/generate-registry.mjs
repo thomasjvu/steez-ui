@@ -254,6 +254,32 @@ const itemDefinitions = [
     ],
   },
   {
+    name: "loading-screen",
+    type: "registry:component",
+    title: "Loading Screen",
+    description: "Fullscreen or contained loading shell with progress, cross field, and neutral branding hooks.",
+    dependencies: ["@steez-ui/theme", "@steez-ui/icons"],
+    registryDependencies: ["theme-tokens", "icon-provider", "loading-progress-bar"],
+    files: [
+      { source: "packages/ui/src/components/LoadingScreen.tsx", target: "components/steez/LoadingScreen.tsx", type: "registry:component" },
+      { source: "packages/ui/src/components/LoadingScreen.module.css", target: "components/steez/LoadingScreen.module.css", type: "registry:style" },
+      { source: "packages/ui/src/components/LoadingProgressBar.tsx", target: "components/steez/LoadingProgressBar.tsx", type: "registry:component" },
+      { source: "packages/ui/src/components/LoadingProgressBar.module.css", target: "components/steez/LoadingProgressBar.module.css", type: "registry:style" },
+    ],
+  },
+  {
+    name: "loading-overlay-crystalline",
+    type: "registry:component",
+    title: "Loading Overlay Crystalline",
+    description: "Compact centered loading overlay for viewer and media surfaces.",
+    dependencies: ["@steez-ui/theme"],
+    registryDependencies: ["theme-tokens"],
+    files: [
+      { source: "packages/ui/src/components/LoadingOverlayCrystalline.tsx", target: "components/steez/LoadingOverlayCrystalline.tsx", type: "registry:component" },
+      { source: "packages/ui/src/components/LoadingOverlayCrystalline.module.css", target: "components/steez/LoadingOverlayCrystalline.module.css", type: "registry:style" },
+    ],
+  },
+  {
     name: "loading-progress-bar",
     type: "registry:component",
     title: "Loading Progress Bar",
@@ -290,6 +316,30 @@ const itemDefinitions = [
     ],
   },
   {
+    name: "overlay-button",
+    type: "registry:component",
+    title: "Overlay Button",
+    description: "Compact floating control button for viewer and media overlays.",
+    dependencies: ["@steez-ui/theme"],
+    registryDependencies: ["theme-tokens"],
+    files: [
+      { source: "packages/ui/src/components/OverlayButton.tsx", target: "components/steez/OverlayButton.tsx", type: "registry:component" },
+      { source: "packages/ui/src/components/OverlayButton.module.css", target: "components/steez/OverlayButton.module.css", type: "registry:style" },
+    ],
+  },
+  {
+    name: "pixel-tooltip",
+    type: "registry:component",
+    title: "Pixel Tooltip",
+    description: "Compact hover tooltip for terse control hints.",
+    dependencies: ["@steez-ui/theme"],
+    registryDependencies: ["theme-tokens"],
+    files: [
+      { source: "packages/ui/src/components/PixelTooltip.tsx", target: "components/steez/PixelTooltip.tsx", type: "registry:component" },
+      { source: "packages/ui/src/components/PixelTooltip.module.css", target: "components/steez/PixelTooltip.module.css", type: "registry:style" },
+    ],
+  },
+  {
     name: "quick-info-card",
     type: "registry:component",
     title: "Quick Info Card",
@@ -299,6 +349,18 @@ const itemDefinitions = [
     files: [
       { source: "packages/ui/src/components/QuickInfoCard.tsx", target: "components/steez/QuickInfoCard.tsx", type: "registry:component" },
       { source: "packages/ui/src/components/QuickInfoCard.module.css", target: "components/steez/QuickInfoCard.module.css", type: "registry:style" },
+    ],
+  },
+  {
+    name: "widget-card",
+    type: "registry:component",
+    title: "Widget Card",
+    description: "Dashboard widget shell with size presets and optional overlay content.",
+    dependencies: ["@steez-ui/theme"],
+    registryDependencies: ["theme-tokens"],
+    files: [
+      { source: "packages/ui/src/components/WidgetCard.tsx", target: "components/steez/WidgetCard.tsx", type: "registry:component" },
+      { source: "packages/ui/src/components/WidgetCard.module.css", target: "components/steez/WidgetCard.module.css", type: "registry:style" },
     ],
   },
   {

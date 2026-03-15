@@ -18,10 +18,14 @@ import {
   ErrorMessage,
   HeartbeatPulse,
   HexagonGrid,
+  LoadingOverlayCrystalline,
   LoadingProgressBar,
+  LoadingScreen,
   MarqueeStrip,
+  OverlayButton,
   PageHeader,
   PageTemplate,
+  PixelTooltip,
   QuickInfoCard,
   RuntimeOrbitDiagram,
   Section,
@@ -33,6 +37,7 @@ import {
   TabbedPanel,
   ThemedCard,
   ThemeToggle,
+  WidgetCard,
 } from "@steez-ui/ui";
 
 describe("steez ui primitives", () => {
@@ -92,11 +97,28 @@ describe("steez ui primitives", () => {
         <div style={{ position: "relative", minHeight: "8rem" }}>
           <HexagonGrid backgroundOpacity={0.08} />
         </div>
+        <div style={{ position: "relative", minHeight: "10rem" }}>
+          <LoadingOverlayCrystalline
+            message="Preparing avatar"
+            subtext="Loading assets"
+          />
+        </div>
         <LoadingProgressBar progress={50} />
+        <div style={{ position: "relative", minHeight: "12rem" }}>
+          <LoadingScreen
+            progress={72}
+            message="Syncing runtime"
+            fullscreen={false}
+          />
+        </div>
         <MarqueeStrip
           items={["Skills", "Themes", "Workflows"]}
           renderItem={(item) => <span>{item}</span>}
         />
+        <OverlayButton aria-label="Inspect">+</OverlayButton>
+        <PixelTooltip content="Save configuration">
+          <span>Hover me</span>
+        </PixelTooltip>
         <QuickInfoCard
           items={[
             { label: "Status", value: "Live", valueColor: "success" },
@@ -120,6 +142,9 @@ describe("steez ui primitives", () => {
         <StatusMessage type="success" message="Built." />
         <StrokedText animateOnMount>Spellbinding</StrokedText>
         <ErrorMessage message="Something failed." />
+        <WidgetCard title="Scene">
+          <div>Widget body</div>
+        </WidgetCard>
       </>,
     );
 
@@ -130,5 +155,7 @@ describe("steez ui primitives", () => {
     expect(markup).toContain("Spellbinding");
     expect(markup).toContain("Themes");
     expect(markup).toContain("Appearance Configuration");
+    expect(markup).toContain("Preparing avatar");
+    expect(markup).toContain("Widget body");
   });
 });
