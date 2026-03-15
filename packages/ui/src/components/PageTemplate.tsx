@@ -30,6 +30,10 @@ export interface PageTemplateProps
   children?: React.ReactNode;
   loading?: boolean;
   showTitle?: boolean;
+  brandTitle?: string;
+  brandAriaLabel?: string;
+  viewerShowLabel?: string;
+  viewerHideLabel?: string;
 }
 
 export function PageTemplate({
@@ -47,6 +51,10 @@ export function PageTemplate({
   onBrandClick,
   onViewerToggle,
   viewerVisible,
+  brandTitle,
+  brandAriaLabel,
+  viewerShowLabel,
+  viewerHideLabel,
   children,
   loading,
   showTitle = true,
@@ -67,8 +75,12 @@ export function PageTemplate({
             onSettings={onSettings}
             brand={brand}
             onBrandClick={onBrandClick}
+            brandTitle={brandTitle}
+            brandAriaLabel={brandAriaLabel}
             onViewerToggle={onViewerToggle}
             viewerVisible={viewerVisible}
+            viewerShowLabel={viewerShowLabel}
+            viewerHideLabel={viewerHideLabel}
           />
         </div>
       ) : null}
@@ -96,4 +108,3 @@ export function PageTemplate({
     </div>
   );
 }
-

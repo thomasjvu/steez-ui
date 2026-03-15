@@ -14,6 +14,9 @@ The source of truth lives in `packages/ui`. The registry output is generated fro
 Live surfaces:
 
 - Registry frontend: `https://steez-ui-6v5.pages.dev`
+- Docs: `https://steez-ui-6v5.pages.dev/docs/`
+- Packages: `https://steez-ui-6v5.pages.dev/packages/`
+- Registry page: `https://steez-ui-6v5.pages.dev/registry/`
 - Registry index: `https://steez-ui-6v5.pages.dev/r/index.json`
 - Foundation preset: `https://steez-ui-6v5.pages.dev/r/foundation.json`
 
@@ -95,9 +98,9 @@ GitHub Actions mirror the same CI, npm publish, and Cloudflare Pages deploy path
 
 ## Current Packages
 
-- `@steez-ui/theme@0.1.1`
-- `@steez-ui/icons@0.1.1`
-- `@steez-ui/ui@0.1.1`
+- `@steez-ui/theme@0.1.2`
+- `@steez-ui/icons@0.1.2`
+- `@steez-ui/ui@0.1.2`
 
 ## External Setup
 

@@ -13,10 +13,14 @@ export interface PageHeaderProps {
   className?: string;
   brand?: ReactNode;
   onBrandClick?: () => void;
+  brandTitle?: string;
+  brandAriaLabel?: string;
   onBack?: () => void;
   onSettings?: () => void;
   onViewerToggle?: () => void;
   viewerVisible?: boolean;
+  viewerShowLabel?: string;
+  viewerHideLabel?: string;
 }
 
 export function PageHeader({
@@ -27,17 +31,29 @@ export function PageHeader({
   className = "",
   brand,
   onBrandClick,
+  brandTitle,
+  brandAriaLabel,
   onBack,
   onSettings,
   onViewerToggle,
   viewerVisible,
+  viewerShowLabel = "Show viewer",
+  viewerHideLabel = "Hide viewer",
 }: PageHeaderProps) {
+  const viewerLabel = viewerVisible ? viewerHideLabel : viewerShowLabel;
+
   return (
     <div className={`${styles.header} ${className}`.trim()}>
       <div className={styles.headerRow}>
         <div className={styles.brandCluster}>
           {brand || onBrandClick ? (
-            <button type="button" className={styles.brandButton} onClick={onBrandClick}>
+            <button
+              type="button"
+              className={styles.brandButton}
+              onClick={onBrandClick}
+              title={brandTitle}
+              aria-label={brandAriaLabel}
+            >
               <span className={styles.brandVisual}>{brand ?? title.slice(0, 1)}</span>
             </button>
           ) : null}
@@ -70,7 +86,8 @@ export function PageHeader({
               type="button"
               className={styles.iconButton}
               onClick={onViewerToggle}
-              aria-label={viewerVisible ? "Hide viewer" : "Show viewer"}
+              aria-label={viewerLabel}
+              title={viewerLabel}
             >
               <EyeIcon width={18} height={18} />
             </button>
@@ -80,4 +97,3 @@ export function PageHeader({
     </div>
   );
 }
-

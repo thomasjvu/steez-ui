@@ -16,5 +16,13 @@ export default defineConfig({
   build: {
     outDir: "dist",
     emptyOutDir: true,
+    rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, "index.html"),
+        docs: path.resolve(__dirname, "docs/index.html"),
+        packages: path.resolve(__dirname, "packages/index.html"),
+        registry: path.resolve(__dirname, "registry/index.html"),
+      },
+    },
   },
 });
