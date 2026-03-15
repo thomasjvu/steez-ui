@@ -55,6 +55,10 @@ export function DocsPage() {
           Steez is not meant to absorb every screen from the consuming product. It should own
           reusable primitives and styles, then let apps compose domain-specific surfaces on top.
         </p>
+        <p className={styles.body}>
+          Component-by-component installation and previews now live in the dedicated
+          <a className={styles.linkButton} href="/components/"> components section</a>.
+        </p>
       </section>
 
       <section className={styles.section}>

@@ -1,0 +1,327 @@
+export type ComponentCategory =
+  | "actions"
+  | "forms"
+  | "surfaces"
+  | "layout"
+  | "feedback";
+
+export interface ComponentDoc {
+  slug: string;
+  title: string;
+  category: ComponentCategory;
+  summary: string;
+  description: string;
+  packageImport: string;
+  usage: string;
+  related: string[];
+  tags: string[];
+}
+
+export const COMPONENT_CATEGORY_LABELS: Record<ComponentCategory, string> = {
+  actions: "Actions",
+  forms: "Forms",
+  surfaces: "Surfaces",
+  layout: "Layout",
+  feedback: "Feedback",
+};
+
+export const COMPONENT_FILTERS = [
+  { value: "all", label: "All" },
+  { value: "actions", label: "Actions" },
+  { value: "forms", label: "Forms" },
+  { value: "surfaces", label: "Surfaces" },
+  { value: "layout", label: "Layout" },
+  { value: "feedback", label: "Feedback" },
+] as const;
+
+export type ComponentFilter = (typeof COMPONENT_FILTERS)[number]["value"];
+
+export const COMPONENT_DOCS: ComponentDoc[] = [
+  {
+    slug: "button",
+    title: "Button",
+    category: "actions",
+    summary: "Primary, secondary, and danger actions with shared Steez button styling.",
+    description: "Use Button for direct actions where you want the shared Steez interaction surface without reauthoring local variants.",
+    packageImport: 'import { Button } from "@steez-ui/ui";',
+    usage: `<Button>Deploy</Button>
+<Button variant="secondary">Preview</Button>
+<Button variant="danger">Remove</Button>`,
+    related: ["copy-button", "theme-toggle", "error-message"],
+    tags: ["primary", "secondary", "danger"],
+  },
+  {
+    slug: "copy-button",
+    title: "Copy Button",
+    category: "actions",
+    summary: "Clipboard action with built-in copied state and icon feedback.",
+    description: "Use CopyButton anywhere a command, ID, or token needs to be copied without wiring your own success state.",
+    packageImport: 'import { CopyButton } from "@steez-ui/ui";',
+    usage: `<CopyButton value="bun add @steez-ui/ui" />
+<CopyButton value={command} title="Copy command" />`,
+    related: ["button", "status-message"],
+    tags: ["clipboard", "feedback"],
+  },
+  {
+    slug: "cyberpunk-input",
+    title: "Cyberpunk Input",
+    category: "forms",
+    summary: "Monospace text input with label, helper copy, and optional leading icon.",
+    description: "Use CyberpunkInput for text, handle, slug, and credential fields that should match the Steez form surface.",
+    packageImport: 'import { CyberpunkInput } from "@steez-ui/ui";',
+    usage: `<CyberpunkInput
+  label="Companion name"
+  placeholder="rally"
+  helperText="Used in URLs and generated files."
+/>`,
+    related: ["cyberpunk-textarea", "cyberpunk-select", "cyberpunk-checkbox"],
+    tags: ["text", "field", "helper"],
+  },
+  {
+    slug: "cyberpunk-select",
+    title: "Cyberpunk Select",
+    category: "forms",
+    summary: "Select field with shared Steez framing and arrow treatment.",
+    description: "Use CyberpunkSelect for compact controlled choices that need to stay visually consistent with the rest of the form system.",
+    packageImport: 'import { CyberpunkSelect } from "@steez-ui/ui";',
+    usage: `<CyberpunkSelect
+  label="Model tier"
+  value={tier}
+  onChange={(event) => setTier(event.target.value)}
+  options={[
+    { value: "fast", label: "Fast" },
+    { value: "balanced", label: "Balanced" },
+  ]}
+/>`,
+    related: ["cyberpunk-input", "cyberpunk-radio"],
+    tags: ["select", "options"],
+  },
+  {
+    slug: "cyberpunk-textarea",
+    title: "Cyberpunk Textarea",
+    category: "forms",
+    summary: "Shared multiline input for prompts, notes, and longer authored content.",
+    description: "Use CyberpunkTextarea when the field needs Steez spacing and typography but more room than a single-line input.",
+    packageImport: 'import { CyberpunkTextarea } from "@steez-ui/ui";',
+    usage: `<CyberpunkTextarea
+  label="System prompt"
+  rows={6}
+  placeholder="Tell the companion how to behave."
+/>`,
+    related: ["cyberpunk-input", "cyberpunk-select"],
+    tags: ["textarea", "prompt", "multiline"],
+  },
+  {
+    slug: "cyberpunk-checkbox",
+    title: "Cyberpunk Checkbox",
+    category: "forms",
+    summary: "Checkbox primitive with label and Steez form spacing.",
+    description: "Use CyberpunkCheckbox for boolean settings where a compact inline control is enough.",
+    packageImport: 'import { CyberpunkCheckbox } from "@steez-ui/ui";',
+    usage: `<CyberpunkCheckbox
+  label="Enable auto-posting"
+  checked={enabled}
+  onChange={setEnabled}
+/>`,
+    related: ["cyberpunk-radio", "cyberpunk-slider"],
+    tags: ["boolean", "settings"],
+  },
+  {
+    slug: "cyberpunk-radio",
+    title: "Cyberpunk Radio",
+    category: "forms",
+    summary: "Radio and radio-group primitives for exclusive choices.",
+    description: "Use CyberpunkRadioGroup for compact exclusive selections that should read clearly at a glance.",
+    packageImport: 'import { CyberpunkRadioGroup } from "@steez-ui/ui";',
+    usage: `<CyberpunkRadioGroup
+  name="runtime"
+  value={runtime}
+  onChange={setRuntime}
+  options={[
+    { value: "hosted", label: "Hosted" },
+    { value: "self-hosted", label: "Self-hosted" },
+  ]}
+/>`,
+    related: ["cyberpunk-select", "cyberpunk-checkbox"],
+    tags: ["choice", "group"],
+  },
+  {
+    slug: "cyberpunk-slider",
+    title: "Cyberpunk Slider",
+    category: "forms",
+    summary: "Range input with Steez progress styling and value display.",
+    description: "Use CyberpunkSlider for tunable settings such as intensity, thresholds, or timing windows.",
+    packageImport: 'import { CyberpunkSlider } from "@steez-ui/ui";',
+    usage: `<CyberpunkSlider
+  label="Reply energy"
+  value={energy}
+  onChange={(event) => setEnergy(Number(event.target.value))}
+/>`,
+    related: ["cyberpunk-checkbox", "loading-progress-bar"],
+    tags: ["range", "tuning"],
+  },
+  {
+    slug: "themed-card",
+    title: "Themed Card",
+    category: "surfaces",
+    summary: "Base content container with optional title and featured emphasis.",
+    description: "Use ThemedCard as the default flat surface for settings blocks, docs sections, and dashboard cards.",
+    packageImport: 'import { ThemedCard } from "@steez-ui/ui";',
+    usage: `<ThemedCard title="Deployment">
+  <p>Point the companion at a public URL and publish.</p>
+</ThemedCard>`,
+    related: ["cyberpunk-tile", "corner-bracket-card"],
+    tags: ["card", "container"],
+  },
+  {
+    slug: "cyberpunk-tile",
+    title: "Cyberpunk Tile",
+    category: "surfaces",
+    summary: "Angular tile surface for dashboards, launch grids, and compact summaries.",
+    description: "Use CyberpunkTile when the surface needs stronger edges than a default card but should still stay flat and lightweight.",
+    packageImport: 'import { CyberpunkTile } from "@steez-ui/ui";',
+    usage: `<CyberpunkTile>
+  <strong>Site runtime</strong>
+  <p>Deploy pages, media, and publishing flows.</p>
+</CyberpunkTile>`,
+    related: ["themed-card", "corner-bracket-card"],
+    tags: ["tile", "grid"],
+  },
+  {
+    slug: "corner-bracket-card",
+    title: "Corner Bracket Card",
+    category: "surfaces",
+    summary: "Bracketed feature surface with accent corners for standout content.",
+    description: "Use CornerBracketCard when a section needs more visual emphasis without introducing gradients or glow-heavy chrome.",
+    packageImport: 'import { CornerBracketCard } from "@steez-ui/ui";',
+    usage: `<CornerBracketCard title="Foundation">
+  <p>Install tokens, icons, buttons, and forms together.</p>
+</CornerBracketCard>`,
+    related: ["themed-card", "cyberpunk-tile"],
+    tags: ["featured", "accent"],
+  },
+  {
+    slug: "segmented-control",
+    title: "Segmented Control",
+    category: "layout",
+    summary: "Compact tab-like control for mode switches and view filters.",
+    description: "Use SegmentedControl for small, immediate view switches where the content can update in place.",
+    packageImport: 'import { SegmentedControl } from "@steez-ui/ui";',
+    usage: `<SegmentedControl
+  value={mode}
+  onChange={setMode}
+  options={[
+    { value: "registry", label: "Registry" },
+    { value: "packages", label: "Packages" },
+  ]}
+/>`,
+    related: ["tabbed-panel", "page-template"],
+    tags: ["filters", "switcher"],
+  },
+  {
+    slug: "tabbed-panel",
+    title: "Tabbed Panel",
+    category: "layout",
+    summary: "Simple tabbed container for grouped content and install flows.",
+    description: "Use TabbedPanel when each tab needs its own panel content and the interaction should remain explicit.",
+    packageImport: 'import { TabbedPanel } from "@steez-ui/ui";',
+    usage: `<TabbedPanel
+  defaultTab="install"
+  tabs={[
+    { id: "install", label: "Install", content: <InstallBlock /> },
+    { id: "usage", label: "Usage", content: <UsageBlock /> },
+  ]}
+/>`,
+    related: ["segmented-control", "page-template"],
+    tags: ["tabs", "panels"],
+  },
+  {
+    slug: "page-header",
+    title: "Page Header",
+    category: "layout",
+    summary: "Neutral page header with title, brand slot, and optional controls.",
+    description: "Use PageHeader for consistent page titles and lightweight shell actions without hardcoding product-specific branding.",
+    packageImport: 'import { PageHeader } from "@steez-ui/ui";',
+    usage: `<PageHeader
+  title="Providers"
+  description="Routing, failover, and API surfaces."
+  brand={<span>SU</span>}
+  extra={<Button variant="secondary">Publish</Button>}
+/>`,
+    related: ["page-template", "theme-toggle"],
+    tags: ["header", "brand", "shell"],
+  },
+  {
+    slug: "page-template",
+    title: "Page Template",
+    category: "layout",
+    summary: "Page wrapper that composes the header, subtabs, and content area.",
+    description: "Use PageTemplate when a consuming app needs a neutral page shell it can brand and extend locally.",
+    packageImport: 'import { PageTemplate } from "@steez-ui/ui";',
+    usage: `<PageTemplate
+  title="Steez UI"
+  description="Standalone primitives and registry payloads."
+  subTabs={[
+    { id: "overview", label: "Overview" },
+    { id: "tokens", label: "Tokens" },
+  ]}
+>
+  <ThemedCard title="Overview">...</ThemedCard>
+</PageTemplate>`,
+    related: ["page-header", "tabbed-panel"],
+    tags: ["layout", "shell"],
+  },
+  {
+    slug: "theme-toggle",
+    title: "Theme Toggle",
+    category: "layout",
+    summary: "Shared light and dark mode switch with document-level persistence.",
+    description: "Use ThemeToggle when the consuming app wants the Steez theme switch behavior without rewriting storage and root-attribute wiring.",
+    packageImport: 'import { ThemeToggle } from "@steez-ui/ui";',
+    usage: `<ThemeToggle storageKey="steez-ui-theme" defaultTheme="dark" />`,
+    related: ["page-header", "button"],
+    tags: ["theme", "light", "dark"],
+  },
+  {
+    slug: "loading-progress-bar",
+    title: "Loading Progress Bar",
+    category: "feedback",
+    summary: "Segmented loading bar for build, deploy, and initialization progress.",
+    description: "Use LoadingProgressBar for visible progress states that should feel mechanical and legible rather than glossy.",
+    packageImport: 'import { LoadingProgressBar } from "@steez-ui/ui";',
+    usage: `<LoadingProgressBar progress={72} valueLabel="72% synced" />`,
+    related: ["status-message", "error-message"],
+    tags: ["progress", "loading"],
+  },
+  {
+    slug: "status-message",
+    title: "Status Message",
+    category: "feedback",
+    summary: "Inline success, info, and error status surface with shared icon treatment.",
+    description: "Use StatusMessage for concise feedback that should stay embedded in the current layout.",
+    packageImport: 'import { StatusMessage } from "@steez-ui/ui";',
+    usage: `<StatusMessage type="success" message="Registry payloads generated." />`,
+    related: ["error-message", "copy-button"],
+    tags: ["success", "info", "error"],
+  },
+  {
+    slug: "error-message",
+    title: "Error Message",
+    category: "feedback",
+    summary: "Inline, card, and full-screen error surfaces with optional actions.",
+    description: "Use ErrorMessage when the failure state needs more context or retry actions than a compact status line can provide.",
+    packageImport: 'import { ErrorMessage } from "@steez-ui/ui";',
+    usage: `<ErrorMessage
+  title="Build failed"
+  message="Registry generation could not finish."
+  details={stderr}
+  onRetry={handleRetry}
+/>`,
+    related: ["status-message", "button"],
+    tags: ["failure", "retry"],
+  },
+];
+
+export function getComponentDoc(slug: string) {
+  return COMPONENT_DOCS.find((component) => component.slug === slug);
+}

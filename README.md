@@ -15,6 +15,7 @@ Live surfaces:
 
 - Registry frontend: `https://steez-ui-6v5.pages.dev`
 - Docs: `https://steez-ui-6v5.pages.dev/docs/`
+- Components: `https://steez-ui-6v5.pages.dev/components/`
 - Packages: `https://steez-ui-6v5.pages.dev/packages/`
 - Registry page: `https://steez-ui-6v5.pages.dev/registry/`
 - Registry index: `https://steez-ui-6v5.pages.dev/r/index.json`
@@ -75,6 +76,7 @@ bun run test:install-smoke
 Useful commands:
 
 - `bun run generate:registry`
+- `bun run generate:component-pages`
 - `bun run check:release`
 - `bun run publish:packages:dry-run`
 - `bun run publish:packages`
@@ -85,8 +87,9 @@ Useful commands:
 1. Build or update the component in `packages/ui/src/components`.
 2. Export it from `packages/ui/src/index.ts`.
 3. Add or update the registry item definition in `scripts/generate-registry.mjs`.
-4. Run `bun run build` and `bun run test`.
-5. Confirm the registry frontend reflects the new component or install path.
+4. Add or update the docs metadata and preview in `apps/registry/src/components-docs/`.
+5. Run `bun run build` and `bun run test`.
+6. Confirm the registry frontend reflects the new component or install path.
 
 ## Release Flow
 

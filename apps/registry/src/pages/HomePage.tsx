@@ -132,6 +132,21 @@ export function HomePage() {
         <div className={styles.eyebrow}>Surfaces</div>
         <h2 className={styles.sectionTitle}>Use docs pages for navigation, not one oversized landing page.</h2>
         <div className={styles.gridTwo}>
+          <ThemedCard title="Components" className={styles.flatCard}>
+            <div className={styles.list}>
+              <div className={styles.listItem}>
+                Individual docs pages show the live preview, install command, and included files for each primitive.
+              </div>
+              <div className={styles.listItem}>
+                Browse actions, forms, surfaces, layout shells, and feedback primitives separately.
+              </div>
+              <div className={styles.listItem}>
+                <a className={styles.linkButton} href="/components/">
+                  Open component docs
+                </a>
+              </div>
+            </div>
+          </ThemedCard>
           <ThemedCard title="Packages" className={styles.flatCard}>
             <div className={styles.list}>
               {PACKAGE_ITEMS.map((item) => (
@@ -142,6 +157,8 @@ export function HomePage() {
               ))}
             </div>
           </ThemedCard>
+        </div>
+        <div className={styles.gridTwo}>
           <ThemedCard title="Registry" className={styles.flatCard}>
             <div className={styles.list}>
               {REGISTRY_ITEMS.slice(0, 4).map((item) => (
@@ -150,6 +167,16 @@ export function HomePage() {
                   <div className={styles.referenceValue}>{item.href}</div>
                 </div>
               ))}
+            </div>
+          </ThemedCard>
+          <ThemedCard title="Docs" className={styles.flatCard}>
+            <div className={styles.list}>
+              <div className={styles.listItem}>
+                Keep product-specific composites out of Steez and document the shared boundary clearly.
+              </div>
+              <div className={styles.listItem}>
+                Use the docs section for model, authoring, and release guidance.
+              </div>
             </div>
           </ThemedCard>
         </div>

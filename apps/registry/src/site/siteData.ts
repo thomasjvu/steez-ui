@@ -7,6 +7,7 @@ export const NPM_UI_URL = "https://www.npmjs.com/package/@steez-ui/ui";
 export const SITE_NAV = [
   { key: "home", label: "Home", href: "/" },
   { key: "docs", label: "Docs", href: "/docs/" },
+  { key: "components", label: "Components", href: "/components/" },
   { key: "packages", label: "Packages", href: "/packages/" },
   { key: "registry", label: "Registry", href: "/registry/" },
 ] as const;
