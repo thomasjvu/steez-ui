@@ -1,0 +1,63 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  color: transparent;
+  -webkit-text-stroke: var(--stroked-text-width, 1px)
+    var(--stroked-text-color, var(--accent-primary));
+  paint-order: stroke fill;
+  white-space: nowrap;
+}
+
+.animateOnMount {
+  animation: strokedTextBlink 1s steps(1, end) 0.18s both;
+}
+
+@supports not (-webkit-text-stroke: 1px black) {
+  .root {
+    color: var(--stroked-text-color, var(--accent-primary));
+  }
+
+  .animateOnMount {
+    animation: strokedTextFallbackBlink 1s steps(1, end) 0.18s both;
+  }
+}
+
+@keyframes strokedTextBlink {
+  0%,
+  14%,
+  32%,
+  50%,
+  68%,
+  100% {
+    color: transparent;
+    -webkit-text-stroke-color: var(--stroked-text-color, var(--accent-primary));
+  }
+
+  18%,
+  36%,
+  54%,
+  72%,
+  90% {
+    color: var(--stroked-text-color, var(--accent-primary));
+    -webkit-text-stroke-color: transparent;
+  }
+}
+
+@keyframes strokedTextFallbackBlink {
+  0%,
+  14%,
+  32%,
+  50%,
+  68%,
+  100% {
+    opacity: var(--stroked-text-fallback-opacity, 0.18);
+  }
+
+  18%,
+  36%,
+  54%,
+  72%,
+  90% {
+    opacity: 1;
+  }
+}

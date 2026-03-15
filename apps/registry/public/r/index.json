@@ -12,6 +12,18 @@
     "description": "Shared icon provider and icon surface used by Steez primitives."
   },
   {
+    "name": "avatar-stage",
+    "type": "registry:component",
+    "title": "Avatar Stage",
+    "description": "Stable avatar viewport shell with backdrop and bottom divider support."
+  },
+  {
+    "name": "blink-text",
+    "type": "registry:component",
+    "title": "Blink Text",
+    "description": "Hover and mount-triggered blink text treatment for small attention cues."
+  },
+  {
     "name": "button",
     "type": "registry:component",
     "title": "Button",
@@ -114,10 +126,28 @@
     "description": "Progress bar with segmented loading bars."
   },
   {
+    "name": "heartbeat-pulse",
+    "type": "registry:component",
+    "title": "Heartbeat Pulse",
+    "description": "Orb and line heartbeat indicators for recurring runtime activity."
+  },
+  {
+    "name": "marquee-strip",
+    "type": "registry:component",
+    "title": "Marquee Strip",
+    "description": "Continuous horizontal marquee track for providers, skills, and launch lanes."
+  },
+  {
     "name": "status-message",
     "type": "registry:component",
     "title": "Status Message",
     "description": "Success, error, and info toast primitive."
+  },
+  {
+    "name": "stroked-text",
+    "type": "registry:component",
+    "title": "Stroked Text",
+    "description": "Outlined accent text with an optional mount-time stroke-to-fill blink."
   },
   {
     "name": "error-message",

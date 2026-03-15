@@ -1,0 +1,36 @@
+.root {
+  position: relative;
+  overflow: hidden;
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  gap: var(--marquee-gap, 0.7rem);
+  width: max-content;
+  animation: marqueeStrip var(--marquee-duration, 24s) linear infinite;
+}
+
+.pauseOnHover:hover .track {
+  animation-play-state: paused;
+}
+
+.item {
+  flex: 0 0 auto;
+}
+
+@keyframes marqueeStrip {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-50% - (var(--marquee-gap, 0.7rem) / 2)));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+  }
+}

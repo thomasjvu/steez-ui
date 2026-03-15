@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "blink-text",
+  "type": "registry:component",
+  "title": "Blink Text",
+  "description": "Hover and mount-triggered blink text treatment for small attention cues.",
+  "dependencies": [
+    "@steez-ui/theme"
+  ],
+  "registryDependencies": [
+    "theme-tokens"
+  ],
+  "files": [
+    {
+      "path": "components/steez/BlinkText.tsx",
+      "type": "registry:component",
+      "content": "import React from \"react\";\n\nimport styles from \"./BlinkText.module.css\";\n\ntype BlinkTrigger = \"mount\" | \"hover\" | \"always\";\n\nexport interface BlinkTextProps extends React.HTMLAttributes<HTMLSpanElement> {\n  children: React.ReactNode;\n  trigger?: BlinkTrigger;\n  durationMs?: number;\n  iterations?: number | \"infinite\";\n  delayMs?: number;\n  dimOpacity?: number;\n}\n\nexport function BlinkText({\n  children,\n  trigger = \"hover\",\n  durationMs = 420,\n  iterations = 3,\n  delayMs = 0,\n  dimOpacity = 0.12,\n  className = \"\",\n  style,\n  ...props\n}: BlinkTextProps) {\n  const mergedStyle = {\n    ...style,\n    [\"--blink-duration\" as string]: `${durationMs}ms`,\n    [\"--blink-iterations\" as string]:\n      iterations === \"infinite\" ? \"infinite\" : String(iterations),\n    [\"--blink-delay\" as string]: `${delayMs}ms`,\n    [\"--blink-dim-opacity\" as string]: String(dimOpacity),\n  } as React.CSSProperties;\n\n  return (\n    <span\n      className={`${styles.root} ${styles[trigger]} ${className}`.trim()}\n      style={mergedStyle}\n      {...props}\n    >\n      {children}\n    </span>\n  );\n}\n",
+      "source": "packages/ui/src/components/BlinkText.tsx"
+    },
+    {
+      "path": "components/steez/BlinkText.module.css",
+      "type": "registry:style",
+      "content": ".root {\n  display: inline-flex;\n  align-items: center;\n}\n\n.mount {\n  animation: blinkText var(--blink-duration, 420ms) steps(2, end)\n    var(--blink-delay, 0ms) var(--blink-iterations, 3);\n}\n\n.always {\n  animation: blinkText var(--blink-duration, 420ms) steps(2, end)\n    var(--blink-delay, 0ms) infinite;\n}\n\n.hover:hover {\n  animation: blinkText var(--blink-duration, 420ms) steps(2, end)\n    var(--blink-delay, 0ms) var(--blink-iterations, 3);\n}\n\n@keyframes blinkText {\n  0%,\n  100% {\n    opacity: 1;\n  }\n\n  20%,\n  40%,\n  60%,\n  80% {\n    opacity: var(--blink-dim-opacity, 0.12);\n  }\n\n  30%,\n  50%,\n  70%,\n  90% {\n    opacity: 1;\n  }\n}\n",
+      "source": "packages/ui/src/components/BlinkText.module.css"
+    }
+  ]
+}

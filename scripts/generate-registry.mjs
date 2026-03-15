@@ -32,6 +32,30 @@ const itemDefinitions = [
     ],
   },
   {
+    name: "avatar-stage",
+    type: "registry:component",
+    title: "Avatar Stage",
+    description: "Stable avatar viewport shell with backdrop and bottom divider support.",
+    dependencies: ["@steez-ui/theme"],
+    registryDependencies: ["theme-tokens"],
+    files: [
+      { source: "packages/ui/src/components/AvatarStage.tsx", target: "components/steez/AvatarStage.tsx", type: "registry:component" },
+      { source: "packages/ui/src/components/AvatarStage.module.css", target: "components/steez/AvatarStage.module.css", type: "registry:style" },
+    ],
+  },
+  {
+    name: "blink-text",
+    type: "registry:component",
+    title: "Blink Text",
+    description: "Hover and mount-triggered blink text treatment for small attention cues.",
+    dependencies: ["@steez-ui/theme"],
+    registryDependencies: ["theme-tokens"],
+    files: [
+      { source: "packages/ui/src/components/BlinkText.tsx", target: "components/steez/BlinkText.tsx", type: "registry:component" },
+      { source: "packages/ui/src/components/BlinkText.module.css", target: "components/steez/BlinkText.module.css", type: "registry:style" },
+    ],
+  },
+  {
     name: "button",
     type: "registry:component",
     title: "Button",
@@ -242,6 +266,30 @@ const itemDefinitions = [
     ],
   },
   {
+    name: "heartbeat-pulse",
+    type: "registry:component",
+    title: "Heartbeat Pulse",
+    description: "Orb and line heartbeat indicators for recurring runtime activity.",
+    dependencies: ["@steez-ui/theme"],
+    registryDependencies: ["theme-tokens"],
+    files: [
+      { source: "packages/ui/src/components/HeartbeatPulse.tsx", target: "components/steez/HeartbeatPulse.tsx", type: "registry:component" },
+      { source: "packages/ui/src/components/HeartbeatPulse.module.css", target: "components/steez/HeartbeatPulse.module.css", type: "registry:style" },
+    ],
+  },
+  {
+    name: "marquee-strip",
+    type: "registry:component",
+    title: "Marquee Strip",
+    description: "Continuous horizontal marquee track for providers, skills, and launch lanes.",
+    dependencies: ["@steez-ui/theme"],
+    registryDependencies: ["theme-tokens"],
+    files: [
+      { source: "packages/ui/src/components/MarqueeStrip.tsx", target: "components/steez/MarqueeStrip.tsx", type: "registry:component" },
+      { source: "packages/ui/src/components/MarqueeStrip.module.css", target: "components/steez/MarqueeStrip.module.css", type: "registry:style" },
+    ],
+  },
+  {
     name: "status-message",
     type: "registry:component",
     title: "Status Message",
@@ -251,6 +299,18 @@ const itemDefinitions = [
     files: [
       { source: "packages/ui/src/components/StatusMessage.tsx", target: "components/steez/StatusMessage.tsx", type: "registry:component" },
       { source: "packages/ui/src/components/StatusMessage.module.css", target: "components/steez/StatusMessage.module.css", type: "registry:style" },
+    ],
+  },
+  {
+    name: "stroked-text",
+    type: "registry:component",
+    title: "Stroked Text",
+    description: "Outlined accent text with an optional mount-time stroke-to-fill blink.",
+    dependencies: ["@steez-ui/theme"],
+    registryDependencies: ["theme-tokens"],
+    files: [
+      { source: "packages/ui/src/components/StrokedText.tsx", target: "components/steez/StrokedText.tsx", type: "registry:component" },
+      { source: "packages/ui/src/components/StrokedText.module.css", target: "components/steez/StrokedText.module.css", type: "registry:style" },
     ],
   },
   {

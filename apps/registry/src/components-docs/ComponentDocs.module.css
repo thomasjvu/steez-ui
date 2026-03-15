@@ -173,6 +173,31 @@
   letter-spacing: 0.08em;
 }
 
+.avatarStageFigure {
+  position: absolute;
+  inset-inline-start: 50%;
+  bottom: 0.65rem;
+  width: 5.75rem;
+  transform: translateX(-50%);
+}
+
+.avatarStageHead {
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: 0 auto -0.15rem;
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg-secondary) 86%, transparent);
+}
+
+.avatarStageBody {
+  width: 100%;
+  height: 7.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 1.4rem 1.4rem 0.5rem 0.5rem;
+  background: color-mix(in srgb, var(--bg-secondary) 80%, transparent);
+}
+
 .inlineCode,
 .codeBlock {
   display: block;
@@ -188,6 +213,29 @@
 
 .commandPreview .inlineCode {
   flex: 1 1 20rem;
+}
+
+.marqueeDemo {
+  width: min(100%, 24rem);
+}
+
+.marqueeItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2rem;
+  padding: 0 0.7rem;
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--bg-secondary) 76%, transparent);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.marqueeItemKind {
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .installTabs :global([role="tabpanel"]) {

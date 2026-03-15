@@ -38,6 +38,30 @@ export type ComponentFilter = (typeof COMPONENT_FILTERS)[number]["value"];
 
 export const COMPONENT_DOCS: ComponentDoc[] = [
   {
+    slug: "avatar-stage",
+    title: "Avatar Stage",
+    category: "surfaces",
+    summary: "Framed avatar viewport with a stable shell, viewport width, and bottom divider.",
+    description: "Use AvatarStage when VRM, Live2D, PNGTuber, or image-based character views need one stable shell instead of per-page framing logic.",
+    packageImport: 'import { AvatarStage } from "@steez-ui/ui";',
+    usage: `<AvatarStage stageHeight="34rem" viewportWidth="min(100%, 30rem)">
+  <img src="/companion.png" alt="Companion preview" />
+</AvatarStage>`,
+    related: ["page-template", "cyberpunk-tile"],
+    tags: ["avatar", "stage", "shell"],
+  },
+  {
+    slug: "blink-text",
+    title: "Blink Text",
+    category: "feedback",
+    summary: "Minimal blink treatment for hover or mount-triggered attention cues.",
+    description: "Use BlinkText for quick-jump links, terminal hints, or other subtle attention grabs without building custom keyframes in every app.",
+    packageImport: 'import { BlinkText } from "@steez-ui/ui";',
+    usage: `<BlinkText trigger="hover">「 quick jump 」</BlinkText>`,
+    related: ["stroked-text", "button"],
+    tags: ["motion", "text"],
+  },
+  {
     slug: "button",
     title: "Button",
     category: "actions",
@@ -319,6 +343,45 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
 />`,
     related: ["status-message", "button"],
     tags: ["failure", "retry"],
+  },
+  {
+    slug: "heartbeat-pulse",
+    title: "Heartbeat Pulse",
+    category: "feedback",
+    summary: "Orb and line heartbeat indicators for wake-up loops, sync state, and background activity.",
+    description: "Use HeartbeatPulse and HeartbeatIndicator for runtime heartbeat UI without rebuilding the SVG motion treatment in every product.",
+    packageImport: 'import { HeartbeatPulse } from "@steez-ui/ui";',
+    usage: `<HeartbeatPulse variant="line" width={240} height={84} color="var(--accent-primary)" />`,
+    related: ["loading-progress-bar", "status-message"],
+    tags: ["heartbeat", "status", "activity"],
+  },
+  {
+    slug: "marquee-strip",
+    title: "Marquee Strip",
+    category: "layout",
+    summary: "Continuous horizontal marquee for providers, extensions, or launch lanes.",
+    description: "Use MarqueeStrip when a row of repeated pills or labels should move as a single track with consistent duplication and spacing.",
+    packageImport: 'import { MarqueeStrip } from "@steez-ui/ui";',
+    usage: `<MarqueeStrip
+  items={providers}
+  durationSeconds={28}
+  renderItem={(provider) => <span>{provider}</span>}
+/>`,
+    related: ["segmented-control", "cyberpunk-tile"],
+    tags: ["marquee", "motion", "track"],
+  },
+  {
+    slug: "stroked-text",
+    title: "Stroked Text",
+    category: "layout",
+    summary: "Outlined accent text with optional stroke-to-fill blink on mount.",
+    description: "Use StrokedText for large launch words, hero accents, and standout callouts that need a sharper high-contrast treatment than plain filled text.",
+    packageImport: 'import { StrokedText } from "@steez-ui/ui";',
+    usage: `<StrokedText color="#ff7a72" animateOnMount>
+  SPELLBINDING
+</StrokedText>`,
+    related: ["blink-text", "page-header"],
+    tags: ["headline", "outline"],
   },
 ];
 

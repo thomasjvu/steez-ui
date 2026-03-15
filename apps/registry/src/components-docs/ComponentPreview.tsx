@@ -1,6 +1,8 @@
 import React from "react";
 
 import {
+  AvatarStage,
+  BlinkText,
   Button,
   CopyButton,
   CyberpunkCheckbox,
@@ -12,11 +14,14 @@ import {
   CyberpunkTile,
   CornerBracketCard,
   ErrorMessage,
+  HeartbeatPulse,
   LoadingProgressBar,
+  MarqueeStrip,
   PageHeader,
   PageTemplate,
   SegmentedControl,
   StatusMessage,
+  StrokedText,
   TabbedPanel,
   ThemedCard,
   ThemeToggle,
@@ -30,6 +35,26 @@ function ButtonPreview() {
       <Button>Deploy</Button>
       <Button variant="secondary">Preview</Button>
       <Button variant="danger">Remove</Button>
+    </div>
+  );
+}
+
+function AvatarStagePreview() {
+  return (
+    <AvatarStage stageHeight="18rem" viewportWidth="min(100%, 12rem)">
+      <div className={styles.avatarStageFigure}>
+        <div className={styles.avatarStageHead} />
+        <div className={styles.avatarStageBody} />
+      </div>
+    </AvatarStage>
+  );
+}
+
+function BlinkTextPreview() {
+  return (
+    <div className={styles.previewRow}>
+      <BlinkText trigger="mount">system online</BlinkText>
+      <BlinkText trigger="hover">hover to blink</BlinkText>
     </div>
   );
 }
@@ -274,7 +299,50 @@ function ErrorMessagePreview() {
   );
 }
 
+function HeartbeatPulsePreview() {
+  return (
+    <div className={styles.previewColumn}>
+      <HeartbeatPulse variant="orb" />
+      <HeartbeatPulse variant="line" width={220} height={80} />
+    </div>
+  );
+}
+
+function MarqueeStripPreview() {
+  return (
+    <MarqueeStrip
+      items={[
+        { kind: "Skill", label: "Persona pack" },
+        { kind: "Theme", label: "Chronicle site kit" },
+        { kind: "Workflow", label: "Launch approvals" },
+      ]}
+      durationSeconds={12}
+      gap="0.55rem"
+      className={styles.marqueeDemo}
+      renderItem={(item) => (
+        <span className={styles.marqueeItem}>
+          <span className={styles.marqueeItemKind}>{item.kind}</span>
+          <span>{item.label}</span>
+        </span>
+      )}
+    />
+  );
+}
+
+function StrokedTextPreview() {
+  return (
+    <div className={styles.previewColumn}>
+      <StrokedText color="#ff7a72" animateOnMount>
+        SPELLBINDING
+      </StrokedText>
+      <StrokedText color="#8ef0ff">UNFORGETTABLE</StrokedText>
+    </div>
+  );
+}
+
 const PREVIEW_MAP: Record<string, React.ComponentType> = {
+  "avatar-stage": AvatarStagePreview,
+  "blink-text": BlinkTextPreview,
   button: ButtonPreview,
   "copy-button": CopyButtonPreview,
   "cyberpunk-input": CyberpunkInputPreview,
@@ -291,9 +359,12 @@ const PREVIEW_MAP: Record<string, React.ComponentType> = {
   "page-header": PageHeaderPreview,
   "page-template": PageTemplatePreview,
   "theme-toggle": ThemeTogglePreview,
+  "heartbeat-pulse": HeartbeatPulsePreview,
   "loading-progress-bar": LoadingProgressBarPreview,
+  "marquee-strip": MarqueeStripPreview,
   "status-message": StatusMessagePreview,
   "error-message": ErrorMessagePreview,
+  "stroked-text": StrokedTextPreview,
 };
 
 export function ComponentPreview({ slug }: { slug: string }) {

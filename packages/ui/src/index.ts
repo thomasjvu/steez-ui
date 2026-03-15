@@ -1,3 +1,5 @@
+export { AvatarStage, type AvatarStageProps } from "./components/AvatarStage.js";
+export { BlinkText, type BlinkTextProps } from "./components/BlinkText.js";
 export { Button, type ButtonProps } from "./components/Button.js";
 export { CopyButton, type CopyButtonProps } from "./components/CopyButton.js";
 export { CyberpunkCheckbox, type CyberpunkCheckboxProps } from "./components/CyberpunkCheckbox.js";
@@ -28,10 +30,17 @@ export { CyberpunkTile, type CyberpunkTileProps } from "./components/CyberpunkTi
 export { CornerBracketCard, type CornerBracketCardProps } from "./components/CornerBracketCard.js";
 export { ErrorMessage, type ErrorMessageProps } from "./components/ErrorMessage.js";
 export {
+  HeartbeatIndicator,
+  HeartbeatPulse,
+  type HeartbeatIndicatorProps,
+  type HeartbeatPulseProps,
+} from "./components/HeartbeatPulse.js";
+export {
   LOADING_PROGRESS_SEGMENT_COUNT,
   LoadingProgressBar,
   type LoadingProgressBarProps,
 } from "./components/LoadingProgressBar.js";
+export { MarqueeStrip, type MarqueeStripProps } from "./components/MarqueeStrip.js";
 export { PageHeader, type PageHeaderProps } from "./components/PageHeader.js";
 export { PageTemplate, type PageTemplateProps } from "./components/PageTemplate.js";
 export {
@@ -40,6 +49,7 @@ export {
   type SegmentedControlProps,
 } from "./components/SegmentedControl.js";
 export { StatusMessage, type StatusMessageProps } from "./components/StatusMessage.js";
+export { StrokedText, type StrokedTextProps } from "./components/StrokedText.js";
 export { TabbedPanel, type TabbedPanelProps, type TabbedPanelTab } from "./components/TabbedPanel.js";
 export { ThemedCard, type ThemedCardProps } from "./components/ThemedCard.js";
 export { ThemeToggle, type ThemeToggleProps } from "./components/ThemeToggle.js";
