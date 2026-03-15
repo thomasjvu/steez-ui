@@ -2,7 +2,7 @@
 
 Shared Phantasy UI primitives and shadcn-compatible registry output.
 
-Registry frontend: `https://steez-ui.pages.dev`
+Registry frontend: use the current Cloudflare Pages project domain for your active deployment.
 
 ## Packages
 
@@ -28,7 +28,7 @@ Registry frontend: `https://steez-ui.pages.dev`
 ## Install
 
 ```bash
-bunx shadcn@latest add https://steez-ui.pages.dev/r/foundation.json
+bunx shadcn@latest add https://<your-registry-domain>/r/foundation.json
 ```
 
 ```bash

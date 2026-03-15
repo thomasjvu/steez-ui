@@ -25,11 +25,6 @@ import { SteezIconProvider } from "@steez-ui/icons";
 
 import styles from "./App.module.css";
 
-const FOUNDATION_COMMAND =
-  "bunx shadcn@latest add https://steez-ui.pages.dev/r/foundation.json";
-const BUTTON_COMMAND =
-  "bunx shadcn@latest add https://steez-ui.pages.dev/r/button.json";
-
 const PRIMITIVE_FAMILIES = [
   {
     title: "Foundation",
@@ -114,6 +109,10 @@ export default function App() {
   const [accent, setAccent] = useState<"success" | "error" | "info">("success");
   const [shippingConfidence, setShippingConfidence] = useState(76);
   const [showToast, setShowToast] = useState(true);
+  const registryOrigin =
+    typeof window === "undefined" ? "https://steez-ui.pages.dev" : window.location.origin;
+  const foundationCommand = `bunx shadcn@latest add ${registryOrigin}/r/foundation.json`;
+  const buttonCommand = `bunx shadcn@latest add ${registryOrigin}/r/button.json`;
 
   const statusMessage = useMemo(() => {
     if (!showToast) {
@@ -156,15 +155,15 @@ export default function App() {
             <div className={styles.commandStack}>
               <ThemedCard title="Foundation preset">
                 <div className={styles.commandRow}>
-                  <code className={styles.commandCode}>{FOUNDATION_COMMAND}</code>
-                  <CopyButton value={FOUNDATION_COMMAND} />
+                  <code className={styles.commandCode}>{foundationCommand}</code>
+                  <CopyButton value={foundationCommand} />
                 </div>
               </ThemedCard>
 
               <ThemedCard title="Single component">
                 <div className={styles.commandRow}>
-                  <code className={styles.commandCode}>{BUTTON_COMMAND}</code>
-                  <CopyButton value={BUTTON_COMMAND} />
+                  <code className={styles.commandCode}>{buttonCommand}</code>
+                  <CopyButton value={buttonCommand} />
                 </div>
               </ThemedCard>
             </div>
@@ -303,4 +302,3 @@ export default function App() {
     </SteezIconProvider>
   );
 }
-
