@@ -3,7 +3,7 @@
     "name": "theme-tokens",
     "type": "registry:style",
     "title": "Theme Tokens",
-    "description": "Shared Phantasy-compatible CSS tokens for Steez UI consumers."
+    "description": "Shared CSS tokens and compatibility aliases for Steez UI consumers."
   },
   {
     "name": "icon-provider",
@@ -69,7 +69,7 @@
     "name": "cyberpunk-tile",
     "type": "registry:component",
     "title": "Cyberpunk Tile",
-    "description": "Angular tile surface shared between landing and admin shells."
+    "description": "Angular tile surface for dashboards, docs, and launch pages."
   },
   {
     "name": "corner-bracket-card",

@@ -1,8 +1,8 @@
 /**
  * Steez UI shared design tokens.
  *
- * This preserves the current Phantasy token names so first-party consumers can
- * migrate without a variable rename pass.
+ * This keeps the alias surface stable so consumers can migrate without a
+ * variable rename pass.
  */
 
 :root {
@@ -225,4 +225,3 @@
   --interactive-secondary-bg-hover: #f2f5f7;
   --interactive-secondary-border-hover: var(--color-black);
 }
-

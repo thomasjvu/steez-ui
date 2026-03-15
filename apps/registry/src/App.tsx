@@ -5,7 +5,6 @@ import "@steez-ui/theme/tokens.css";
 import {
   Button,
   CopyButton,
-  CornerBracketCard,
   CyberpunkCheckbox,
   CyberpunkInput,
   CyberpunkRadioGroup,
@@ -25,64 +24,89 @@ import { SteezIconProvider } from "@steez-ui/icons";
 
 import styles from "./App.module.css";
 
-const PRIMITIVE_FAMILIES = [
+const SITE_URL = "https://steez-ui-6v5.pages.dev";
+const REPOSITORY_URL = "https://github.com/thomasjvu/steez-ui";
+
+const VALUE_PROPS = [
+  {
+    title: "Packages",
+    body: "Install the theme, icon system, and UI primitives directly from npm.",
+  },
+  {
+    title: "Registry",
+    body: "Ship the same source as shadcn-compatible registry payloads with CSS modules included.",
+  },
+  {
+    title: "Tokens",
+    body: "Use a flat token layer with stable aliases instead of rewriting each surface from scratch.",
+  },
+];
+
+const INVENTORY_TILES = [
   {
     title: "Foundation",
-    body: "Theme tokens, icon provider, buttons, and installable CSS module source.",
+    detail: "Theme tokens, icon provider, buttons, and shared CSS module conventions.",
   },
   {
     title: "Forms",
-    body: "Cyberpunk inputs, selects, radios, checkboxes, sliders, and textareas with the same token system.",
+    detail: "Inputs, selects, textareas, radios, checkboxes, and sliders with one surface language.",
   },
   {
     title: "Surfaces",
-    body: "Tiles, cards, page shells, status rails, and feedback surfaces shared across admin and landing paths.",
+    detail: "Tiles, cards, headers, templates, status rails, and lightweight feedback components.",
+  },
+  {
+    title: "Registry output",
+    detail: "Generated JSON manifests and source payloads that stay aligned with the package source.",
   },
 ];
 
-const ADOPTION_STEPS = [
-  "Author once in packages/ui and generate registry payloads from source.",
-  "Consume @steez-ui/ui directly in Phantasy first-party surfaces.",
-  "Install the same primitives in external apps through the registry.",
+const PACKAGE_SURFACES = [
+  {
+    title: "@steez-ui/theme",
+    body: "Token source, compatibility aliases, and the Tailwind compatibility preset.",
+    npmHref: "https://www.npmjs.com/package/@steez-ui/theme",
+  },
+  {
+    title: "@steez-ui/icons",
+    body: "Shared icon exports and the provider layer used by the primitives.",
+    npmHref: "https://www.npmjs.com/package/@steez-ui/icons",
+  },
+  {
+    title: "@steez-ui/ui",
+    body: "React primitives authored in `.tsx` and `.module.css`, published and generated from one source tree.",
+    npmHref: "https://www.npmjs.com/package/@steez-ui/ui",
+  },
 ];
 
-const PREVIEW_TABS = [
+const DOC_SECTIONS = [
   {
-    id: "packages",
-    label: "Packages",
-    panel: (
-      <div className={styles.previewPanelCopy}>
-        <div className={styles.previewMetric}>
-          <span className={styles.previewMetricLabel}>Theme</span>
-          <span className={styles.previewMetricValue}>CSS tokens + Tailwind compatibility</span>
-        </div>
-        <div className={styles.previewMetric}>
-          <span className={styles.previewMetricLabel}>Icons</span>
-          <span className={styles.previewMetricValue}>Shared icon surface and provider defaults</span>
-        </div>
-        <div className={styles.previewMetric}>
-          <span className={styles.previewMetricLabel}>UI</span>
-          <span className={styles.previewMetricValue}>React primitives with `.tsx` + `.module.css` output</span>
+    id: "overview",
+    label: "Overview",
+    content: (
+      <div className={styles.tabPanel}>
+        <p className={styles.tabLead}>
+          Steez UI is a standalone React UI kit built around CSS modules, stable theme tokens,
+          and a generated registry. Author once in `packages/ui`, then consume the same surface
+          through npm packages or registry items.
+        </p>
+        <div className={styles.listBlock}>
+          <div className={styles.listItem}>`@steez-ui/theme` exports tokens and compatibility aliases.</div>
+          <div className={styles.listItem}>`@steez-ui/icons` exports the shared icon surface and provider.</div>
+          <div className={styles.listItem}>`@steez-ui/ui` exports React primitives with `.tsx` and `.module.css` output.</div>
         </div>
       </div>
     ),
   },
   {
-    id: "registry",
-    label: "Registry",
-    panel: (
-      <div className={styles.previewPanelCopy}>
-        <div className={styles.previewMetric}>
-          <span className={styles.previewMetricLabel}>Foundation preset</span>
-          <span className={styles.previewMetricValue}>One install target for tokens, icons, buttons, and forms</span>
-        </div>
-        <div className={styles.previewMetric}>
-          <span className={styles.previewMetricLabel}>Per-component items</span>
-          <span className={styles.previewMetricValue}>Install only what a consumer app actually needs</span>
-        </div>
-        <div className={styles.previewMetric}>
-          <span className={styles.previewMetricLabel}>Static payloads</span>
-          <span className={styles.previewMetricValue}>Generated JSON manifests that match shadcn registry semantics</span>
+    id: "workflow",
+    label: "Workflow",
+    content: (
+      <div className={styles.tabPanel}>
+        <div className={styles.listBlock}>
+          <div className={styles.listItem}>1. Build packages from `packages/theme`, `packages/icons`, and `packages/ui`.</div>
+          <div className={styles.listItem}>2. Generate registry payloads from source with `bun run generate:registry`.</div>
+          <div className={styles.listItem}>3. Publish packages and deploy the registry frontend from the same repo.</div>
         </div>
       </div>
     ),
@@ -90,14 +114,14 @@ const PREVIEW_TABS = [
   {
     id: "adoption",
     label: "Adoption",
-    panel: (
-      <div className={styles.previewPanelCopy}>
-        {ADOPTION_STEPS.map((step, index) => (
-          <div key={step} className={styles.adoptionStep}>
-            <span className={styles.adoptionIndex}>0{index + 1}</span>
-            <span>{step}</span>
-          </div>
-        ))}
+    content: (
+      <div className={styles.tabPanel}>
+        <div className={styles.listBlock}>
+          <div className={styles.listItem}>Use the registry when you want source files and CSS modules dropped into the app.</div>
+          <div className={styles.listItem}>Use the npm packages when you want shared updates and a package dependency boundary.</div>
+          <div className={styles.listItem}>Both install paths come from the same components, tokens, and icon surface.</div>
+          <div className={styles.listItem}>The registry frontend is the product docs, preview shell, and install entry point.</div>
+        </div>
       </div>
     ),
   },
@@ -105,107 +129,194 @@ const PREVIEW_TABS = [
 
 export default function App() {
   const [installMode, setInstallMode] = useState("registry");
-  const [provider, setProvider] = useState("alkahest");
-  const [accent, setAccent] = useState<"success" | "error" | "info">("success");
-  const [shippingConfidence, setShippingConfidence] = useState(76);
-  const [showToast, setShowToast] = useState(true);
+  const [packageManager, setPackageManager] = useState("bun");
+  const [surfaceState, setSurfaceState] = useState<"success" | "error" | "info">("success");
+  const [shippingConfidence, setShippingConfidence] = useState(82);
+  const [showStatusRail, setShowStatusRail] = useState(true);
+
   const registryOrigin =
-    typeof window === "undefined" ? "https://steez-ui.pages.dev" : window.location.origin;
+    typeof window === "undefined" ? SITE_URL : window.location.origin;
+
+  const packageInstallCommand = useMemo(() => {
+    if (packageManager === "npm") {
+      return "npm install @steez-ui/theme @steez-ui/icons @steez-ui/ui";
+    }
+
+    if (packageManager === "pnpm") {
+      return "pnpm add @steez-ui/theme @steez-ui/icons @steez-ui/ui";
+    }
+
+    return "bun add @steez-ui/theme @steez-ui/icons @steez-ui/ui";
+  }, [packageManager]);
+
   const foundationCommand = `bunx shadcn@latest add ${registryOrigin}/r/foundation.json`;
   const buttonCommand = `bunx shadcn@latest add ${registryOrigin}/r/button.json`;
 
+  const installTabs = useMemo(
+    () => [
+      {
+        id: "registry",
+        label: "Registry",
+        content: (
+          <div className={styles.commandStack}>
+            <ThemedCard title="Foundation preset">
+              <div className={styles.commandRow}>
+                <code className={styles.commandCode}>{foundationCommand}</code>
+                <CopyButton value={foundationCommand} />
+              </div>
+            </ThemedCard>
+            <ThemedCard title="Single component">
+              <div className={styles.commandRow}>
+                <code className={styles.commandCode}>{buttonCommand}</code>
+                <CopyButton value={buttonCommand} />
+              </div>
+            </ThemedCard>
+          </div>
+        ),
+      },
+      {
+        id: "packages",
+        label: "Packages",
+        content: (
+          <div className={styles.commandStack}>
+            <div className={styles.inlineLabel}>Package manager</div>
+            <SegmentedControl
+              value={packageManager}
+              onChange={setPackageManager}
+              options={[
+                { value: "bun", label: "Bun" },
+                { value: "npm", label: "npm" },
+                { value: "pnpm", label: "pnpm" },
+              ]}
+            />
+            <ThemedCard title="Direct install">
+              <div className={styles.commandRow}>
+                <code className={styles.commandCode}>{packageInstallCommand}</code>
+                <CopyButton value={packageInstallCommand} />
+              </div>
+            </ThemedCard>
+          </div>
+        ),
+      },
+    ],
+    [buttonCommand, foundationCommand, packageInstallCommand, packageManager],
+  );
+
   const statusMessage = useMemo(() => {
-    if (!showToast) {
+    if (!showStatusRail) {
       return null;
     }
 
-    if (accent === "success") {
-      return <StatusMessage type="success" message="Registry payload generated from source." />;
+    if (surfaceState === "success") {
+      return <StatusMessage type="success" message="Registry payloads and packages are aligned." />;
     }
 
-    if (accent === "error") {
-      return <StatusMessage type="error" message="A local consumer needs review." />;
+    if (surfaceState === "error") {
+      return <StatusMessage type="error" message="A package or registry surface needs review." />;
     }
 
-    return <StatusMessage type="info" message="Foundation preset is ready for install." />;
-  }, [accent, showToast]);
+    return <StatusMessage type="info" message="Foundation install path is ready to use." />;
+  }, [showStatusRail, surfaceState]);
 
   return (
     <SteezIconProvider size={16} strokeWidth={2}>
       <div className={styles.app}>
-        <div className={styles.backdrop} aria-hidden="true" />
-
         <header className={styles.hero}>
           <div className={styles.heroCopy}>
             <div className={styles.eyebrow}>Steez UI</div>
-            <h1>Shared Phantasy primitives, packaged and installable.</h1>
+            <h1>Installable React primitives with package and registry output.</h1>
             <p className={styles.heroBody}>
-              Steez UI is the source of truth for the button, form, surface, and shell
-              primitives used across Phantasy CMS, Hub, and landing experiences. It ships as
-              packages for first-party consumers and as a shadcn-compatible registry for
-              external React apps.
+              Steez UI is a standalone component system built with CSS modules, flat tokens,
+              and generated registry manifests. Use the packages directly, or install the same
+              source through a shadcn-compatible registry.
             </p>
 
             <div className={styles.heroActions}>
-              <Button>Explore Foundation</Button>
-              <Button variant="secondary">Open Registry Items</Button>
+              <Button onClick={() => window.open("./r/foundation.json", "_blank", "noopener,noreferrer")}>
+                Foundation preset
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => window.open("./r/index.json", "_blank", "noopener,noreferrer")}
+              >
+                Registry index
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => window.open(REPOSITORY_URL, "_blank", "noopener,noreferrer")}
+              >
+                GitHub
+              </Button>
               <ThemeToggle />
-            </div>
-
-            <div className={styles.commandStack}>
-              <ThemedCard title="Foundation preset">
-                <div className={styles.commandRow}>
-                  <code className={styles.commandCode}>{foundationCommand}</code>
-                  <CopyButton value={foundationCommand} />
-                </div>
-              </ThemedCard>
-
-              <ThemedCard title="Single component">
-                <div className={styles.commandRow}>
-                  <code className={styles.commandCode}>{buttonCommand}</code>
-                  <CopyButton value={buttonCommand} />
-                </div>
-              </ThemedCard>
             </div>
           </div>
 
-          <CornerBracketCard title="Live package state" variant="featured" className={styles.heroPanel}>
-            <div className={styles.panelSection}>
-              <div className={styles.panelLabel}>Consumption path</div>
-              <SegmentedControl
-                value={installMode}
-                onChange={setInstallMode}
-                options={[
-                  { value: "registry", label: "Registry" },
-                  { value: "package", label: "Package" },
-                ]}
-              />
-            </div>
-
-            <div className={styles.panelSection}>
-              <div className={styles.panelLabel}>Shipping confidence</div>
-              <LoadingProgressBar progress={shippingConfidence} valueLabel={`${shippingConfidence}%`} />
-            </div>
-
-            <div className={styles.panelSection}>
-              <div className={styles.panelLabel}>Package surface</div>
-              <TabbedPanel tabs={PREVIEW_TABS} defaultTab="packages" />
-            </div>
-          </CornerBracketCard>
+          <div className={styles.heroRail}>
+            {VALUE_PROPS.map((item) => (
+              <CyberpunkTile key={item.title} className={styles.valueTile}>
+                <div className={styles.tileTitle}>{item.title}</div>
+                <p className={styles.tileBody}>{item.body}</p>
+              </CyberpunkTile>
+            ))}
+          </div>
         </header>
 
         <main className={styles.main}>
           <section className={styles.section}>
             <div className={styles.sectionHeader}>
-              <div className={styles.sectionEyebrow}>Primitive families</div>
-              <h2>Use the same visual language in product, docs, and install output.</h2>
+              <div className={styles.sectionEyebrow}>Getting started</div>
+              <h2>Choose the install path that matches the app you are building.</h2>
             </div>
 
-            <div className={styles.familyGrid}>
-              {PRIMITIVE_FAMILIES.map((family) => (
-                <CyberpunkTile key={family.title} variant="big" className={styles.familyTile}>
-                  <div className={styles.familyTitle}>{family.title}</div>
-                  <p className={styles.familyBody}>{family.body}</p>
+            <div className={styles.installGrid}>
+              <ThemedCard title="Install" className={styles.flatCard}>
+                <SegmentedControl
+                  value={installMode}
+                  onChange={setInstallMode}
+                  options={[
+                    { value: "registry", label: "Registry" },
+                    { value: "packages", label: "Packages" },
+                  ]}
+                />
+                <div className={styles.installPanel}>
+                  <TabbedPanel tabs={installTabs} activeTab={installMode} onTabChange={setInstallMode} />
+                </div>
+              </ThemedCard>
+
+              <ThemedCard title="Reference" className={styles.flatCard}>
+                <div className={styles.referenceGrid}>
+                  <div className={styles.referenceRow}>
+                    <span className={styles.referenceLabel}>Registry domain</span>
+                    <code className={styles.inlineCode}>{registryOrigin}</code>
+                  </div>
+                  <div className={styles.referenceRow}>
+                    <span className={styles.referenceLabel}>Packages</span>
+                    <span className={styles.referenceValue}>theme, icons, ui</span>
+                  </div>
+                  <div className={styles.referenceRow}>
+                    <span className={styles.referenceLabel}>Authoring model</span>
+                    <span className={styles.referenceValue}>React + CSS modules</span>
+                  </div>
+                  <div className={styles.referenceRow}>
+                    <span className={styles.referenceLabel}>Registry style</span>
+                    <span className={styles.referenceValue}>shadcn-compatible JSON payloads</span>
+                  </div>
+                </div>
+              </ThemedCard>
+            </div>
+          </section>
+
+          <section className={styles.section}>
+            <div className={styles.sectionHeader}>
+              <div className={styles.sectionEyebrow}>What ships</div>
+              <h2>Keep tokens, primitives, and install output in one repo.</h2>
+            </div>
+
+            <div className={styles.inventoryGrid}>
+              {INVENTORY_TILES.map((tile) => (
+                <CyberpunkTile key={tile.title} variant="big" className={styles.inventoryTile}>
+                  <div className={styles.tileTitle}>{tile.title}</div>
+                  <p className={styles.tileBody}>{tile.detail}</p>
                 </CyberpunkTile>
               ))}
             </div>
@@ -213,64 +324,99 @@ export default function App() {
 
           <section className={styles.section}>
             <div className={styles.sectionHeader}>
-              <div className={styles.sectionEyebrow}>Frontend preview</div>
-              <h2>A Steez-native surface should be built out of Steez primitives.</h2>
+              <div className={styles.sectionEyebrow}>Packages</div>
+              <h2>Use the packages directly when you want a shared dependency surface.</h2>
+            </div>
+
+            <div className={styles.packageGrid}>
+              {PACKAGE_SURFACES.map((item) => (
+                <CyberpunkTile key={item.title} className={styles.packageTile}>
+                  <div className={styles.tileTitle}>{item.title}</div>
+                  <p className={styles.tileBody}>{item.body}</p>
+                  <div className={styles.packageMeta}>
+                    <a className={styles.subtleLink} href={item.npmHref}>
+                      npm package
+                    </a>
+                    <a className={styles.subtleLink} href={REPOSITORY_URL}>
+                      source
+                    </a>
+                  </div>
+                </CyberpunkTile>
+              ))}
+            </div>
+          </section>
+
+          <section className={styles.section}>
+            <div className={styles.sectionHeader}>
+              <div className={styles.sectionEyebrow}>Documentation</div>
+              <h2>Use the registry frontend as a direct product surface, not a placeholder preview.</h2>
+            </div>
+
+            <ThemedCard title="Project notes" className={styles.flatCard}>
+              <TabbedPanel tabs={DOC_SECTIONS} defaultTab="overview" />
+            </ThemedCard>
+          </section>
+
+          <section className={styles.section}>
+            <div className={styles.sectionHeader}>
+              <div className={styles.sectionEyebrow}>Component preview</div>
+              <h2>Preview the primitives in a flat, documentation-first shell.</h2>
             </div>
 
             <div className={styles.previewGrid}>
-              <CornerBracketCard title="Registry playground" variant="featured">
+              <ThemedCard title="Preview form" className={styles.flatCard}>
                 <div className={styles.previewForm}>
-                  <CyberpunkInput label="Runtime name" defaultValue="rally" variant="full" />
+                  <CyberpunkInput label="Project name" defaultValue="studio-shell" variant="full" />
                   <CyberpunkSelect
-                    label="Default provider"
-                    value={provider}
-                    onChange={(event) => setProvider(event.currentTarget.value)}
+                    label="Starter surface"
+                    defaultValue="dashboard"
                     options={[
-                      { value: "alkahest", label: "Alkahest" },
-                      { value: "openai", label: "OpenAI" },
-                      { value: "anthropic", label: "Anthropic" },
+                      { value: "dashboard", label: "Dashboard" },
+                      { value: "docs", label: "Docs" },
+                      { value: "settings", label: "Settings" },
                     ]}
                     variant="full"
                   />
                   <CyberpunkTextarea
                     label="Positioning"
-                    defaultValue="Companion-native runtime surfaces, shared design tokens, and installable primitives."
+                    defaultValue="Token-driven primitives, installable packages, and generated registry payloads."
                     variant="full"
                   />
                   <CyberpunkRadioGroup
-                    name="status"
-                    value={accent}
-                    onChange={(value) => setAccent(value as "success" | "error" | "info")}
+                    name="state"
+                    value={surfaceState}
+                    onChange={(value) => setSurfaceState(value as "success" | "error" | "info")}
                     options={[
                       { value: "success", label: "Success" },
-                      { value: "error", label: "Error" },
                       { value: "info", label: "Info" },
+                      { value: "error", label: "Error" },
                     ]}
                   />
                   <CyberpunkSlider
-                    label="Registry readiness"
+                    label="Release confidence"
                     value={shippingConfidence}
-                    onChange={(event) =>
-                      setShippingConfidence(Number(event.currentTarget.value))
-                    }
+                    onChange={(event) => setShippingConfidence(Number(event.currentTarget.value))}
                   />
                   <CyberpunkCheckbox
-                    label="Show runtime status toast"
-                    checked={showToast}
-                    onChange={setShowToast}
+                    label="Show status rail"
+                    checked={showStatusRail}
+                    onChange={setShowStatusRail}
                   />
                 </div>
-              </CornerBracketCard>
+              </ThemedCard>
 
-              <div className={styles.feedbackColumn}>
-                <ThemedCard title="Status rail">{statusMessage}</ThemedCard>
-                <ThemedCard title="Install notes">
+              <div className={styles.previewSide}>
+                <ThemedCard title="Status rail" className={styles.flatCard}>{statusMessage}</ThemedCard>
+                <ThemedCard title="Delivery note" className={styles.flatCard}>
                   <ErrorMessage
                     variant="inline"
                     title="Registry contract"
-                    message="Each item installs component source and its CSS module together."
-                    details="First-party apps consume @steez-ui/ui directly. External apps can install the same source payload through the generated registry items."
+                    message="Each registry item carries component source and its CSS module together."
+                    details="The package surface and the registry payloads are generated from the same source tree."
                   />
+                </ThemedCard>
+                <ThemedCard title="Registry readiness" className={styles.flatCard}>
+                  <LoadingProgressBar progress={shippingConfidence} valueLabel={`${shippingConfidence}%`} />
                 </ThemedCard>
               </div>
             </div>
@@ -279,10 +425,10 @@ export default function App() {
           <section className={styles.section}>
             <div className={styles.sectionHeader}>
               <div className={styles.sectionEyebrow}>Registry items</div>
-              <h2>Inspect the generated payloads directly.</h2>
+              <h2>Open the generated payloads directly.</h2>
             </div>
 
-            <div className={styles.registryLinks}>
+            <div className={styles.registryLinkGrid}>
               <a className={styles.registryLink} href="./r/index.json">
                 registry index
               </a>
@@ -292,8 +438,8 @@ export default function App() {
               <a className={styles.registryLink} href="./r/button.json">
                 button item
               </a>
-              <a className={styles.registryLink} href="./r/cyberpunk-input.json">
-                cyberpunk input
+              <a className={styles.registryLink} href="./r/theme-tokens.json">
+                theme tokens
               </a>
             </div>
           </section>

@@ -95,7 +95,7 @@ for (const packageDir of packageDirs) {
       type: "git",
       url: "git+https://github.com/thomasjvu/steez-ui.git",
     },
-    homepage: "https://steez-ui.pages.dev",
+    homepage: "https://steez-ui-6v5.pages.dev",
     bugs: {
       url: "https://github.com/thomasjvu/steez-ui/issues",
     },

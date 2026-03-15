@@ -3,7 +3,7 @@
   "name": "cyberpunk-tile",
   "type": "registry:component",
   "title": "Cyberpunk Tile",
-  "description": "Angular tile surface shared between landing and admin shells.",
+  "description": "Angular tile surface for dashboards, docs, and launch pages.",
   "dependencies": [
     "@steez-ui/theme",
     "@steez-ui/icons"

@@ -9,7 +9,7 @@ const itemDefinitions = [
     name: "theme-tokens",
     type: "registry:style",
     title: "Theme Tokens",
-    description: "Shared Phantasy-compatible CSS tokens for Steez UI consumers.",
+    description: "Shared CSS tokens and compatibility aliases for Steez UI consumers.",
     dependencies: ["@steez-ui/theme"],
     registryDependencies: [],
     files: [
@@ -149,7 +149,7 @@ const itemDefinitions = [
     name: "cyberpunk-tile",
     type: "registry:component",
     title: "Cyberpunk Tile",
-    description: "Angular tile surface shared between landing and admin shells.",
+    description: "Angular tile surface for dashboards, docs, and launch pages.",
     dependencies: ["@steez-ui/theme", "@steez-ui/icons"],
     registryDependencies: ["theme-tokens"],
     files: [

@@ -1,57 +1,106 @@
 # Steez UI
 
-Shared Phantasy UI primitives and shadcn-compatible registry output.
+Standalone React primitives, flat theme tokens, and shadcn-compatible registry output.
 
-Registry frontend: use the current Cloudflare Pages project domain for your active deployment.
+## Overview
+
+Steez UI is authored once and shipped in two forms:
+
+- npm packages for direct React consumption
+- generated registry payloads for source-level installation
+
+The source of truth lives in `packages/ui`. The registry output is generated from that same source tree, so the package build and registry install path stay aligned.
+
+Live surfaces:
+
+- Registry frontend: `https://steez-ui-6v5.pages.dev`
+- Registry index: `https://steez-ui-6v5.pages.dev/r/index.json`
+- Foundation preset: `https://steez-ui-6v5.pages.dev/r/foundation.json`
 
 ## Packages
 
 - `@steez-ui/theme`
+  Theme tokens and compatibility aliases.
 - `@steez-ui/icons`
+  Shared icon surface and provider.
 - `@steez-ui/ui`
-
-## App
-
-- `@steez-ui/registry`
-
-## Scripts
-
-- `bun run build`
-- `bun run check:release`
-- `bun run publish:packages:dry-run`
-- `bun run publish:packages`
-- `bun run deploy:registry`
-- `bun run generate:registry`
-- `bun run test`
-- `bun run test:install-smoke`
+  React primitives authored in `.tsx` and `.module.css`.
 
 ## Install
 
+Registry:
+
 ```bash
-bunx shadcn@latest add https://<your-registry-domain>/r/foundation.json
+bunx shadcn@latest add https://steez-ui-6v5.pages.dev/r/foundation.json
 ```
+
+Packages:
 
 ```bash
 bun add @steez-ui/theme @steez-ui/icons @steez-ui/ui
 ```
 
-## Live Packages
+## Repo Layout
 
-- `@steez-ui/theme@0.1.0`
-- `@steez-ui/icons@0.1.0`
-- `@steez-ui/ui@0.1.0`
+```text
+packages/
+  theme/    # tokens and compatibility exports
+  icons/    # icon primitives and provider
+  ui/       # canonical component source
+
+apps/
+  registry/ # public install frontend and registry docs
+```
+
+## Authoring Model
+
+- `packages/theme` defines tokens first.
+- `packages/icons` owns the shared icon surface.
+- `packages/ui` is the canonical primitive source.
+- `scripts/generate-registry.mjs` emits the registry JSON payloads from package source.
+- `apps/registry` is the documentation, preview, and install frontend.
+
+## Development
+
+```bash
+bun install
+bun run build
+bun run test
+bun run test:install-smoke
+```
+
+Useful commands:
+
+- `bun run generate:registry`
+- `bun run check:release`
+- `bun run publish:packages:dry-run`
+- `bun run publish:packages`
+- `bun run deploy:registry`
+
+## Adding Or Updating A Primitive
+
+1. Build or update the component in `packages/ui/src/components`.
+2. Export it from `packages/ui/src/index.ts`.
+3. Add or update the registry item definition in `scripts/generate-registry.mjs`.
+4. Run `bun run build` and `bun run test`.
+5. Confirm the registry frontend reflects the new component or install path.
 
 ## Release Flow
 
-1. `bun install`
-2. `bun run check:release`
-3. `bun run publish:packages`
-4. `bun run deploy:registry`
+1. `bun run check:release`
+2. `bun run publish:packages`
+3. `bun run deploy:registry`
 
-GitHub Actions mirror the same path for CI, npm publish, and Cloudflare Pages deployment.
+GitHub Actions mirror the same CI, npm publish, and Cloudflare Pages deploy path.
 
-## One-Time External Setup
+## Current Packages
 
-- Create or claim the npm scope `@steez-ui`, then grant the publishing account access.
+- `@steez-ui/theme@0.1.1`
+- `@steez-ui/icons@0.1.1`
+- `@steez-ui/ui@0.1.1`
+
+## External Setup
+
 - Add `NPM_TOKEN` to the GitHub repository secrets before using the package publish workflow.
 - Add `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` to the GitHub repository secrets before relying on the Pages deploy workflow.
+- Keep the Cloudflare Pages project named `steez-ui` so the deploy script and workflow stay in sync.

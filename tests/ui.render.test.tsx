@@ -29,10 +29,10 @@ describe("steez ui primitives", () => {
     const markup = renderToStaticMarkup(
       <>
         <Button>Launch</Button>
-        <CopyButton value="npx phantasy create vtuber" />
-        <CyberpunkInput label="Name" defaultValue="Rally" />
-        <CyberpunkSelect label="Provider" defaultValue="alkahest" options={[{ value: "alkahest", label: "Alkahest" }]} />
-        <CyberpunkTextarea label="Pitch" defaultValue="Companion-native" />
+        <CopyButton value="bunx shadcn@latest add https://registry.example.com/r/foundation.json" />
+        <CyberpunkInput label="Name" defaultValue="Studio Shell" />
+        <CyberpunkSelect label="Mode" defaultValue="registry" options={[{ value: "registry", label: "Registry" }]} />
+        <CyberpunkTextarea label="Pitch" defaultValue="Flat tokens and installable React primitives." />
         <CyberpunkCheckbox label="Enabled" checked readOnly />
         <CyberpunkRadioGroup
           name="mode"
