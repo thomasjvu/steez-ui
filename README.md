@@ -55,4 +55,3 @@ GitHub Actions mirror the same path for CI, npm publish, and Cloudflare Pages de
 - Create or claim the npm scope `@steez-ui`, then grant the publishing account access.
 - Add `NPM_TOKEN` to the GitHub repository secrets before using the package publish workflow.
 - Add `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` to the GitHub repository secrets before relying on the Pages deploy workflow.
-- Until those secrets exist, the GitHub publish and deploy workflows will skip with a notice instead of failing.

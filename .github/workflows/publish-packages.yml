@@ -35,12 +35,7 @@ jobs:
       - name: Install
         run: bun install --frozen-lockfile
 
-      - name: Publish prerequisites
-        if: ${{ secrets.NPM_TOKEN == '' }}
-        run: echo "::notice::Skipping npm publish because NPM_TOKEN is not configured for this repository."
-
       - name: Publish packages
-        if: ${{ secrets.NPM_TOKEN != '' }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
