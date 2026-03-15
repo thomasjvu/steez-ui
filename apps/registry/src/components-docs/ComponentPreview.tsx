@@ -15,10 +15,12 @@ import {
   CornerBracketCard,
   ErrorMessage,
   HeartbeatPulse,
+  HexagonGrid,
   LoadingProgressBar,
   MarqueeStrip,
   PageHeader,
   PageTemplate,
+  RuntimeOrbitDiagram,
   SegmentedControl,
   StatusMessage,
   StrokedText,
@@ -26,6 +28,7 @@ import {
   ThemedCard,
   ThemeToggle,
 } from "@steez-ui/ui";
+import { CheckIcon, EyeIcon, InfoIcon, RefreshIcon, SlidersIcon } from "@steez-ui/icons";
 
 import styles from "./ComponentDocs.module.css";
 
@@ -308,6 +311,20 @@ function HeartbeatPulsePreview() {
   );
 }
 
+function HexagonGridPreview() {
+  return (
+    <div className={styles.hexagonPreviewShell}>
+      <HexagonGrid pointerReactive backgroundOpacity={0.08} tone="default" />
+      <div className={styles.hexagonPreviewCard}>
+        <div className={styles.previewHeading}>Ambient field</div>
+        <p className={styles.previewText}>
+          Shared backdrop treatment for avatar shells and launch panels.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function MarqueeStripPreview() {
   return (
     <MarqueeStrip
@@ -326,6 +343,24 @@ function MarqueeStripPreview() {
         </span>
       )}
     />
+  );
+}
+
+function RuntimeOrbitDiagramPreview() {
+  return (
+    <div className={styles.orbitPreviewShell}>
+      <RuntimeOrbitDiagram
+        durationSeconds={5.2}
+        nodes={[
+          { id: "character", label: "Character", icon: EyeIcon, x: 50, y: 10 },
+          { id: "site", label: "Site", icon: InfoIcon, x: 84, y: 38 },
+          { id: "business", label: "Business", icon: CheckIcon, x: 70, y: 82 },
+          { id: "automations", label: "Automations", icon: RefreshIcon, x: 30, y: 82 },
+          { id: "operations", label: "Operations", icon: SlidersIcon, x: 16, y: 38 },
+        ]}
+        pathOrder={["character", "site", "business", "automations", "operations"]}
+      />
+    </div>
   );
 }
 
@@ -360,8 +395,10 @@ const PREVIEW_MAP: Record<string, React.ComponentType> = {
   "page-template": PageTemplatePreview,
   "theme-toggle": ThemeTogglePreview,
   "heartbeat-pulse": HeartbeatPulsePreview,
+  "hexagon-grid": HexagonGridPreview,
   "loading-progress-bar": LoadingProgressBarPreview,
   "marquee-strip": MarqueeStripPreview,
+  "runtime-orbit-diagram": RuntimeOrbitDiagramPreview,
   "status-message": StatusMessagePreview,
   "error-message": ErrorMessagePreview,
   "stroked-text": StrokedTextPreview,

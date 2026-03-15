@@ -17,10 +17,12 @@ import {
   CyberpunkTile,
   ErrorMessage,
   HeartbeatPulse,
+  HexagonGrid,
   LoadingProgressBar,
   MarqueeStrip,
   PageHeader,
   PageTemplate,
+  RuntimeOrbitDiagram,
   SegmentedControl,
   StatusMessage,
   StrokedText,
@@ -31,6 +33,12 @@ import {
 
 describe("steez ui primitives", () => {
   it("renders the v1 primitive inventory", () => {
+    const DemoIcon = () => (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="8" />
+      </svg>
+    );
+
     const markup = renderToStaticMarkup(
       <>
         <AvatarStage stageHeight="18rem" viewportWidth="12rem">
@@ -77,10 +85,22 @@ describe("steez ui primitives", () => {
         </PageTemplate>
         <ThemeToggle />
         <HeartbeatPulse variant="line" width={180} height={72} />
+        <div style={{ position: "relative", minHeight: "8rem" }}>
+          <HexagonGrid backgroundOpacity={0.08} />
+        </div>
         <LoadingProgressBar progress={50} />
         <MarqueeStrip
           items={["Skills", "Themes", "Workflows"]}
           renderItem={(item) => <span>{item}</span>}
+        />
+        <RuntimeOrbitDiagram
+          nodes={[
+            { id: "character", label: "Character", icon: DemoIcon, x: 50, y: 10 },
+            { id: "site", label: "Site", icon: DemoIcon, x: 84, y: 38 },
+            { id: "business", label: "Business", icon: DemoIcon, x: 70, y: 82 },
+            { id: "automations", label: "Automations", icon: DemoIcon, x: 30, y: 82 },
+            { id: "operations", label: "Operations", icon: DemoIcon, x: 16, y: 38 },
+          ]}
         />
         <StatusMessage type="success" message="Built." />
         <StrokedText animateOnMount>Spellbinding</StrokedText>
@@ -93,5 +113,6 @@ describe("steez ui primitives", () => {
     expect(markup).toContain("Operations");
     expect(markup).toContain("Character");
     expect(markup).toContain("Spellbinding");
+    expect(markup).toContain("Themes");
   });
 });

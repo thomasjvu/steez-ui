@@ -132,6 +132,12 @@
     "description": "Orb and line heartbeat indicators for recurring runtime activity."
   },
   {
+    "name": "hexagon-grid",
+    "type": "registry:component",
+    "title": "Hexagon Grid",
+    "description": "Animated hex field backdrop for avatars, hero surfaces, and ambient panels."
+  },
+  {
     "name": "marquee-strip",
     "type": "registry:component",
     "title": "Marquee Strip",
@@ -148,6 +154,12 @@
     "type": "registry:component",
     "title": "Stroked Text",
     "description": "Outlined accent text with an optional mount-time stroke-to-fill blink."
+  },
+  {
+    "name": "runtime-orbit-diagram",
+    "type": "registry:component",
+    "title": "Runtime Orbit Diagram",
+    "description": "Animated workspace topology diagram with icon nodes and moving path marker."
   },
   {
     "name": "error-message",

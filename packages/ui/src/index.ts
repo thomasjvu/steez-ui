@@ -35,6 +35,7 @@ export {
   type HeartbeatIndicatorProps,
   type HeartbeatPulseProps,
 } from "./components/HeartbeatPulse.js";
+export { HexagonGrid, type HexagonGridProps } from "./components/HexagonGrid.js";
 export {
   LOADING_PROGRESS_SEGMENT_COUNT,
   LoadingProgressBar,
@@ -43,6 +44,11 @@ export {
 export { MarqueeStrip, type MarqueeStripProps } from "./components/MarqueeStrip.js";
 export { PageHeader, type PageHeaderProps } from "./components/PageHeader.js";
 export { PageTemplate, type PageTemplateProps } from "./components/PageTemplate.js";
+export {
+  RuntimeOrbitDiagram,
+  type RuntimeOrbitDiagramProps,
+  type RuntimeOrbitNode,
+} from "./components/RuntimeOrbitDiagram.js";
 export {
   SegmentedControl,
   type SegmentedControlOption,

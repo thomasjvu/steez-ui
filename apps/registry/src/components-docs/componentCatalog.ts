@@ -356,6 +356,19 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
     tags: ["heartbeat", "status", "activity"],
   },
   {
+    slug: "hexagon-grid",
+    title: "Hexagon Grid",
+    category: "surfaces",
+    summary: "Animated hex field backdrop for avatars, launch surfaces, and atmospheric panels.",
+    description: "Use HexagonGrid when a surface needs a reactive geometric backdrop without rebuilding the canvas animation and timing logic locally.",
+    packageImport: 'import { HexagonGrid } from "@steez-ui/ui";',
+    usage: `<div style={{ position: "relative", minHeight: "18rem" }}>
+  <HexagonGrid pointerReactive backgroundOpacity={0.12} />
+</div>`,
+    related: ["avatar-stage", "runtime-orbit-diagram"],
+    tags: ["backdrop", "canvas", "ambient"],
+  },
+  {
     slug: "marquee-strip",
     title: "Marquee Strip",
     category: "layout",
@@ -382,6 +395,20 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
 </StrokedText>`,
     related: ["blink-text", "page-header"],
     tags: ["headline", "outline"],
+  },
+  {
+    slug: "runtime-orbit-diagram",
+    title: "Runtime Orbit Diagram",
+    category: "layout",
+    summary: "Animated path diagram for workspace systems, flows, and runtime maps.",
+    description: "Use RuntimeOrbitDiagram when a product surface needs a compact animated topology instead of static icon rows or screenshot placeholders.",
+    packageImport: 'import { RuntimeOrbitDiagram } from "@steez-ui/ui";',
+    usage: `<RuntimeOrbitDiagram
+  nodes={nodes}
+  pathOrder={["character", "site", "business", "automations", "operations"]}
+/>`,
+    related: ["hexagon-grid", "marquee-strip"],
+    tags: ["diagram", "topology", "animation"],
   },
 ];
 

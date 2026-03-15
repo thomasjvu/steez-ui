@@ -198,6 +198,23 @@
   background: color-mix(in srgb, var(--bg-secondary) 80%, transparent);
 }
 
+.hexagonPreviewShell {
+  position: relative;
+  min-height: 16rem;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.hexagonPreviewCard {
+  position: absolute;
+  inset-block-end: 1rem;
+  inset-inline-start: 1rem;
+  max-width: 14rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--bg-primary) 92%, transparent);
+}
+
 .inlineCode,
 .codeBlock {
   display: block;
@@ -216,6 +233,10 @@
 }
 
 .marqueeDemo {
+  width: min(100%, 24rem);
+}
+
+.orbitPreviewShell {
   width: min(100%, 24rem);
 }
 

@@ -278,6 +278,18 @@ const itemDefinitions = [
     ],
   },
   {
+    name: "hexagon-grid",
+    type: "registry:component",
+    title: "Hexagon Grid",
+    description: "Animated hex field backdrop for avatars, hero surfaces, and ambient panels.",
+    dependencies: ["@steez-ui/theme"],
+    registryDependencies: ["theme-tokens"],
+    files: [
+      { source: "packages/ui/src/components/HexagonGrid.tsx", target: "components/steez/HexagonGrid.tsx", type: "registry:component" },
+      { source: "packages/ui/src/components/HexagonGrid.module.css", target: "components/steez/HexagonGrid.module.css", type: "registry:style" },
+    ],
+  },
+  {
     name: "marquee-strip",
     type: "registry:component",
     title: "Marquee Strip",
@@ -311,6 +323,18 @@ const itemDefinitions = [
     files: [
       { source: "packages/ui/src/components/StrokedText.tsx", target: "components/steez/StrokedText.tsx", type: "registry:component" },
       { source: "packages/ui/src/components/StrokedText.module.css", target: "components/steez/StrokedText.module.css", type: "registry:style" },
+    ],
+  },
+  {
+    name: "runtime-orbit-diagram",
+    type: "registry:component",
+    title: "Runtime Orbit Diagram",
+    description: "Animated workspace topology diagram with icon nodes and moving path marker.",
+    dependencies: ["@steez-ui/theme", "@steez-ui/icons"],
+    registryDependencies: ["theme-tokens", "icon-provider"],
+    files: [
+      { source: "packages/ui/src/components/RuntimeOrbitDiagram.tsx", target: "components/steez/RuntimeOrbitDiagram.tsx", type: "registry:component" },
+      { source: "packages/ui/src/components/RuntimeOrbitDiagram.module.css", target: "components/steez/RuntimeOrbitDiagram.module.css", type: "registry:style" },
     ],
   },
   {
