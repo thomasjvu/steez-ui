@@ -35,6 +35,12 @@ bunx shadcn@latest add https://steez-ui.pages.dev/r/foundation.json
 bun add @steez-ui/theme @steez-ui/icons @steez-ui/ui
 ```
 
+## Live Packages
+
+- `@steez-ui/theme@0.1.0`
+- `@steez-ui/icons@0.1.0`
+- `@steez-ui/ui@0.1.0`
+
 ## Release Flow
 
 1. `bun install`
