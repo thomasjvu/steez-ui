@@ -1,0 +1,108 @@
+.cyberSelect {
+  --select-width: 240px;
+  --select-font-size: 1rem;
+  --select-padding-top: 0.75rem;
+  --select-padding-right: 2.5rem;
+  --select-padding-bot: 0.75rem;
+  --select-padding-left: 1rem;
+
+  font-size: var(--select-font-size);
+  position: relative;
+  display: inline-block;
+  margin-bottom: 1rem;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  max-width: 100%;
+  overflow: hidden;
+  transition: all var(--transition-fast);
+}
+
+.select {
+  width: var(--select-width);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: inherit;
+  font-weight: 500;
+  background-color: transparent;
+  padding: var(--select-padding-top) var(--select-padding-right) var(--select-padding-bot) var(--select-padding-left);
+  border: none;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  position: relative;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+.label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.arrow {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--text-secondary);
+  z-index: 10;
+  transition: color var(--transition-fast);
+}
+
+.label ~ .arrow {
+  top: calc(50% + 0.875rem);
+}
+
+.long {
+  --select-width: 360px;
+}
+
+.full {
+  --select-width: 100%;
+  width: 100%;
+  max-width: 100%;
+  display: block;
+}
+
+.full .select {
+  max-width: 100%;
+}
+
+.cyberSelect:hover {
+  border-color: var(--color-border-hover);
+}
+
+.cyberSelect:hover .arrow {
+  color: var(--text-primary);
+}
+
+.cyberSelect:focus-within {
+  border-color: var(--accent-primary);
+}
+
+.cyberSelect:focus-within .arrow {
+  color: var(--accent-primary);
+}
+
+.cyberSelect:has(select:disabled) {
+  opacity: 0.5;
+}
+
+.cyberSelect select:disabled {
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.cyberSelect select option {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  padding: 0.5rem;
+}
+

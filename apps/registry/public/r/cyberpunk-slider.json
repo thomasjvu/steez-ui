@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cyberpunk-slider",
+  "type": "registry:component",
+  "title": "Cyberpunk Slider",
+  "description": "Slider primitive with Steez progress styling.",
+  "dependencies": [
+    "@steez-ui/theme",
+    "@steez-ui/icons"
+  ],
+  "registryDependencies": [
+    "theme-tokens"
+  ],
+  "files": [
+    {
+      "path": "components/steez/CyberpunkSlider.tsx",
+      "type": "registry:component",
+      "content": "import React, { InputHTMLAttributes } from \"react\";\n\nimport { useStableId } from \"../hooks/useStableId\";\nimport styles from \"./CyberpunkSlider.module.css\";\n\nexport interface CyberpunkSliderProps\n  extends Omit<InputHTMLAttributes<HTMLInputElement>, \"type\"> {\n  label?: string;\n  min?: number;\n  max?: number;\n  step?: number;\n  showValue?: boolean;\n}\n\nexport function CyberpunkSlider({\n  label,\n  className = \"\",\n  id,\n  min = 0,\n  max = 100,\n  step = 1,\n  showValue = true,\n  value = 0,\n  ...props\n}: CyberpunkSliderProps) {\n  const inputId = useStableId(\"slider\", id);\n  const percentage = ((Number(value) - min) / (max - min)) * 100;\n\n  return (\n    <div className={`${styles.wrapper} ${className}`.trim()}>\n      {label ? (\n        <label htmlFor={inputId} className={styles.label}>\n          {label}\n        </label>\n      ) : null}\n      <div className={styles.sliderContainer}>\n        <input\n          id={inputId}\n          type=\"range\"\n          min={min}\n          max={max}\n          step={step}\n          value={value}\n          className={styles.slider}\n          style={{ [\"--slider-percentage\" as string]: `${percentage}%` } as React.CSSProperties}\n          {...props}\n        />\n        {showValue ? <span className={styles.value}>{value}</span> : null}\n      </div>\n    </div>\n  );\n}\n\n",
+      "source": "packages/ui/src/components/CyberpunkSlider.tsx"
+    },
+    {
+      "path": "components/steez/CyberpunkSlider.module.css",
+      "type": "registry:style",
+      "content": ".wrapper {\n  display: flex;\n  flex-direction: column;\n  gap: 0.5rem;\n}\n\n.label {\n  font-size: 0.875rem;\n  color: var(--text-primary);\n  font-weight: 500;\n}\n\n.sliderContainer {\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n}\n\n.slider {\n  flex: 1;\n  height: 32px;\n  border: 2px solid var(--border);\n  border-radius: 16px;\n  appearance: none;\n  outline: none;\n  cursor: pointer;\n  transition: all var(--transition-fast);\n  padding-right: 14px;\n  margin-right: -14px;\n  background: linear-gradient(\n    to right,\n    var(--success) 0%,\n    var(--success) var(--slider-percentage, 0%),\n    var(--bg-primary) var(--slider-percentage, 0%),\n    var(--bg-primary) 100%\n  );\n}\n\n.slider::-webkit-slider-track {\n  width: calc(100% + 14px);\n  height: 28px;\n  border-radius: 14px;\n  background: transparent;\n}\n\n.slider::-webkit-slider-thumb {\n  appearance: none;\n  width: 28px;\n  height: 28px;\n  border-radius: 50%;\n  background: var(--success);\n  cursor: pointer;\n  box-shadow: 0 0 10px rgba(0, 255, 136, 0.4);\n  transition: all var(--transition-fast);\n  border: 2px solid rgba(0, 255, 136, 0.2);\n}\n\n.slider::-moz-range-track {\n  width: calc(100% + 14px);\n  height: 28px;\n  border-radius: 14px;\n  background: transparent;\n  border: none;\n}\n\n.slider::-moz-range-thumb {\n  width: 28px;\n  height: 28px;\n  border-radius: 50%;\n  background: var(--success);\n  cursor: pointer;\n  border: 2px solid rgba(0, 255, 136, 0.2);\n  box-shadow: 0 0 10px rgba(0, 255, 136, 0.4);\n  transition: all var(--transition-fast);\n}\n\n.slider:hover {\n  border-color: var(--success);\n}\n\n.slider:focus-visible {\n  box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.2);\n}\n\n.slider:disabled {\n  opacity: 0.5;\n  cursor: not-allowed;\n}\n\n.value {\n  font-size: 0.875rem;\n  color: var(--success);\n  font-weight: 600;\n  min-width: 3rem;\n  text-align: center;\n  font-family: var(--font-mono);\n}\n\n",
+      "source": "packages/ui/src/components/CyberpunkSlider.module.css"
+    },
+    {
+      "path": "components/hooks/useStableId.ts",
+      "type": "registry:file",
+      "content": "import { useId } from \"react\";\n\nexport function useStableId(prefix: string, explicitId?: string): string {\n  const reactId = useId().replace(/:/g, \"\");\n  return explicitId || `${prefix}-${reactId}`;\n}\n\n",
+      "source": "packages/ui/src/hooks/useStableId.ts"
+    }
+  ]
+}

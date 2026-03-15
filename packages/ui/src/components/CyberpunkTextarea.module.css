@@ -1,0 +1,73 @@
+.cyberTextarea {
+  --textarea-width: 400px;
+  --textarea-font-size: 1rem;
+  --textarea-padding-top: 12px;
+  --textarea-padding-right: 12px;
+  --textarea-padding-bot: 12px;
+  --textarea-padding-left: 12px;
+  --focus-border-color: var(--color-accent-primary, var(--text-primary));
+  --label-offset-top: -2px;
+  --label-offset-left: 12px;
+  --label-padding: 1px 8px;
+  --label-font-size: 0.85rem;
+
+  position: relative;
+  margin-bottom: 1rem;
+  font-size: var(--textarea-font-size);
+}
+
+.textareaContainer {
+  position: relative;
+  width: var(--textarea-width);
+  border: 1px solid var(--color-border-default);
+  background: var(--color-bg-tile);
+  margin-top: 6px;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 100px;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: inherit;
+  background: transparent;
+  padding: var(--textarea-padding-top) var(--textarea-padding-right) var(--textarea-padding-bot) var(--textarea-padding-left);
+  border: none;
+  outline: none;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.cyberTextarea:focus-within .label {
+  color: var(--focus-border-color);
+}
+
+.cyberTextarea:focus-within .textareaContainer {
+  border-color: var(--focus-border-color);
+}
+
+.label {
+  position: absolute;
+  top: var(--label-offset-top);
+  left: var(--label-offset-left);
+  background: var(--color-bg-tile);
+  padding: var(--label-padding);
+  font-family: var(--font-mono);
+  font-size: var(--label-font-size);
+  font-weight: 500;
+  color: var(--text-secondary);
+  z-index: 1;
+}
+
+.full {
+  --textarea-width: 100%;
+  width: 100%;
+  display: block;
+}
+
+.textarea:disabled {
+  color: var(--text-muted);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+

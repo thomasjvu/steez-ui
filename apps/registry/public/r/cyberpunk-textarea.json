@@ -1,0 +1,35 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cyberpunk-textarea",
+  "type": "registry:component",
+  "title": "Cyberpunk Textarea",
+  "description": "Textarea primitive with the shared Steez form framing.",
+  "dependencies": [
+    "@steez-ui/theme",
+    "@steez-ui/icons"
+  ],
+  "registryDependencies": [
+    "theme-tokens",
+    "icon-provider"
+  ],
+  "files": [
+    {
+      "path": "components/steez/CyberpunkTextarea.tsx",
+      "type": "registry:component",
+      "content": "import React, { TextareaHTMLAttributes } from \"react\";\n\nimport { useStableId } from \"../hooks/useStableId\";\nimport styles from \"./CyberpunkTextarea.module.css\";\n\nexport interface CyberpunkTextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {\n  label?: string;\n  variant?: \"default\" | \"full\";\n}\n\nexport function CyberpunkTextarea({\n  label,\n  variant = \"default\",\n  className = \"\",\n  id,\n  ...props\n}: CyberpunkTextareaProps) {\n  const textareaId = useStableId(\"textarea\", id);\n\n  return (\n    <div className={`${styles.cyberTextarea} ${styles[variant]} ${className}`.trim()}>\n      {label ? (\n        <label htmlFor={textareaId} className={styles.label}>\n          {label}\n        </label>\n      ) : null}\n      <div className={styles.textareaContainer}>\n        <textarea id={textareaId} className={styles.textarea} {...props} />\n      </div>\n    </div>\n  );\n}\n\n",
+      "source": "packages/ui/src/components/CyberpunkTextarea.tsx"
+    },
+    {
+      "path": "components/steez/CyberpunkTextarea.module.css",
+      "type": "registry:style",
+      "content": ".cyberTextarea {\n  --textarea-width: 400px;\n  --textarea-font-size: 1rem;\n  --textarea-padding-top: 12px;\n  --textarea-padding-right: 12px;\n  --textarea-padding-bot: 12px;\n  --textarea-padding-left: 12px;\n  --focus-border-color: var(--color-accent-primary, var(--text-primary));\n  --label-offset-top: -2px;\n  --label-offset-left: 12px;\n  --label-padding: 1px 8px;\n  --label-font-size: 0.85rem;\n\n  position: relative;\n  margin-bottom: 1rem;\n  font-size: var(--textarea-font-size);\n}\n\n.textareaContainer {\n  position: relative;\n  width: var(--textarea-width);\n  border: 1px solid var(--color-border-default);\n  background: var(--color-bg-tile);\n  margin-top: 6px;\n}\n\n.textarea {\n  width: 100%;\n  min-height: 100px;\n  color: var(--text-primary);\n  font-family: var(--font-mono);\n  font-size: inherit;\n  background: transparent;\n  padding: var(--textarea-padding-top) var(--textarea-padding-right) var(--textarea-padding-bot) var(--textarea-padding-left);\n  border: none;\n  outline: none;\n  resize: vertical;\n  box-sizing: border-box;\n}\n\n.cyberTextarea:focus-within .label {\n  color: var(--focus-border-color);\n}\n\n.cyberTextarea:focus-within .textareaContainer {\n  border-color: var(--focus-border-color);\n}\n\n.label {\n  position: absolute;\n  top: var(--label-offset-top);\n  left: var(--label-offset-left);\n  background: var(--color-bg-tile);\n  padding: var(--label-padding);\n  font-family: var(--font-mono);\n  font-size: var(--label-font-size);\n  font-weight: 500;\n  color: var(--text-secondary);\n  z-index: 1;\n}\n\n.full {\n  --textarea-width: 100%;\n  width: 100%;\n  display: block;\n}\n\n.textarea:disabled {\n  color: var(--text-muted);\n  cursor: not-allowed;\n  opacity: 0.6;\n}\n\n",
+      "source": "packages/ui/src/components/CyberpunkTextarea.module.css"
+    },
+    {
+      "path": "components/hooks/useStableId.ts",
+      "type": "registry:file",
+      "content": "import { useId } from \"react\";\n\nexport function useStableId(prefix: string, explicitId?: string): string {\n  const reactId = useId().replace(/:/g, \"\");\n  return explicitId || `${prefix}-${reactId}`;\n}\n\n",
+      "source": "packages/ui/src/hooks/useStableId.ts"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cyberpunk-select",
+  "type": "registry:component",
+  "title": "Cyberpunk Select",
+  "description": "Select primitive with the shared Steez framing and arrow treatment.",
+  "dependencies": [
+    "@steez-ui/theme",
+    "@steez-ui/icons"
+  ],
+  "registryDependencies": [
+    "theme-tokens",
+    "icon-provider"
+  ],
+  "files": [
+    {
+      "path": "components/steez/CyberpunkSelect.tsx",
+      "type": "registry:component",
+      "content": "import React, { SelectHTMLAttributes } from \"react\";\n\nimport { useStableId } from \"../hooks/useStableId\";\nimport styles from \"./CyberpunkSelect.module.css\";\n\nexport interface CyberpunkSelectOption {\n  value: string;\n  label: string;\n}\n\nexport interface CyberpunkSelectProps extends SelectHTMLAttributes<HTMLSelectElement> {\n  label?: string;\n  variant?: \"default\" | \"long\" | \"full\";\n  options?: CyberpunkSelectOption[];\n}\n\nexport function CyberpunkSelect({\n  label,\n  variant = \"default\",\n  options = [],\n  className = \"\",\n  id,\n  value,\n  ...props\n}: CyberpunkSelectProps) {\n  const selectId = useStableId(\"select\", id);\n\n  return (\n    <div className={`${styles.cyberSelect} ${styles[variant]} ${className}`.trim()}>\n      {label ? (\n        <label htmlFor={selectId} className={styles.label}>\n          {label}\n        </label>\n      ) : null}\n      <select id={selectId} className={styles.select} value={value} {...props}>\n        {options.map((option) => (\n          <option key={option.value} value={option.value}>\n            {option.label}\n          </option>\n        ))}\n      </select>\n      <div className={styles.arrow}>\n        <svg width=\"12\" height=\"8\" viewBox=\"0 0 12 8\" fill=\"none\">\n          <path d=\"M1 1L6 6L11 1\" stroke=\"currentColor\" strokeWidth=\"2\" strokeLinecap=\"round\" />\n        </svg>\n      </div>\n    </div>\n  );\n}\n\n",
+      "source": "packages/ui/src/components/CyberpunkSelect.tsx"
+    },
+    {
+      "path": "components/steez/CyberpunkSelect.module.css",
+      "type": "registry:style",
+      "content": ".cyberSelect {\n  --select-width: 240px;\n  --select-font-size: 1rem;\n  --select-padding-top: 0.75rem;\n  --select-padding-right: 2.5rem;\n  --select-padding-bot: 0.75rem;\n  --select-padding-left: 1rem;\n\n  font-size: var(--select-font-size);\n  position: relative;\n  display: inline-block;\n  margin-bottom: 1rem;\n  background: transparent;\n  border: 1px solid var(--border-color);\n  border-radius: 6px;\n  max-width: 100%;\n  overflow: hidden;\n  transition: all var(--transition-fast);\n}\n\n.select {\n  width: var(--select-width);\n  color: var(--text-primary);\n  font-family: var(--font-mono);\n  font-size: inherit;\n  font-weight: 500;\n  background-color: transparent;\n  padding: var(--select-padding-top) var(--select-padding-right) var(--select-padding-bot) var(--select-padding-left);\n  border: none;\n  outline: none;\n  cursor: pointer;\n  appearance: none;\n  position: relative;\n  z-index: 2;\n  box-sizing: border-box;\n}\n\n.label {\n  display: block;\n  font-size: 0.875rem;\n  font-weight: 500;\n  color: var(--text-secondary);\n  margin-bottom: 0.5rem;\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n}\n\n.arrow {\n  position: absolute;\n  right: 1rem;\n  top: 50%;\n  transform: translateY(-50%);\n  pointer-events: none;\n  color: var(--text-secondary);\n  z-index: 10;\n  transition: color var(--transition-fast);\n}\n\n.label ~ .arrow {\n  top: calc(50% + 0.875rem);\n}\n\n.long {\n  --select-width: 360px;\n}\n\n.full {\n  --select-width: 100%;\n  width: 100%;\n  max-width: 100%;\n  display: block;\n}\n\n.full .select {\n  max-width: 100%;\n}\n\n.cyberSelect:hover {\n  border-color: var(--color-border-hover);\n}\n\n.cyberSelect:hover .arrow {\n  color: var(--text-primary);\n}\n\n.cyberSelect:focus-within {\n  border-color: var(--accent-primary);\n}\n\n.cyberSelect:focus-within .arrow {\n  color: var(--accent-primary);\n}\n\n.cyberSelect:has(select:disabled) {\n  opacity: 0.5;\n}\n\n.cyberSelect select:disabled {\n  color: var(--text-muted);\n  cursor: not-allowed;\n}\n\n.cyberSelect select option {\n  background-color: var(--bg-primary);\n  color: var(--text-primary);\n  padding: 0.5rem;\n}\n\n",
+      "source": "packages/ui/src/components/CyberpunkSelect.module.css"
+    },
+    {
+      "path": "components/hooks/useStableId.ts",
+      "type": "registry:file",
+      "content": "import { useId } from \"react\";\n\nexport function useStableId(prefix: string, explicitId?: string): string {\n  const reactId = useId().replace(/:/g, \"\");\n  return explicitId || `${prefix}-${reactId}`;\n}\n\n",
+      "source": "packages/ui/src/hooks/useStableId.ts"
+    }
+  ]
+}

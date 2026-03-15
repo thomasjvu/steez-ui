@@ -1,0 +1,134 @@
+[
+  {
+    "name": "theme-tokens",
+    "type": "registry:style",
+    "title": "Theme Tokens",
+    "description": "Shared Phantasy-compatible CSS tokens for Steez UI consumers."
+  },
+  {
+    "name": "icon-provider",
+    "type": "registry:lib",
+    "title": "Icon Provider",
+    "description": "Shared icon provider and icon surface used by Steez primitives."
+  },
+  {
+    "name": "button",
+    "type": "registry:component",
+    "title": "Button",
+    "description": "Core button primitive with primary, secondary, and danger variants."
+  },
+  {
+    "name": "copy-button",
+    "type": "registry:component",
+    "title": "Copy Button",
+    "description": "Clipboard button with built-in success feedback."
+  },
+  {
+    "name": "cyberpunk-input",
+    "type": "registry:component",
+    "title": "Cyberpunk Input",
+    "description": "Monospace input with shared Steez form framing."
+  },
+  {
+    "name": "cyberpunk-select",
+    "type": "registry:component",
+    "title": "Cyberpunk Select",
+    "description": "Select primitive with the shared Steez framing and arrow treatment."
+  },
+  {
+    "name": "cyberpunk-textarea",
+    "type": "registry:component",
+    "title": "Cyberpunk Textarea",
+    "description": "Textarea primitive with the shared Steez form framing."
+  },
+  {
+    "name": "cyberpunk-checkbox",
+    "type": "registry:component",
+    "title": "Cyberpunk Checkbox",
+    "description": "Checkbox primitive for Steez forms."
+  },
+  {
+    "name": "cyberpunk-radio",
+    "type": "registry:component",
+    "title": "Cyberpunk Radio",
+    "description": "Radio and radio group primitives."
+  },
+  {
+    "name": "cyberpunk-slider",
+    "type": "registry:component",
+    "title": "Cyberpunk Slider",
+    "description": "Slider primitive with Steez progress styling."
+  },
+  {
+    "name": "themed-card",
+    "type": "registry:component",
+    "title": "Themed Card",
+    "description": "Default Steez card surface."
+  },
+  {
+    "name": "cyberpunk-tile",
+    "type": "registry:component",
+    "title": "Cyberpunk Tile",
+    "description": "Angular tile surface shared between landing and admin shells."
+  },
+  {
+    "name": "corner-bracket-card",
+    "type": "registry:component",
+    "title": "Corner Bracket Card",
+    "description": "Bracketed featured surface with accent corners."
+  },
+  {
+    "name": "segmented-control",
+    "type": "registry:component",
+    "title": "Segmented Control",
+    "description": "Shared segmented control for compact workspace switching."
+  },
+  {
+    "name": "tabbed-panel",
+    "type": "registry:component",
+    "title": "Tabbed Panel",
+    "description": "Simple tabbed panel for registry consumers."
+  },
+  {
+    "name": "page-header",
+    "type": "registry:component",
+    "title": "Page Header",
+    "description": "Neutral page header with optional icon, brand, and controls."
+  },
+  {
+    "name": "page-template",
+    "type": "registry:component",
+    "title": "Page Template",
+    "description": "Layout wrapper that composes the Steez page header and subtabs."
+  },
+  {
+    "name": "theme-toggle",
+    "type": "registry:component",
+    "title": "Theme Toggle",
+    "description": "Shared dark and light theme toggle."
+  },
+  {
+    "name": "loading-progress-bar",
+    "type": "registry:component",
+    "title": "Loading Progress Bar",
+    "description": "Progress bar with segmented loading bars."
+  },
+  {
+    "name": "status-message",
+    "type": "registry:component",
+    "title": "Status Message",
+    "description": "Success, error, and info toast primitive."
+  },
+  {
+    "name": "error-message",
+    "type": "registry:component",
+    "title": "Error Message",
+    "description": "Inline, card, and fullscreen error message surface."
+  },
+  {
+    "name": "foundation",
+    "type": "registry:block",
+    "title": "Foundation Preset",
+    "description": "Install theme tokens, icon provider, buttons, and core form primitives together."
+  }
+]

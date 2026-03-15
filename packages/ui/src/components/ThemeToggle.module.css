@@ -1,0 +1,23 @@
+.themeToggle {
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--bg-secondary) 85%, transparent);
+  color: var(--text-primary);
+  border-radius: 999px;
+  padding: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.themeToggle:hover {
+  border-color: var(--interactive-secondary-border-hover);
+  background: var(--interactive-secondary-bg-hover);
+}
+
+.iconButton {
+  width: 2.25rem;
+  height: 2.25rem;
+}
+

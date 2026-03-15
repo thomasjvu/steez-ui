@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cyberpunk-checkbox",
+  "type": "registry:component",
+  "title": "Cyberpunk Checkbox",
+  "description": "Checkbox primitive for Steez forms.",
+  "dependencies": [
+    "@steez-ui/theme",
+    "@steez-ui/icons"
+  ],
+  "registryDependencies": [
+    "theme-tokens"
+  ],
+  "files": [
+    {
+      "path": "components/steez/CyberpunkCheckbox.tsx",
+      "type": "registry:component",
+      "content": "import React, { InputHTMLAttributes } from \"react\";\n\nimport { useStableId } from \"../hooks/useStableId\";\nimport styles from \"./CyberpunkCheckbox.module.css\";\n\nexport interface CyberpunkCheckboxProps\n  extends Omit<InputHTMLAttributes<HTMLInputElement>, \"onChange\" | \"type\"> {\n  label?: string;\n  onChange?: (checked: boolean) => void;\n}\n\nexport function CyberpunkCheckbox({\n  label,\n  className = \"\",\n  id,\n  onChange,\n  ...props\n}: CyberpunkCheckboxProps) {\n  const inputId = useStableId(\"checkbox\", id);\n\n  return (\n    <label htmlFor={inputId} className={`${styles.wrapper} ${className}`.trim()}>\n      <input\n        id={inputId}\n        type=\"checkbox\"\n        className={styles.checkbox}\n        onChange={(event) => onChange?.(event.target.checked)}\n        {...props}\n      />\n      {label ? <span className={styles.label}>{label}</span> : null}\n    </label>\n  );\n}\n\n",
+      "source": "packages/ui/src/components/CyberpunkCheckbox.tsx"
+    },
+    {
+      "path": "components/steez/CyberpunkCheckbox.module.css",
+      "type": "registry:style",
+      "content": ".wrapper {\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n  cursor: pointer;\n  user-select: none;\n}\n\n.checkbox {\n  width: 28px;\n  height: 28px;\n  border: 2px solid var(--border);\n  border-radius: 3px;\n  appearance: none;\n  outline: none;\n  margin: 0;\n  cursor: pointer;\n  position: relative;\n  background-color: var(--bg-primary);\n  transition: all var(--transition-fast);\n}\n\n.checkbox::before {\n  content: \"\";\n  width: 16px;\n  height: 16px;\n  background-color: var(--success);\n  position: absolute;\n  top: 4px;\n  left: 4px;\n  display: block;\n  transform: scale(0);\n  transition: 120ms transform ease-in-out;\n}\n\n.checkbox:checked::before {\n  transform: scale(1);\n}\n\n.checkbox:hover {\n  border-color: var(--success);\n}\n\n.checkbox:focus-visible {\n  box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.2);\n}\n\n.checkbox:disabled {\n  opacity: 0.5;\n  cursor: not-allowed;\n}\n\n.label {\n  font-size: 0.875rem;\n  color: var(--text-primary);\n}\n\n",
+      "source": "packages/ui/src/components/CyberpunkCheckbox.module.css"
+    },
+    {
+      "path": "components/hooks/useStableId.ts",
+      "type": "registry:file",
+      "content": "import { useId } from \"react\";\n\nexport function useStableId(prefix: string, explicitId?: string): string {\n  const reactId = useId().replace(/:/g, \"\");\n  return explicitId || `${prefix}-${reactId}`;\n}\n\n",
+      "source": "packages/ui/src/hooks/useStableId.ts"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "name": "@steez-ui/ui",
+  "version": "0.1.0",
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "dependencies": {
+    "@steez-ui/icons": "workspace:*",
+    "@steez-ui/theme": "workspace:*"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./styles/Buttons.module.css": "./dist/styles/Buttons.module.css"
+  },
+  "scripts": {
+    "build": "tsc -p ./tsconfig.json && node ../../scripts/copy-static-assets.mjs ."
+  }
+}

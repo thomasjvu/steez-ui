@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cyberpunk-tile",
+  "type": "registry:component",
+  "title": "Cyberpunk Tile",
+  "description": "Angular tile surface shared between landing and admin shells.",
+  "dependencies": [
+    "@steez-ui/theme",
+    "@steez-ui/icons"
+  ],
+  "registryDependencies": [
+    "theme-tokens"
+  ],
+  "files": [
+    {
+      "path": "components/steez/CyberpunkTile.tsx",
+      "type": "registry:component",
+      "content": "import React from \"react\";\n\nimport styles from \"./CyberpunkTile.module.css\";\n\nexport interface CyberpunkTileProps extends React.HTMLAttributes<HTMLDivElement> {\n  children: React.ReactNode;\n  className?: string;\n  variant?: \"default\" | \"small\" | \"big\" | \"scrollable\" | \"ios\";\n  center?: boolean;\n  contentClassName?: string;\n}\n\nexport function CyberpunkTile({\n  children,\n  className = \"\",\n  variant = \"default\",\n  onClick,\n  style,\n  center = false,\n  contentClassName = \"\",\n  ...props\n}: CyberpunkTileProps) {\n  return (\n    <div\n      className={`${styles.tile} ${variant !== \"default\" ? styles[variant] : \"\"} ${onClick ? styles.tileInteractive : \"\"} ${className}`.trim()}\n      onClick={onClick}\n      role={onClick ? \"button\" : undefined}\n      tabIndex={onClick ? 0 : undefined}\n      style={style}\n      {...props}\n    >\n      <div className={`${styles.content} ${center ? styles.centerContent : \"\"} ${contentClassName}`.trim()}>\n        {children}\n      </div>\n      <div className={styles.cornerAccent} data-corner=\"top-right\" />\n      <div className={styles.cornerAccent} data-corner=\"bottom-left\" />\n    </div>\n  );\n}\n\n",
+      "source": "packages/ui/src/components/CyberpunkTile.tsx"
+    },
+    {
+      "path": "components/steez/CyberpunkTile.module.css",
+      "type": "registry:style",
+      "content": ".tile {\n  --tile-padding: 1.5rem;\n  --tile-edges: 20px;\n  --tile-border-color: var(--color-border-light);\n  --tile-border-width: 1px;\n\n  position: relative;\n  background: var(--color-bg-tile);\n  color: var(--text-primary);\n  padding: var(--tile-padding);\n  min-height: 60px;\n  height: 100%;\n  transition: background-color var(--transition-normal);\n  width: 100%;\n  max-width: 100%;\n  cursor: default;\n  box-sizing: border-box;\n  overflow: hidden;\n  clip-path: polygon(\n    0 0,\n    calc(100% - var(--tile-edges)) 0,\n    100% var(--tile-edges),\n    100% 100%,\n    var(--tile-edges) 100%,\n    0 calc(100% - var(--tile-edges))\n  );\n}\n\n.tileInteractive {\n  cursor: pointer;\n}\n\n.tile::before,\n.tile::after {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  pointer-events: none;\n}\n\n.tile::before {\n  background: var(--tile-border-color);\n  clip-path: inherit;\n  z-index: 0;\n}\n\n.tile::after {\n  background: var(--color-bg-tile);\n  transition: background-color var(--transition-normal);\n  clip-path: polygon(\n    var(--tile-border-width) var(--tile-border-width),\n    calc(100% - var(--tile-edges) - var(--tile-border-width)) var(--tile-border-width),\n    calc(100% - var(--tile-border-width)) calc(var(--tile-edges) + var(--tile-border-width)),\n    calc(100% - var(--tile-border-width)) calc(100% - var(--tile-border-width)),\n    calc(var(--tile-edges) + var(--tile-border-width)) calc(100% - var(--tile-border-width)),\n    var(--tile-border-width) calc(100% - var(--tile-edges) - var(--tile-border-width))\n  );\n  z-index: 1;\n}\n\n.tile:hover::after {\n  background: var(--color-bg-tile-hover);\n}\n\n.small {\n  --tile-edges: 14px;\n  --tile-padding: 1rem;\n}\n\n.big {\n  --tile-edges: 26px;\n  --tile-padding: 2rem;\n}\n\n.scrollable {\n  max-height: 600px;\n}\n\n.ios {\n  --tile-padding: 12px;\n  --tile-edges: 0;\n  border-radius: 10px;\n  clip-path: none;\n}\n\n.ios::before,\n.ios::after {\n  clip-path: none;\n  border-radius: 10px;\n}\n\n.content {\n  position: relative;\n  z-index: 2;\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n  min-height: 0;\n}\n\n.centerContent {\n  align-items: center;\n  justify-content: center;\n}\n\n.cornerAccent {\n  position: absolute;\n  width: var(--tile-edges);\n  height: var(--tile-edges);\n  opacity: 0;\n  transition: opacity var(--transition-fast);\n  pointer-events: none;\n  z-index: 3;\n}\n\n.cornerAccent[data-corner=\"top-right\"] {\n  top: 0;\n  right: 0;\n  background: var(--text-primary);\n  clip-path: polygon(calc(100% - var(--tile-edges)) 0, 100% 0, 100% var(--tile-edges));\n}\n\n.cornerAccent[data-corner=\"bottom-left\"] {\n  bottom: 0;\n  left: 0;\n  background: var(--text-primary);\n  clip-path: polygon(0 calc(100% - var(--tile-edges)), 0 100%, var(--tile-edges) 100%);\n}\n\n.big:hover .cornerAccent {\n  opacity: 1;\n}\n\n",
+      "source": "packages/ui/src/components/CyberpunkTile.module.css"
+    }
+  ]
+}

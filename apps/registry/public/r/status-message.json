@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "status-message",
+  "type": "registry:component",
+  "title": "Status Message",
+  "description": "Success, error, and info toast primitive.",
+  "dependencies": [
+    "@steez-ui/theme",
+    "@steez-ui/icons"
+  ],
+  "registryDependencies": [
+    "theme-tokens",
+    "icon-provider"
+  ],
+  "files": [
+    {
+      "path": "components/steez/StatusMessage.tsx",
+      "type": "registry:component",
+      "content": "import React from \"react\";\n\nimport { CheckIcon, ErrorIcon, InfoIcon } from \"@steez-ui/icons\";\n\nimport styles from \"./StatusMessage.module.css\";\n\nexport interface StatusMessageProps {\n  message: string;\n  type: \"success\" | \"error\" | \"info\";\n}\n\nexport function StatusMessage({ message, type }: StatusMessageProps) {\n  return (\n    <div\n      className={`${styles.message} ${styles[type]}`.trim()}\n      role={type === \"error\" ? \"alert\" : \"status\"}\n      aria-live={type === \"error\" ? \"assertive\" : \"polite\"}\n    >\n      <span className={styles.icon}>\n        {type === \"success\" ? <CheckIcon width={16} height={16} /> : null}\n        {type === \"error\" ? <ErrorIcon width={16} height={16} /> : null}\n        {type === \"info\" ? <InfoIcon width={16} height={16} /> : null}\n      </span>\n      <span className={styles.text}>{message}</span>\n    </div>\n  );\n}\n\n",
+      "source": "packages/ui/src/components/StatusMessage.tsx"
+    },
+    {
+      "path": "components/steez/StatusMessage.module.css",
+      "type": "registry:style",
+      "content": ".message {\n  position: fixed;\n  bottom: 2rem;\n  right: 2rem;\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n  padding: 1rem 1.5rem;\n  background: var(--bg-secondary);\n  border: 1px solid var(--border-color);\n  border-radius: 6px;\n  box-shadow: 0 4px 12px rgba(1, 6, 7, 0.15);\n  font-size: 0.9rem;\n  animation: slideIn 0.3s ease-out;\n  z-index: 1000;\n}\n\n@keyframes slideIn {\n  from {\n    transform: translateX(100%);\n    opacity: 0;\n  }\n  to {\n    transform: translateX(0);\n    opacity: 1;\n  }\n}\n\n.icon {\n  display: inline-flex;\n}\n\n.text {\n  color: var(--text-primary);\n}\n\n.success {\n  border-color: var(--success);\n}\n\n.success .icon {\n  color: var(--success);\n}\n\n.error {\n  border-color: var(--danger);\n}\n\n.error .icon {\n  color: var(--danger);\n}\n\n.info {\n  border-color: var(--info);\n}\n\n.info .icon {\n  color: var(--info);\n}\n\n",
+      "source": "packages/ui/src/components/StatusMessage.module.css"
+    }
+  ]
+}

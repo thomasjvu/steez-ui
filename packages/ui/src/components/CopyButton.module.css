@@ -1,0 +1,30 @@
+.copyButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  transition: all var(--transition-fast);
+  min-width: 32px;
+  min-height: 24px;
+}
+
+.copyButton:hover:not(:disabled) {
+  border-color: var(--progress);
+  color: var(--progress);
+}
+
+.copyButton:active {
+  transform: scale(0.95);
+}
+
+.copied {
+  border-color: var(--success);
+  color: var(--success);
+}
+

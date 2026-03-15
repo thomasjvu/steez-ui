@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "loading-progress-bar",
+  "type": "registry:component",
+  "title": "Loading Progress Bar",
+  "description": "Progress bar with segmented loading bars.",
+  "dependencies": [
+    "@steez-ui/theme",
+    "@steez-ui/icons"
+  ],
+  "registryDependencies": [
+    "theme-tokens"
+  ],
+  "files": [
+    {
+      "path": "components/steez/LoadingProgressBar.tsx",
+      "type": "registry:component",
+      "content": "import React from \"react\";\n\nimport styles from \"./LoadingProgressBar.module.css\";\n\nexport const LOADING_PROGRESS_SEGMENT_COUNT = 20;\n\nconst BAR_INDEXES = Array.from({ length: LOADING_PROGRESS_SEGMENT_COUNT }, (_, index) => index);\n\nexport interface LoadingProgressBarProps {\n  progress: number;\n  className?: string;\n  valueLabel?: string;\n}\n\nexport function LoadingProgressBar({\n  progress,\n  className,\n  valueLabel,\n}: LoadingProgressBarProps) {\n  const clampedProgress = Math.max(0, Math.min(100, progress));\n  const filledBars = Math.round((clampedProgress / 100) * LOADING_PROGRESS_SEGMENT_COUNT);\n\n  return (\n    <div className={className ? `${styles.root} ${className}` : styles.root}>\n      <div className={styles.barGroup}>\n        {BAR_INDEXES.map((index) => {\n          const isFilled = index < filledBars;\n          return (\n            <div\n              key={index}\n              className={`${styles.bar} ${isFilled ? styles.barFilled : \"\"}`.trim()}\n              style={{ [\"--bar-delay\" as string]: `${index * 20}ms` }}\n            />\n          );\n        })}\n      </div>\n      <div className={styles.value}>{valueLabel ?? `${Math.round(clampedProgress)}%`}</div>\n    </div>\n  );\n}\n\n",
+      "source": "packages/ui/src/components/LoadingProgressBar.tsx"
+    },
+    {
+      "path": "components/steez/LoadingProgressBar.module.css",
+      "type": "registry:style",
+      "content": ".root {\n  display: flex;\n  align-items: center;\n  gap: 4px;\n}\n\n.barGroup {\n  display: flex;\n  width: 100%;\n  max-width: 650px;\n  flex-wrap: wrap;\n  justify-content: center;\n  gap: 3px;\n}\n\n.bar {\n  width: clamp(10px, 2.5vw, 28px);\n  height: clamp(10px, 2.5vw, 28px);\n  box-sizing: border-box;\n  flex-shrink: 0;\n  border: none;\n  border-radius: 4px;\n  background: rgba(203, 203, 204, 0.15);\n  transform: skewX(-15deg);\n  transition: all 0.1s ease-out;\n  transition-delay: var(--bar-delay, 0ms);\n}\n\n.barFilled {\n  background: currentColor;\n}\n\n.value {\n  width: 4ch;\n  margin-left: 16px;\n  text-align: right;\n  font-family: var(--font-mono);\n  font-size: clamp(18px, 5vw, 32px);\n  font-weight: 900;\n  letter-spacing: 2px;\n}\n\n",
+      "source": "packages/ui/src/components/LoadingProgressBar.module.css"
+    }
+  ]
+}

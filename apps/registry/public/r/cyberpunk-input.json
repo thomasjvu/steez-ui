@@ -1,0 +1,35 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cyberpunk-input",
+  "type": "registry:component",
+  "title": "Cyberpunk Input",
+  "description": "Monospace input with shared Steez form framing.",
+  "dependencies": [
+    "@steez-ui/theme",
+    "@steez-ui/icons"
+  ],
+  "registryDependencies": [
+    "theme-tokens",
+    "icon-provider"
+  ],
+  "files": [
+    {
+      "path": "components/steez/CyberpunkInput.tsx",
+      "type": "registry:component",
+      "content": "import React, { InputHTMLAttributes, ReactNode } from \"react\";\n\nimport { useStableId } from \"../hooks/useStableId\";\nimport styles from \"./CyberpunkInput.module.css\";\n\nexport interface CyberpunkInputProps\n  extends Omit<InputHTMLAttributes<HTMLInputElement>, \"helperText\"> {\n  label?: string;\n  variant?: \"default\" | \"long\" | \"full\";\n  helperText?: string;\n  icon?: ReactNode;\n}\n\nexport function CyberpunkInput({\n  label,\n  variant = \"default\",\n  className = \"\",\n  id,\n  disabled,\n  readOnly,\n  helperText,\n  icon,\n  ...props\n}: CyberpunkInputProps) {\n  const inputId = useStableId(\"input\", id);\n  const isDisabledOrReadOnly = disabled || readOnly;\n\n  return (\n    <div className={`${styles.cyberInput} ${styles[variant]} ${className}`.trim()}>\n      {label ? (\n        <label htmlFor={inputId} className={styles.label}>\n          {label}\n        </label>\n      ) : null}\n      <div\n        className={`${styles.inputContainer} ${isDisabledOrReadOnly ? styles.disabledContainer : \"\"} ${icon ? styles.withIcon : \"\"}`.trim()}\n      >\n        {icon ? <div className={styles.icon}>{icon}</div> : null}\n        <input id={inputId} className={styles.input} disabled={disabled} readOnly={readOnly} {...props} />\n      </div>\n      {helperText ? <div className={styles.helperText}>{helperText}</div> : null}\n    </div>\n  );\n}\n\n",
+      "source": "packages/ui/src/components/CyberpunkInput.tsx"
+    },
+    {
+      "path": "components/steez/CyberpunkInput.module.css",
+      "type": "registry:style",
+      "content": ".cyberInput {\n  --input-width: 240px;\n  --input-font-size: 1rem;\n  --input-padding-top: 12px;\n  --input-padding-right: 12px;\n  --input-padding-bot: 12px;\n  --input-padding-left: 12px;\n  --focus-border-color: var(--color-accent-primary, var(--text-primary));\n  --label-offset-top: -2px;\n  --label-offset-left: 12px;\n  --label-padding: 1px 8px;\n  --label-font-size: 0.85rem;\n\n  position: relative;\n  margin-top: 10px;\n  margin-bottom: 1rem;\n  font-size: var(--input-font-size);\n}\n\n.inputContainer {\n  position: relative;\n  width: var(--input-width);\n  border: 1px solid var(--color-border-default);\n  background: var(--color-bg-tile);\n  margin-top: 6px;\n}\n\n.input {\n  width: 100%;\n  color: var(--text-primary);\n  font-family: var(--font-mono);\n  font-size: inherit;\n  background: transparent;\n  padding: var(--input-padding-top) var(--input-padding-right) var(--input-padding-bot) var(--input-padding-left);\n  border: none;\n  outline: none;\n  box-sizing: border-box;\n}\n\n.cyberInput:focus-within .label {\n  color: var(--focus-border-color);\n}\n\n.cyberInput:focus-within .inputContainer {\n  border-color: var(--focus-border-color);\n}\n\n.label {\n  position: absolute;\n  top: var(--label-offset-top);\n  left: var(--label-offset-left);\n  background: var(--color-bg-tile);\n  padding: var(--label-padding);\n  font-family: var(--font-mono);\n  font-size: var(--label-font-size);\n  font-weight: 500;\n  color: var(--text-secondary);\n  z-index: 1;\n  line-height: 1.2;\n  transition: background-color var(--transition-normal), color var(--transition-normal);\n}\n\n.inputContainer:hover {\n  border-color: var(--color-border-hover);\n}\n\n.cyberInput:focus-within .inputContainer:hover {\n  border-color: var(--focus-border-color);\n}\n\n.long {\n  --input-width: 360px;\n}\n\n.full {\n  --input-width: 100%;\n  width: 100%;\n  display: block;\n}\n\n.input:disabled,\n.input[readonly] {\n  opacity: 0.7;\n  cursor: not-allowed;\n}\n\n.disabledContainer {\n  background: var(--color-bg-secondary) !important;\n  cursor: not-allowed;\n}\n\n.helperText {\n  margin-top: 0.5rem;\n  font-size: 0.75rem;\n  color: var(--text-secondary);\n  font-family: var(--font-mono);\n}\n\n.icon {\n  position: absolute;\n  right: 12px;\n  top: 50%;\n  transform: translateY(-50%);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  color: var(--text-secondary);\n  pointer-events: none;\n  z-index: 1;\n}\n\n.withIcon .input {\n  padding-right: 44px;\n}\n\n",
+      "source": "packages/ui/src/components/CyberpunkInput.module.css"
+    },
+    {
+      "path": "components/hooks/useStableId.ts",
+      "type": "registry:file",
+      "content": "import { useId } from \"react\";\n\nexport function useStableId(prefix: string, explicitId?: string): string {\n  const reactId = useId().replace(/:/g, \"\");\n  return explicitId || `${prefix}-${reactId}`;\n}\n\n",
+      "source": "packages/ui/src/hooks/useStableId.ts"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "@steez-ui/theme",
+  "version": "0.1.0",
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./tokens.css": "./dist/tokens.css",
+    "./tailwind-preset": "./dist/tailwind-preset.js"
+  },
+  "scripts": {
+    "build": "tsc -p ./tsconfig.json && node ../../scripts/copy-static-assets.mjs ."
+  }
+}

@@ -1,0 +1,64 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.radio {
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  appearance: none;
+  outline: none;
+  margin: 0;
+  cursor: pointer;
+  position: relative;
+  background-color: var(--bg-primary);
+  transition: all var(--transition-fast);
+}
+
+.radio::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background-color: var(--success);
+  border-radius: 50%;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  display: block;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+}
+
+.radio:checked::before {
+  transform: scale(1);
+}
+
+.radio:hover {
+  border-color: var(--success);
+}
+
+.radio:focus-visible {
+  box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.2);
+}
+
+.radio:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.label {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+}
+
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+

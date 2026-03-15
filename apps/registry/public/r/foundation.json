@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "foundation",
+  "type": "registry:block",
+  "title": "Foundation Preset",
+  "description": "Install theme tokens, icon provider, buttons, and core form primitives together.",
+  "dependencies": [
+    "@steez-ui/theme",
+    "@steez-ui/icons"
+  ],
+  "registryDependencies": [
+    "theme-tokens",
+    "icon-provider",
+    "button",
+    "copy-button",
+    "cyberpunk-input",
+    "cyberpunk-select",
+    "cyberpunk-textarea",
+    "cyberpunk-checkbox",
+    "cyberpunk-radio",
+    "cyberpunk-slider"
+  ],
+  "files": []
+}

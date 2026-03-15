@@ -1,0 +1,289 @@
+:global(:root) {
+  color-scheme: dark;
+}
+
+:global(body) {
+  margin: 0;
+  background:
+    radial-gradient(circle at top left, rgba(238, 20, 1, 0.12), transparent 36%),
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.05), transparent 24%),
+    var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-primary);
+}
+
+:global(*) {
+  box-sizing: border-box;
+}
+
+.app {
+  position: relative;
+  min-height: 100vh;
+  padding: 2rem;
+  overflow: hidden;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.02), transparent 40%),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.015), rgba(255, 255, 255, 0));
+  pointer-events: none;
+}
+
+.hero,
+.main {
+  position: relative;
+  z-index: 1;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(360px, 0.9fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.heroCopy,
+.heroPanel {
+  min-width: 0;
+}
+
+.eyebrow,
+.sectionEyebrow,
+.panelLabel,
+.previewMetricLabel,
+.adoptionIndex {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.eyebrow {
+  margin-bottom: 0.75rem;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+.heroCopy h1 {
+  margin: 0;
+  max-width: 12ch;
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+}
+
+.heroBody {
+  margin: 1rem 0 0;
+  max-width: 48rem;
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+.heroActions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
+.commandStack {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.commandRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.commandCode {
+  display: block;
+  overflow-x: auto;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--bg-primary) 88%, transparent);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.heroPanel {
+  height: 100%;
+}
+
+.panelSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.panelSection:last-child {
+  margin-bottom: 0;
+}
+
+.panelLabel,
+.sectionEyebrow {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sectionHeader h2 {
+  margin: 0.25rem 0 0;
+  max-width: 16ch;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 1;
+}
+
+.familyGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.familyTile {
+  min-height: 220px;
+}
+
+.familyTitle {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.familyBody {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.previewGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+  gap: 1rem;
+}
+
+.previewForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.feedbackColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.previewPanelCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.previewMetric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.previewMetric:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.previewMetricLabel {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.previewMetricValue,
+.adoptionStep {
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.adoptionStep {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  align-items: start;
+}
+
+.adoptionIndex {
+  color: var(--accent-primary);
+  font-size: 0.75rem;
+}
+
+.registryLinks {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.registryLink {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--bg-secondary) 88%, transparent);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.registryLink:hover {
+  border-color: var(--interactive-secondary-border-hover);
+  background: var(--interactive-secondary-bg-hover);
+}
+
+@media (max-width: 1080px) {
+  .hero,
+  .previewGrid,
+  .familyGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .heroCopy h1 {
+    max-width: none;
+  }
+
+  .sectionHeader h2 {
+    max-width: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .app {
+    padding: 1rem;
+  }
+
+  .commandRow {
+    grid-template-columns: 1fr;
+  }
+}

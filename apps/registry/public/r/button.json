@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "button",
+  "type": "registry:component",
+  "title": "Button",
+  "description": "Core button primitive with primary, secondary, and danger variants.",
+  "dependencies": [
+    "@steez-ui/theme",
+    "@steez-ui/icons"
+  ],
+  "registryDependencies": [
+    "theme-tokens",
+    "icon-provider"
+  ],
+  "files": [
+    {
+      "path": "components/steez/Button.tsx",
+      "type": "registry:component",
+      "content": "import React from \"react\";\n\nimport styles from \"../styles/Buttons.module.css\";\n\ntype ButtonVariant = \"primary\" | \"secondary\" | \"danger\";\ntype ButtonSize = \"small\" | \"medium\" | \"large\";\n\nexport interface ButtonProps\n  extends React.ButtonHTMLAttributes<HTMLButtonElement> {\n  variant?: ButtonVariant;\n  size?: ButtonSize;\n  children: React.ReactNode;\n}\n\nexport function Button({\n  variant = \"primary\",\n  size = \"medium\",\n  className = \"\",\n  children,\n  ...props\n}: ButtonProps) {\n  const sizeClass = size === \"small\" ? styles.small : size === \"large\" ? styles.large : \"\";\n\n  return (\n    <button className={`${styles[variant]} ${sizeClass} ${className}`.trim()} {...props}>\n      {children}\n    </button>\n  );\n}\n\nexport default Button;\n\n",
+      "source": "packages/ui/src/components/Button.tsx"
+    },
+    {
+      "path": "components/styles/Buttons.module.css",
+      "type": "registry:style",
+      "content": ".primary {\n  padding: 8px 16px;\n  background: var(--interactive-primary-bg);\n  color: var(--interactive-primary-fg);\n  border: 1px solid var(--interactive-primary-border);\n  border-radius: 6px;\n  cursor: pointer;\n  transition: all var(--transition-fast);\n  font-family: var(--font-mono);\n  font-weight: 600;\n  font-size: 0.875rem;\n}\n\n.primary:hover:not(:disabled) {\n  background: var(--interactive-primary-bg-hover);\n  border-color: var(--interactive-primary-border);\n}\n\n.secondary {\n  padding: 8px 16px;\n  background: var(--interactive-secondary-bg);\n  color: var(--interactive-secondary-fg);\n  border: 1px solid var(--interactive-secondary-border);\n  border-radius: 6px;\n  cursor: pointer;\n  transition: all var(--transition-fast);\n  font-family: var(--font-mono);\n  font-weight: 600;\n  font-size: 0.875rem;\n}\n\n.secondary:hover:not(:disabled) {\n  color: var(--interactive-secondary-fg);\n  background: var(--interactive-secondary-bg-hover);\n  border-color: var(--interactive-secondary-border-hover);\n}\n\n.toolbarButton {\n  display: inline-flex;\n  align-items: center;\n  gap: 0.375rem;\n  padding: 0.5rem 0.75rem;\n  background: var(--interactive-secondary-bg);\n  color: var(--interactive-secondary-fg);\n  border: 1px solid var(--interactive-secondary-border);\n  border-radius: 4px;\n  cursor: pointer;\n  transition: all var(--transition-fast);\n  font-family: var(--font-mono);\n  font-size: 0.875rem;\n  font-weight: 500;\n  white-space: nowrap;\n}\n\n.toolbarButton:hover:not(:disabled) {\n  background: var(--interactive-primary-bg);\n  border-color: var(--interactive-primary-border);\n  color: var(--interactive-primary-fg);\n}\n\n.danger {\n  padding: 8px 16px;\n  background: var(--danger-bg);\n  color: var(--danger);\n  border: 1px solid var(--danger);\n  border-radius: 6px;\n  cursor: pointer;\n  transition: all var(--transition-fast);\n  font-family: var(--font-mono);\n  font-weight: 600;\n  font-size: 0.875rem;\n}\n\n.danger:hover:not(:disabled) {\n  background: var(--danger);\n  color: var(--text-on-accent);\n}\n\n.small {\n  padding: 4px 10px;\n  font-size: 0.75rem;\n}\n\n.large {\n  padding: 12px 24px;\n  font-size: 1rem;\n}\n\n.primary:disabled,\n.secondary:disabled,\n.toolbarButton:disabled,\n.danger:disabled {\n  opacity: 0.5;\n  cursor: not-allowed;\n}\n\n",
+      "source": "packages/ui/src/styles/Buttons.module.css"
+    }
+  ]
+}

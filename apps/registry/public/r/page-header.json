@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "page-header",
+  "type": "registry:component",
+  "title": "Page Header",
+  "description": "Neutral page header with optional icon, brand, and controls.",
+  "dependencies": [
+    "@steez-ui/theme",
+    "@steez-ui/icons"
+  ],
+  "registryDependencies": [
+    "theme-tokens",
+    "icon-provider"
+  ],
+  "files": [
+    {
+      "path": "components/steez/PageHeader.tsx",
+      "type": "registry:component",
+      "content": "import React, { ReactNode } from \"react\";\n\nimport { EyeIcon, Icon, SlidersIcon } from \"@steez-ui/icons\";\nimport type { SteezIconName } from \"@steez-ui/icons\";\n\nimport styles from \"./PageHeader.module.css\";\n\nexport interface PageHeaderProps {\n  title: string;\n  description?: string;\n  icon?: SteezIconName;\n  extra?: ReactNode;\n  className?: string;\n  brand?: ReactNode;\n  onBrandClick?: () => void;\n  onBack?: () => void;\n  onSettings?: () => void;\n  onViewerToggle?: () => void;\n  viewerVisible?: boolean;\n}\n\nexport function PageHeader({\n  title,\n  description,\n  icon,\n  extra,\n  className = \"\",\n  brand,\n  onBrandClick,\n  onBack,\n  onSettings,\n  onViewerToggle,\n  viewerVisible,\n}: PageHeaderProps) {\n  return (\n    <div className={`${styles.header} ${className}`.trim()}>\n      <div className={styles.headerRow}>\n        <div className={styles.brandCluster}>\n          {brand || onBrandClick ? (\n            <button type=\"button\" className={styles.brandButton} onClick={onBrandClick}>\n              <span className={styles.brandVisual}>{brand ?? title.slice(0, 1)}</span>\n            </button>\n          ) : null}\n          <div className={styles.headerContent}>\n            <h2>\n              {icon ? (\n                <span className={styles.titleIcon}>\n                  <Icon icon={icon} width={18} height={18} />\n                </span>\n              ) : null}\n              {title}\n            </h2>\n            {description ? <p>{description}</p> : null}\n          </div>\n        </div>\n        <div className={styles.headerExtra}>\n          {extra}\n          {onBack ? (\n            <button type=\"button\" className={styles.iconButton} onClick={onBack} aria-label=\"Go back\">\n              <Icon icon=\"chevronLeft\" width={18} height={18} />\n            </button>\n          ) : null}\n          {onSettings ? (\n            <button type=\"button\" className={styles.iconButton} onClick={onSettings} aria-label=\"Open settings\">\n              <SlidersIcon width={18} height={18} />\n            </button>\n          ) : null}\n          {onViewerToggle ? (\n            <button\n              type=\"button\"\n              className={styles.iconButton}\n              onClick={onViewerToggle}\n              aria-label={viewerVisible ? \"Hide viewer\" : \"Show viewer\"}\n            >\n              <EyeIcon width={18} height={18} />\n            </button>\n          ) : null}\n        </div>\n      </div>\n    </div>\n  );\n}\n\n",
+      "source": "packages/ui/src/components/PageHeader.tsx"
+    },
+    {
+      "path": "components/steez/PageHeader.module.css",
+      "type": "registry:style",
+      "content": ".header {\n  padding: 16px 24px;\n  background: var(--bg-secondary);\n}\n\n.headerRow {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n}\n\n.brandCluster {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n}\n\n.brandButton {\n  border: none;\n  background: transparent;\n  padding: 0;\n  margin: 0;\n  cursor: pointer;\n  display: inline-flex;\n  align-items: center;\n}\n\n.brandButton:focus-visible {\n  outline: 2px solid var(--color-border-hover);\n  outline-offset: 2px;\n  border-radius: 6px;\n}\n\n.brandVisual {\n  height: 48px;\n  width: 48px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  border: 1px solid var(--color-border-default);\n  border-radius: 6px;\n  color: var(--text-primary);\n  background: color-mix(in srgb, var(--bg-primary) 90%, transparent);\n}\n\n.headerContent {\n  line-height: normal;\n}\n\n.headerContent h2 {\n  margin: 0;\n  font-size: 32px;\n  font-weight: 400;\n  font-family: var(--font-display);\n  letter-spacing: 0.03em;\n  color: var(--color-text-primary);\n}\n\n.titleIcon {\n  display: inline-flex;\n  margin-right: 8px;\n  vertical-align: middle;\n}\n\n.headerContent p {\n  margin: 0;\n  font-size: 14px;\n  color: var(--color-text-secondary);\n}\n\n.headerExtra {\n  margin-left: auto;\n  display: flex;\n  align-items: center;\n  gap: 8px;\n}\n\n.iconButton {\n  border: none;\n  background: transparent;\n  padding: 8px;\n  margin: 0;\n  cursor: pointer;\n  display: inline-flex;\n  align-items: center;\n  color: var(--color-text-secondary);\n  transition: color var(--transition-fast);\n}\n\n.iconButton:hover {\n  color: var(--color-text-primary);\n}\n\n.iconButton:focus-visible {\n  outline: 2px solid var(--color-border-hover);\n  outline-offset: 2px;\n  border-radius: 4px;\n}\n\n@media (max-width: 767px) {\n  .header {\n    padding: 12px 16px;\n  }\n\n  .brandVisual {\n    height: 32px;\n    width: 32px;\n  }\n\n  .headerContent h2 {\n    font-size: 22px;\n  }\n\n  .headerContent p {\n    display: none;\n  }\n}\n\n",
+      "source": "packages/ui/src/components/PageHeader.module.css"
+    }
+  ]
+}
