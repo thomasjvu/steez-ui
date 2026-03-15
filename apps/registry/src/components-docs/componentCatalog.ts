@@ -369,6 +369,22 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
     tags: ["backdrop", "canvas", "ambient"],
   },
   {
+    slug: "quick-info-card",
+    title: "Quick Info Card",
+    category: "surfaces",
+    summary: "Compact multi-stat summary surface with an optional storage meter.",
+    description: "Use QuickInfoCard when several small operational stats should sit in one flat summary band instead of separate tiles.",
+    packageImport: 'import { QuickInfoCard } from "@steez-ui/ui";',
+    usage: `<QuickInfoCard
+  items={[
+    { label: "Status", value: "Live", valueColor: "success" },
+    { label: "Requests", value: "1,024", mono: true },
+  ]}
+/>`,
+    related: ["stat-card", "themed-card"],
+    tags: ["summary", "stats", "status"],
+  },
+  {
     slug: "marquee-strip",
     title: "Marquee Strip",
     category: "layout",
@@ -382,6 +398,49 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
 />`,
     related: ["segmented-control", "cyberpunk-tile"],
     tags: ["marquee", "motion", "track"],
+  },
+  {
+    slug: "section",
+    title: "Section",
+    category: "layout",
+    summary: "Simple content section with optional monospace title treatment.",
+    description: "Use Section when a page needs consistent vertical rhythm and a lightweight labeled block without a full header card.",
+    packageImport: 'import { Section } from "@steez-ui/ui";',
+    usage: `<Section title="Browse services">
+  <ThemedCard>...</ThemedCard>
+</Section>`,
+    related: ["section-header", "themed-card"],
+    tags: ["group", "layout", "content"],
+  },
+  {
+    slug: "section-header",
+    title: "Section Header",
+    category: "layout",
+    summary: "Framed header row for settings and control panels with optional actions.",
+    description: "Use SectionHeader when a product area needs a stronger header surface than a plain title but should stay flat and token-driven.",
+    packageImport: 'import { SectionHeader } from "@steez-ui/ui";',
+    usage: `<SectionHeader
+  title="Appearance Configuration"
+  description="Configure avatar rendering and expressions."
+  actions={<Button variant="secondary">Save</Button>}
+/>`,
+    related: ["section", "page-header"],
+    tags: ["header", "settings", "actions"],
+  },
+  {
+    slug: "stat-card",
+    title: "Stat Card",
+    category: "surfaces",
+    summary: "Small numeric stat block with optional tone and subvalue.",
+    description: "Use StatCard for compact dashboard stats that should read clearly without a larger tile or widget frame.",
+    packageImport: 'import { StatCard } from "@steez-ui/ui";',
+    usage: `<StatCard
+  label="Messages"
+  value="1,248"
+  subvalue="+12% this week"
+/>`,
+    related: ["quick-info-card", "themed-card"],
+    tags: ["metric", "dashboard", "number"],
   },
   {
     slug: "stroked-text",

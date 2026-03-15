@@ -9,6 +9,7 @@ export {
   ErrorIcon,
   EyeIcon,
   InfoIcon,
+  LightCrossIcon,
   MoonIcon,
   RefreshIcon,
   SlidersIcon,

@@ -20,8 +20,12 @@ import {
   MarqueeStrip,
   PageHeader,
   PageTemplate,
+  QuickInfoCard,
   RuntimeOrbitDiagram,
+  Section,
+  SectionHeader,
   SegmentedControl,
+  StatCard,
   StatusMessage,
   StrokedText,
   TabbedPanel,
@@ -325,6 +329,28 @@ function HexagonGridPreview() {
   );
 }
 
+function QuickInfoCardPreview() {
+  return (
+    <QuickInfoCard
+      items={[
+        {
+          icon: <InfoIcon width={18} height={18} />,
+          label: "Status",
+          value: "Live",
+          valueColor: "success",
+        },
+        {
+          icon: <RefreshIcon width={18} height={18} />,
+          label: "Requests",
+          value: "1,024",
+          mono: true,
+        },
+      ]}
+      storageProgress={{ used: 2_760_000, limit: 8_000_000 }}
+    />
+  );
+}
+
 function MarqueeStripPreview() {
   return (
     <MarqueeStrip
@@ -343,6 +369,38 @@ function MarqueeStripPreview() {
         </span>
       )}
     />
+  );
+}
+
+function SectionPreview() {
+  return (
+    <Section title="Browse services">
+      <ThemedCard title="Directory">
+        <p className={styles.previewText}>
+          Group related surfaces without restyling spacing and heading treatment per page.
+        </p>
+      </ThemedCard>
+    </Section>
+  );
+}
+
+function SectionHeaderPreview() {
+  return (
+    <SectionHeader
+      title="Appearance Configuration"
+      description="Configure avatar rendering and expressions."
+      actions={<Button variant="secondary">Save</Button>}
+    />
+  );
+}
+
+function StatCardPreview() {
+  return (
+    <div className={styles.statPreviewGrid}>
+      <StatCard label="Messages" value="1,248" subvalue="+12% this week" />
+      <StatCard label="Queue" value="3" color="warning" />
+      <StatCard label="Errors" value="0" color="success" />
+    </div>
   );
 }
 
@@ -398,7 +456,11 @@ const PREVIEW_MAP: Record<string, React.ComponentType> = {
   "hexagon-grid": HexagonGridPreview,
   "loading-progress-bar": LoadingProgressBarPreview,
   "marquee-strip": MarqueeStripPreview,
+  "quick-info-card": QuickInfoCardPreview,
   "runtime-orbit-diagram": RuntimeOrbitDiagramPreview,
+  section: SectionPreview,
+  "section-header": SectionHeaderPreview,
+  "stat-card": StatCardPreview,
   "status-message": StatusMessagePreview,
   "error-message": ErrorMessagePreview,
   "stroked-text": StrokedTextPreview,

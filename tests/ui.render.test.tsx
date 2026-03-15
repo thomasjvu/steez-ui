@@ -22,8 +22,12 @@ import {
   MarqueeStrip,
   PageHeader,
   PageTemplate,
+  QuickInfoCard,
   RuntimeOrbitDiagram,
+  Section,
+  SectionHeader,
   SegmentedControl,
+  StatCard,
   StatusMessage,
   StrokedText,
   TabbedPanel,
@@ -93,6 +97,12 @@ describe("steez ui primitives", () => {
           items={["Skills", "Themes", "Workflows"]}
           renderItem={(item) => <span>{item}</span>}
         />
+        <QuickInfoCard
+          items={[
+            { label: "Status", value: "Live", valueColor: "success" },
+            { label: "Requests", value: "1,024", mono: true },
+          ]}
+        />
         <RuntimeOrbitDiagram
           nodes={[
             { id: "character", label: "Character", icon: DemoIcon, x: 50, y: 10 },
@@ -102,6 +112,11 @@ describe("steez ui primitives", () => {
             { id: "operations", label: "Operations", icon: DemoIcon, x: 16, y: 38 },
           ]}
         />
+        <Section title="Browse services">
+          <div>Section body</div>
+        </Section>
+        <SectionHeader title="Appearance Configuration" />
+        <StatCard label="Messages" value="1,248" />
         <StatusMessage type="success" message="Built." />
         <StrokedText animateOnMount>Spellbinding</StrokedText>
         <ErrorMessage message="Something failed." />
@@ -114,5 +129,6 @@ describe("steez ui primitives", () => {
     expect(markup).toContain("Character");
     expect(markup).toContain("Spellbinding");
     expect(markup).toContain("Themes");
+    expect(markup).toContain("Appearance Configuration");
   });
 });

@@ -138,10 +138,34 @@
     "description": "Animated hex field backdrop for avatars, hero surfaces, and ambient panels."
   },
   {
+    "name": "quick-info-card",
+    "type": "registry:component",
+    "title": "Quick Info Card",
+    "description": "Compact multi-stat summary surface with an optional storage meter."
+  },
+  {
     "name": "marquee-strip",
     "type": "registry:component",
     "title": "Marquee Strip",
     "description": "Continuous horizontal marquee track for providers, skills, and launch lanes."
+  },
+  {
+    "name": "section",
+    "type": "registry:component",
+    "title": "Section",
+    "description": "Simple content section with optional monospace title treatment."
+  },
+  {
+    "name": "section-header",
+    "type": "registry:component",
+    "title": "Section Header",
+    "description": "Framed header row for settings and control panels with optional actions."
+  },
+  {
+    "name": "stat-card",
+    "type": "registry:component",
+    "title": "Stat Card",
+    "description": "Compact metric surface with optional tone and subvalue."
   },
   {
     "name": "status-message",

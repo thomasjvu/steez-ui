@@ -290,6 +290,18 @@ const itemDefinitions = [
     ],
   },
   {
+    name: "quick-info-card",
+    type: "registry:component",
+    title: "Quick Info Card",
+    description: "Compact multi-stat summary surface with an optional storage meter.",
+    dependencies: ["@steez-ui/theme"],
+    registryDependencies: ["theme-tokens"],
+    files: [
+      { source: "packages/ui/src/components/QuickInfoCard.tsx", target: "components/steez/QuickInfoCard.tsx", type: "registry:component" },
+      { source: "packages/ui/src/components/QuickInfoCard.module.css", target: "components/steez/QuickInfoCard.module.css", type: "registry:style" },
+    ],
+  },
+  {
     name: "marquee-strip",
     type: "registry:component",
     title: "Marquee Strip",
@@ -299,6 +311,42 @@ const itemDefinitions = [
     files: [
       { source: "packages/ui/src/components/MarqueeStrip.tsx", target: "components/steez/MarqueeStrip.tsx", type: "registry:component" },
       { source: "packages/ui/src/components/MarqueeStrip.module.css", target: "components/steez/MarqueeStrip.module.css", type: "registry:style" },
+    ],
+  },
+  {
+    name: "section",
+    type: "registry:component",
+    title: "Section",
+    description: "Simple content section with optional monospace title treatment.",
+    dependencies: ["@steez-ui/theme"],
+    registryDependencies: ["theme-tokens"],
+    files: [
+      { source: "packages/ui/src/components/Section.tsx", target: "components/steez/Section.tsx", type: "registry:component" },
+      { source: "packages/ui/src/components/Section.module.css", target: "components/steez/Section.module.css", type: "registry:style" },
+    ],
+  },
+  {
+    name: "section-header",
+    type: "registry:component",
+    title: "Section Header",
+    description: "Framed header row for settings and control panels with optional actions.",
+    dependencies: ["@steez-ui/theme"],
+    registryDependencies: ["theme-tokens"],
+    files: [
+      { source: "packages/ui/src/components/SectionHeader.tsx", target: "components/steez/SectionHeader.tsx", type: "registry:component" },
+      { source: "packages/ui/src/components/SectionHeader.module.css", target: "components/steez/SectionHeader.module.css", type: "registry:style" },
+    ],
+  },
+  {
+    name: "stat-card",
+    type: "registry:component",
+    title: "Stat Card",
+    description: "Compact metric surface with optional tone and subvalue.",
+    dependencies: ["@steez-ui/theme"],
+    registryDependencies: ["theme-tokens"],
+    files: [
+      { source: "packages/ui/src/components/StatCard.tsx", target: "components/steez/StatCard.tsx", type: "registry:component" },
+      { source: "packages/ui/src/components/StatCard.module.css", target: "components/steez/StatCard.module.css", type: "registry:style" },
     ],
   },
   {

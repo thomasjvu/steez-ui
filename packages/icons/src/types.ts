@@ -20,5 +20,5 @@ export type SteezIconName =
   | "sliders"
   | "eye"
   | "sun"
-  | "moon";
-
+  | "moon"
+  | "lightCross";

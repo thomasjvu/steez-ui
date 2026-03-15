@@ -45,15 +45,27 @@ export { MarqueeStrip, type MarqueeStripProps } from "./components/MarqueeStrip.
 export { PageHeader, type PageHeaderProps } from "./components/PageHeader.js";
 export { PageTemplate, type PageTemplateProps } from "./components/PageTemplate.js";
 export {
+  QuickInfoCard,
+  type QuickInfoCardProps,
+  type QuickInfoItem,
+  type StorageProgress,
+} from "./components/QuickInfoCard.js";
+export {
   RuntimeOrbitDiagram,
   type RuntimeOrbitDiagramProps,
   type RuntimeOrbitNode,
 } from "./components/RuntimeOrbitDiagram.js";
+export { Section, type SectionProps } from "./components/Section.js";
+export {
+  SectionHeader,
+  type SectionHeaderProps,
+} from "./components/SectionHeader.js";
 export {
   SegmentedControl,
   type SegmentedControlOption,
   type SegmentedControlProps,
 } from "./components/SegmentedControl.js";
+export { StatCard, type StatCardProps } from "./components/StatCard.js";
 export { StatusMessage, type StatusMessageProps } from "./components/StatusMessage.js";
 export { StrokedText, type StrokedTextProps } from "./components/StrokedText.js";
 export { TabbedPanel, type TabbedPanelProps, type TabbedPanelTab } from "./components/TabbedPanel.js";

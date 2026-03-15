@@ -280,3 +280,30 @@ export const MoonIcon = createIcon(({ width, height, color, className, style, ..
     <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79Z" />
   </svg>
 ));
+
+export function LightCrossIcon({
+  width = 116,
+  height = 384,
+  color = "currentColor",
+  className,
+  style,
+  ...props
+}: SteezIconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={width}
+      height={height}
+      viewBox="0 0 116 384"
+      fill="none"
+      className={className}
+      style={style}
+      {...props}
+    >
+      <path
+        d="M35.84 60.42C40.6422 60.7874 45.1351 62.9314 48.4413 66.4336C51.7475 69.9358 53.6295 74.5446 53.72 79.36L57.71 383.88L61.71 79.36C61.8005 74.5446 63.6825 69.9358 66.9887 66.4336C70.2949 62.9314 74.7878 60.7873 79.59 60.42L115.43 57.69L78.35 54.88C73.7394 54.5319 69.4063 52.5427 66.1368 49.2732C62.8673 46.0037 60.8781 41.6706 60.53 37.06L57.71 2.52302e-06L54.89 37.06C54.5376 41.6708 52.5457 46.0029 49.2749 49.2718C46.0042 52.5407 41.671 54.5302 37.06 54.88L2.52171e-06 57.69L35.84 60.42Z"
+        fill={color}
+      />
+    </svg>
+  );
+}

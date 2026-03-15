@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "section",
+  "type": "registry:component",
+  "title": "Section",
+  "description": "Simple content section with optional monospace title treatment.",
+  "dependencies": [
+    "@steez-ui/theme"
+  ],
+  "registryDependencies": [
+    "theme-tokens"
+  ],
+  "files": [
+    {
+      "path": "components/steez/Section.tsx",
+      "type": "registry:component",
+      "content": "import React from \"react\";\n\nimport styles from \"./Section.module.css\";\n\nexport interface SectionProps\n  extends Omit<React.HTMLAttributes<HTMLElement>, \"title\"> {\n  title?: React.ReactNode;\n  titleClassName?: string;\n  contentClassName?: string;\n}\n\nexport function Section({\n  title,\n  children,\n  className = \"\",\n  titleClassName = \"\",\n  contentClassName = \"\",\n  ...props\n}: SectionProps) {\n  return (\n    <section className={`${styles.section} ${className}`.trim()} {...props}>\n      {title ? (\n        <h3 className={`${styles.title} ${titleClassName}`.trim()}>{title}</h3>\n      ) : null}\n      <div className={`${styles.content} ${contentClassName}`.trim()}>\n        {children}\n      </div>\n    </section>\n  );\n}\n\nexport default Section;\n",
+      "source": "packages/ui/src/components/Section.tsx"
+    },
+    {
+      "path": "components/steez/Section.module.css",
+      "type": "registry:style",
+      "content": ".section {\n  display: flex;\n  flex-direction: column;\n  gap: 0.85rem;\n  margin-bottom: 1.5rem;\n}\n\n.title {\n  margin: 0;\n  color: var(--text-primary);\n  font-family: var(--font-mono);\n  font-size: 0.9rem;\n  font-weight: 600;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n}\n\n.content {\n  min-width: 0;\n}\n",
+      "source": "packages/ui/src/components/Section.module.css"
+    }
+  ]
+}
