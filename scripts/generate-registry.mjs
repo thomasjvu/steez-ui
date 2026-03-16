@@ -194,6 +194,18 @@ const itemDefinitions = [
     ],
   },
   {
+    name: "dotted-halo-card",
+    type: "registry:component",
+    title: "Dotted Halo Card",
+    description: "Flat content card with a dotted field extending beyond the main border.",
+    dependencies: ["@steez-ui/theme"],
+    registryDependencies: ["theme-tokens"],
+    files: [
+      { source: "packages/ui/src/components/DottedHaloCard.tsx", target: "components/steez/DottedHaloCard.tsx", type: "registry:component" },
+      { source: "packages/ui/src/components/DottedHaloCard.module.css", target: "components/steez/DottedHaloCard.module.css", type: "registry:style" },
+    ],
+  },
+  {
     name: "segmented-control",
     type: "registry:component",
     title: "Segmented Control",

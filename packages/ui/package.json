@@ -1,6 +1,6 @@
 {
   "name": "@steez-ui/ui",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "React primitives authored with CSS modules for Steez UI.",
   "license": "MIT",
   "type": "module",

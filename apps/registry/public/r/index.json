@@ -90,6 +90,12 @@
     "description": "Bracketed featured surface with accent corners."
   },
   {
+    "name": "dotted-halo-card",
+    "type": "registry:component",
+    "title": "Dotted Halo Card",
+    "description": "Flat content card with a dotted field extending beyond the main border."
+  },
+  {
     "name": "segmented-control",
     "type": "registry:component",
     "title": "Segmented Control",

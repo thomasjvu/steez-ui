@@ -13,6 +13,7 @@ export interface LoadingScreenProps {
   message?: string;
   logo?: React.ReactNode;
   title?: React.ReactNode;
+  footerBrand?: React.ReactNode;
   audioFeedback?: boolean;
   fullscreen?: boolean;
   themeMode?: "auto" | "light" | "dark";
@@ -56,6 +57,7 @@ export function LoadingScreen({
   message,
   logo,
   title = "LOADING",
+  footerBrand,
   audioFeedback = false,
   fullscreen = true,
   themeMode = "auto",
@@ -296,9 +298,14 @@ export function LoadingScreen({
 
       <LoadingProgressBar progress={displayProgress} className={styles.progressRow} />
 
-      <div className={styles.footerMessage}>
-        {cleanMessage}
-        {ellipsis}
+      <div className={styles.footerStack}>
+        {footerBrand ? (
+          <div className={styles.footerBrand}>{footerBrand}</div>
+        ) : null}
+        <div className={styles.footerMessage}>
+          {cleanMessage}
+          {ellipsis}
+        </div>
       </div>
     </div>
   );

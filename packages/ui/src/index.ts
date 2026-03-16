@@ -28,6 +28,10 @@ export {
 } from "./components/CyberpunkTextarea.js";
 export { CyberpunkTile, type CyberpunkTileProps } from "./components/CyberpunkTile.js";
 export { CornerBracketCard, type CornerBracketCardProps } from "./components/CornerBracketCard.js";
+export {
+  DottedHaloCard,
+  type DottedHaloCardProps,
+} from "./components/DottedHaloCard.js";
 export { ErrorMessage, type ErrorMessageProps } from "./components/ErrorMessage.js";
 export {
   HeartbeatIndicator,

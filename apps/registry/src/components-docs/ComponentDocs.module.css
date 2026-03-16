@@ -233,6 +233,14 @@
   background: color-mix(in srgb, var(--bg-primary) 90%, transparent);
 }
 
+.dottedHaloPreviewGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2.75rem;
+  width: min(100%, 46rem);
+  padding: 1.5rem;
+}
+
 .loadingScreenPreview,
 .loadingOverlayPreview {
   position: relative;
@@ -397,5 +405,12 @@
   .widgetPreviewGrid {
     grid-template-columns: 1fr;
     width: 100%;
+  }
+
+  .dottedHaloPreviewGrid {
+    grid-template-columns: 1fr;
+    width: 100%;
+    gap: 2rem;
+    padding: 0.75rem;
   }
 }

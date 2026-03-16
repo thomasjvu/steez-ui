@@ -225,6 +225,19 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
     tags: ["featured", "accent"],
   },
   {
+    slug: "dotted-halo-card",
+    title: "Dotted Halo Card",
+    category: "surfaces",
+    summary: "Flat card with an outer dotted field that sits beyond the main border.",
+    description: "Use DottedHaloCard when you want a sharper editorial or showcase surface without gradients, glow, or an extra nested wrapper just to get the outside pattern treatment.",
+    packageImport: 'import { DottedHaloCard } from "@steez-ui/ui";',
+    usage: `<DottedHaloCard title="My Card">
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+</DottedHaloCard>`,
+    related: ["themed-card", "corner-bracket-card"],
+    tags: ["card", "pattern", "editorial"],
+  },
+  {
     slug: "segmented-control",
     title: "Segmented Control",
     category: "layout",
@@ -329,6 +342,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   message="Syncing runtime"
   title="LOADING"
   logo={<img src="/logo.svg" alt="" />}
+  footerBrand={<img src="/brand.svg" alt="" />}
   fullscreen={false}
 />`,
     related: ["loading-progress-bar", "loading-overlay-crystalline"],

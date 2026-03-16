@@ -16,6 +16,7 @@ import {
   CyberpunkTextarea,
   CyberpunkTile,
   ErrorMessage,
+  DottedHaloCard,
   HeartbeatPulse,
   HexagonGrid,
   LoadingOverlayCrystalline,
@@ -73,6 +74,7 @@ describe("steez ui primitives", () => {
         <ThemedCard title="Card">Card body</ThemedCard>
         <CyberpunkTile>Tile body</CyberpunkTile>
         <CornerBracketCard title="Bracket">Bracket body</CornerBracketCard>
+        <DottedHaloCard title="Halo">Card body</DottedHaloCard>
         <SegmentedControl
           value="hosted"
           onChange={() => undefined}
@@ -109,6 +111,7 @@ describe("steez ui primitives", () => {
           <LoadingScreen
             progress={72}
             message="Syncing runtime"
+            footerBrand={<span>SU</span>}
             fullscreen={false}
           />
         </div>
@@ -154,6 +157,7 @@ describe("steez ui primitives", () => {
 
     expect(markup).toContain("Avatar");
     expect(markup).toContain("Launch");
+    expect(markup).toContain("Halo");
     expect(markup).toContain("Operations");
     expect(markup).toContain("Character");
     expect(markup).toContain("Spellbinding");

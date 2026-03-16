@@ -13,6 +13,7 @@ import {
   CyberpunkTextarea,
   CyberpunkTile,
   CornerBracketCard,
+  DottedHaloCard,
   ErrorMessage,
   HeartbeatPulse,
   HexagonGrid,
@@ -202,6 +203,25 @@ function CornerBracketCardPreview() {
   );
 }
 
+function DottedHaloCardPreview() {
+  return (
+    <div className={styles.dottedHaloPreviewGrid}>
+      <DottedHaloCard title="My Card">
+        <p className={styles.previewText}>
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repellendus
+          vero blanditiis amet.
+        </p>
+      </DottedHaloCard>
+      <DottedHaloCard title="My Second Card">
+        <p className={styles.previewText}>
+          Quaerat magni unde ducimus voluptates, sed pariatur perspiciatis
+          perferendis.
+        </p>
+      </DottedHaloCard>
+    </div>
+  );
+}
+
 function SegmentedControlPreview() {
   const [value, setValue] = React.useState("registry");
 
@@ -298,6 +318,7 @@ function LoadingScreenPreview() {
         progress={68}
         message="Syncing runtime"
         title="SYNC"
+        footerBrand={<span className={styles.previewBrand}>SU</span>}
         fullscreen={false}
         themeMode="dark"
       />
@@ -567,6 +588,7 @@ const PREVIEW_MAP: Record<string, React.ComponentType> = {
   "themed-card": ThemedCardPreview,
   "cyberpunk-tile": CyberpunkTilePreview,
   "corner-bracket-card": CornerBracketCardPreview,
+  "dotted-halo-card": DottedHaloCardPreview,
   "segmented-control": SegmentedControlPreview,
   "tabbed-panel": TabbedPanelPreview,
   "page-header": PageHeaderPreview,
