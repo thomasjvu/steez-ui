@@ -249,6 +249,28 @@
   overflow: hidden;
 }
 
+.notchedFramePreview {
+  position: relative;
+  min-height: 18rem;
+}
+
+.notchedFrameCard {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  max-width: 16rem;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--bg-primary) 94%, transparent);
+}
+
+.radialMenuPreview {
+  position: relative;
+  min-height: 32rem;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
 .loadingOverlayCanvas {
   position: absolute;
   inset: 0;

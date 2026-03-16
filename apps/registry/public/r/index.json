@@ -120,6 +120,18 @@
     "description": "Layout wrapper that composes the Steez page header and subtabs."
   },
   {
+    "name": "notched-viewport-frame",
+    "type": "registry:component",
+    "title": "Notched Viewport Frame",
+    "description": "Unified notched outline shell for viewport framing and overlay chrome."
+  },
+  {
+    "name": "radial-menu-overlay",
+    "type": "registry:component",
+    "title": "Radial Menu Overlay",
+    "description": "Full-screen radial navigation surface built around the notched viewport shell."
+  },
+  {
     "name": "theme-toggle",
     "type": "registry:component",
     "title": "Theme Toggle",

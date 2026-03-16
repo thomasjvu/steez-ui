@@ -15,6 +15,7 @@ export {
   InstagramIcon,
   IntegrationsTileIcon,
   LightCrossIcon,
+  MenuIcon,
   MoonIcon,
   RefreshIcon,
   SlidersIcon,

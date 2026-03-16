@@ -21,11 +21,13 @@ import {
   LoadingProgressBar,
   LoadingScreen,
   MarqueeStrip,
+  NotchedViewportFrame,
   OverlayButton,
   PageHeader,
   PageTemplate,
   PixelTooltip,
   QuickInfoCard,
+  RadialMenuOverlay,
   RuntimeOrbitDiagram,
   Section,
   SectionHeader,
@@ -39,7 +41,14 @@ import {
   ThemeToggle,
   WidgetCard,
 } from "@steez-ui/ui";
-import { CheckIcon, EyeIcon, InfoIcon, RefreshIcon, SlidersIcon } from "@steez-ui/icons";
+import {
+  CheckIcon,
+  EyeIcon,
+  InfoIcon,
+  MenuIcon,
+  RefreshIcon,
+  SlidersIcon,
+} from "@steez-ui/icons";
 
 import styles from "./ComponentDocs.module.css";
 
@@ -295,6 +304,67 @@ function PageTemplatePreview() {
         <p className={styles.previewText}>Compose app-specific screens on top of shared shell primitives.</p>
       </ThemedCard>
     </PageTemplate>
+  );
+}
+
+function NotchedViewportFramePreview() {
+  return (
+    <div className={styles.notchedFramePreview}>
+      <NotchedViewportFrame tone="strong" />
+      <div className={styles.notchedFrameCard}>
+        <div className={styles.previewHeading}>Viewport shell</div>
+        <p className={styles.previewText}>
+          Use one continuous outline when the whole interface should feel
+          framed as a single surface.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function RadialMenuOverlayPreview() {
+  return (
+    <div className={styles.radialMenuPreview}>
+      <RadialMenuOverlay
+        open
+        contained
+        title="Steer the runtime"
+        description="One radial control surface for launch pages and app shells."
+        brand={
+          <span className={styles.previewRow}>
+            <MenuIcon width={14} height={14} />
+            Menu
+          </span>
+        }
+        onClose={() => undefined}
+        items={[
+          {
+            id: "studio",
+            label: "Studio",
+            shortLabel: "01",
+            eyebrow: "Creative studio",
+            body: "Launch clips, key art, and site-ready media.",
+            href: "#studio",
+          },
+          {
+            id: "runtime",
+            label: "Runtime",
+            shortLabel: "02",
+            eyebrow: "One runtime",
+            body: "Five workspaces hold the system together.",
+            href: "#system",
+          },
+          {
+            id: "launch",
+            label: "Launch",
+            shortLabel: "03",
+            eyebrow: "Get started",
+            body: "Start with one install path and ship the wedge.",
+            href: "#cta",
+          },
+        ]}
+      />
+    </div>
   );
 }
 
@@ -593,6 +663,8 @@ const PREVIEW_MAP: Record<string, React.ComponentType> = {
   "tabbed-panel": TabbedPanelPreview,
   "page-header": PageHeaderPreview,
   "page-template": PageTemplatePreview,
+  "notched-viewport-frame": NotchedViewportFramePreview,
+  "radial-menu-overlay": RadialMenuOverlayPreview,
   "theme-toggle": ThemeTogglePreview,
   "heartbeat-pulse": HeartbeatPulsePreview,
   "hexagon-grid": HexagonGridPreview,

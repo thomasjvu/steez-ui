@@ -16,6 +16,7 @@ export type SteezIconName =
   | "warning"
   | "refresh"
   | "close"
+  | "menu"
   | "chevronLeft"
   | "sliders"
   | "eye"

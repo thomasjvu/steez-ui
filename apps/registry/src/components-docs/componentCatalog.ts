@@ -309,6 +309,37 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
     tags: ["layout", "shell"],
   },
   {
+    slug: "notched-viewport-frame",
+    title: "Notched Viewport Frame",
+    category: "layout",
+    summary: "Bitkraft-style notched outline shell for viewport framing and overlay chrome.",
+    description: "Use NotchedViewportFrame when the interface should live inside one continuous shell instead of isolated corner decorations.",
+    packageImport: 'import { NotchedViewportFrame } from "@steez-ui/ui";',
+    usage: `<div style={{ position: "relative", minHeight: "28rem" }}>
+  <NotchedViewportFrame tone="strong" />
+</div>`,
+    related: ["radial-menu-overlay", "page-template", "loading-screen"],
+    tags: ["frame", "viewport", "shell"],
+  },
+  {
+    slug: "radial-menu-overlay",
+    title: "Radial Menu Overlay",
+    category: "layout",
+    summary: "Full-screen radial navigation surface built around the notched viewport shell.",
+    description: "Use RadialMenuOverlay when the product needs one authored navigation moment instead of scattering section links across the viewport.",
+    packageImport: 'import { RadialMenuOverlay } from "@steez-ui/ui";',
+    usage: `<RadialMenuOverlay
+  open={open}
+  onClose={() => setOpen(false)}
+  items={[
+    { id: "studio", label: "Studio", eyebrow: "Creative studio", body: "Launch media and site assets.", href: "#studio" },
+    { id: "runtime", label: "Runtime", eyebrow: "One runtime", body: "Five workspaces keep the illusion intact.", href: "#system" },
+  ]}
+/>`,
+    related: ["notched-viewport-frame", "overlay-button", "button"],
+    tags: ["overlay", "menu", "navigation"],
+  },
+  {
     slug: "theme-toggle",
     title: "Theme Toggle",
     category: "layout",

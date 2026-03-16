@@ -23,11 +23,13 @@ import {
   LoadingProgressBar,
   LoadingScreen,
   MarqueeStrip,
+  NotchedViewportFrame,
   OverlayButton,
   PageHeader,
   PageTemplate,
   PixelTooltip,
   QuickInfoCard,
+  RadialMenuOverlay,
   RuntimeOrbitDiagram,
   Section,
   SectionHeader,
@@ -95,6 +97,32 @@ describe("steez ui primitives", () => {
         <PageTemplate title="Character" description="Shared layout">
           <div>Body</div>
         </PageTemplate>
+        <div style={{ position: "relative", minHeight: "12rem" }}>
+          <NotchedViewportFrame tone="strong" />
+        </div>
+        <div style={{ position: "relative", minHeight: "18rem" }}>
+          <RadialMenuOverlay
+            open
+            contained
+            onClose={() => undefined}
+            items={[
+              {
+                id: "studio",
+                label: "Studio",
+                eyebrow: "Creative studio",
+                body: "Launch media and site assets.",
+                href: "#studio",
+              },
+              {
+                id: "runtime",
+                label: "Runtime",
+                eyebrow: "One runtime",
+                body: "Five workspaces keep the illusion intact.",
+                href: "#system",
+              },
+            ]}
+          />
+        </div>
         <ThemeToggle />
         <HeartbeatPulse variant="line" width={180} height={72} />
         <div style={{ position: "relative", minHeight: "8rem" }}>
@@ -161,6 +189,7 @@ describe("steez ui primitives", () => {
     expect(markup).toContain("Operations");
     expect(markup).toContain("Character");
     expect(markup).toContain("Spellbinding");
+    expect(markup).toContain("Navigate the runtime");
     expect(markup).toContain("Themes");
     expect(markup).toContain("Appearance Configuration");
     expect(markup).toContain("Preparing avatar");

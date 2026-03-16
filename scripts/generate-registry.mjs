@@ -254,6 +254,32 @@ const itemDefinitions = [
     ],
   },
   {
+    name: "notched-viewport-frame",
+    type: "registry:component",
+    title: "Notched Viewport Frame",
+    description: "Unified notched outline shell for viewport framing and overlay chrome.",
+    dependencies: ["@steez-ui/theme"],
+    registryDependencies: ["theme-tokens"],
+    files: [
+      { source: "packages/ui/src/components/NotchedViewportFrame.tsx", target: "components/steez/NotchedViewportFrame.tsx", type: "registry:component" },
+      { source: "packages/ui/src/components/NotchedViewportFrame.module.css", target: "components/steez/NotchedViewportFrame.module.css", type: "registry:style" },
+    ],
+  },
+  {
+    name: "radial-menu-overlay",
+    type: "registry:component",
+    title: "Radial Menu Overlay",
+    description: "Full-screen radial navigation surface built around the notched viewport shell.",
+    dependencies: ["@steez-ui/theme", "@steez-ui/icons"],
+    registryDependencies: ["theme-tokens", "icon-provider", "notched-viewport-frame"],
+    files: [
+      { source: "packages/ui/src/components/RadialMenuOverlay.tsx", target: "components/steez/RadialMenuOverlay.tsx", type: "registry:component" },
+      { source: "packages/ui/src/components/RadialMenuOverlay.module.css", target: "components/steez/RadialMenuOverlay.module.css", type: "registry:style" },
+      { source: "packages/ui/src/components/NotchedViewportFrame.tsx", target: "components/steez/NotchedViewportFrame.tsx", type: "registry:component" },
+      { source: "packages/ui/src/components/NotchedViewportFrame.module.css", target: "components/steez/NotchedViewportFrame.module.css", type: "registry:style" },
+    ],
+  },
+  {
     name: "theme-toggle",
     type: "registry:component",
     title: "Theme Toggle",
