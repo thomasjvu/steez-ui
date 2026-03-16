@@ -3,18 +3,18 @@ import React from "react";
 import styles from "./NotchedViewportFrame.module.css";
 
 const FRAME_SEGMENTS = [
-  "M18 34V18H34",
-  "M62 18H408",
-  "M408 18L438 48",
-  "M438 48H562",
-  "M562 48L592 18",
-  "M592 18H938",
-  "M966 18H982V34",
-  "M18 62V938",
-  "M982 62V938",
-  "M18 966V982H34",
-  "M62 982H938",
-  "M966 982H982V966",
+  "M14 38V24L24 14H40",
+  "M68 14H392",
+  "M392 14L424 46",
+  "M424 46H576",
+  "M576 46L608 14",
+  "M608 14H932",
+  "M960 14H976V30L966 40",
+  "M14 66V934",
+  "M986 66V934",
+  "M14 960V976H30L40 966",
+  "M68 986H932",
+  "M960 960L970 970V986H954",
 ] as const;
 
 export interface NotchedViewportFrameProps {

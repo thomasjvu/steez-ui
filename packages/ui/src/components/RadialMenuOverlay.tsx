@@ -227,6 +227,8 @@ export function RadialMenuOverlay({
     items.findIndex((item) => item.id === activeItem.id),
   );
   const angleStep = FULL_CIRCLE_DEGREES / Math.max(items.length, 1);
+  const stickLength = Math.hypot(stickOffset.x, stickOffset.y);
+  const stickAngle = Math.atan2(stickOffset.y, stickOffset.x);
 
   return (
     <div
@@ -340,6 +342,16 @@ export function RadialMenuOverlay({
                     updateStickFromPointer(event.clientX, event.clientY);
                   }}
                 >
+                  <div
+                    className={styles.stickStem}
+                    style={
+                      {
+                        "--stick-angle": `${stickAngle}rad`,
+                        "--stick-length": `${stickLength}px`,
+                      } as React.CSSProperties
+                    }
+                    aria-hidden="true"
+                  />
                   <div
                     className={`${styles.stickKnob} ${isDragging ? styles.stickKnobDragging : ""} ${
                       isPending ? styles.stickKnobPending : ""

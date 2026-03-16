@@ -22,14 +22,14 @@
 
 .segment {
   fill: none;
-  stroke: color-mix(in srgb, var(--border-color) 78%, transparent);
+  stroke: color-mix(in srgb, var(--border-color) 88%, transparent);
   stroke-linecap: square;
   stroke-width: 1.45;
   vector-effect: non-scaling-stroke;
 }
 
 .strong .segment {
-  stroke: color-mix(in srgb, var(--text-primary) 30%, transparent);
+  stroke: color-mix(in srgb, var(--text-primary) 38%, transparent);
 }
 
 .content {
