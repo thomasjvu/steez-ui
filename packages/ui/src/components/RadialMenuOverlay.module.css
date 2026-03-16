@@ -15,7 +15,7 @@
   inset: 0;
   padding: 0;
   border: 0;
-  background: color-mix(in srgb, var(--bg-primary) 56%, transparent);
+  background: color-mix(in srgb, var(--bg-primary) 68%, transparent);
   backdrop-filter: blur(6px);
   cursor: pointer;
 }
@@ -27,7 +27,7 @@
 .panel {
   position: relative;
   min-height: 100%;
-  background: color-mix(in srgb, var(--bg-primary) 97%, transparent);
+  background: color-mix(in srgb, var(--bg-primary) 98%, transparent);
   overflow: hidden;
 }
 
@@ -41,8 +41,8 @@
   display: grid;
   grid-template-rows: auto 1fr auto;
   min-height: 100%;
-  padding: clamp(1.6rem, 2vw, 2rem) clamp(1.6rem, 3vw, 2.6rem)
-    clamp(1.4rem, 2vw, 1.8rem);
+  padding: clamp(2rem, 3vw, 2.8rem) clamp(2rem, 4vw, 3.4rem)
+    clamp(1.8rem, 3vw, 2.3rem);
   gap: 1.35rem;
 }
 
@@ -152,7 +152,11 @@
   align-items: center;
   width: fit-content;
   min-height: 2rem;
+  padding: 0;
+  border: 0;
+  background: none;
   color: var(--text-primary);
+  cursor: pointer;
 }
 
 .detailLink:hover {
@@ -215,8 +219,8 @@
   position: absolute;
   inset: 50%;
   translate: -50% -50%;
-  width: 8.8rem;
-  height: 8.8rem;
+  width: 9rem;
+  height: 9rem;
   border-radius: 50%;
   border: 1px solid color-mix(in srgb, var(--border-color) 86%, transparent);
   background: color-mix(in srgb, var(--bg-primary) 95%, transparent);
@@ -243,8 +247,11 @@
   justify-items: center;
   gap: 0.45rem;
   width: max-content;
+  padding: 0;
+  border: 0;
+  background: none;
   color: inherit;
-  text-decoration: none;
+  cursor: pointer;
   transform:
     translate(-50%, -50%)
     rotate(var(--wheel-angle))
@@ -295,6 +302,63 @@
 .nodeActive .nodeMarker {
   background: var(--text-primary);
   color: var(--bg-primary);
+}
+
+.stickZone {
+  position: absolute;
+  inset: 50%;
+  width: 42%;
+  height: 42%;
+  translate: -50% -50%;
+  border-radius: 50%;
+  touch-action: none;
+}
+
+.stickKnob {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3.75rem;
+  height: 3.75rem;
+  translate: calc(-50% + var(--stick-x, 0px)) calc(-50% + var(--stick-y, 0px));
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--border-color) 88%, transparent);
+  background: color-mix(in srgb, var(--bg-primary) 97%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--bg-primary) 72%, transparent);
+  transition:
+    translate 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+.stickKnob::before,
+.stickKnob::after {
+  content: "";
+  position: absolute;
+  inset: 50%;
+  translate: -50% -50%;
+  background: color-mix(in srgb, var(--border-color) 72%, transparent);
+}
+
+.stickKnob::before {
+  width: 42%;
+  height: 1px;
+}
+
+.stickKnob::after {
+  width: 1px;
+  height: 42%;
+}
+
+.stickKnobDragging,
+.stickKnobPending {
+  border-color: color-mix(in srgb, var(--text-primary) 42%, transparent);
+  background: color-mix(in srgb, var(--bg-secondary) 86%, transparent);
+}
+
+.stickKnobDragging {
+  transform: scale(1.04);
 }
 
 .footer {

@@ -5,6 +5,11 @@ import { CloseIcon } from "@steez-ui/icons";
 import { NotchedViewportFrame } from "./NotchedViewportFrame.js";
 import styles from "./RadialMenuOverlay.module.css";
 
+const FULL_CIRCLE_DEGREES = 360;
+const JOYSTICK_MAX_RADIUS_RATIO = 0.28;
+const JOYSTICK_ACTIVATION_RATIO = 0.34;
+const JOYSTICK_COMMIT_RATIO = 0.78;
+
 export interface RadialMenuItem {
   id: string;
   label: string;
@@ -42,7 +47,22 @@ export function RadialMenuOverlay({
   closeLabel = "Close navigation",
   ariaLabel = "Site navigation",
 }: RadialMenuOverlayProps) {
+  const [isPending, startTransition] = React.useTransition();
   const [activeId, setActiveId] = React.useState(items[0]?.id ?? "");
+  const [isDragging, setIsDragging] = React.useState(false);
+  const [stickOffset, setStickOffset] = React.useState({ x: 0, y: 0 });
+  const wheelRef = React.useRef<HTMLDivElement | null>(null);
+  const activeIdRef = React.useRef(activeId);
+  const dragPointerIdRef = React.useRef<number | null>(null);
+  const itemsRef = React.useRef(items);
+  const onCloseRef = React.useRef(onClose);
+
+  itemsRef.current = items;
+  onCloseRef.current = onClose;
+
+  React.useEffect(() => {
+    activeIdRef.current = activeId;
+  }, [activeId]);
 
   React.useEffect(() => {
     if (!open) {
@@ -50,6 +70,9 @@ export function RadialMenuOverlay({
     }
 
     setActiveId(items[0]?.id ?? "");
+    setStickOffset({ x: 0, y: 0 });
+    setIsDragging(false);
+    dragPointerIdRef.current = null;
     return undefined;
   }, [items, open]);
 
@@ -78,12 +101,132 @@ export function RadialMenuOverlay({
     return null;
   }
 
+  const getClosestItem = (angle: number) => {
+    let closest = items[0];
+    let closestDistance = Number.POSITIVE_INFINITY;
+
+    items.forEach((item, index) => {
+      const itemAngle = -90 + (FULL_CIRCLE_DEGREES / Math.max(items.length, 1)) * index;
+      const normalizedDistance = Math.abs(
+        ((((angle - itemAngle) % FULL_CIRCLE_DEGREES) + 540) % FULL_CIRCLE_DEGREES) - 180,
+      );
+
+      if (normalizedDistance < closestDistance) {
+        closest = item;
+        closestDistance = normalizedDistance;
+      }
+    });
+
+    return closest;
+  };
+
+  const resetStick = React.useCallback(() => {
+    dragPointerIdRef.current = null;
+    setIsDragging(false);
+    setStickOffset({ x: 0, y: 0 });
+  }, []);
+
+  const triggerItem = React.useCallback((item: RadialMenuItem) => {
+    item.onSelect?.();
+
+    if (item.href && typeof window !== "undefined") {
+      if (item.href.startsWith("#")) {
+        const target = document.querySelector<HTMLElement>(item.href);
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        } else {
+          window.location.hash = item.href;
+        }
+      } else {
+        window.location.assign(item.href);
+      }
+    }
+
+    onCloseRef.current();
+  }, []);
+
+  const updateStickFromPointer = React.useCallback(
+    (clientX: number, clientY: number) => {
+      const wheel = wheelRef.current;
+      if (!wheel) {
+        return 0;
+      }
+
+      const rect = wheel.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const deltaX = clientX - centerX;
+      const deltaY = clientY - centerY;
+      const distance = Math.hypot(deltaX, deltaY);
+      const maxDistance = Math.min(rect.width, rect.height) * JOYSTICK_MAX_RADIUS_RATIO;
+      const clampRatio = distance > maxDistance && distance > 0 ? maxDistance / distance : 1;
+      const x = deltaX * clampRatio;
+      const y = deltaY * clampRatio;
+      const normalizedDistance = maxDistance > 0 ? distance / maxDistance : 0;
+
+      setStickOffset({ x, y });
+
+      if (normalizedDistance >= JOYSTICK_ACTIVATION_RATIO) {
+        const nextItem = getClosestItem((Math.atan2(y, x) * 180) / Math.PI);
+        if (nextItem.id !== activeIdRef.current) {
+          activeIdRef.current = nextItem.id;
+          startTransition(() => {
+            setActiveId(nextItem.id);
+          });
+        }
+      }
+
+      return normalizedDistance;
+    },
+    [getClosestItem],
+  );
+
+  React.useEffect(() => {
+    if (!isDragging || typeof window === "undefined") {
+      return undefined;
+    }
+
+    const handlePointerMove = (event: PointerEvent) => {
+      if (dragPointerIdRef.current !== null && event.pointerId !== dragPointerIdRef.current) {
+        return;
+      }
+
+      updateStickFromPointer(event.clientX, event.clientY);
+    };
+
+    const handlePointerEnd = (event: PointerEvent) => {
+      if (dragPointerIdRef.current !== null && event.pointerId !== dragPointerIdRef.current) {
+        return;
+      }
+
+      const progress = updateStickFromPointer(event.clientX, event.clientY);
+      const selectedItem =
+        itemsRef.current.find((item) => item.id === activeIdRef.current) ?? itemsRef.current[0];
+
+      resetStick();
+
+      if (progress >= JOYSTICK_COMMIT_RATIO && selectedItem) {
+        triggerItem(selectedItem);
+      }
+    };
+
+    window.addEventListener("pointermove", handlePointerMove, { passive: true });
+    window.addEventListener("pointerup", handlePointerEnd);
+    window.addEventListener("pointercancel", handlePointerEnd);
+
+    return () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerup", handlePointerEnd);
+      window.removeEventListener("pointercancel", handlePointerEnd);
+    };
+  }, [isDragging, resetStick, triggerItem, updateStickFromPointer]);
+
   const activeItem = items.find((item) => item.id === activeId) ?? items[0];
   const activeIndex = Math.max(
     0,
     items.findIndex((item) => item.id === activeItem.id),
   );
-  const angleStep = 360 / Math.max(items.length, 1);
+  const angleStep = FULL_CIRCLE_DEGREES / Math.max(items.length, 1);
 
   return (
     <div
@@ -130,23 +273,18 @@ export function RadialMenuOverlay({
                 </div>
                 <div className={styles.detailTitle}>{activeItem.label}</div>
                 <p className={styles.detailBody}>{activeItem.body}</p>
-                {activeItem.href ? (
-                  <a
-                    className={styles.detailLink}
-                    href={activeItem.href}
-                    onClick={() => {
-                      activeItem.onSelect?.();
-                      onClose();
-                    }}
-                  >
-                    Open section
-                  </a>
-                ) : null}
+                <button
+                  type="button"
+                  className={styles.detailLink}
+                  onClick={() => triggerItem(activeItem)}
+                >
+                  Open section
+                </button>
               </div>
             </div>
 
             <div className={styles.wheelWrap}>
-              <div className={styles.wheel}>
+              <div ref={wheelRef} className={styles.wheel}>
                 <div className={styles.outerRing} aria-hidden="true" />
                 <div className={styles.innerRing} aria-hidden="true" />
                 <div className={styles.axisHorizontal} aria-hidden="true" />
@@ -157,21 +295,24 @@ export function RadialMenuOverlay({
                   const isActive = item.id === activeItem.id;
 
                   return (
-                    <a
+                    <button
+                      type="button"
                       key={item.id}
-                      href={item.href}
                       className={`${styles.node} ${isActive ? styles.nodeActive : ""}`}
                       style={
                         {
                           "--wheel-angle": `${angle}deg`,
                         } as React.CSSProperties
                       }
-                      onMouseEnter={() => setActiveId(item.id)}
+                      onMouseEnter={() => {
+                        if (!isDragging) {
+                          setActiveId(item.id);
+                        }
+                      }}
                       onFocus={() => setActiveId(item.id)}
                       onClick={() => {
                         setActiveId(item.id);
-                        item.onSelect?.();
-                        onClose();
+                        triggerItem(item);
                       }}
                       aria-current={isActive ? "true" : undefined}
                     >
@@ -180,17 +321,37 @@ export function RadialMenuOverlay({
                         {item.shortLabel ?? String(index + 1).padStart(2, "0")}
                       </span>
                       <span className={styles.nodeLabel}>{item.label}</span>
-                    </a>
+                    </button>
                   );
                 })}
 
                 <div className={styles.core}>
-                  <div className={styles.coreKicker}>Quick jump</div>
+                  <div className={styles.coreKicker}>Control stick</div>
                   <div className={styles.coreTitle}>{activeItem.label}</div>
                   <div className={styles.coreMeta}>
-                    {String(activeIndex + 1).padStart(2, "0")} /{" "}
-                    {String(items.length).padStart(2, "0")}
+                    Drag out. Release at the edge.
                   </div>
+                </div>
+                <div
+                  className={styles.stickZone}
+                  onPointerDown={(event) => {
+                    dragPointerIdRef.current = event.pointerId;
+                    setIsDragging(true);
+                    updateStickFromPointer(event.clientX, event.clientY);
+                  }}
+                >
+                  <div
+                    className={`${styles.stickKnob} ${isDragging ? styles.stickKnobDragging : ""} ${
+                      isPending ? styles.stickKnobPending : ""
+                    }`}
+                    style={
+                      {
+                        "--stick-x": `${stickOffset.x}px`,
+                        "--stick-y": `${stickOffset.y}px`,
+                      } as React.CSSProperties
+                    }
+                    aria-hidden="true"
+                  />
                 </div>
               </div>
             </div>

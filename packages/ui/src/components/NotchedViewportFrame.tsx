@@ -2,6 +2,21 @@ import React from "react";
 
 import styles from "./NotchedViewportFrame.module.css";
 
+const FRAME_SEGMENTS = [
+  "M18 34V18H34",
+  "M62 18H408",
+  "M408 18L438 48",
+  "M438 48H562",
+  "M562 48L592 18",
+  "M592 18H938",
+  "M966 18H982V34",
+  "M18 62V938",
+  "M982 62V938",
+  "M18 966V982H34",
+  "M62 982H938",
+  "M966 982H982V966",
+] as const;
+
 export interface NotchedViewportFrameProps {
   className?: string;
   contentClassName?: string;
@@ -29,10 +44,9 @@ export function NotchedViewportFrame({
         viewBox="0 0 1000 1000"
         preserveAspectRatio="none"
       >
-        <path
-          className={styles.path}
-          d="M26 12H430L454 38H546L570 12H974L988 26V974L974 988H26L12 974V26L26 12Z"
-        />
+        {FRAME_SEGMENTS.map((segment) => (
+          <path key={segment} className={styles.segment} d={segment} />
+        ))}
       </svg>
       {children ? (
         <div className={`${styles.content} ${contentClassName}`.trim()}>
