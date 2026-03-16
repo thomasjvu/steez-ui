@@ -150,6 +150,22 @@
   align-items: center;
 }
 
+.previewLinkList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.previewLink {
+  width: fit-content;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.previewLink:hover {
+  color: var(--text-primary);
+}
+
 .previewColumn {
   display: flex;
   flex-direction: column;

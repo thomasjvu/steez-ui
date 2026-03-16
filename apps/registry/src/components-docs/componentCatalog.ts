@@ -38,6 +38,19 @@ export type ComponentFilter = (typeof COMPONENT_FILTERS)[number]["value"];
 
 export const COMPONENT_DOCS: ComponentDoc[] = [
   {
+    slug: "ascii-ripple-text",
+    title: "ASCII Ripple Text",
+    category: "feedback",
+    summary: "Hover-driven glitch ripple that scrambles characters outward from the cursor position.",
+    description: "Use AsciiRippleText for editorial links, launch-page navigation, and mono-heavy text moments where you want motion without adding glow, gradients, or a full button shell.",
+    packageImport: 'import { AsciiRippleText } from "@steez-ui/ui";',
+    usage: `<a href="/docs">
+  <AsciiRippleText>Documentation</AsciiRippleText>
+</a>`,
+    related: ["blink-text", "stroked-text", "button"],
+    tags: ["motion", "text", "editorial"],
+  },
+  {
     slug: "avatar-stage",
     title: "Avatar Stage",
     category: "surfaces",

@@ -32,6 +32,18 @@ const itemDefinitions = [
     ],
   },
   {
+    name: "ascii-ripple-text",
+    type: "registry:component",
+    title: "ASCII Ripple Text",
+    description: "Hover-driven ASCII glitch ripple for editorial text links and mono-heavy navigation moments.",
+    dependencies: ["@steez-ui/theme"],
+    registryDependencies: ["theme-tokens"],
+    files: [
+      { source: "packages/ui/src/components/AsciiRippleText.tsx", target: "components/steez/AsciiRippleText.tsx", type: "registry:component" },
+      { source: "packages/ui/src/components/AsciiRippleText.module.css", target: "components/steez/AsciiRippleText.module.css", type: "registry:style" },
+    ],
+  },
+  {
     name: "avatar-stage",
     type: "registry:component",
     title: "Avatar Stage",

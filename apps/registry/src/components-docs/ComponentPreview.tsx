@@ -1,6 +1,7 @@
 import React from "react";
 
 import {
+  AsciiRippleText,
   AvatarStage,
   BlinkText,
   Button,
@@ -58,6 +59,22 @@ function ButtonPreview() {
       <Button>Deploy</Button>
       <Button variant="secondary">Preview</Button>
       <Button variant="danger">Remove</Button>
+    </div>
+  );
+}
+
+function AsciiRippleTextPreview() {
+  return (
+    <div className={styles.previewLinkList}>
+      <a className={styles.previewLink} href="#docs">
+        <AsciiRippleText>Roadside Picnic</AsciiRippleText>
+      </a>
+      <a className={styles.previewLink} href="#docs">
+        <AsciiRippleText>The City &amp; the City</AsciiRippleText>
+      </a>
+      <a className={styles.previewLink} href="#docs">
+        <AsciiRippleText>Parable of the Sower</AsciiRippleText>
+      </a>
     </div>
   );
 }
@@ -645,6 +662,7 @@ function StrokedTextPreview() {
 }
 
 const PREVIEW_MAP: Record<string, React.ComponentType> = {
+  "ascii-ripple-text": AsciiRippleTextPreview,
   "avatar-stage": AvatarStagePreview,
   "blink-text": BlinkTextPreview,
   button: ButtonPreview,

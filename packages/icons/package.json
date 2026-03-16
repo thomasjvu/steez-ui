@@ -1,6 +1,6 @@
 {
   "name": "@steez-ui/icons",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "description": "Shared icon exports and icon provider for Steez UI.",
   "license": "MIT",
   "type": "module",

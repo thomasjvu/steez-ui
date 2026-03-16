@@ -1,0 +1,34 @@
+.root {
+  position: relative;
+  display: inline-grid;
+  min-width: 0;
+  vertical-align: baseline;
+}
+
+.visual {
+  display: inline-block;
+  min-width: 0;
+  white-space: pre;
+  line-height: inherit;
+}
+
+.active {
+  user-select: none;
+}
+
+.active::selection {
+  background: transparent;
+  color: inherit;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

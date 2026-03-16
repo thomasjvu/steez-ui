@@ -1,3 +1,7 @@
+export {
+  AsciiRippleText,
+  type AsciiRippleTextProps,
+} from "./components/AsciiRippleText.js";
 export { AvatarStage, type AvatarStageProps } from "./components/AvatarStage.js";
 export { BlinkText, type BlinkTextProps } from "./components/BlinkText.js";
 export { Button, type ButtonProps } from "./components/Button.js";

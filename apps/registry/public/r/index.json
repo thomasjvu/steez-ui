@@ -12,6 +12,12 @@
     "description": "Shared icon provider and icon surface used by Steez primitives."
   },
   {
+    "name": "ascii-ripple-text",
+    "type": "registry:component",
+    "title": "ASCII Ripple Text",
+    "description": "Hover-driven ASCII glitch ripple for editorial text links and mono-heavy navigation moments."
+  },
+  {
     "name": "avatar-stage",
     "type": "registry:component",
     "title": "Avatar Stage",
