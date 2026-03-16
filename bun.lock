@@ -19,7 +19,7 @@
     },
     "apps/registry": {
       "name": "@steez-ui/registry",
-      "version": "0.1.6",
+      "version": "0.1.7",
       "dependencies": {
         "@steez-ui/icons": "workspace:*",
         "@steez-ui/theme": "workspace:*",
@@ -30,21 +30,22 @@
     },
     "packages/icons": {
       "name": "@steez-ui/icons",
-      "version": "0.1.6",
+      "version": "0.1.7",
       "peerDependencies": {
         "react": ">=18",
       },
     },
     "packages/theme": {
       "name": "@steez-ui/theme",
-      "version": "0.1.6",
+      "version": "0.1.7",
     },
     "packages/ui": {
       "name": "@steez-ui/ui",
-      "version": "0.1.6",
+      "version": "0.1.7",
       "dependencies": {
         "@steez-ui/icons": "workspace:*",
         "@steez-ui/theme": "workspace:*",
+        "three": "^0.179.1",
       },
       "peerDependencies": {
         "react": ">=18",
@@ -438,6 +439,8 @@
     "strip-literal": ["strip-literal@3.1.0", "", { "dependencies": { "js-tokens": "^9.0.1" } }, "sha512-8r3mkIM/2+PpjHoOtiAW8Rg3jJLHaV7xPwG+YRGrv6FP0wwk/toTpATxWYOW0BKdWwl82VT2tFYi5DlROa0Mxg=="],
 
     "supports-color": ["supports-color@10.2.2", "", {}, "sha512-SS+jx45GF1QjgEXQx4NJZV9ImqmO2NPz5FNsIHrsDjh2YsHnawpan7SNQ1o8NuhrbHZy9AZhIoCUiCeaW/C80g=="],
+
+    "three": ["three@0.179.1", "", {}, "sha512-5y/elSIQbrvKOISxpwXCR4sQqHtGiOI+MKLc3SsBdDXA2hz3Mdp3X59aUp8DyybMa34aeBwbFTpdoLJaUDEWSw=="],
 
     "tinybench": ["tinybench@2.9.0", "", {}, "sha512-0+DUvqWMValLmha6lr4kD8iAMK1HzV0/aKnCtWb9v9641TnP/MFb7Pc2bxoxQjTXAErryXVgUOfv2YqNllqGeg=="],
 

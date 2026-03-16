@@ -192,6 +192,12 @@
     "description": "Framed header row for settings and control panels with optional actions."
   },
   {
+    "name": "signal-trail-backdrop",
+    "type": "registry:component",
+    "title": "Signal Trail Backdrop",
+    "description": "WebGL signal-field backdrop for technical hero and viewer surfaces."
+  },
+  {
     "name": "stat-card",
     "type": "registry:component",
     "title": "Stat Card",

@@ -101,9 +101,9 @@ GitHub Actions mirror the same CI, npm publish, and Cloudflare Pages deploy path
 
 ## Current Packages
 
-- `@steez-ui/theme@0.1.7`
-- `@steez-ui/icons@0.1.7`
-- `@steez-ui/ui@0.1.7`
+- `@steez-ui/theme@0.1.8`
+- `@steez-ui/icons@0.1.8`
+- `@steez-ui/ui@0.1.8`
 
 ## External Setup
 

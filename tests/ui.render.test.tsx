@@ -30,6 +30,7 @@ import {
   RuntimeOrbitDiagram,
   Section,
   SectionHeader,
+  SignalTrailBackdrop,
   SegmentedControl,
   StatCard,
   StatusMessage,
@@ -138,6 +139,9 @@ describe("steez ui primitives", () => {
           <div>Section body</div>
         </Section>
         <SectionHeader title="Appearance Configuration" />
+        <div style={{ position: "relative", minHeight: "10rem" }}>
+          <SignalTrailBackdrop className="signalTest" />
+        </div>
         <StatCard label="Messages" value="1,248" />
         <StatusMessage type="success" message="Built." />
         <StrokedText animateOnMount>Spellbinding</StrokedText>
@@ -156,6 +160,7 @@ describe("steez ui primitives", () => {
     expect(markup).toContain("Themes");
     expect(markup).toContain("Appearance Configuration");
     expect(markup).toContain("Preparing avatar");
+    expect(markup).toContain("signalTest");
     expect(markup).toContain("Widget body");
   });
 });

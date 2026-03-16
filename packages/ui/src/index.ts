@@ -79,6 +79,10 @@ export {
   type SectionHeaderProps,
 } from "./components/SectionHeader.js";
 export {
+  SignalTrailBackdrop,
+  type SignalTrailBackdropProps,
+} from "./components/SignalTrailBackdrop.js";
+export {
   SegmentedControl,
   type SegmentedControlOption,
   type SegmentedControlProps,

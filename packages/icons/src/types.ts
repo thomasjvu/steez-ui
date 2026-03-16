@@ -21,4 +21,14 @@ export type SteezIconName =
   | "eye"
   | "sun"
   | "moon"
-  | "lightCross";
+  | "lightCross"
+  | "github"
+  | "twitter"
+  | "instagram"
+  | "youtube"
+  | "tiktok"
+  | "companion"
+  | "globe"
+  | "integrationsTile"
+  | "status"
+  | "workflowsTile";

@@ -400,6 +400,18 @@ const itemDefinitions = [
     ],
   },
   {
+    name: "signal-trail-backdrop",
+    type: "registry:component",
+    title: "Signal Trail Backdrop",
+    description: "WebGL signal-field backdrop for technical hero and viewer surfaces.",
+    dependencies: ["@steez-ui/theme", "@steez-ui/icons", "three"],
+    registryDependencies: ["theme-tokens"],
+    files: [
+      { source: "packages/ui/src/components/SignalTrailBackdrop.tsx", target: "components/steez/SignalTrailBackdrop.tsx", type: "registry:component" },
+      { source: "packages/ui/src/components/SignalTrailBackdrop.module.css", target: "components/steez/SignalTrailBackdrop.module.css", type: "registry:style" },
+    ],
+  },
+  {
     name: "stat-card",
     type: "registry:component",
     title: "Stat Card",

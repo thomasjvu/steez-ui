@@ -499,6 +499,19 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
     tags: ["header", "settings", "actions"],
   },
   {
+    slug: "signal-trail-backdrop",
+    title: "Signal Trail Backdrop",
+    category: "surfaces",
+    summary: "WebGL signal-field backdrop for avatar stages and technical hero surfaces.",
+    description: "Use SignalTrailBackdrop when a surface needs the animated figure-field treatment without reauthoring the Three.js shader and resize lifecycle locally.",
+    packageImport: 'import { SignalTrailBackdrop } from "@steez-ui/ui";',
+    usage: `<div style={{ position: "relative", minHeight: "22rem" }}>
+  <SignalTrailBackdrop color="#7ae4ff" signalDensity={0.36} />
+</div>`,
+    related: ["avatar-stage", "hexagon-grid"],
+    tags: ["webgl", "backdrop", "motion"],
+  },
+  {
     slug: "stat-card",
     title: "Stat Card",
     category: "surfaces",

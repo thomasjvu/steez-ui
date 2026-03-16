@@ -215,6 +215,24 @@
   background: color-mix(in srgb, var(--bg-primary) 92%, transparent);
 }
 
+.signalTrailPreview {
+  position: relative;
+  min-height: 18rem;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  background: var(--bg-primary);
+}
+
+.signalTrailCard {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  max-width: 14rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--bg-primary) 90%, transparent);
+}
+
 .loadingScreenPreview,
 .loadingOverlayPreview {
   position: relative;
