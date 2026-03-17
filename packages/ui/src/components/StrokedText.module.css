@@ -9,7 +9,8 @@
 }
 
 .animateOnMount {
-  animation: strokedTextBlink 1s steps(1, end) 0.18s both;
+  animation: strokedTextBlink 1s steps(1, end)
+    var(--stroked-text-delay, 0.18s) both;
 }
 
 @supports not (-webkit-text-stroke: 1px black) {
@@ -18,7 +19,8 @@
   }
 
   .animateOnMount {
-    animation: strokedTextFallbackBlink 1s steps(1, end) 0.18s both;
+    animation: strokedTextFallbackBlink 1s steps(1, end)
+      var(--stroked-text-delay, 0.18s) both;
   }
 }
 

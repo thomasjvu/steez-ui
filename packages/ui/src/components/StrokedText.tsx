@@ -7,6 +7,7 @@ export interface StrokedTextProps extends React.HTMLAttributes<HTMLSpanElement> 
   color?: string;
   strokeWidth?: number | string;
   animateOnMount?: boolean;
+  animationDelay?: number | string;
   fallbackOpacity?: number;
 }
 
@@ -15,6 +16,7 @@ export function StrokedText({
   color,
   strokeWidth = "clamp(1px, 0.11vw, 1.8px)",
   animateOnMount = false,
+  animationDelay = "0.18s",
   fallbackOpacity = 0.18,
   className = "",
   style,
@@ -25,6 +27,8 @@ export function StrokedText({
     ["--stroked-text-color" as string]: color,
     ["--stroked-text-width" as string]:
       typeof strokeWidth === "number" ? `${strokeWidth}px` : strokeWidth,
+    ["--stroked-text-delay" as string]:
+      typeof animationDelay === "number" ? `${animationDelay}ms` : animationDelay,
     ["--stroked-text-fallback-opacity" as string]: String(fallbackOpacity),
   } as React.CSSProperties;
 

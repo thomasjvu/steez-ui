@@ -3,7 +3,7 @@
   inset: 0;
   z-index: 120;
   display: grid;
-  padding: 1rem;
+  padding: var(--radial-menu-frame-inset, var(--page-frame-inset, 1rem));
 }
 
 .contained {
@@ -171,11 +171,12 @@
 
 .wheel {
   position: relative;
-  width: min(100%, 32rem);
+  width: min(100%, 31rem);
   aspect-ratio: 1;
   --wheel-accent: rgba(244, 244, 244, 0.94);
   --wheel-accent-dim: rgba(214, 214, 214, 0.82);
-  --wheel-accent-soft: rgba(244, 244, 244, 0.22);
+  --wheel-accent-soft: rgba(244, 244, 244, 0.16);
+  --wheel-deep-shadow: rgba(0, 0, 0, 0.54);
 }
 
 .outerRing,
@@ -196,17 +197,21 @@
 }
 
 .outerRing {
-  width: 68%;
-  height: 68%;
-  border: 1px solid color-mix(in srgb, var(--wheel-accent) 32%, transparent);
-  animation: orbitSpinClockwise 22s linear infinite;
+  width: 72%;
+  height: 72%;
+  border: 1px solid color-mix(in srgb, var(--wheel-accent) 24%, transparent);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.018),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.018);
+  animation: orbitSpinClockwise 26s linear infinite;
 }
 
 .innerRing {
-  width: 44%;
-  height: 44%;
-  border: 1px solid color-mix(in srgb, var(--wheel-accent-dim) 28%, transparent);
-  animation: orbitSpinCounter 15s linear infinite;
+  width: 48%;
+  height: 48%;
+  border: 1px solid color-mix(in srgb, var(--wheel-accent-dim) 22%, transparent);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.014);
+  animation: orbitSpinCounter 18s linear infinite;
 }
 
 .outerRing::before,
@@ -220,51 +225,51 @@
 }
 
 .outerRing::before {
-  inset: 0.65rem;
-  border: 1px dashed color-mix(in srgb, var(--wheel-accent-dim) 30%, transparent);
-  opacity: 0.5;
+  inset: 0.72rem;
+  border: 1px dashed color-mix(in srgb, var(--wheel-accent-dim) 16%, transparent);
+  opacity: 0.54;
 }
 
 .outerRing::after {
-  inset: 0.9rem;
+  inset: 0.88rem;
   background:
     conic-gradient(
-      from 104deg,
-      transparent 0deg 46deg,
-      color-mix(in srgb, var(--wheel-accent) 48%, transparent) 46deg 62deg,
-      transparent 62deg 176deg,
-      color-mix(in srgb, var(--wheel-accent-dim) 44%, transparent) 176deg 192deg,
-      transparent 192deg 286deg,
-      color-mix(in srgb, var(--wheel-accent) 56%, transparent) 286deg 304deg,
-      transparent 308deg 360deg
+      from 92deg,
+      transparent 0deg 32deg,
+      color-mix(in srgb, var(--wheel-accent) 40%, transparent) 32deg 66deg,
+      transparent 66deg 174deg,
+      color-mix(in srgb, var(--wheel-accent-dim) 30%, transparent) 174deg 208deg,
+      transparent 208deg 292deg,
+      color-mix(in srgb, var(--wheel-accent) 44%, transparent) 292deg 326deg,
+      transparent 326deg 360deg
     );
-  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
-  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
-  opacity: 0.9;
-  animation: orbitSpinCounter 10.5s linear infinite;
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+  opacity: 0.8;
+  animation: orbitSpinCounter 16s linear infinite;
 }
 
 .innerRing::before {
-  inset: 0.55rem;
-  border: 1px dashed color-mix(in srgb, var(--wheel-accent-dim) 20%, transparent);
-  opacity: 0.5;
+  inset: 0.58rem;
+  border: 1px dashed color-mix(in srgb, var(--wheel-accent-dim) 14%, transparent);
+  opacity: 0.42;
 }
 
 .innerRing::after {
-  inset: 0.7rem;
+  inset: 0.72rem;
   background:
     conic-gradient(
-      from -84deg,
-      transparent 0deg 56deg,
-      color-mix(in srgb, var(--wheel-accent) 42%, transparent) 56deg 76deg,
-      transparent 76deg 218deg,
-      color-mix(in srgb, var(--wheel-accent-dim) 42%, transparent) 218deg 236deg,
-      transparent 238deg 360deg
+      from -72deg,
+      transparent 0deg 44deg,
+      color-mix(in srgb, var(--wheel-accent) 34%, transparent) 44deg 78deg,
+      transparent 78deg 228deg,
+      color-mix(in srgb, var(--wheel-accent-dim) 28%, transparent) 228deg 258deg,
+      transparent 258deg 360deg
     );
-  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
-  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
-  opacity: 0.82;
-  animation: orbitSpinClockwise 12s linear infinite;
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+  opacity: 0.74;
+  animation: orbitSpinClockwise 14s linear infinite;
 }
 
 .sweepRingOuter,
@@ -275,51 +280,51 @@
 }
 
 .sweepRingOuter {
-  width: 58%;
-  height: 58%;
+  width: 62%;
+  height: 62%;
   background:
     conic-gradient(
-      from 24deg,
-      transparent 0deg 102deg,
-      color-mix(in srgb, var(--wheel-accent) 28%, transparent) 102deg 132deg,
-      transparent 132deg 252deg,
-      color-mix(in srgb, var(--wheel-accent-dim) 24%, transparent) 252deg 280deg,
-      transparent 280deg 360deg
+      from 18deg,
+      transparent 0deg 82deg,
+      color-mix(in srgb, var(--wheel-accent) 14%, transparent) 82deg 148deg,
+      transparent 148deg 232deg,
+      color-mix(in srgb, var(--wheel-accent-dim) 11%, transparent) 232deg 292deg,
+      transparent 292deg 360deg
     );
-  opacity: 1;
-  animation: orbitSpinClockwise 16s linear infinite;
+  opacity: 0.88;
+  animation: orbitSpinClockwise 20s linear infinite;
 }
 
 .sweepRingInner {
-  width: 34%;
-  height: 34%;
+  width: 36%;
+  height: 36%;
   background:
     conic-gradient(
-      from 210deg,
-      transparent 0deg 120deg,
-      color-mix(in srgb, var(--wheel-accent-dim) 28%, transparent) 120deg 152deg,
-      transparent 152deg 300deg,
-      color-mix(in srgb, var(--wheel-accent) 24%, transparent) 300deg 324deg,
-      transparent 324deg 360deg
+      from 214deg,
+      transparent 0deg 96deg,
+      color-mix(in srgb, var(--wheel-accent-dim) 16%, transparent) 96deg 150deg,
+      transparent 150deg 276deg,
+      color-mix(in srgb, var(--wheel-accent) 12%, transparent) 276deg 320deg,
+      transparent 320deg 360deg
     );
-  opacity: 0.92;
-  animation: orbitSpinCounter 9s linear infinite;
+  opacity: 0.72;
+  animation: orbitSpinCounter 12s linear infinite;
 }
 
 .radarTicks {
-  width: 52%;
-  height: 52%;
+  width: 54%;
+  height: 54%;
   border-radius: 50%;
   background:
     repeating-conic-gradient(
       from -6deg,
-      color-mix(in srgb, var(--wheel-accent-dim) 18%, transparent) 0deg 1.6deg,
-      transparent 1.6deg 18deg
+      color-mix(in srgb, var(--wheel-accent-dim) 12%, transparent) 0deg 1.2deg,
+      transparent 1.2deg 22deg
     );
   -webkit-mask: radial-gradient(circle, transparent 0 57%, #000 57% 58.3%, transparent 58.3%);
   mask: radial-gradient(circle, transparent 0 57%, #000 57% 58.3%, transparent 58.3%);
-  opacity: 0.92;
-  animation: orbitSpinClockwise 26s linear infinite;
+  opacity: 0.5;
+  animation: orbitSpinClockwise 32s linear infinite;
 }
 
 .core {
@@ -327,14 +332,17 @@
   top: 50%;
   left: 50%;
   translate: -50% -50%;
-  width: 9.4rem;
-  height: 9.4rem;
+  width: 9.8rem;
+  height: 9.8rem;
   z-index: 1;
   border-radius: 50%;
-  border: 1px solid color-mix(in srgb, var(--wheel-accent) 34%, transparent);
+  border: 1px solid color-mix(in srgb, var(--wheel-accent) 22%, transparent);
   background:
-    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.035) 0%, transparent 58%),
-    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--bg-primary) 97%, black) 0%, #050505 100%);
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.042) 0%, rgba(255, 255, 255, 0.012) 34%, transparent 56%),
+    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--bg-primary) 98%, black) 0%, #050505 100%);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.015),
+    0 28px 64px var(--wheel-deep-shadow);
 }
 
 .core::before,
@@ -348,17 +356,17 @@
 }
 
 .core::before {
-  width: 76%;
-  height: 76%;
-  border: 1px solid color-mix(in srgb, var(--wheel-accent-dim) 34%, transparent);
-  opacity: 0.86;
+  width: 74%;
+  height: 74%;
+  border: 1px solid color-mix(in srgb, var(--wheel-accent-dim) 22%, transparent);
+  opacity: 0.74;
 }
 
 .core::after {
-  width: 38%;
-  height: 38%;
-  border: 1px solid color-mix(in srgb, var(--wheel-accent) 40%, transparent);
-  background: transparent;
+  width: 22%;
+  height: 22%;
+  background: rgba(244, 244, 244, 0.88);
+  box-shadow: 0 0 0 0.35rem rgba(244, 244, 244, 0.1);
 }
 
 .node {
@@ -377,7 +385,7 @@
   transform:
     translate(-50%, -50%)
     rotate(var(--wheel-angle))
-    translateY(-8.85rem)
+    translateY(-9.4rem)
     rotate(calc(var(--wheel-angle) * -1));
   transition: transform 180ms ease, color 180ms ease;
 }
@@ -388,14 +396,14 @@
   transform:
     translate(-50%, -50%)
     rotate(var(--wheel-angle))
-    translateY(-9.1rem)
+    translateY(-9.62rem)
     rotate(calc(var(--wheel-angle) * -1));
 }
 
 .nodeConnector {
   width: 1px;
-  height: 1.65rem;
-  background: color-mix(in srgb, var(--wheel-accent-dim) 34%, transparent);
+  height: 1.2rem;
+  background: color-mix(in srgb, var(--wheel-accent-dim) 18%, transparent);
 }
 
 .nodeMarker {
@@ -405,8 +413,10 @@
   width: 3.15rem;
   height: 3.15rem;
   border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--wheel-accent-dim) 34%, transparent);
-  background: color-mix(in srgb, var(--bg-primary) 97%, transparent);
+  border: 1px solid color-mix(in srgb, var(--wheel-accent-dim) 22%, transparent);
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.032) 0%, transparent 56%),
+    color-mix(in srgb, var(--bg-primary) 98%, transparent);
   color: var(--text-primary);
   font-family: var(--font-mono);
   font-size: 0.78rem;
@@ -432,8 +442,8 @@
   top: 50%;
   left: 50%;
   z-index: 2;
-  width: 48%;
-  height: 48%;
+  width: 46%;
+  height: 46%;
   translate: -50% -50%;
   border-radius: 50%;
   touch-action: none;
@@ -444,9 +454,9 @@
   top: 50%;
   left: 50%;
   width: max(var(--stick-length), 0px);
-  height: 2px;
+  height: 1px;
   border-radius: 999px;
-  background: linear-gradient(90deg, rgba(244, 244, 244, 0.12) 0%, rgba(244, 244, 244, 0.82) 100%);
+  background: linear-gradient(90deg, rgba(244, 244, 244, 0.08) 0%, rgba(244, 244, 244, 0.68) 100%);
   transform-origin: left center;
   transform: rotate(var(--stick-angle));
 }
@@ -455,12 +465,17 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 3.45rem;
-  height: 3.45rem;
+  width: 3.7rem;
+  height: 3.7rem;
   translate: calc(-50% + var(--stick-x, 0px)) calc(-50% + var(--stick-y, 0px));
   border-radius: 50%;
-  border: 1px solid rgba(244, 244, 244, 0.42);
-  background: radial-gradient(circle at 50% 50%, rgba(245, 245, 245, 0.16) 0%, rgba(5, 5, 5, 0.98) 72%);
+  border: 1px solid rgba(244, 244, 244, 0.28);
+  background:
+    radial-gradient(circle at 50% 50%, rgba(245, 245, 245, 0.14) 0%, transparent 42%),
+    radial-gradient(circle at 50% 50%, rgba(7, 7, 7, 0.98) 0%, rgba(5, 5, 5, 1) 72%);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.018),
+    0 20px 38px rgba(0, 0, 0, 0.4);
   transition:
     translate 160ms ease,
     border-color 160ms ease,
@@ -478,15 +493,16 @@
 }
 
 .stickKnob::before {
-  width: 58%;
-  height: 58%;
-  border: 1px solid rgba(244, 244, 244, 0.42);
+  width: 64%;
+  height: 64%;
+  border: 1px solid rgba(244, 244, 244, 0.2);
 }
 
 .stickKnob::after {
-  width: 20%;
-  height: 20%;
-  background: rgba(244, 244, 244, 0.82);
+  width: 28%;
+  height: 28%;
+  border: 1px solid rgba(244, 244, 244, 0.38);
+  background: rgba(244, 244, 244, 0.86);
 }
 
 .stickKnobDragging,
@@ -576,7 +592,7 @@
     transform:
       translate(-50%, -50%)
       rotate(var(--wheel-angle))
-      translateY(-7.7rem)
+      translateY(-8.05rem)
       rotate(calc(var(--wheel-angle) * -1));
   }
 
@@ -586,14 +602,14 @@
     transform:
       translate(-50%, -50%)
       rotate(var(--wheel-angle))
-      translateY(-7.95rem)
+      translateY(-8.25rem)
       rotate(calc(var(--wheel-angle) * -1));
   }
 }
 
 @media (max-width: 720px) {
   .overlay {
-    padding: 0.55rem;
+    padding: var(--radial-menu-frame-inset, 0.55rem);
   }
 
   .chrome {
@@ -621,7 +637,7 @@
     transform:
       translate(-50%, -50%)
       rotate(var(--wheel-angle))
-      translateY(-5.75rem)
+      translateY(-6rem)
       rotate(calc(var(--wheel-angle) * -1));
   }
 
@@ -631,7 +647,7 @@
     transform:
       translate(-50%, -50%)
       rotate(var(--wheel-angle))
-      translateY(-5.9rem)
+      translateY(-6.15rem)
       rotate(calc(var(--wheel-angle) * -1));
   }
 
