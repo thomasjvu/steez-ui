@@ -44,6 +44,7 @@
   padding: clamp(2.1rem, 3vw, 3rem) clamp(2.1rem, 4vw, 3.8rem)
     clamp(2rem, 3vw, 2.6rem);
   gap: 1.35rem;
+  animation: overlayBootBlink 420ms steps(2, end) 3;
 }
 
 .header,
@@ -172,6 +173,13 @@
   position: relative;
   width: min(100%, 32rem);
   aspect-ratio: 1;
+  --wheel-accent: color-mix(in srgb, var(--accent-primary, var(--text-primary)) 84%, white 8%);
+  --wheel-accent-soft: color-mix(
+    in srgb,
+    var(--accent-primary, var(--text-primary)) 28%,
+    transparent
+  );
+  filter: drop-shadow(0 0 20px color-mix(in srgb, var(--wheel-accent) 12%, transparent));
 }
 
 .outerRing,
@@ -181,6 +189,7 @@
   position: absolute;
   inset: 50%;
   translate: -50% -50%;
+  pointer-events: none;
 }
 
 .outerRing,
@@ -191,18 +200,80 @@
 .outerRing {
   width: 100%;
   height: 100%;
-  border: 1px solid color-mix(in srgb, var(--text-primary) 22%, transparent);
+  border: 1px solid color-mix(in srgb, var(--wheel-accent) 24%, transparent);
+  animation: orbitSpinClockwise 18s linear infinite;
 }
 
 .innerRing {
   width: 58%;
   height: 58%;
-  border: 1px solid color-mix(in srgb, var(--border-color) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--wheel-accent) 18%, transparent);
+  animation: orbitSpinCounter 13s linear infinite;
+}
+
+.outerRing::before,
+.outerRing::after,
+.innerRing::before,
+.innerRing::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.outerRing::before {
+  inset: 0.65rem;
+  border: 1px dashed color-mix(in srgb, var(--wheel-accent) 30%, transparent);
+  opacity: 0.78;
+}
+
+.outerRing::after {
+  inset: 0.9rem;
+  background:
+    conic-gradient(
+      from 110deg,
+      transparent 0deg 38deg,
+      color-mix(in srgb, var(--wheel-accent) 64%, transparent) 38deg 66deg,
+      transparent 66deg 168deg,
+      color-mix(in srgb, var(--wheel-accent) 42%, transparent) 168deg 194deg,
+      transparent 194deg 274deg,
+      color-mix(in srgb, var(--wheel-accent) 74%, transparent) 274deg 308deg,
+      transparent 308deg 360deg
+    );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+  opacity: 0.9;
+  animation: orbitSpinCounter 7.5s linear infinite;
+}
+
+.innerRing::before {
+  inset: 0.55rem;
+  border: 1px dashed color-mix(in srgb, var(--wheel-accent) 24%, transparent);
+  opacity: 0.72;
+}
+
+.innerRing::after {
+  inset: 0.7rem;
+  background:
+    conic-gradient(
+      from -70deg,
+      transparent 0deg 48deg,
+      color-mix(in srgb, var(--wheel-accent) 56%, transparent) 48deg 82deg,
+      transparent 82deg 210deg,
+      color-mix(in srgb, var(--wheel-accent) 48%, transparent) 210deg 238deg,
+      transparent 238deg 360deg
+    );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+  opacity: 0.76;
+  animation: orbitSpinClockwise 8.5s linear infinite;
 }
 
 .axisHorizontal,
 .axisVertical {
-  background: color-mix(in srgb, var(--border-color) 58%, transparent);
+  background: color-mix(in srgb, var(--wheel-accent) 30%, transparent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--wheel-accent) 12%, transparent);
+  animation: axisPulse 4.2s ease-in-out infinite;
 }
 
 .axisHorizontal {
@@ -223,21 +294,44 @@
   height: 9.4rem;
   z-index: 1;
   border-radius: 50%;
-  border: 1px solid color-mix(in srgb, var(--text-primary) 24%, transparent);
-  background: color-mix(in srgb, var(--bg-primary) 97%, transparent);
-  display: grid;
-  place-items: center;
-  align-content: center;
-  padding: 0.95rem;
-  text-align: center;
+  border: 1px solid color-mix(in srgb, var(--wheel-accent) 30%, transparent);
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      color-mix(in srgb, white 30%, transparent) 0%,
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      color-mix(in srgb, var(--wheel-accent) 14%, var(--bg-primary)) 0%,
+      color-mix(in srgb, var(--bg-primary) 96%, black) 100%
+    );
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--wheel-accent) 14%, transparent),
+    0 0 26px color-mix(in srgb, var(--wheel-accent) 10%, transparent);
 }
 
-.coreTitle {
-  font-family: var(--font-primary);
-  font-size: 1.18rem;
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 1;
+.core::before,
+.core::after {
+  content: "";
+  position: absolute;
+  inset: 50%;
+  translate: -50% -50%;
+  border-radius: 50%;
+}
+
+.core::before {
+  width: 74%;
+  height: 74%;
+  border: 1px solid color-mix(in srgb, var(--wheel-accent) 26%, transparent);
+  opacity: 0.9;
+}
+
+.core::after {
+  width: 22%;
+  height: 22%;
+  background: color-mix(in srgb, var(--wheel-accent) 46%, var(--bg-primary));
+  box-shadow: 0 0 18px color-mix(in srgb, var(--wheel-accent) 16%, transparent);
 }
 
 .node {
@@ -274,7 +368,7 @@
 .nodeConnector {
   width: 1px;
   height: 1.3rem;
-  background: color-mix(in srgb, var(--border-color) 70%, transparent);
+  background: color-mix(in srgb, var(--wheel-accent) 26%, transparent);
 }
 
 .nodeMarker {
@@ -284,13 +378,20 @@
   width: 3.15rem;
   height: 3.15rem;
   border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--border-color) 82%, transparent);
-  background: color-mix(in srgb, var(--bg-primary) 97%, transparent);
+  border: 1px solid color-mix(in srgb, var(--wheel-accent) 28%, transparent);
+  background:
+    radial-gradient(
+      circle at 34% 28%,
+      color-mix(in srgb, white 24%, transparent) 0%,
+      transparent 30%
+    ),
+    color-mix(in srgb, var(--bg-primary) 97%, transparent);
   color: var(--text-primary);
   font-family: var(--font-mono);
   font-size: 0.78rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+  box-shadow: 0 0 18px color-mix(in srgb, var(--wheel-accent) 8%, transparent);
 }
 
 .nodeLabel {
@@ -301,8 +402,11 @@
 .node:hover .nodeMarker,
 .node:focus-visible .nodeMarker,
 .nodeActive .nodeMarker {
-  background: var(--text-primary);
+  background: color-mix(in srgb, var(--wheel-accent) 94%, white 6%);
   color: var(--bg-primary);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--bg-primary) 84%, transparent),
+    0 0 20px color-mix(in srgb, var(--wheel-accent) 20%, transparent);
 }
 
 .stickZone {
@@ -321,11 +425,17 @@
   top: 50%;
   left: 50%;
   width: max(var(--stick-length), 0px);
-  height: 1px;
+  height: 2px;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--text-primary) 34%, transparent);
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--wheel-accent) 12%, transparent) 0%,
+      color-mix(in srgb, var(--wheel-accent) 70%, transparent) 100%
+    );
   transform-origin: left center;
   transform: rotate(var(--stick-angle));
+  box-shadow: 0 0 12px color-mix(in srgb, var(--wheel-accent) 14%, transparent);
 }
 
 .stickKnob {
@@ -336,11 +446,23 @@
   height: 3.45rem;
   translate: calc(-50% + var(--stick-x, 0px)) calc(-50% + var(--stick-y, 0px));
   border-radius: 50%;
-  border: 1px solid color-mix(in srgb, var(--text-primary) 72%, transparent);
-  background: color-mix(in srgb, var(--text-primary) 90%, var(--bg-primary));
+  border: 1px solid color-mix(in srgb, var(--wheel-accent) 78%, transparent);
+  background:
+    radial-gradient(
+      circle at 34% 30%,
+      color-mix(in srgb, white 34%, transparent) 0%,
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      color-mix(in srgb, var(--wheel-accent) 76%, white 6%) 0%,
+      color-mix(in srgb, var(--wheel-accent) 48%, var(--bg-primary)) 58%,
+      color-mix(in srgb, var(--bg-primary) 92%, black) 100%
+    );
   box-shadow:
     0 0 0 1px color-mix(in srgb, var(--bg-primary) 84%, transparent),
-    0 10px 22px rgba(0, 0, 0, 0.16);
+    0 12px 26px rgba(0, 0, 0, 0.18),
+    0 0 24px color-mix(in srgb, var(--wheel-accent) 18%, transparent);
   transition:
     translate 160ms ease,
     border-color 160ms ease,
@@ -354,7 +476,7 @@
   position: absolute;
   inset: 50%;
   translate: -50% -50%;
-  background: color-mix(in srgb, var(--bg-primary) 86%, transparent);
+  background: color-mix(in srgb, var(--bg-primary) 88%, transparent);
 }
 
 .stickKnob::before {
@@ -369,8 +491,7 @@
 
 .stickKnobDragging,
 .stickKnobPending {
-  border-color: color-mix(in srgb, var(--text-primary) 96%, transparent);
-  background: color-mix(in srgb, var(--text-primary) 100%, var(--bg-primary));
+  border-color: color-mix(in srgb, var(--wheel-accent) 96%, transparent);
 }
 
 .stickKnobDragging {
@@ -383,6 +504,58 @@
 
 .footerContent {
   color: var(--text-secondary);
+}
+
+@keyframes overlayBootBlink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    opacity: 0.12;
+  }
+
+  30%,
+  50%,
+  70%,
+  90% {
+    opacity: 1;
+  }
+}
+
+@keyframes orbitSpinClockwise {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes orbitSpinCounter {
+  from {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+}
+
+@keyframes axisPulse {
+  0%,
+  100% {
+    opacity: 0.46;
+  }
+
+  50% {
+    opacity: 0.92;
+  }
 }
 
 @media (max-width: 980px) {

@@ -337,13 +337,7 @@ export function RadialMenuOverlay({
                   );
                 })}
 
-                <div className={styles.core}>
-                  <div className={styles.coreKicker}>Control stick</div>
-                  <div className={styles.coreTitle}>{activeItem.label}</div>
-                  <div className={styles.coreMeta}>
-                    Drag out. Release at the edge.
-                  </div>
-                </div>
+                <div className={styles.core} aria-hidden="true" />
                 <div
                   className={styles.stickZone}
                   onPointerDown={(event) => {
