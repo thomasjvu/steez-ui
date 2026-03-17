@@ -17,6 +17,7 @@ export interface AsciiRippleTextProps
   preserveSpaces?: boolean;
   spread?: number;
   disabled?: boolean;
+  wrap?: boolean;
 }
 
 interface WaveState {
@@ -31,6 +32,7 @@ export function AsciiRippleText({
   preserveSpaces = true,
   spread = 1,
   disabled = false,
+  wrap = false,
   className = "",
   ...props
 }: AsciiRippleTextProps) {
@@ -220,7 +222,10 @@ export function AsciiRippleText({
   }, [characterSet, disabled, durationMs, preserveSpaces, spread, text]);
 
   return (
-    <span className={`${styles.root} ${className}`.trim()} {...props}>
+    <span
+      className={`${styles.root} ${wrap ? styles.wrap : ""} ${className}`.trim()}
+      {...props}
+    >
       <span className={styles.srOnly}>{text}</span>
       <span ref={visualRef} className={styles.visual} aria-hidden="true">
         {text}

@@ -9,6 +9,7 @@ const FULL_CIRCLE_DEGREES = 360;
 const JOYSTICK_MAX_RADIUS_RATIO = 0.28;
 const JOYSTICK_ACTIVATION_RATIO = 0.34;
 const JOYSTICK_COMMIT_RATIO = 0.78;
+const EMPTY_ITEMS: readonly RadialMenuItem[] = [];
 
 export interface RadialMenuItem {
   id: string;
@@ -47,8 +48,9 @@ export function RadialMenuOverlay({
   closeLabel = "Close navigation",
   ariaLabel = "Site navigation",
 }: RadialMenuOverlayProps) {
+  const safeItems = items.length > 0 ? items : EMPTY_ITEMS;
   const [isPending, startTransition] = React.useTransition();
-  const [activeId, setActiveId] = React.useState(items[0]?.id ?? "");
+  const [activeId, setActiveId] = React.useState(safeItems[0]?.id ?? "");
   const [isDragging, setIsDragging] = React.useState(false);
   const [stickOffset, setStickOffset] = React.useState({ x: 0, y: 0 });
   const wheelRef = React.useRef<HTMLDivElement | null>(null);
@@ -69,12 +71,12 @@ export function RadialMenuOverlay({
       return undefined;
     }
 
-    setActiveId(items[0]?.id ?? "");
+    setActiveId(safeItems[0]?.id ?? "");
     setStickOffset({ x: 0, y: 0 });
     setIsDragging(false);
     dragPointerIdRef.current = null;
     return undefined;
-  }, [items, open]);
+  }, [open, safeItems]);
 
   React.useEffect(() => {
     if (!open || typeof window === "undefined") {
@@ -97,16 +99,20 @@ export function RadialMenuOverlay({
     };
   }, [onClose, open]);
 
-  if (!open || items.length === 0) {
-    return null;
-  }
+  const getClosestItem = React.useCallback((angle: number) => {
+    const currentItems = itemsRef.current;
+    const firstItem = currentItems[0];
 
-  const getClosestItem = (angle: number) => {
-    let closest = items[0];
+    if (!firstItem) {
+      return undefined;
+    }
+
+    let closest = firstItem;
     let closestDistance = Number.POSITIVE_INFINITY;
 
-    items.forEach((item, index) => {
-      const itemAngle = -90 + (FULL_CIRCLE_DEGREES / Math.max(items.length, 1)) * index;
+    currentItems.forEach((item, index) => {
+      const itemAngle =
+        -90 + (FULL_CIRCLE_DEGREES / Math.max(currentItems.length, 1)) * index;
       const normalizedDistance = Math.abs(
         ((((angle - itemAngle) % FULL_CIRCLE_DEGREES) + 540) % FULL_CIRCLE_DEGREES) - 180,
       );
@@ -118,7 +124,7 @@ export function RadialMenuOverlay({
     });
 
     return closest;
-  };
+  }, []);
 
   const resetStick = React.useCallback(() => {
     dragPointerIdRef.current = null;
@@ -168,7 +174,7 @@ export function RadialMenuOverlay({
 
       if (normalizedDistance >= JOYSTICK_ACTIVATION_RATIO) {
         const nextItem = getClosestItem((Math.atan2(y, x) * 180) / Math.PI);
-        if (nextItem.id !== activeIdRef.current) {
+        if (nextItem && nextItem.id !== activeIdRef.current) {
           activeIdRef.current = nextItem.id;
           startTransition(() => {
             setActiveId(nextItem.id);
@@ -221,12 +227,16 @@ export function RadialMenuOverlay({
     };
   }, [isDragging, resetStick, triggerItem, updateStickFromPointer]);
 
-  const activeItem = items.find((item) => item.id === activeId) ?? items[0];
+  if (!open || safeItems.length === 0) {
+    return null;
+  }
+
+  const activeItem = safeItems.find((item) => item.id === activeId) ?? safeItems[0];
   const activeIndex = Math.max(
     0,
-    items.findIndex((item) => item.id === activeItem.id),
+    safeItems.findIndex((item) => item.id === activeItem.id),
   );
-  const angleStep = FULL_CIRCLE_DEGREES / Math.max(items.length, 1);
+  const angleStep = FULL_CIRCLE_DEGREES / Math.max(safeItems.length, 1);
   const stickLength = Math.hypot(stickOffset.x, stickOffset.y);
   const stickAngle = Math.atan2(stickOffset.y, stickOffset.x);
 
@@ -271,7 +281,7 @@ export function RadialMenuOverlay({
               <div className={styles.detailPanel}>
                 <div className={styles.detailMeta}>
                   {String(activeIndex + 1).padStart(2, "0")} /{" "}
-                  {String(items.length).padStart(2, "0")}
+                  {String(safeItems.length).padStart(2, "0")}
                 </div>
                 <div className={styles.detailTitle}>{activeItem.label}</div>
                 <p className={styles.detailBody}>{activeItem.body}</p>
@@ -292,7 +302,7 @@ export function RadialMenuOverlay({
                 <div className={styles.axisHorizontal} aria-hidden="true" />
                 <div className={styles.axisVertical} aria-hidden="true" />
 
-                {items.map((item, index) => {
+                {safeItems.map((item, index) => {
                   const angle = -90 + angleStep * index;
                   const isActive = item.id === activeItem.id;
 

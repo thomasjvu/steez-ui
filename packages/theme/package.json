@@ -1,6 +1,6 @@
 {
   "name": "@steez-ui/theme",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "description": "Shared Steez UI theme tokens and compatibility aliases.",
   "license": "MIT",
   "type": "module",

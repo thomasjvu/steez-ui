@@ -5,11 +5,22 @@
   vertical-align: baseline;
 }
 
+.wrap {
+  display: block;
+  width: 100%;
+}
+
 .visual {
   display: inline-block;
   min-width: 0;
   white-space: pre;
   line-height: inherit;
+}
+
+.wrap .visual {
+  display: block;
+  width: 100%;
+  white-space: pre-wrap;
 }
 
 .active {
