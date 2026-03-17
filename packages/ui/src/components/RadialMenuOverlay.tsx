@@ -299,8 +299,9 @@ export function RadialMenuOverlay({
               <div ref={wheelRef} className={styles.wheel}>
                 <div className={styles.outerRing} aria-hidden="true" />
                 <div className={styles.innerRing} aria-hidden="true" />
-                <div className={styles.axisHorizontal} aria-hidden="true" />
-                <div className={styles.axisVertical} aria-hidden="true" />
+                <div className={styles.sweepRingOuter} aria-hidden="true" />
+                <div className={styles.sweepRingInner} aria-hidden="true" />
+                <div className={styles.radarTicks} aria-hidden="true" />
 
                 {safeItems.map((item, index) => {
                   const angle = -90 + angleStep * index;
