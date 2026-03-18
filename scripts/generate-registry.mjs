@@ -71,7 +71,7 @@ const itemDefinitions = [
     name: "button",
     type: "registry:component",
     title: "Button",
-    description: "Core button primitive with primary, secondary, and danger variants.",
+    description: "Core button primitive with standard and cyberpunk-styled variants.",
     dependencies: ["@steez-ui/theme", "@steez-ui/icons"],
     registryDependencies: ["theme-tokens", "icon-provider"],
     files: [

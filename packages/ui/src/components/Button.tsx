@@ -2,7 +2,12 @@ import React from "react";
 
 import styles from "../styles/Buttons.module.css";
 
-type ButtonVariant = "primary" | "secondary" | "danger";
+type ButtonVariant =
+  | "primary"
+  | "secondary"
+  | "danger"
+  | "cyberpunk3"
+  | "cyberpunk6";
 type ButtonSize = "small" | "medium" | "large";
 
 export interface ButtonProps
@@ -29,4 +34,3 @@ export function Button({
 }
 
 export default Button;
-

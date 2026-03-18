@@ -6,6 +6,10 @@ export { AvatarStage, type AvatarStageProps } from "./components/AvatarStage.js"
 export { BlinkText, type BlinkTextProps } from "./components/BlinkText.js";
 export { Button, type ButtonProps } from "./components/Button.js";
 export { CopyButton, type CopyButtonProps } from "./components/CopyButton.js";
+export {
+  AccordionFeatureCard,
+  type AccordionFeatureCardProps,
+} from "./components/AccordionFeatureCard.js";
 export { CyberpunkCheckbox, type CyberpunkCheckboxProps } from "./components/CyberpunkCheckbox.js";
 export {
   CyberpunkInput,

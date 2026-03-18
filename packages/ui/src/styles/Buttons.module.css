@@ -1,14 +1,34 @@
-.primary {
+.primary,
+.secondary,
+.danger,
+.cyberpunk3,
+.cyberpunk6 {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.5rem;
   padding: 8px 16px;
+  cursor: pointer;
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 1.25;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.primary {
   background: var(--interactive-primary-bg);
   color: var(--interactive-primary-fg);
   border: 1px solid var(--interactive-primary-border);
   border-radius: 6px;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  font-family: var(--font-mono);
-  font-weight: 600;
-  font-size: 0.875rem;
 }
 
 .primary:hover:not(:disabled) {
@@ -17,16 +37,10 @@
 }
 
 .secondary {
-  padding: 8px 16px;
   background: var(--interactive-secondary-bg);
   color: var(--interactive-secondary-fg);
   border: 1px solid var(--interactive-secondary-border);
   border-radius: 6px;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  font-family: var(--font-mono);
-  font-weight: 600;
-  font-size: 0.875rem;
 }
 
 .secondary:hover:not(:disabled) {
@@ -59,21 +73,123 @@
 }
 
 .danger {
-  padding: 8px 16px;
   background: var(--danger-bg);
   color: var(--danger);
   border: 1px solid var(--danger);
   border-radius: 6px;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  font-family: var(--font-mono);
-  font-weight: 600;
-  font-size: 0.875rem;
 }
 
 .danger:hover:not(:disabled) {
   background: var(--danger);
   color: var(--text-on-accent);
+}
+
+.cyberpunk3 {
+  padding: 0.625rem 1rem 0.75rem;
+  background: transparent;
+  color: var(--accent-primary);
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  border-radius: 0;
+  overflow: visible;
+}
+
+.cyberpunk3::before {
+  content: "";
+  position: absolute;
+  top: calc(100% + 1px);
+  right: 0;
+  width: 32%;
+  height: 0.55rem;
+  background: currentColor;
+  transition:
+    width var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.cyberpunk3::after {
+  content: "";
+  position: absolute;
+  top: calc(100% + 1px);
+  right: 32%;
+  width: 0;
+  height: 0;
+  border-top: 0.55rem solid currentColor;
+  border-left: 0.55rem solid transparent;
+  transition:
+    right var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.cyberpunk3:hover:not(:disabled) {
+  color: color-mix(in srgb, var(--accent-primary) 84%, var(--text-primary));
+}
+
+.cyberpunk3:hover:not(:disabled)::before {
+  width: 66%;
+}
+
+.cyberpunk3:hover:not(:disabled)::after {
+  right: 66%;
+}
+
+.cyberpunk6 {
+  padding: 0.625rem 1rem;
+  background: transparent;
+  color: var(--interactive-primary-bg);
+  border-top: 2px solid currentColor;
+  border-left: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  border-right: 0;
+  border-radius: 0;
+  overflow: visible;
+}
+
+.cyberpunk6::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: 100%;
+  width: 1.25rem;
+  height: calc(100% + 4px);
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  transform: skewX(-27deg);
+  transform-origin: top right;
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.cyberpunk6::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: calc(100% + 1.25rem);
+  width: 2px;
+  height: calc(100% + 4px);
+  background: currentColor;
+  transform: skewX(-27deg);
+  border-right: 0.625rem solid var(--bg-primary);
+  box-shadow: 2px 0 0 0 currentColor;
+  transition:
+    left var(--transition-fast),
+    border-right-width var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.cyberpunk6:hover:not(:disabled) {
+  background: currentColor;
+  color: var(--text-on-accent);
+}
+
+.cyberpunk6:hover:not(:disabled)::before {
+  background: currentColor;
+}
+
+.cyberpunk6:hover:not(:disabled)::after {
+  left: calc(100% + 1.55rem);
+  border-right-width: 0.95rem;
 }
 
 .small {
@@ -89,8 +205,9 @@
 .primary:disabled,
 .secondary:disabled,
 .toolbarButton:disabled,
-.danger:disabled {
+.danger:disabled,
+.cyberpunk3:disabled,
+.cyberpunk6:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
-
