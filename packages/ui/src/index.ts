@@ -31,6 +31,10 @@ export {
   type CyberpunkSliderProps,
 } from "./components/CyberpunkSlider.js";
 export {
+  FUIButtonTile,
+  type FUIButtonTileProps,
+} from "./components/FUIButtonTile.js";
+export {
   CyberpunkTextarea,
   type CyberpunkTextareaProps,
 } from "./components/CyberpunkTextarea.js";

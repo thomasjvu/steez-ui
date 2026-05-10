@@ -61,6 +61,7 @@ export function PageTemplate({
   className = "",
 }: PageTemplateProps) {
   const headerExtra = extra ?? actions;
+  const hasContent = loading || React.Children.count(children) > 0;
 
   return (
     <div className={`${styles.root} ${className}`.trim()}>
@@ -102,9 +103,11 @@ export function PageTemplate({
         </div>
       ) : null}
 
-      <div className={styles.content}>
-        {loading ? <div className={styles.loading}>Loading...</div> : children ?? null}
-      </div>
+      {hasContent ? (
+        <div className={styles.content}>
+          {loading ? <div className={styles.loading}>Loading...</div> : children ?? null}
+        </div>
+      ) : null}
     </div>
   );
 }
