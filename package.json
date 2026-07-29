@@ -16,7 +16,9 @@
     "typecheck": "pnpm build:packages && tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "registry:build": "shadcn build"
+    "test:registry-smoke": "node scripts/registry-install-smoke.mjs",
+    "registry:build": "shadcn build",
+    "registry:generate": "node scripts/generate-registry.mjs"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.7",
