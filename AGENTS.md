@@ -49,20 +49,15 @@ pnpm registry:build       # shadcn build → Boston / legacy /r surface
 
 ### Typecheck / test
 
-Root `typecheck` and `test` scripts are **not wired yet** (see plan 001). Until then:
-
 ```bash
-# Packages (when needed)
-pnpm --filter @steez-ui/theme exec tsc -p ./tsconfig.json --noEmit
-pnpm --filter @steez-ui/icons exec tsc -p ./tsconfig.json --noEmit
-pnpm --filter @steez-ui/ui exec tsc -p ./tsconfig.json --noEmit
-pnpm --dir packages/react typecheck
-
-# Site
-pnpm exec tsc -p tsconfig.json --noEmit   # excludes packages/react
+pnpm typecheck            # typecheck:packages then typecheck:site
+pnpm typecheck:packages   # build:packages (emit validates packages; supplies dist for site)
+pnpm typecheck:site       # tsc --noEmit for the docs app (fast when dist is warm)
+pnpm test                 # vitest run
+pnpm --dir packages/react typecheck   # legacy package only
 ```
 
-Prefer adding root `pnpm typecheck` / `pnpm test` via plan 001 rather than inventing ad-hoc gates.
+`typecheck:packages` uses `build:packages` rather than pure `tsc --noEmit` because `@steez-ui/ui` resolves `@steez-ui/icons` via `dist` path maps.
 
 ### Registry generate
 
