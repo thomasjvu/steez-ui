@@ -2,11 +2,32 @@ import React from "react";
 
 import styles from "./PixelTooltip.module.css";
 
+export type PixelTooltipPosition = "top" | "bottom" | "left" | "right";
+
 export interface PixelTooltipProps {
   content: string;
   children: React.ReactNode;
-  position?: "top" | "bottom" | "left" | "right";
+  position?: PixelTooltipPosition;
   delay?: number;
+}
+
+/** Anchor point for fixed positioning; CSS transform classes handle offset from this point. */
+export function coordsForPosition(
+  rect: DOMRect,
+  position: PixelTooltipPosition,
+): { x: number; y: number; width: number } {
+  const width = rect.width;
+  switch (position) {
+    case "bottom":
+      return { x: rect.left + width / 2, y: rect.bottom, width };
+    case "left":
+      return { x: rect.left, y: rect.top + rect.height / 2, width };
+    case "right":
+      return { x: rect.right, y: rect.top + rect.height / 2, width };
+    case "top":
+    default:
+      return { x: rect.left + width / 2, y: rect.top, width };
+  }
 }
 
 export function PixelTooltip({
@@ -24,15 +45,11 @@ export function PixelTooltip({
     timeoutRef.current = setTimeout(() => {
       if (triggerRef.current) {
         const rect = triggerRef.current.getBoundingClientRect();
-        setCoords({
-          x: rect.left,
-          y: rect.bottom,
-          width: rect.width,
-        });
+        setCoords(coordsForPosition(rect, position));
       }
       setIsVisible(true);
     }, delay);
-  }, [delay]);
+  }, [delay, position]);
 
   const handleMouseLeave = React.useCallback(() => {
     if (timeoutRef.current) {
@@ -66,8 +83,8 @@ export function PixelTooltip({
         <div
           className={`${styles.tooltip} ${styles[position]} ${styles.show}`.trim()}
           style={{
-            left: `${coords.x + 5}px`,
-            top: `${coords.y + 8}px`,
+            left: `${coords.x}px`,
+            top: `${coords.y}px`,
             width: `${Math.max(coords.width - 20, 60)}px`,
           }}
         >

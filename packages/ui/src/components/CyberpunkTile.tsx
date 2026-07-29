@@ -15,15 +15,26 @@ export function CyberpunkTile({
   className = "",
   variant = "default",
   onClick,
+  onKeyDown,
   style,
   center = false,
   contentClassName = "",
   ...props
 }: CyberpunkTileProps) {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    onKeyDown?.(event);
+    if (event.defaultPrevented || !onClick) return;
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      onClick(event as unknown as React.MouseEvent<HTMLDivElement>);
+    }
+  };
+
   return (
     <div
       className={`${styles.tile} ${variant !== "default" ? styles[variant] : ""} ${onClick ? styles.tileInteractive : ""} ${className}`.trim()}
       onClick={onClick}
+      onKeyDown={onClick || onKeyDown ? handleKeyDown : undefined}
       role={onClick ? "button" : undefined}
       tabIndex={onClick ? 0 : undefined}
       style={style}

@@ -9,14 +9,12 @@
   z-index: var(--z-tooltip);
   pointer-events: none;
   opacity: 0;
-  transition:
-    opacity 250ms ease-in-out,
-    transform 250ms ease-in-out;
+  /* Opacity-only transition so placement transforms are not overridden on show */
+  transition: opacity 250ms ease-in-out;
 }
 
 .tooltip.show {
   opacity: 1;
-  animation: tooltipFadeIn 250ms ease-out forwards;
 }
 
 .pixelContainer {
@@ -42,36 +40,21 @@
   text-align: left;
 }
 
+/* Placement transforms relative to anchor (coords.x/y from getBoundingClientRect) */
 .tooltip.top {
-  margin-top: -8px;
-  transform: translateY(-100%);
+  transform: translate(-50%, calc(-100% - 8px));
 }
 
 .tooltip.bottom {
-  margin-top: 0;
-  transform: translateY(0);
+  transform: translate(-50%, 8px);
 }
 
 .tooltip.left {
-  margin-left: -8px;
-  transform: translateX(-100%) translateY(-50%);
+  transform: translate(calc(-100% - 8px), -50%);
 }
 
 .tooltip.right {
-  margin-left: 8px;
-  transform: translateY(-50%);
-}
-
-@keyframes tooltipFadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(-4px) scale(0.95);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  transform: translate(8px, -50%);
 }
 
 @media (max-width: 768px) {

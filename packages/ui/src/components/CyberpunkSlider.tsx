@@ -12,6 +12,19 @@ export interface CyberpunkSliderProps
   showValue?: boolean;
 }
 
+/** Fill percentage for the track; 0 when max===min or non-finite. Clamped to [0, 100]. */
+export function sliderPercentage(
+  value: number | string,
+  min: number,
+  max: number,
+): number {
+  const range = max - min;
+  const percentage = range === 0 ? 0 : ((Number(value) - min) / range) * 100;
+  return Number.isFinite(percentage)
+    ? Math.min(100, Math.max(0, percentage))
+    : 0;
+}
+
 export function CyberpunkSlider({
   label,
   className = "",
@@ -24,7 +37,7 @@ export function CyberpunkSlider({
   ...props
 }: CyberpunkSliderProps) {
   const inputId = useStableId("slider", id);
-  const percentage = ((Number(value) - min) / (max - min)) * 100;
+  const percentage = sliderPercentage(value as number | string, min, max);
 
   return (
     <div className={`${styles.wrapper} ${className}`.trim()}>
@@ -42,7 +55,11 @@ export function CyberpunkSlider({
           step={step}
           value={value}
           className={styles.slider}
-          style={{ ["--slider-percentage" as string]: `${percentage}%` } as React.CSSProperties}
+          style={
+            {
+              ["--slider-percentage" as string]: `${percentage}%`,
+            } as React.CSSProperties
+          }
           {...props}
         />
         {showValue ? <span className={styles.value}>{value}</span> : null}
