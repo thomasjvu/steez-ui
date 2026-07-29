@@ -12,15 +12,15 @@ that is a real repo) so worktree isolation works.
 
 | Plan | Title | Priority | Effort | Depends on | Status |
 |------|-------|----------|--------|------------|--------|
-| 001 | Establish verification baseline (typecheck + tests) | P1 | M | — | TODO |
+| 001 | Establish verification baseline (typecheck + tests) | P1 | M | — | DONE (merged) |
 | 002 | Rewrite steez registry generator + sync payloads | P1 | M | 001 recommended | TODO |
-| 003 | Fix registry install URL consistency | P1 | S | — | TODO |
+| 003 | Fix registry install URL consistency | P1 | S | — | DONE (merged) |
 | 004 | Make `three` optional for `@steez-ui/ui` | P2 | M | 001 recommended | TODO |
 | 005 | Code-split docs component previews | P2 | M | — | TODO |
-| 006 | Fix publish script (LICENSE + pnpm) | P1 | S | — | TODO |
-| 007 | Clear LoadingScreen chained timeouts | P2 | S | — | TODO |
-| 008 | Pause WebGL when hidden / reduced-motion | P2 | S–M | — | TODO |
-| 009 | Document dual package surfaces + AGENTS.md | P2 | S | — | TODO |
+| 006 | Fix publish script (LICENSE + pnpm) | P1 | S | — | DONE (merged) |
+| 007 | Clear LoadingScreen chained timeouts | P2 | S | — | DONE (merged) |
+| 008 | Pause WebGL when hidden / reduced-motion | P2 | S–M | — | DONE (merged) |
+| 009 | Document dual package surfaces + AGENTS.md | P2 | S | — | DONE (merged; commit fixed after executor left uncommitted) |
 | 010 | Real authoring model on `/docs` | P3 | M | 002 | TODO |
 
 Status values: TODO | IN PROGRESS | DONE | BLOCKED | REJECTED
