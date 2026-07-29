@@ -4,12 +4,13 @@ import { useStableId } from "../hooks/useStableId.js";
 import styles from "./CyberpunkSlider.module.css";
 
 export interface CyberpunkSliderProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "helperText"> {
   label?: string;
   min?: number;
   max?: number;
   step?: number;
   showValue?: boolean;
+  helperText?: string;
 }
 
 /** Fill percentage for the track; 0 when max===min or non-finite. Clamped to [0, 100]. */
@@ -34,9 +35,11 @@ export function CyberpunkSlider({
   step = 1,
   showValue = true,
   value = 0,
+  helperText,
   ...props
 }: CyberpunkSliderProps) {
   const inputId = useStableId("slider", id);
+  const helperId = useStableId("slider-helper");
   const percentage = sliderPercentage(value as number | string, min, max);
 
   return (
@@ -61,9 +64,15 @@ export function CyberpunkSlider({
             } as React.CSSProperties
           }
           {...props}
+          aria-describedby={helperText ? helperId : undefined}
         />
         {showValue ? <span className={styles.value}>{value}</span> : null}
       </div>
+      {helperText ? (
+        <div id={helperId} className={styles.helperText}>
+          {helperText}
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -8,10 +8,12 @@ export interface CyberpunkSelectOption {
   label: string;
 }
 
-export interface CyberpunkSelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
+export interface CyberpunkSelectProps
+  extends Omit<SelectHTMLAttributes<HTMLSelectElement>, "helperText"> {
   label?: string;
   variant?: "default" | "long" | "full";
   options?: CyberpunkSelectOption[];
+  helperText?: string;
 }
 
 export function CyberpunkSelect({
@@ -21,9 +23,11 @@ export function CyberpunkSelect({
   className = "",
   id,
   value,
+  helperText,
   ...props
 }: CyberpunkSelectProps) {
   const selectId = useStableId("select", id);
+  const helperId = useStableId("select-helper");
 
   return (
     <div className={`${styles.cyberSelect} ${styles[variant]} ${className}`.trim()}>
@@ -32,7 +36,13 @@ export function CyberpunkSelect({
           {label}
         </label>
       ) : null}
-      <select id={selectId} className={styles.select} value={value} {...props}>
+      <select
+        id={selectId}
+        className={styles.select}
+        value={value}
+        {...props}
+        aria-describedby={helperText ? helperId : undefined}
+      >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
@@ -44,6 +54,11 @@ export function CyberpunkSelect({
           <path d="M1 1L6 6L11 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
         </svg>
       </div>
+      {helperText ? (
+        <div id={helperId} className={styles.helperText}>
+          {helperText}
+        </div>
+      ) : null}
     </div>
   );
 }

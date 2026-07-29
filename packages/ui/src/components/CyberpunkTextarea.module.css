@@ -71,3 +71,10 @@
   opacity: 0.6;
 }
 
+.helperText {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+
