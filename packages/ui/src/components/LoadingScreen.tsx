@@ -137,10 +137,20 @@ export function LoadingScreen({
 
   React.useEffect(() => {
     isLoadingRef.current = true;
+    let cancelled = false;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
     const scheduleNextCross = () => {
+      if (cancelled) {
+        return;
+      }
+
       const delay = 400 + randomFloat() * 300;
-      return setTimeout(() => {
+      timeoutId = setTimeout(() => {
+        if (cancelled) {
+          return;
+        }
+
         spawnCross();
         if (isLoadingRef.current) {
           scheduleNextCross();
@@ -148,9 +158,12 @@ export function LoadingScreen({
       }, delay);
     };
 
-    const timeoutId = scheduleNextCross();
+    scheduleNextCross();
     return () => {
-      clearTimeout(timeoutId);
+      cancelled = true;
+      if (timeoutId !== undefined) {
+        clearTimeout(timeoutId);
+      }
       isLoadingRef.current = false;
     };
   }, [spawnCross]);
