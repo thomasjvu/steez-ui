@@ -12,6 +12,24 @@ Pair with `@steez-ui/theme` (tokens) and `@steez-ui/icons` (icon surface).
 pnpm add @steez-ui/theme @steez-ui/icons @steez-ui/ui
 ```
 
+### Optional peer: `three` (SignalTrailBackdrop only)
+
+`three` is an **optional peer dependency**. Install it only if you use `SignalTrailBackdrop` (WebGL):
+
+```bash
+pnpm add three
+```
+
+```tsx
+// Barrel (compatible) — still pulls three when the module is evaluated
+import { SignalTrailBackdrop } from "@steez-ui/ui";
+
+// Subpath — isolate the WebGL entry from the rest of the package
+import { SignalTrailBackdrop } from "@steez-ui/ui/signal-trail-backdrop";
+```
+
+Apps that never import the backdrop do not need `three`.
+
 ## Usage
 
 ```tsx
