@@ -29,7 +29,7 @@ Open one primitive at a time:
 | `/` | Overview + install |
 | `/components` | Catalog index (filter by category) |
 | `/components/[slug]` | Single component: preview, usage, install |
-| `/docs` | Authoring model |
+| `/docs` | Authoring model: add a primitive (package → catalog → preview → registry) |
 | `/packages` | npm package surface |
 | `/registry` | Registry endpoints |
 | `/r-steez/*.json` | Package registry payloads |
