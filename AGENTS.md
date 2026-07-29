@@ -44,7 +44,9 @@ pnpm build:react          # legacy package only (packages/react via tsup)
 pnpm dev                  # Next docs site (turbopack)
 pnpm build                # build:packages then next build
 pnpm lint                 # next lint
-pnpm typecheck            # build:packages then site tsc --noEmit
+pnpm typecheck            # typecheck:packages then typecheck:site
+pnpm typecheck:packages   # build:packages (supplies dist for site types)
+pnpm typecheck:site       # site tsc --noEmit (fast when dist is warm)
 pnpm test                 # vitest run
 pnpm test:registry-smoke  # registry install smoke script
 pnpm registry:generate    # → public/r-steez
@@ -54,23 +56,16 @@ pnpm registry:build       # shadcn build → Boston / legacy /r surface
 ### Typecheck / test
 
 ```bash
-pnpm typecheck            # build:packages then tsc -p tsconfig.json --noEmit
+pnpm typecheck            # typecheck:packages then typecheck:site
+pnpm typecheck:packages   # build:packages (emit validates packages; supplies dist for site)
+pnpm typecheck:site       # tsc --noEmit for the docs app (fast when dist is warm)
 pnpm test                 # vitest run
 pnpm test:watch           # vitest (watch mode)
 pnpm test:registry-smoke  # node scripts/registry-install-smoke.mjs
+pnpm --dir packages/react typecheck   # legacy package only
 ```
 
-Package-local typecheck (when debugging a single package):
-
-```bash
-pnpm --filter @steez-ui/theme exec tsc -p ./tsconfig.json --noEmit
-pnpm --filter @steez-ui/icons exec tsc -p ./tsconfig.json --noEmit
-pnpm --filter @steez-ui/ui exec tsc -p ./tsconfig.json --noEmit
-pnpm --dir packages/react typecheck
-```
-
-Root `typecheck` covers the site and workspace packages via `tsconfig.json` (excludes `packages/react`). Prefer root gates over inventing ad-hoc commands.
-
+`typecheck:packages` uses `build:packages` rather than pure `tsc --noEmit` because `@steez-ui/ui` resolves `@steez-ui/icons` via `dist` path maps. Root gates exclude `packages/react`.
 ### Registry generate
 
 | Command | Output |
