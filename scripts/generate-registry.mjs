@@ -555,6 +555,21 @@ const itemDefinitions = [
     ],
     files: []
   },
+  {
+    name: "phantasy-fui",
+    type: "registry:block",
+    title: "Phantasy FUI Preset",
+    description: "Theme, tiles, and loading primitives used by Phantasy admin FUI chrome.",
+    dependencies: ["@steez-ui/theme", "@steez-ui/icons"],
+    registryDependencies: [
+      "theme-tokens",
+      "icon-provider",
+      "cyberpunk-tile",
+      "fui-button-tile",
+      "loading-progress-bar",
+    ],
+    files: [],
+  },
 ];
 
 function validateItem(item) {

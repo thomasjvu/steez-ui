@@ -11,6 +11,7 @@ const NON_COMPONENT_REGISTRY_NAMES = new Set([
   "theme-tokens",
   "icon-provider",
   "foundation",
+  "phantasy-fui",
   "index",
 ]);
 
