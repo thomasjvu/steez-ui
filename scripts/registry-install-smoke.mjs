@@ -1,12 +1,13 @@
 import fs from "fs/promises";
 import path from "path";
+import { fileURLToPath } from "url";
 import { execFile } from "child_process";
 import { promisify } from "util";
 
 const execFileAsync = promisify(execFile);
 
-const repoRoot = path.resolve(new URL("..", import.meta.url).pathname);
-const registryDir = path.join(repoRoot, "apps/registry/public/r");
+const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const registryDir = path.join(repoRoot, "public/r-steez");
 const sampleDir = path.join(repoRoot, "tmp/registry-install-smoke");
 
 async function loadItem(name) {
