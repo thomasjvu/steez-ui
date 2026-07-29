@@ -218,6 +218,14 @@ export function SignalTrailBackdrop({
 
     const clock = new THREE.Clock();
     let animationFrame = 0;
+    let isDocumentVisible = typeof document !== "undefined" ? !document.hidden : true;
+    let isInViewport = true;
+
+    const reducedMotionQuery =
+      typeof window !== "undefined"
+        ? window.matchMedia("(prefers-reduced-motion: reduce)")
+        : null;
+    let prefersReducedMotion = reducedMotionQuery?.matches ?? false;
 
     const resize = () => {
       const width = Math.max(container.clientWidth, 1);
@@ -231,22 +239,93 @@ export function SignalTrailBackdrop({
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(container);
 
-    const animate = () => {
-      animationFrame = window.requestAnimationFrame(animate);
+    const shouldAnimate = () =>
+      !prefersReducedMotion && isDocumentVisible && isInViewport;
+
+    const renderFrame = () => {
       material.uniforms.uTime.value +=
         clock.getDelta() * Math.max(lineSpeed, 0.01);
       renderer.render(scene, camera);
     };
 
-    animate();
+    const stopLoop = () => {
+      if (animationFrame !== 0) {
+        window.cancelAnimationFrame(animationFrame);
+        animationFrame = 0;
+      }
+    };
+
+    const animate = () => {
+      animationFrame = 0;
+      if (!shouldAnimate()) {
+        return;
+      }
+      renderFrame();
+      animationFrame = window.requestAnimationFrame(animate);
+    };
+
+    const startLoop = () => {
+      if (animationFrame !== 0 || !shouldAnimate()) {
+        return;
+      }
+      clock.getDelta();
+      animationFrame = window.requestAnimationFrame(animate);
+    };
+
+    // Static first frame (also the only frame under reduced-motion).
+    renderFrame();
+    startLoop();
+
+    const onVisibilityChange = () => {
+      isDocumentVisible = !document.hidden;
+      if (isDocumentVisible) {
+        startLoop();
+      } else {
+        stopLoop();
+      }
+    };
+
+    const onReducedMotionChange = (event: MediaQueryListEvent) => {
+      prefersReducedMotion = event.matches;
+      if (prefersReducedMotion) {
+        stopLoop();
+        renderFrame();
+      } else {
+        startLoop();
+      }
+    };
+
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    reducedMotionQuery?.addEventListener("change", onReducedMotionChange);
+
+    let intersectionObserver: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== "undefined") {
+      intersectionObserver = new IntersectionObserver(
+        ([entry]) => {
+          isInViewport = entry?.isIntersecting ?? true;
+          if (isInViewport) {
+            startLoop();
+          } else {
+            stopLoop();
+          }
+        },
+        { threshold: 0 },
+      );
+      intersectionObserver.observe(container);
+    }
 
     return () => {
-      window.cancelAnimationFrame(animationFrame);
+      stopLoop();
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      reducedMotionQuery?.removeEventListener("change", onReducedMotionChange);
+      intersectionObserver?.disconnect();
       resizeObserver.disconnect();
       mesh.geometry.dispose();
       material.dispose();
       renderer.dispose();
-      container.removeChild(renderer.domElement);
+      if (renderer.domElement.parentNode === container) {
+        container.removeChild(renderer.domElement);
+      }
     };
   }, [
     amplitude,
