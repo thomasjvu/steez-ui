@@ -1,8 +1,9 @@
 import fs from "fs/promises";
 import path from "path";
+import { fileURLToPath } from "url";
 
-const repoRoot = path.resolve(new URL("..", import.meta.url).pathname);
-const registryDir = path.join(repoRoot, "apps/registry/public/r");
+const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const registryDir = path.join(repoRoot, "public/r-steez");
 
 const itemDefinitions = [
   {
@@ -191,6 +192,18 @@ const itemDefinitions = [
     files: [
       { source: "packages/ui/src/components/CyberpunkTile.tsx", target: "components/steez/CyberpunkTile.tsx", type: "registry:component" },
       { source: "packages/ui/src/components/CyberpunkTile.module.css", target: "components/steez/CyberpunkTile.module.css", type: "registry:style" },
+    ],
+  },
+  {
+    name: "fui-button-tile",
+    type: "registry:component",
+    title: "FUI Button Tile",
+    description: "Square HUD tile button with icon, label, and corner chevron for launcher grids and tool pickers.",
+    dependencies: ["@steez-ui/theme"],
+    registryDependencies: ["theme-tokens"],
+    files: [
+      { source: "packages/ui/src/components/FUIButtonTile.tsx", target: "components/steez/FUIButtonTile.tsx", type: "registry:component" },
+      { source: "packages/ui/src/components/FUIButtonTile.module.css", target: "components/steez/FUIButtonTile.module.css", type: "registry:style" },
     ],
   },
   {

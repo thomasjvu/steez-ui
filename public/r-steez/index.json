@@ -33,7 +33,7 @@
     "name": "button",
     "type": "registry:component",
     "title": "Button",
-    "description": "Core button primitive with primary, secondary, and danger variants."
+    "description": "Core button primitive with standard and cyberpunk-styled variants."
   },
   {
     "name": "copy-button",
@@ -88,6 +88,12 @@
     "type": "registry:component",
     "title": "Cyberpunk Tile",
     "description": "Angular tile surface for dashboards, docs, and launch pages."
+  },
+  {
+    "name": "fui-button-tile",
+    "type": "registry:component",
+    "title": "FUI Button Tile",
+    "description": "Square HUD tile button with icon, label, and corner chevron for launcher grids and tool pickers."
   },
   {
     "name": "corner-bracket-card",
