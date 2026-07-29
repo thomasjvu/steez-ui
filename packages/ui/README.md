@@ -21,10 +21,7 @@ pnpm add three
 ```
 
 ```tsx
-// Barrel (compatible) — still pulls three when the module is evaluated
-import { SignalTrailBackdrop } from "@steez-ui/ui";
-
-// Subpath — isolate the WebGL entry from the rest of the package
+// Subpath only — keeps WebGL/three out of the main package surface
 import { SignalTrailBackdrop } from "@steez-ui/ui/signal-trail-backdrop";
 ```
 

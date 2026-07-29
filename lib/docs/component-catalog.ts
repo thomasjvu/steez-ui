@@ -580,7 +580,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
     title: "Signal Trail Backdrop",
     category: "surfaces",
     summary: "WebGL signal-field backdrop for avatar stages and technical hero surfaces.",
-    description: "Use SignalTrailBackdrop when a surface needs the animated figure-field treatment without reauthoring the Three.js shader and resize lifecycle locally. Requires optional peer dependency `three` (`pnpm add three`). Prefer the subpath import when you want to isolate WebGL from the main package surface.",
+    description: "Use SignalTrailBackdrop when a surface needs the animated figure-field treatment without reauthoring the Three.js shader and resize lifecycle locally. Requires optional peer dependency `three` (`pnpm add three`). Import only from the subpath `@steez-ui/ui/signal-trail-backdrop` so WebGL stays out of the main package surface.",
     packageImport: 'import { SignalTrailBackdrop } from "@steez-ui/ui/signal-trail-backdrop";',
     usage: `<div style={{ position: "relative", minHeight: "22rem" }}>
   <SignalTrailBackdrop color="#7ae4ff" signalDensity={0.36} />
