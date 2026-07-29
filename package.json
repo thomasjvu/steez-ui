@@ -10,6 +10,7 @@
     "build:react": "pnpm --dir packages/react build",
     "pack:react": "pnpm --dir packages/react pack:local",
     "publish:react:forgejo": "node packages/react/scripts/publish-forgejo.mjs",
+    "publish:packages": "node scripts/publish-packages.mjs",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "pnpm build:packages && tsc -p tsconfig.json --noEmit",

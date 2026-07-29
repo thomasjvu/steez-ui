@@ -73,7 +73,17 @@ function run(command, commandArgs, options) {
 }
 
 if (!skipBuild) {
-  run("bun", ["run", "build:packages"], { cwd: repoRoot });
+  run("pnpm", ["run", "build:packages"], { cwd: repoRoot });
+}
+
+const licensePath = path.join(repoRoot, "LICENSE");
+try {
+  await fs.access(licensePath);
+} catch {
+  console.error(
+    "Missing LICENSE at repo root. Add an MIT LICENSE file before publishing packages.",
+  );
+  process.exit(1);
 }
 
 const stagingRoot = await fs.mkdtemp(path.join(os.tmpdir(), "steez-ui-publish-"));
@@ -113,7 +123,7 @@ for (const packageDir of packageDirs) {
     "utf8",
   );
   await fs.copyFile(path.join(repoRoot, "README.md"), path.join(stagingDir, "README.md"));
-  await fs.copyFile(path.join(repoRoot, "LICENSE"), path.join(stagingDir, "LICENSE"));
+  await fs.copyFile(licensePath, path.join(stagingDir, "LICENSE"));
 
   const publishArgs = ["publish", "--access", "public", "--cache", npmCacheDir];
 
