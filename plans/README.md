@@ -10,14 +10,14 @@ Execute 011–018 in order unless dependencies say otherwise.
 | Plan | Title | Priority | Effort | Depends on | Status |
 |------|-------|----------|--------|------------|--------|
 | 001–010 | (prior cycle) | — | — | — | DONE |
-| 011 | Refresh AGENTS.md + production registry docs | P1 | S | — | TODO |
-| 012 | Packaging: no tests in dist; Accordion surface; export parity | P1 | M | — | TODO |
-| 013 | CI workflow | P1 | S | 012 recommended | TODO |
-| 014 | PixelTooltip + CyberpunkTile + Slider bugs | P1 | S–M | — | TODO |
-| 015 | Form aria-describedby + radiogroup | P2 | S | — | TODO |
-| 016 | Faster typecheck split | P2 | S | — | TODO |
-| 017 | Phantasy FUI registry preset | P2 | S–M | — | TODO |
-| 018 | eslint-config-next + SignalTrail barrel removal | P3 | S–M | — | TODO |
+| 011 | Refresh AGENTS.md + production registry docs | P1 | S | — | DONE (merged) |
+| 012 | Packaging: no tests in dist; Accordion surface; export parity | P1 | M | — | DONE (merged) |
+| 013 | CI workflow | P1 | S | 012 recommended | DONE (merged) |
+| 014 | PixelTooltip + CyberpunkTile + Slider bugs | P1 | S–M | — | DONE (merged) |
+| 015 | Form aria-describedby + radiogroup | P2 | S | — | DONE (merged) |
+| 016 | Faster typecheck split | P2 | S | — | DONE (merged) |
+| 017 | Phantasy FUI registry preset | P2 | S–M | — | DONE (merged) |
+| 018 | eslint-config-next + SignalTrail barrel removal | P3 | S–M | — | DONE (merged) |
 
 ## Dependency notes
 
