@@ -7,19 +7,31 @@
   "files": [
     "dist"
   ],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "peerDependencies": {
     "react": ">=18",
-    "react-dom": ">=18"
+    "react-dom": ">=18",
+    "three": ">=0.179.0"
+  },
+  "peerDependenciesMeta": {
+    "three": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@steez-ui/icons": "workspace:*",
-    "@steez-ui/theme": "workspace:*",
-    "three": "^0.179.1"
+    "@steez-ui/theme": "workspace:*"
   },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./signal-trail-backdrop": {
+      "types": "./dist/components/SignalTrailBackdrop.d.ts",
+      "import": "./dist/components/SignalTrailBackdrop.js"
     },
     "./styles/Buttons.module.css": "./dist/styles/Buttons.module.css"
   },
@@ -30,6 +42,7 @@
     "access": "public"
   },
   "devDependencies": {
-    "@types/three": "^0.185.1"
+    "@types/three": "^0.179.0",
+    "three": "^0.179.1"
   }
 }
