@@ -248,6 +248,11 @@
   color: #ccc;
 }
 
+/* Multi-line snippets (authoring examples); pair with .codeBlock */
+.codeBlockMultiline code {
+  white-space: pre-wrap;
+}
+
 .muted {
   color: #777;
   font-size: 0.8125rem;
