@@ -1,0 +1,40 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+}
+
+.mount {
+  animation: blinkText var(--blink-duration, 420ms) steps(2, end)
+    var(--blink-delay, 0ms) var(--blink-iterations, 3);
+}
+
+.always {
+  animation: blinkText var(--blink-duration, 420ms) steps(2, end)
+    var(--blink-delay, 0ms) infinite;
+}
+
+.hover:hover {
+  animation: blinkText var(--blink-duration, 420ms) steps(2, end)
+    var(--blink-delay, 0ms) var(--blink-iterations, 3);
+}
+
+@keyframes blinkText {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    opacity: var(--blink-dim-opacity, 0.12);
+  }
+
+  30%,
+  50%,
+  70%,
+  90% {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "themed-card",
+  "type": "registry:component",
+  "title": "Themed Card",
+  "description": "Default Steez card surface.",
+  "dependencies": [
+    "@steez-ui/theme",
+    "@steez-ui/icons"
+  ],
+  "registryDependencies": [
+    "theme-tokens"
+  ],
+  "files": [
+    {
+      "path": "components/steez/ThemedCard.tsx",
+      "type": "registry:component",
+      "content": "import React from \"react\";\n\nimport styles from \"./ThemedCard.module.css\";\n\nexport interface ThemedCardProps\n  extends Omit<React.HTMLAttributes<HTMLDivElement>, \"title\"> {\n  title?: React.ReactNode;\n  variant?: \"default\" | \"featured\";\n}\n\nexport function ThemedCard({\n  title,\n  variant = \"default\",\n  className = \"\",\n  children,\n  ...props\n}: ThemedCardProps) {\n  return (\n    <div className={`${styles.card} ${variant === \"featured\" ? styles.featured : \"\"} ${className}`.trim()} {...props}>\n      {title ? <div className={styles.title}>{title}</div> : null}\n      {children}\n    </div>\n  );\n}\n",
+      "source": "packages/ui/src/components/ThemedCard.tsx"
+    },
+    {
+      "path": "components/steez/ThemedCard.module.css",
+      "type": "registry:style",
+      "content": ".card {\n  position: relative;\n  border: 1px solid var(--border-color);\n  background: color-mix(in srgb, var(--bg-secondary) 88%, transparent);\n  border-radius: 14px;\n  padding: 1rem;\n  box-shadow: var(--shadow-sm);\n}\n\n.featured {\n  border-color: var(--accent-primary);\n  box-shadow: var(--shadow-md);\n}\n\n.title {\n  margin-bottom: 0.75rem;\n  color: var(--text-primary);\n  font-family: var(--font-primary);\n  font-size: 1rem;\n  font-weight: 600;\n}\n\n",
+      "source": "packages/ui/src/components/ThemedCard.module.css"
+    }
+  ]
+}

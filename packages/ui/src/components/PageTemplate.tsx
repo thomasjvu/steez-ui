@@ -1,0 +1,113 @@
+import React from "react";
+
+import { PageHeader, type PageHeaderProps } from "./PageHeader.js";
+import styles from "./PageTemplate.module.css";
+
+interface SubTab {
+  id: string;
+  label: string;
+}
+
+export interface PageTemplateProps
+  extends Pick<
+    PageHeaderProps,
+    | "title"
+    | "description"
+    | "icon"
+    | "onBack"
+    | "onSettings"
+    | "brand"
+    | "onBrandClick"
+    | "onViewerToggle"
+    | "viewerVisible"
+  > {
+  actions?: React.ReactNode;
+  extra?: React.ReactNode;
+  className?: string;
+  subTabs?: SubTab[];
+  activeSubTab?: string;
+  onSubTabChange?: (tabId: string) => void;
+  children?: React.ReactNode;
+  loading?: boolean;
+  showTitle?: boolean;
+  brandTitle?: string;
+  brandAriaLabel?: string;
+  viewerShowLabel?: string;
+  viewerHideLabel?: string;
+}
+
+export function PageTemplate({
+  title,
+  actions,
+  extra,
+  description,
+  icon,
+  subTabs,
+  activeSubTab,
+  onSubTabChange,
+  onBack,
+  onSettings,
+  brand,
+  onBrandClick,
+  onViewerToggle,
+  viewerVisible,
+  brandTitle,
+  brandAriaLabel,
+  viewerShowLabel,
+  viewerHideLabel,
+  children,
+  loading,
+  showTitle = true,
+  className = "",
+}: PageTemplateProps) {
+  const headerExtra = extra ?? actions;
+  const hasContent = loading || React.Children.count(children) > 0;
+
+  return (
+    <div className={`${styles.root} ${className}`.trim()}>
+      {showTitle ? (
+        <div className={styles.header}>
+          <PageHeader
+            title={title}
+            description={description}
+            icon={icon}
+            extra={headerExtra}
+            onBack={onBack}
+            onSettings={onSettings}
+            brand={brand}
+            onBrandClick={onBrandClick}
+            brandTitle={brandTitle}
+            brandAriaLabel={brandAriaLabel}
+            onViewerToggle={onViewerToggle}
+            viewerVisible={viewerVisible}
+            viewerShowLabel={viewerShowLabel}
+            viewerHideLabel={viewerHideLabel}
+          />
+        </div>
+      ) : null}
+
+      {subTabs?.length ? (
+        <div className={styles.subTabs} role="tablist" aria-label={`${title} sections`}>
+          {subTabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => onSubTabChange?.(tab.id)}
+              className={`${styles.subTabButton} ${activeSubTab === tab.id ? styles.subTabButtonActive : ""}`.trim()}
+              type="button"
+              role="tab"
+              aria-selected={activeSubTab === tab.id}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      ) : null}
+
+      {hasContent ? (
+        <div className={styles.content}>
+          {loading ? <div className={styles.loading}>Loading...</div> : children ?? null}
+        </div>
+      ) : null}
+    </div>
+  );
+}

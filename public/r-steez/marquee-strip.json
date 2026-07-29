@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "marquee-strip",
+  "type": "registry:component",
+  "title": "Marquee Strip",
+  "description": "Continuous horizontal marquee track for providers, skills, and launch lanes.",
+  "dependencies": [
+    "@steez-ui/theme"
+  ],
+  "registryDependencies": [
+    "theme-tokens"
+  ],
+  "files": [
+    {
+      "path": "components/steez/MarqueeStrip.tsx",
+      "type": "registry:component",
+      "content": "import React from \"react\";\n\nimport styles from \"./MarqueeStrip.module.css\";\n\nexport interface MarqueeStripProps<T> extends React.HTMLAttributes<HTMLDivElement> {\n  items: readonly T[];\n  renderItem: (item: T, index: number) => React.ReactNode;\n  ariaLabel?: string;\n  durationSeconds?: number;\n  gap?: number | string;\n  pauseOnHover?: boolean;\n  trackClassName?: string;\n  itemClassName?: string;\n}\n\nexport function MarqueeStrip<T>({\n  items,\n  renderItem,\n  ariaLabel,\n  durationSeconds = 24,\n  gap = \"0.7rem\",\n  pauseOnHover = false,\n  className = \"\",\n  trackClassName = \"\",\n  itemClassName = \"\",\n  style,\n  ...props\n}: MarqueeStripProps<T>) {\n  const doubledItems = [...items, ...items];\n  const mergedStyle = {\n    ...style,\n    [\"--marquee-duration\" as string]: `${durationSeconds}s`,\n    [\"--marquee-gap\" as string]:\n      typeof gap === \"number\" ? `${gap}px` : gap,\n  } as React.CSSProperties;\n\n  return (\n    <div\n      className={`${styles.root} ${pauseOnHover ? styles.pauseOnHover : \"\"} ${className}`.trim()}\n      aria-label={ariaLabel}\n      style={mergedStyle}\n      {...props}\n    >\n      <div className={`${styles.track} ${trackClassName}`.trim()}>\n        {doubledItems.map((item, index) => (\n          <div\n            key={index}\n            className={`${styles.item} ${itemClassName}`.trim()}\n            aria-hidden={index >= items.length}\n          >\n            {renderItem(item, index % items.length)}\n          </div>\n        ))}\n      </div>\n    </div>\n  );\n}\n",
+      "source": "packages/ui/src/components/MarqueeStrip.tsx"
+    },
+    {
+      "path": "components/steez/MarqueeStrip.module.css",
+      "type": "registry:style",
+      "content": ".root {\n  position: relative;\n  overflow: hidden;\n}\n\n.track {\n  display: flex;\n  align-items: center;\n  gap: var(--marquee-gap, 0.7rem);\n  width: max-content;\n  animation: marqueeStrip var(--marquee-duration, 24s) linear infinite;\n}\n\n.pauseOnHover:hover .track {\n  animation-play-state: paused;\n}\n\n.item {\n  flex: 0 0 auto;\n}\n\n@keyframes marqueeStrip {\n  from {\n    transform: translateX(0);\n  }\n\n  to {\n    transform: translateX(calc(-50% - (var(--marquee-gap, 0.7rem) / 2)));\n  }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .track {\n    animation: none;\n  }\n}\n",
+      "source": "packages/ui/src/components/MarqueeStrip.module.css"
+    }
+  ]
+}

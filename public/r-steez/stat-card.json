@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "stat-card",
+  "type": "registry:component",
+  "title": "Stat Card",
+  "description": "Compact metric surface with optional tone and subvalue.",
+  "dependencies": [
+    "@steez-ui/theme"
+  ],
+  "registryDependencies": [
+    "theme-tokens"
+  ],
+  "files": [
+    {
+      "path": "components/steez/StatCard.tsx",
+      "type": "registry:component",
+      "content": "import React from \"react\";\n\nimport styles from \"./StatCard.module.css\";\n\nexport interface StatCardProps extends React.HTMLAttributes<HTMLDivElement> {\n  label: string;\n  value: string | number;\n  subvalue?: string;\n  onClick?: () => void;\n  color?: \"default\" | \"success\" | \"danger\" | \"warning\";\n}\n\nexport function StatCard({\n  label,\n  value,\n  subvalue,\n  onClick,\n  color = \"default\",\n  className = \"\",\n  ...props\n}: StatCardProps) {\n  const valueToneClass =\n    color === \"success\"\n      ? styles.valueSuccess\n      : color === \"danger\"\n        ? styles.valueDanger\n        : color === \"warning\"\n          ? styles.valueWarning\n          : \"\";\n\n  return (\n    <div\n      className={`${styles.root} ${onClick ? styles.interactive : \"\"} ${className}`.trim()}\n      onClick={onClick}\n      {...props}\n    >\n      <div className={styles.label}>{label}</div>\n      <div className={`${styles.value} ${valueToneClass}`.trim()}>{value}</div>\n      {subvalue ? <div className={styles.subvalue}>{subvalue}</div> : null}\n    </div>\n  );\n}\n\nexport default StatCard;\n",
+      "source": "packages/ui/src/components/StatCard.tsx"
+    },
+    {
+      "path": "components/steez/StatCard.module.css",
+      "type": "registry:style",
+      "content": ".root {\n  cursor: default;\n  transition: color 220ms ease;\n}\n\n.interactive {\n  cursor: pointer;\n}\n\n.label {\n  margin-bottom: 0.25rem;\n  color: var(--text-secondary);\n  font-size: 0.6875rem;\n  font-weight: 500;\n  letter-spacing: 0.06em;\n  text-transform: uppercase;\n}\n\n.value {\n  color: var(--text-primary);\n  font-size: 1.5rem;\n  font-weight: 600;\n}\n\n.valueSuccess {\n  color: var(--color-success, #10b981);\n}\n\n.valueDanger {\n  color: var(--color-error, #ef4444);\n}\n\n.valueWarning {\n  color: var(--color-warning, #f59e0b);\n}\n\n.subvalue {\n  margin-top: 0.125rem;\n  color: var(--text-secondary);\n  font-size: 0.75rem;\n}\n",
+      "source": "packages/ui/src/components/StatCard.module.css"
+    }
+  ]
+}

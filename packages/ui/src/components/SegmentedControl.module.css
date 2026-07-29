@@ -1,0 +1,51 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.hint {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+}
+
+.track {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--bg-secondary) 85%, transparent);
+  border-radius: 999px;
+}
+
+.trackCompact {
+  padding: 2px;
+}
+
+.option {
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  padding: 0.5rem 0.875rem;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.optionCompact {
+  padding: 0.35rem 0.7rem;
+}
+
+.optionActive {
+  background: var(--interactive-primary-bg);
+  color: var(--interactive-primary-fg);
+}
+

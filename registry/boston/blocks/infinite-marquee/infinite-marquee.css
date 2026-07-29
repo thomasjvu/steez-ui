@@ -1,0 +1,53 @@
+.steezy-marquee {
+  --marquee-bg: #ffffff;
+  --marquee-ink: #000000;
+  --marquee-accent: #e52323;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: min(100%, 30rem);
+  height: 2.5rem;
+  border: 2px solid var(--marquee-ink);
+  border-radius: 999px;
+  box-shadow: 4px 4px 0 var(--marquee-ink);
+  background: var(--marquee-bg);
+  white-space: nowrap;
+}
+
+.steezy-marquee-track {
+  position: absolute;
+  left: 0;
+  display: block;
+  width: 200%;
+  animation-name: steezy-marquee;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  color: var(--marquee-ink);
+  font-size: 1.1rem;
+  font-style: italic;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.steezy-marquee-track.is-pausable:hover {
+  animation-play-state: paused;
+  color: var(--marquee-accent);
+}
+
+.steezy-marquee-track span {
+  float: left;
+  width: 50%;
+  overflow: hidden;
+}
+
+@keyframes steezy-marquee {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: -100%;
+  }
+}

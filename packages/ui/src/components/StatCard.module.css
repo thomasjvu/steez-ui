@@ -1,0 +1,41 @@
+.root {
+  cursor: default;
+  transition: color 220ms ease;
+}
+
+.interactive {
+  cursor: pointer;
+}
+
+.label {
+  margin-bottom: 0.25rem;
+  color: var(--text-secondary);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.value {
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.valueSuccess {
+  color: var(--color-success, #10b981);
+}
+
+.valueDanger {
+  color: var(--color-error, #ef4444);
+}
+
+.valueWarning {
+  color: var(--color-warning, #f59e0b);
+}
+
+.subvalue {
+  margin-top: 0.125rem;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+}

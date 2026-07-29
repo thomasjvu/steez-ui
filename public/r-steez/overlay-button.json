@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "overlay-button",
+  "type": "registry:component",
+  "title": "Overlay Button",
+  "description": "Compact floating control button for viewer and media overlays.",
+  "dependencies": [
+    "@steez-ui/theme"
+  ],
+  "registryDependencies": [
+    "theme-tokens"
+  ],
+  "files": [
+    {
+      "path": "components/steez/OverlayButton.tsx",
+      "type": "registry:component",
+      "content": "import React from \"react\";\n\nimport styles from \"./OverlayButton.module.css\";\n\nexport interface OverlayButtonProps\n  extends React.ButtonHTMLAttributes<HTMLButtonElement> {\n  active?: boolean;\n}\n\nexport function OverlayButton({\n  active,\n  className = \"\",\n  ...props\n}: OverlayButtonProps) {\n  const classes = `${styles.overlayBtn} ${\n    active ? styles.overlayBtnActive : \"\"\n  } ${className}`.trim();\n  return <button type=\"button\" className={classes} {...props} />;\n}\n\nexport default OverlayButton;\n",
+      "source": "packages/ui/src/components/OverlayButton.tsx"
+    },
+    {
+      "path": "components/steez/OverlayButton.module.css",
+      "type": "registry:style",
+      "content": ".overlayBtn {\n  width: var(--overlay-btn-size, 2rem);\n  height: var(--overlay-btn-size, 2rem);\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  border: 1px solid var(--border-color);\n  border-radius: var(--overlay-btn-radius, 0.5rem);\n  background: color-mix(in srgb, var(--bg-primary) 72%, transparent);\n  backdrop-filter: blur(2px);\n  color: var(--text-secondary);\n  cursor: pointer;\n  opacity: 0.8;\n  transition:\n    opacity 150ms ease,\n    background-color 150ms ease,\n    color 150ms ease,\n    border-color 150ms ease;\n}\n\n.overlayBtn:hover {\n  background: color-mix(in srgb, var(--bg-primary) 92%, transparent);\n  color: var(--text-primary);\n  opacity: 1;\n}\n\n.overlayBtnActive,\n.overlayBtnActive:hover {\n  background: var(--text-primary);\n  border-color: var(--text-primary);\n  color: var(--bg-primary);\n}\n",
+      "source": "packages/ui/src/components/OverlayButton.module.css"
+    }
+  ]
+}

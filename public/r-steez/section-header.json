@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "section-header",
+  "type": "registry:component",
+  "title": "Section Header",
+  "description": "Framed header row for settings and control panels with optional actions.",
+  "dependencies": [
+    "@steez-ui/theme"
+  ],
+  "registryDependencies": [
+    "theme-tokens"
+  ],
+  "files": [
+    {
+      "path": "components/steez/SectionHeader.tsx",
+      "type": "registry:component",
+      "content": "import React from \"react\";\n\nimport styles from \"./SectionHeader.module.css\";\n\nexport interface SectionHeaderProps {\n  title: string;\n  description?: string;\n  actions?: React.ReactNode;\n  className?: string;\n}\n\nexport function SectionHeader({\n  title,\n  description,\n  actions,\n  className = \"\",\n}: SectionHeaderProps) {\n  return (\n    <div className={`${styles.sectionHeader} ${className}`.trim()}>\n      <div className={styles.headerContent}>\n        <div className={styles.textContent}>\n          <h2 className={styles.title}>{title}</h2>\n          {description ? (\n            <p className={styles.description}>{description}</p>\n          ) : null}\n        </div>\n        {actions ? <div className={styles.actions}>{actions}</div> : null}\n      </div>\n    </div>\n  );\n}\n\nexport default SectionHeader;\n",
+      "source": "packages/ui/src/components/SectionHeader.tsx"
+    },
+    {
+      "path": "components/steez/SectionHeader.module.css",
+      "type": "registry:style",
+      "content": ".sectionHeader {\n  background: var(--bg-secondary);\n  border: 1px solid var(--border-color);\n  border-radius: 8px;\n  padding: 1rem 1.25rem;\n  margin-bottom: 1.25rem;\n}\n\n.headerContent {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 1rem;\n}\n\n.textContent {\n  flex: 1;\n  min-width: 0;\n}\n\n.title {\n  margin: 0 0 0.25rem;\n  color: var(--text-primary);\n  font-family: var(--font-mono);\n  font-size: 1rem;\n  font-weight: 600;\n  letter-spacing: 0.06em;\n  text-transform: uppercase;\n}\n\n.description {\n  margin: 0;\n  color: var(--text-secondary);\n  font-size: 0.8125rem;\n  line-height: 1.5;\n}\n\n.actions {\n  display: flex;\n  align-items: center;\n  gap: 0.5rem;\n  flex-shrink: 0;\n}\n\n@media (max-width: 640px) {\n  .headerContent {\n    flex-direction: column;\n    align-items: stretch;\n  }\n\n  .actions {\n    justify-content: flex-end;\n  }\n}\n",
+      "source": "packages/ui/src/components/SectionHeader.module.css"
+    }
+  ]
+}

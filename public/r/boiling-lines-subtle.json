@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "boiling-lines-subtle",
+  "type": "registry:component",
+  "title": "Boiling Lines Subtle",
+  "description": "A lighter, calmer variant of the boiling lines effect for minimal line jitter.",
+  "registryDependencies": [
+    "boiling-lines-effect"
+  ],
+  "files": [
+    {
+      "path": "registry/boston/blocks/boiling-lines-subtle/boiling-lines-subtle.tsx",
+      "content": "\"use client\"\n\nimport {\n  BoilingLinesEffect,\n  type BoilingLinesEffectProps,\n} from \"@/registry/boston/blocks/boiling-lines-effect/boiling-lines-effect\"\n\nexport type BoilingLinesSubtleProps = BoilingLinesEffectProps\n\nexport function BoilingLinesSubtle({\n  speedMs = 120,\n  baseFrequency = \"0.01\",\n  numOctaves = 1,\n  scale = 2,\n  seeds = [3, 11, 19],\n  ...props\n}: BoilingLinesSubtleProps) {\n  return (\n    <BoilingLinesEffect\n      speedMs={speedMs}\n      baseFrequency={baseFrequency}\n      numOctaves={numOctaves}\n      scale={scale}\n      seeds={seeds}\n      {...props}\n    />\n  )\n}\n",
+      "type": "registry:component"
+    }
+  ]
+}

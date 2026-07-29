@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "steezy-hello-world",
+  "type": "registry:component",
+  "title": "Steezy Hello World",
+  "description": "A simple starter component for Steezy UI",
+  "registryDependencies": [
+    "button"
+  ],
+  "files": [
+    {
+      "path": "registry/boston/blocks/steezy-hello-world/steezy-hello-world.tsx",
+      "content": "import { Button } from \"@/registry/boston/ui/button\"\n\nexport function SteezyHelloWorld() {\n  return <Button>Steezy UI</Button>\n}\n",
+      "type": "registry:component"
+    }
+  ]
+}

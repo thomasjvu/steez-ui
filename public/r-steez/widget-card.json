@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "widget-card",
+  "type": "registry:component",
+  "title": "Widget Card",
+  "description": "Dashboard widget shell with size presets and optional overlay content.",
+  "dependencies": [
+    "@steez-ui/theme"
+  ],
+  "registryDependencies": [
+    "theme-tokens"
+  ],
+  "files": [
+    {
+      "path": "components/steez/WidgetCard.tsx",
+      "type": "registry:component",
+      "content": "import React from \"react\";\n\nimport styles from \"./WidgetCard.module.css\";\n\nexport type WidgetSize = \"xs-a\" | \"xs-b\" | \"sm-a\" | \"sm-b\";\n\nexport interface WidgetCardProps extends React.HTMLAttributes<HTMLDivElement> {\n  title?: string;\n  icon?: React.ReactNode;\n  children: React.ReactNode;\n  size?: WidgetSize | \"sm\" | \"md\" | \"lg\";\n  overlay?: React.ReactNode;\n}\n\nexport function WidgetCard({\n  title,\n  icon,\n  children,\n  size = \"sm-b\",\n  className = \"\",\n  overlay,\n  style,\n  ...props\n}: WidgetCardProps) {\n  const sizeClassMap: Record<Exclude<WidgetCardProps[\"size\"], undefined>, string> =\n    {\n      \"xs-a\": styles.widgetXsA,\n      \"xs-b\": styles.widgetXsB,\n      \"sm-a\": styles.widgetSmA,\n      \"sm-b\": styles.widgetSmB,\n      sm: styles.widgetSmA,\n      md: styles.widgetSmB,\n      lg: styles.widgetSmB,\n    };\n  const sizeClass = sizeClassMap[size] || styles.widgetSmB;\n\n  return (\n    <div\n      className={`${sizeClass} ${className}`.trim()}\n      style={{ position: \"relative\", ...style }}\n      {...props}\n    >\n      {title ? (\n        <div className={styles.header}>\n          <div className={styles.titleRow}>\n            {icon ? <div className={styles.icon}>{icon}</div> : null}\n            <h3 className={styles.title}>{title}</h3>\n          </div>\n        </div>\n      ) : null}\n      <div className={styles.body}>{children}</div>\n      {overlay}\n    </div>\n  );\n}\n\nexport default WidgetCard;\n",
+      "source": "packages/ui/src/components/WidgetCard.tsx"
+    },
+    {
+      "path": "components/steez/WidgetCard.module.css",
+      "type": "registry:style",
+      "content": ".widgetXsA,\n.widgetXsB,\n.widgetSmA,\n.widgetSmB {\n  background: var(--border-color);\n  border: none;\n  border-radius: 2px;\n  overflow: hidden;\n  transition: background 200ms ease;\n}\n\n.widgetXsA:hover,\n.widgetXsB:hover,\n.widgetSmA:hover,\n.widgetSmB:hover {\n  background: var(--text-primary);\n}\n\n.widgetXsA {\n  grid-column: span 1;\n  grid-row: span 1;\n  min-height: 180px;\n}\n\n.widgetXsB {\n  grid-column: span 1;\n  grid-row: span 2;\n  min-height: 360px;\n}\n\n.widgetSmA {\n  grid-column: span 2;\n  grid-row: span 1;\n  min-height: 180px;\n}\n\n.widgetSmB {\n  grid-column: span 2;\n  grid-row: span 2;\n  min-height: 360px;\n}\n\n.header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 12px 16px;\n  border-bottom: 1px solid var(--border-color);\n}\n\n.titleRow {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n}\n\n.icon {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n}\n\n.title {\n  margin: 0;\n  color: var(--text-primary);\n  font-family: var(--font-mono);\n  font-size: 14px;\n  font-weight: 600;\n  letter-spacing: 0.05em;\n  text-transform: uppercase;\n}\n\n.body {\n  padding: 12px 16px;\n}\n",
+      "source": "packages/ui/src/components/WidgetCard.module.css"
+    }
+  ]
+}

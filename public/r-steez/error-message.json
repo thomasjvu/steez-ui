@@ -1,0 +1,36 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "error-message",
+  "type": "registry:component",
+  "title": "Error Message",
+  "description": "Inline, card, and fullscreen error message surface.",
+  "dependencies": [
+    "@steez-ui/theme",
+    "@steez-ui/icons"
+  ],
+  "registryDependencies": [
+    "theme-tokens",
+    "icon-provider",
+    "button"
+  ],
+  "files": [
+    {
+      "path": "components/steez/ErrorMessage.tsx",
+      "type": "registry:component",
+      "content": "import React from \"react\";\n\nimport { CloseIcon, RefreshIcon, WarningIcon } from \"@steez-ui/icons\";\n\nimport buttonStyles from \"../styles/Buttons.module.css\";\nimport styles from \"./ErrorMessage.module.css\";\n\nexport interface ErrorMessageProps {\n  title?: string;\n  message: string;\n  details?: string;\n  onRetry?: () => void;\n  onDismiss?: () => void;\n  variant?: \"inline\" | \"card\" | \"fullScreen\";\n}\n\nexport const ErrorMessage = React.memo(function ErrorMessage({\n  title = \"Error\",\n  message,\n  details,\n  onRetry,\n  onDismiss,\n  variant = \"card\",\n}: ErrorMessageProps) {\n  const content = (\n    <>\n      <div className={styles.header}>\n        <WarningIcon width={24} height={24} />\n        <h3>{title}</h3>\n      </div>\n      <p className={styles.message}>{message}</p>\n      {details ? (\n        <details className={styles.details}>\n          <summary>Details</summary>\n          <pre>{details}</pre>\n        </details>\n      ) : null}\n      {onRetry || onDismiss ? (\n        <div className={styles.actions}>\n          {onRetry ? (\n            <button type=\"button\" onClick={onRetry} className={buttonStyles.secondary}>\n              <RefreshIcon width={16} height={16} />\n              {\" \"}\n              Try Again\n            </button>\n          ) : null}\n          {onDismiss ? (\n            <button type=\"button\" onClick={onDismiss} className={buttonStyles.secondary}>\n              <CloseIcon width={16} height={16} />\n              {\" \"}\n              Dismiss\n            </button>\n          ) : null}\n        </div>\n      ) : null}\n    </>\n  );\n\n  if (variant === \"fullScreen\") {\n    return (\n      <div className={styles.fullScreen} role=\"alert\" aria-live=\"assertive\">\n        <div className={styles.card}>{content}</div>\n      </div>\n    );\n  }\n\n  if (variant === \"inline\") {\n    return (\n      <div className={styles.inline} role=\"alert\" aria-live=\"assertive\">\n        {content}\n      </div>\n    );\n  }\n\n  return (\n    <div className={styles.card} role=\"alert\" aria-live=\"assertive\">\n      {content}\n    </div>\n  );\n});\n\n",
+      "source": "packages/ui/src/components/ErrorMessage.tsx"
+    },
+    {
+      "path": "components/steez/ErrorMessage.module.css",
+      "type": "registry:style",
+      "content": ".card {\n  background: color-mix(in srgb, var(--bg-secondary) 90%, transparent);\n  border: 1px solid var(--danger);\n  border-radius: var(--radius-md);\n  padding: 1.5rem;\n  margin: 1rem 0;\n}\n\n.inline {\n  display: flex;\n  flex-direction: column;\n  gap: 0.5rem;\n  padding: 1rem;\n  background: var(--danger-bg);\n  border-left: 4px solid var(--danger);\n  margin: 0.5rem 0;\n}\n\n.fullScreen {\n  position: fixed;\n  inset: 0;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: rgba(1, 6, 7, 0.8);\n  z-index: 999;\n}\n\n.header {\n  display: flex;\n  align-items: center;\n  gap: 0.5rem;\n  color: var(--danger);\n  margin-bottom: 0.5rem;\n}\n\n.header h3 {\n  margin: 0;\n  font-size: 1.1rem;\n}\n\n.message {\n  color: var(--text-primary);\n  margin: 0 0 1rem 0;\n  line-height: 1.5;\n}\n\n.details {\n  margin: 1rem 0;\n  padding: 0.5rem;\n  background: var(--bg-primary);\n  border-radius: var(--radius-sm);\n  font-size: 0.85rem;\n}\n\n.details summary {\n  cursor: pointer;\n  color: var(--text-secondary);\n  margin-bottom: 0.5rem;\n}\n\n.details pre {\n  margin: 0;\n  overflow-x: auto;\n  white-space: pre-wrap;\n  word-break: break-word;\n  color: var(--text-secondary);\n}\n\n.actions {\n  display: flex;\n  gap: 0.5rem;\n  flex-wrap: wrap;\n}\n\n",
+      "source": "packages/ui/src/components/ErrorMessage.module.css"
+    },
+    {
+      "path": "components/styles/Buttons.module.css",
+      "type": "registry:style",
+      "content": ".primary {\n  padding: 8px 16px;\n  background: var(--interactive-primary-bg);\n  color: var(--interactive-primary-fg);\n  border: 1px solid var(--interactive-primary-border);\n  border-radius: 6px;\n  cursor: pointer;\n  transition: all var(--transition-fast);\n  font-family: var(--font-mono);\n  font-weight: 600;\n  font-size: 0.875rem;\n}\n\n.primary:hover:not(:disabled) {\n  background: var(--interactive-primary-bg-hover);\n  border-color: var(--interactive-primary-border);\n}\n\n.secondary {\n  padding: 8px 16px;\n  background: var(--interactive-secondary-bg);\n  color: var(--interactive-secondary-fg);\n  border: 1px solid var(--interactive-secondary-border);\n  border-radius: 6px;\n  cursor: pointer;\n  transition: all var(--transition-fast);\n  font-family: var(--font-mono);\n  font-weight: 600;\n  font-size: 0.875rem;\n}\n\n.secondary:hover:not(:disabled) {\n  color: var(--interactive-secondary-fg);\n  background: var(--interactive-secondary-bg-hover);\n  border-color: var(--interactive-secondary-border-hover);\n}\n\n.toolbarButton {\n  display: inline-flex;\n  align-items: center;\n  gap: 0.375rem;\n  padding: 0.5rem 0.75rem;\n  background: var(--interactive-secondary-bg);\n  color: var(--interactive-secondary-fg);\n  border: 1px solid var(--interactive-secondary-border);\n  border-radius: 4px;\n  cursor: pointer;\n  transition: all var(--transition-fast);\n  font-family: var(--font-mono);\n  font-size: 0.875rem;\n  font-weight: 500;\n  white-space: nowrap;\n}\n\n.toolbarButton:hover:not(:disabled) {\n  background: var(--interactive-primary-bg);\n  border-color: var(--interactive-primary-border);\n  color: var(--interactive-primary-fg);\n}\n\n.danger {\n  padding: 8px 16px;\n  background: var(--danger-bg);\n  color: var(--danger);\n  border: 1px solid var(--danger);\n  border-radius: 6px;\n  cursor: pointer;\n  transition: all var(--transition-fast);\n  font-family: var(--font-mono);\n  font-weight: 600;\n  font-size: 0.875rem;\n}\n\n.danger:hover:not(:disabled) {\n  background: var(--danger);\n  color: var(--text-on-accent);\n}\n\n.small {\n  padding: 4px 10px;\n  font-size: 0.75rem;\n}\n\n.large {\n  padding: 12px 24px;\n  font-size: 1rem;\n}\n\n.primary:disabled,\n.secondary:disabled,\n.toolbarButton:disabled,\n.danger:disabled {\n  opacity: 0.5;\n  cursor: not-allowed;\n}\n\n",
+      "source": "packages/ui/src/styles/Buttons.module.css"
+    }
+  ]
+}

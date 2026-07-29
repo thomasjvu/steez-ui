@@ -1,0 +1,25 @@
+{
+  "name": "@steez-ui/icons",
+  "version": "0.1.21",
+  "description": "Shared icon exports and icon provider for Steez UI.",
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p ./tsconfig.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

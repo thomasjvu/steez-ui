@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "avatar-stage",
+  "type": "registry:component",
+  "title": "Avatar Stage",
+  "description": "Stable avatar viewport shell with backdrop and bottom divider support.",
+  "dependencies": [
+    "@steez-ui/theme"
+  ],
+  "registryDependencies": [
+    "theme-tokens"
+  ],
+  "files": [
+    {
+      "path": "components/steez/AvatarStage.tsx",
+      "type": "registry:component",
+      "content": "import React from \"react\";\n\nimport styles from \"./AvatarStage.module.css\";\n\nexport interface AvatarStageProps extends React.HTMLAttributes<HTMLDivElement> {\n  children: React.ReactNode;\n  backdrop?: React.ReactNode;\n  stageHeight?: number | string;\n  viewportWidth?: number | string;\n  viewportClassName?: string;\n}\n\nexport function AvatarStage({\n  children,\n  backdrop,\n  stageHeight = \"34rem\",\n  viewportWidth = \"min(100%, 30rem)\",\n  className = \"\",\n  viewportClassName = \"\",\n  style,\n  ...props\n}: AvatarStageProps) {\n  const mergedStyle = {\n    ...style,\n    [\"--avatar-stage-height\" as string]:\n      typeof stageHeight === \"number\" ? `${stageHeight}px` : stageHeight,\n    [\"--avatar-stage-viewport-width\" as string]:\n      typeof viewportWidth === \"number\" ? `${viewportWidth}px` : viewportWidth,\n  } as React.CSSProperties;\n\n  return (\n    <div className={`${styles.root} ${className}`.trim()} style={mergedStyle} {...props}>\n      {backdrop ? <div className={styles.backdrop}>{backdrop}</div> : null}\n      <div className={`${styles.viewport} ${viewportClassName}`.trim()}>{children}</div>\n    </div>\n  );\n}\n",
+      "source": "packages/ui/src/components/AvatarStage.tsx"
+    },
+    {
+      "path": "components/steez/AvatarStage.module.css",
+      "type": "registry:style",
+      "content": ".root {\n  position: relative;\n  display: grid;\n  align-items: end;\n  justify-items: center;\n  min-height: var(--avatar-stage-height, 34rem);\n  overflow: hidden;\n  isolation: isolate;\n}\n\n.root::after {\n  content: \"\";\n  position: absolute;\n  inset-inline: 0;\n  bottom: 0;\n  z-index: 2;\n  border-bottom: 1px solid color-mix(in srgb, var(--border-color) 78%, transparent);\n  pointer-events: none;\n}\n\n.backdrop {\n  position: absolute;\n  inset: 0;\n  z-index: 0;\n}\n\n.viewport {\n  position: relative;\n  z-index: 1;\n  width: var(--avatar-stage-viewport-width, min(100%, 30rem));\n  max-width: 100%;\n  height: 100%;\n  min-height: var(--avatar-stage-height, 34rem);\n}\n",
+      "source": "packages/ui/src/components/AvatarStage.module.css"
+    }
+  ]
+}

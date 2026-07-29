@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "boiling-lines-intense",
+  "type": "registry:component",
+  "title": "Boiling Lines Intense",
+  "description": "A stronger boiling lines variant with punchier hand-drawn jitter.",
+  "registryDependencies": [
+    "boiling-lines-effect"
+  ],
+  "files": [
+    {
+      "path": "registry/boston/blocks/boiling-lines-intense/boiling-lines-intense.tsx",
+      "content": "\"use client\"\n\nimport {\n  BoilingLinesEffect,\n  type BoilingLinesEffectProps,\n} from \"@/registry/boston/blocks/boiling-lines-effect/boiling-lines-effect\"\n\nexport type BoilingLinesIntenseProps = BoilingLinesEffectProps\n\nexport function BoilingLinesIntense({\n  speedMs = 80,\n  baseFrequency = \"0.02\",\n  numOctaves = 3,\n  scale = 6,\n  seeds = [7, 29, 53],\n  ...props\n}: BoilingLinesIntenseProps) {\n  return (\n    <BoilingLinesEffect\n      speedMs={speedMs}\n      baseFrequency={baseFrequency}\n      numOctaves={numOctaves}\n      scale={scale}\n      seeds={seeds}\n      {...props}\n    />\n  )\n}\n",
+      "type": "registry:component"
+    }
+  ]
+}

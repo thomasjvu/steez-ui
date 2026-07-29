@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "segmented-control",
+  "type": "registry:component",
+  "title": "Segmented Control",
+  "description": "Shared segmented control for compact workspace switching.",
+  "dependencies": [
+    "@steez-ui/theme",
+    "@steez-ui/icons"
+  ],
+  "registryDependencies": [
+    "theme-tokens"
+  ],
+  "files": [
+    {
+      "path": "components/steez/SegmentedControl.tsx",
+      "type": "registry:component",
+      "content": "import React from \"react\";\n\nimport styles from \"./SegmentedControl.module.css\";\n\nexport interface SegmentedControlOption {\n  value: string;\n  label: string;\n}\n\nexport interface SegmentedControlProps {\n  value: string;\n  options: SegmentedControlOption[];\n  onChange: (value: string) => void;\n  label?: string;\n  hint?: string;\n  ariaLabel?: string;\n  className?: string;\n  compact?: boolean;\n}\n\nexport function SegmentedControl({\n  value,\n  options,\n  onChange,\n  label,\n  hint,\n  ariaLabel,\n  className = \"\",\n  compact = false,\n}: SegmentedControlProps) {\n  return (\n    <div className={`${styles.wrapper} ${className}`.trim()}>\n      {label ? <div className={styles.label}>{label}</div> : null}\n      <div\n        className={`${styles.track} ${compact ? styles.trackCompact : \"\"}`.trim()}\n        role=\"tablist\"\n        aria-label={ariaLabel || label}\n      >\n        {options.map((option) => {\n          const isActive = option.value === value;\n          return (\n            <button\n              key={option.value}\n              type=\"button\"\n              role=\"tab\"\n              aria-selected={isActive}\n              className={`${styles.option} ${isActive ? styles.optionActive : \"\"} ${compact ? styles.optionCompact : \"\"}`.trim()}\n              onClick={() => onChange(option.value)}\n            >\n              {option.label}\n            </button>\n          );\n        })}\n      </div>\n      {hint ? <div className={styles.hint}>{hint}</div> : null}\n    </div>\n  );\n}\n\n",
+      "source": "packages/ui/src/components/SegmentedControl.tsx"
+    },
+    {
+      "path": "components/steez/SegmentedControl.module.css",
+      "type": "registry:style",
+      "content": ".wrapper {\n  display: flex;\n  flex-direction: column;\n  gap: 0.5rem;\n}\n\n.label {\n  color: var(--text-primary);\n  font-size: 0.875rem;\n  font-weight: 500;\n}\n\n.hint {\n  color: var(--text-secondary);\n  font-size: 0.75rem;\n}\n\n.track {\n  display: inline-flex;\n  gap: 4px;\n  padding: 4px;\n  border: 1px solid var(--border-color);\n  background: color-mix(in srgb, var(--bg-secondary) 85%, transparent);\n  border-radius: 999px;\n}\n\n.trackCompact {\n  padding: 2px;\n}\n\n.option {\n  border: none;\n  background: transparent;\n  color: var(--text-secondary);\n  padding: 0.5rem 0.875rem;\n  border-radius: 999px;\n  font-family: var(--font-mono);\n  font-size: 0.8125rem;\n  cursor: pointer;\n  transition: color var(--transition-fast), background-color var(--transition-fast);\n}\n\n.optionCompact {\n  padding: 0.35rem 0.7rem;\n}\n\n.optionActive {\n  background: var(--interactive-primary-bg);\n  color: var(--interactive-primary-fg);\n}\n\n",
+      "source": "packages/ui/src/components/SegmentedControl.module.css"
+    }
+  ]
+}

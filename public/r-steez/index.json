@@ -1,0 +1,260 @@
+[
+  {
+    "name": "theme-tokens",
+    "type": "registry:style",
+    "title": "Theme Tokens",
+    "description": "Shared CSS tokens and compatibility aliases for Steez UI consumers."
+  },
+  {
+    "name": "icon-provider",
+    "type": "registry:lib",
+    "title": "Icon Provider",
+    "description": "Shared icon provider and icon surface used by Steez primitives."
+  },
+  {
+    "name": "ascii-ripple-text",
+    "type": "registry:component",
+    "title": "ASCII Ripple Text",
+    "description": "Hover-driven ASCII glitch ripple for editorial text links and mono-heavy navigation moments."
+  },
+  {
+    "name": "avatar-stage",
+    "type": "registry:component",
+    "title": "Avatar Stage",
+    "description": "Stable avatar viewport shell with backdrop and bottom divider support."
+  },
+  {
+    "name": "blink-text",
+    "type": "registry:component",
+    "title": "Blink Text",
+    "description": "Hover and mount-triggered blink text treatment for small attention cues."
+  },
+  {
+    "name": "button",
+    "type": "registry:component",
+    "title": "Button",
+    "description": "Core button primitive with primary, secondary, and danger variants."
+  },
+  {
+    "name": "copy-button",
+    "type": "registry:component",
+    "title": "Copy Button",
+    "description": "Clipboard button with built-in success feedback."
+  },
+  {
+    "name": "cyberpunk-input",
+    "type": "registry:component",
+    "title": "Cyberpunk Input",
+    "description": "Monospace input with shared Steez form framing."
+  },
+  {
+    "name": "cyberpunk-select",
+    "type": "registry:component",
+    "title": "Cyberpunk Select",
+    "description": "Select primitive with the shared Steez framing and arrow treatment."
+  },
+  {
+    "name": "cyberpunk-textarea",
+    "type": "registry:component",
+    "title": "Cyberpunk Textarea",
+    "description": "Textarea primitive with the shared Steez form framing."
+  },
+  {
+    "name": "cyberpunk-checkbox",
+    "type": "registry:component",
+    "title": "Cyberpunk Checkbox",
+    "description": "Checkbox primitive for Steez forms."
+  },
+  {
+    "name": "cyberpunk-radio",
+    "type": "registry:component",
+    "title": "Cyberpunk Radio",
+    "description": "Radio and radio group primitives."
+  },
+  {
+    "name": "cyberpunk-slider",
+    "type": "registry:component",
+    "title": "Cyberpunk Slider",
+    "description": "Slider primitive with Steez progress styling."
+  },
+  {
+    "name": "themed-card",
+    "type": "registry:component",
+    "title": "Themed Card",
+    "description": "Default Steez card surface."
+  },
+  {
+    "name": "cyberpunk-tile",
+    "type": "registry:component",
+    "title": "Cyberpunk Tile",
+    "description": "Angular tile surface for dashboards, docs, and launch pages."
+  },
+  {
+    "name": "corner-bracket-card",
+    "type": "registry:component",
+    "title": "Corner Bracket Card",
+    "description": "Bracketed featured surface with accent corners."
+  },
+  {
+    "name": "dotted-halo-card",
+    "type": "registry:component",
+    "title": "Dotted Halo Card",
+    "description": "Flat content card with a dotted field extending beyond the main border."
+  },
+  {
+    "name": "segmented-control",
+    "type": "registry:component",
+    "title": "Segmented Control",
+    "description": "Shared segmented control for compact workspace switching."
+  },
+  {
+    "name": "tabbed-panel",
+    "type": "registry:component",
+    "title": "Tabbed Panel",
+    "description": "Simple tabbed panel for registry consumers."
+  },
+  {
+    "name": "page-header",
+    "type": "registry:component",
+    "title": "Page Header",
+    "description": "Neutral page header with optional icon, brand, and controls."
+  },
+  {
+    "name": "page-template",
+    "type": "registry:component",
+    "title": "Page Template",
+    "description": "Layout wrapper that composes the Steez page header and subtabs."
+  },
+  {
+    "name": "notched-viewport-frame",
+    "type": "registry:component",
+    "title": "Notched Viewport Frame",
+    "description": "Unified notched outline shell for viewport framing and overlay chrome."
+  },
+  {
+    "name": "radial-menu-overlay",
+    "type": "registry:component",
+    "title": "Radial Menu Overlay",
+    "description": "Full-screen radial navigation surface built around the notched viewport shell."
+  },
+  {
+    "name": "theme-toggle",
+    "type": "registry:component",
+    "title": "Theme Toggle",
+    "description": "Shared dark and light theme toggle."
+  },
+  {
+    "name": "loading-screen",
+    "type": "registry:component",
+    "title": "Loading Screen",
+    "description": "Fullscreen or contained loading shell with progress, cross field, and neutral branding hooks."
+  },
+  {
+    "name": "loading-overlay-crystalline",
+    "type": "registry:component",
+    "title": "Loading Overlay Crystalline",
+    "description": "Compact centered loading overlay for viewer and media surfaces."
+  },
+  {
+    "name": "loading-progress-bar",
+    "type": "registry:component",
+    "title": "Loading Progress Bar",
+    "description": "Progress bar with segmented loading bars."
+  },
+  {
+    "name": "heartbeat-pulse",
+    "type": "registry:component",
+    "title": "Heartbeat Pulse",
+    "description": "Orb and line heartbeat indicators for recurring runtime activity."
+  },
+  {
+    "name": "hexagon-grid",
+    "type": "registry:component",
+    "title": "Hexagon Grid",
+    "description": "Animated hex field backdrop for avatars, hero surfaces, and ambient panels."
+  },
+  {
+    "name": "overlay-button",
+    "type": "registry:component",
+    "title": "Overlay Button",
+    "description": "Compact floating control button for viewer and media overlays."
+  },
+  {
+    "name": "pixel-tooltip",
+    "type": "registry:component",
+    "title": "Pixel Tooltip",
+    "description": "Compact hover tooltip for terse control hints."
+  },
+  {
+    "name": "quick-info-card",
+    "type": "registry:component",
+    "title": "Quick Info Card",
+    "description": "Compact multi-stat summary surface with an optional storage meter."
+  },
+  {
+    "name": "widget-card",
+    "type": "registry:component",
+    "title": "Widget Card",
+    "description": "Dashboard widget shell with size presets and optional overlay content."
+  },
+  {
+    "name": "marquee-strip",
+    "type": "registry:component",
+    "title": "Marquee Strip",
+    "description": "Continuous horizontal marquee track for providers, skills, and launch lanes."
+  },
+  {
+    "name": "section",
+    "type": "registry:component",
+    "title": "Section",
+    "description": "Simple content section with optional monospace title treatment."
+  },
+  {
+    "name": "section-header",
+    "type": "registry:component",
+    "title": "Section Header",
+    "description": "Framed header row for settings and control panels with optional actions."
+  },
+  {
+    "name": "signal-trail-backdrop",
+    "type": "registry:component",
+    "title": "Signal Trail Backdrop",
+    "description": "WebGL signal-field backdrop for technical hero and viewer surfaces."
+  },
+  {
+    "name": "stat-card",
+    "type": "registry:component",
+    "title": "Stat Card",
+    "description": "Compact metric surface with optional tone and subvalue."
+  },
+  {
+    "name": "status-message",
+    "type": "registry:component",
+    "title": "Status Message",
+    "description": "Success, error, and info toast primitive."
+  },
+  {
+    "name": "stroked-text",
+    "type": "registry:component",
+    "title": "Stroked Text",
+    "description": "Outlined accent text with an optional mount-time stroke-to-fill blink."
+  },
+  {
+    "name": "runtime-orbit-diagram",
+    "type": "registry:component",
+    "title": "Runtime Orbit Diagram",
+    "description": "Animated workspace topology diagram with icon nodes and moving path marker."
+  },
+  {
+    "name": "error-message",
+    "type": "registry:component",
+    "title": "Error Message",
+    "description": "Inline, card, and fullscreen error message surface."
+  },
+  {
+    "name": "foundation",
+    "type": "registry:block",
+    "title": "Foundation Preset",
+    "description": "Install theme tokens, icon provider, buttons, and core form primitives together."
+  }
+]

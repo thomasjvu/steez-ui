@@ -1,0 +1,32 @@
+.overlayBtn {
+  width: var(--overlay-btn-size, 2rem);
+  height: var(--overlay-btn-size, 2rem);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-color);
+  border-radius: var(--overlay-btn-radius, 0.5rem);
+  background: color-mix(in srgb, var(--bg-primary) 72%, transparent);
+  backdrop-filter: blur(2px);
+  color: var(--text-secondary);
+  cursor: pointer;
+  opacity: 0.8;
+  transition:
+    opacity 150ms ease,
+    background-color 150ms ease,
+    color 150ms ease,
+    border-color 150ms ease;
+}
+
+.overlayBtn:hover {
+  background: color-mix(in srgb, var(--bg-primary) 92%, transparent);
+  color: var(--text-primary);
+  opacity: 1;
+}
+
+.overlayBtnActive,
+.overlayBtnActive:hover {
+  background: var(--text-primary);
+  border-color: var(--text-primary);
+  color: var(--bg-primary);
+}

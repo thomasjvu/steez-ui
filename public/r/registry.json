@@ -1,0 +1,186 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "steezy-ui",
+  "homepage": "http://localhost:3000",
+  "items": [
+    {
+      "name": "steezy-hello-world",
+      "type": "registry:component",
+      "title": "Steezy Hello World",
+      "description": "A simple starter component for Steezy UI",
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "registry/boston/blocks/steezy-hello-world/steezy-hello-world.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "example-form",
+      "type": "registry:component",
+      "title": "Example Form",
+      "description": "A contact form with Zod validation.",
+      "dependencies": ["zod"],
+      "registryDependencies": ["button", "input", "label", "textarea", "card"],
+      "files": [
+        {
+          "path": "registry/boston/blocks/example-form/example-form.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "complex-component",
+      "type": "registry:component",
+      "title": "Complex Component",
+      "description": "A complex component showing hooks, libs and components.",
+      "registryDependencies": ["card"],
+      "files": [
+        {
+          "path": "registry/boston/blocks/complex-component/page.tsx",
+          "type": "registry:page",
+          "target": "app/pokemon/page.tsx"
+        },
+        {
+          "path": "registry/boston/blocks/complex-component/components/pokemon-card.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/boston/blocks/complex-component/components/pokemon-image.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/boston/blocks/complex-component/lib/pokemon.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "registry/boston/blocks/complex-component/hooks/use-pokemon.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "example-with-css",
+      "type": "registry:component",
+      "title": "Example with CSS",
+      "description": "A login form with a CSS file.",
+      "files": [
+        {
+          "path": "registry/boston/blocks/example-with-css/example-card.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/boston/blocks/example-with-css/example-card.css",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "boiling-lines-effect",
+      "type": "registry:component",
+      "title": "Boiling Lines Effect",
+      "description": "Animated SVG displacement filter that creates hand-drawn boiling lines for transparent line art images.",
+      "files": [
+        {
+          "path": "registry/boston/blocks/boiling-lines-effect/boiling-lines-effect.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "boiling-lines-subtle",
+      "type": "registry:component",
+      "title": "Boiling Lines Subtle",
+      "description": "A lighter, calmer variant of the boiling lines effect for minimal line jitter.",
+      "registryDependencies": ["boiling-lines-effect"],
+      "files": [
+        {
+          "path": "registry/boston/blocks/boiling-lines-subtle/boiling-lines-subtle.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "boiling-lines-intense",
+      "type": "registry:component",
+      "title": "Boiling Lines Intense",
+      "description": "A stronger boiling lines variant with punchier hand-drawn jitter.",
+      "registryDependencies": ["boiling-lines-effect"],
+      "files": [
+        {
+          "path": "registry/boston/blocks/boiling-lines-intense/boiling-lines-intense.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "pattern-pushdown-cards",
+      "type": "registry:component",
+      "title": "Pattern Pushdown Cards",
+      "description": "A playful patterned grid with tactile pushdown card interactions.",
+      "files": [
+        {
+          "path": "registry/boston/blocks/pattern-pushdown-cards/pattern-pushdown-cards.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/boston/blocks/pattern-pushdown-cards/pattern-pushdown-cards.css",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "boiling-lines-presets",
+      "type": "registry:component",
+      "title": "Boiling Lines Presets",
+      "description": "Install all boiling lines variants (default, subtle, and intense) in one package.",
+      "files": [
+        {
+          "path": "registry/boston/blocks/boiling-lines-effect/boiling-lines-effect.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/boston/blocks/boiling-lines-subtle/boiling-lines-subtle.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/boston/blocks/boiling-lines-intense/boiling-lines-intense.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "infinite-marquee",
+      "type": "registry:component",
+      "title": "Infinite Marquee",
+      "description": "A rounded, looping marquee pill with optional hover pause and color shift.",
+      "files": [
+        {
+          "path": "registry/boston/blocks/infinite-marquee/infinite-marquee.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/boston/blocks/infinite-marquee/infinite-marquee.css",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "angled-corner-cards",
+      "type": "registry:component",
+      "title": "Angled Corner Cards",
+      "description": "Accordion-like profile cards with clipped corners, image rail, and sliding content.",
+      "files": [
+        {
+          "path": "registry/boston/blocks/angled-corner-cards/angled-corner-cards.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/boston/blocks/angled-corner-cards/angled-corner-cards.css",
+          "type": "registry:component"
+        }
+      ]
+    }
+  ]
+}

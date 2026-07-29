@@ -1,0 +1,326 @@
+.card {
+  --accordion-feature-card-corner-size: 1.6rem;
+  --accordion-feature-card-border-width: 1px;
+  --accordion-feature-card-image-width: clamp(7rem, 26vw, 10rem);
+  --accordion-feature-card-collapsed-width: clamp(3.5rem, 10vw, 4.5rem);
+  --accordion-feature-card-min-height: 26rem;
+  --accordion-feature-card-border-color: color-mix(in srgb, var(--text-primary) 88%, transparent);
+  --accordion-feature-card-media-surface: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bg-secondary) 82%, transparent),
+    color-mix(in srgb, var(--bg-primary) 94%, transparent)
+  );
+  --accordion-feature-card-content-surface: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bg-secondary) 95%, transparent),
+    color-mix(in srgb, var(--bg-primary) 98%, transparent)
+  );
+  --accordion-feature-card-image-overlay: linear-gradient(
+    140deg,
+    rgba(1, 6, 7, 0.18) 0%,
+    rgba(1, 6, 7, 0.6) 55%,
+    rgba(1, 6, 7, 0.9) 100%
+  );
+  --accordion-feature-card-title-color: var(--text-primary);
+  --accordion-feature-card-subtitle-color: color-mix(in srgb, var(--text-primary) 84%, transparent);
+  --accordion-feature-card-body-color: var(--text-secondary);
+  --accordion-feature-card-accent: var(--accent-primary);
+  --accordion-feature-card-toggle-background: color-mix(in srgb, var(--bg-primary) 92%, transparent);
+  --accordion-feature-card-toggle-foreground: var(--text-primary);
+
+  display: grid;
+  grid-template-columns:
+    minmax(6.5rem, var(--accordion-feature-card-image-width))
+    minmax(3.5rem, var(--accordion-feature-card-collapsed-width));
+  position: relative;
+  min-height: var(--accordion-feature-card-min-height);
+  height: 100%;
+  overflow: clip;
+  color: var(--text-primary);
+  transition: grid-template-columns 450ms var(--ease-out-expo);
+}
+
+.card > * {
+  min-width: 0;
+  grid-row: 1;
+}
+
+.outerFrame,
+.innerFrame {
+  clip-path: polygon(
+    var(--accordion-feature-card-corner-size) 0%,
+    calc(100% - var(--accordion-feature-card-corner-size)) 0%,
+    100% var(--accordion-feature-card-corner-size),
+    100% calc(100% - var(--accordion-feature-card-corner-size)),
+    calc(100% - var(--accordion-feature-card-corner-size)) 100%,
+    var(--accordion-feature-card-corner-size) 100%,
+    0% calc(100% - var(--accordion-feature-card-corner-size)),
+    0% var(--accordion-feature-card-corner-size)
+  );
+}
+
+.outerFrame {
+  background: var(--accordion-feature-card-border-color);
+  padding: var(--accordion-feature-card-border-width);
+  display: flex;
+}
+
+.innerFrame {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.mediaFrame {
+  grid-column: 1 / -1;
+}
+
+.mediaInner {
+  position: relative;
+  background: var(--accordion-feature-card-media-surface);
+  overflow: hidden;
+}
+
+.image {
+  display: block;
+  width: calc(var(--accordion-feature-card-image-width) + var(--accordion-feature-card-corner-size));
+  min-width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--accordion-feature-card-image-position, center center);
+  filter: saturate(0.88) contrast(1.04) brightness(0.92);
+}
+
+.imageOverlay {
+  position: absolute;
+  inset: 0;
+  background: var(--accordion-feature-card-image-overlay);
+  pointer-events: none;
+}
+
+.contentFrame {
+  grid-column: 2;
+  position: relative;
+}
+
+.contentInner {
+  position: relative;
+  background: var(--accordion-feature-card-content-surface);
+  overflow: hidden;
+}
+
+.badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+}
+
+.layout {
+  position: absolute;
+  inset: var(--accordion-feature-card-corner-size) auto auto var(--accordion-feature-card-corner-size);
+  display: flex;
+  align-items: stretch;
+  gap: 1.35rem;
+  width: min(24rem, calc(100vw - 7rem));
+  height: calc(100% - 5.4rem);
+  padding-right: 1.25rem;
+  padding-bottom: 0.5rem;
+  transform: translateX(-0.95rem);
+  transition: transform 450ms var(--ease-out-expo);
+}
+
+.verticalTitle {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  color: color-mix(in srgb, var(--accordion-feature-card-title-color) 54%, transparent);
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: min(100%, 18rem);
+  min-width: 0;
+  padding-top: 0.15rem;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accordion-feature-card-accent);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 1.1rem + 0.9vw, 1.9rem);
+  line-height: 0.96;
+  text-transform: uppercase;
+  color: var(--accordion-feature-card-title-color);
+}
+
+.subtitle,
+.description {
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: var(--accordion-feature-card-subtitle-color);
+}
+
+.description {
+  font-size: 0.82rem;
+  line-height: 1.62;
+  color: var(--accordion-feature-card-body-color);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  color: var(--accordion-feature-card-body-color);
+  min-height: 0;
+}
+
+.footer {
+  margin-top: auto;
+  padding-top: 0.2rem;
+}
+
+.toggle {
+  position: absolute;
+  left: 0.8rem;
+  bottom: 0.8rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--accordion-feature-card-border-color) 92%, transparent);
+  border-radius: 999px;
+  background: var(--accordion-feature-card-toggle-background);
+  color: var(--accordion-feature-card-toggle-foreground);
+  cursor: pointer;
+  transition:
+    transform var(--transition-normal),
+    border-color var(--transition-normal),
+    background-color var(--transition-normal);
+}
+
+.toggle:hover {
+  transform: translateY(-1px);
+  border-color: var(--accordion-feature-card-accent);
+}
+
+.toggleIcon {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform var(--transition-normal);
+}
+
+.card[data-expanded="true"] {
+  grid-template-columns:
+    minmax(6.5rem, var(--accordion-feature-card-image-width))
+    minmax(15rem, 1fr);
+}
+
+.card[data-expanded="true"] .layout {
+  transform: translateX(-3.35rem);
+}
+
+.card[data-expanded="true"] .toggleIcon {
+  transform: rotate(45deg);
+}
+
+.card[data-collapsible="false"] .layout {
+  transform: translateX(-3.35rem);
+}
+
+@media (max-width: 720px) {
+  .card,
+  .card[data-expanded="true"] {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .mediaFrame {
+    grid-column: 1;
+    min-height: 13.5rem;
+  }
+
+  .contentFrame {
+    grid-column: 1;
+    grid-row: 2;
+    margin-top: -1.6rem;
+  }
+
+  .layout,
+  .card[data-expanded="true"] .layout,
+  .card[data-collapsible="false"] .layout {
+    position: relative;
+    inset: auto;
+    width: auto;
+    height: auto;
+    min-height: 100%;
+    padding: 1.35rem 1.2rem 4.35rem;
+    transform: none;
+    gap: 0.95rem;
+  }
+
+  .verticalTitle {
+    writing-mode: horizontal-tb;
+    transform: none;
+    letter-spacing: 0.18em;
+  }
+
+  .copy {
+    width: 100%;
+  }
+
+  .body,
+  .footer {
+    transition:
+      opacity var(--transition-normal),
+      max-height var(--transition-normal);
+    overflow: hidden;
+  }
+
+  .card[data-expanded="false"] .body,
+  .card[data-expanded="false"] .footer {
+    max-height: 0;
+    opacity: 0;
+    padding-top: 0;
+  }
+
+  .card[data-expanded="true"] .body,
+  .card[data-expanded="true"] .footer,
+  .card[data-collapsible="false"] .body,
+  .card[data-collapsible="false"] .footer {
+    max-height: 24rem;
+    opacity: 1;
+  }
+
+  .toggle {
+    left: auto;
+    right: 0.9rem;
+    bottom: 0.9rem;
+  }
+}

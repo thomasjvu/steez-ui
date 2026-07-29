@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "infinite-marquee",
+  "type": "registry:component",
+  "title": "Infinite Marquee",
+  "description": "A rounded, looping marquee pill with optional hover pause and color shift.",
+  "files": [
+    {
+      "path": "registry/boston/blocks/infinite-marquee/infinite-marquee.tsx",
+      "content": "import \"./infinite-marquee.css\"\n\ntype InfiniteMarqueeProps = {\n  text?: string\n  speedSeconds?: number\n  pauseOnHover?: boolean\n  className?: string\n}\n\nexport function InfiniteMarquee({\n  text = \"COOL TEXT ☻ COOL TEXT ☻ COOL TEXT ☻ COOL TEXT ☻\",\n  speedSeconds = 10,\n  pauseOnHover = true,\n  className,\n}: InfiniteMarqueeProps) {\n  const contentClassName = pauseOnHover\n    ? \"steezy-marquee-track is-pausable\"\n    : \"steezy-marquee-track\"\n\n  return (\n    <div className={`steezy-marquee ${className ?? \"\"}`.trim()}>\n      <div\n        className={contentClassName}\n        style={{ animationDuration: `${speedSeconds}s` }}\n      >\n        <span>\n          <div>{text}&nbsp;</div>\n        </span>\n        <span>\n          <div>{text}&nbsp;</div>\n        </span>\n      </div>\n    </div>\n  )\n}\n",
+      "type": "registry:component"
+    },
+    {
+      "path": "registry/boston/blocks/infinite-marquee/infinite-marquee.css",
+      "content": ".steezy-marquee {\n  --marquee-bg: #ffffff;\n  --marquee-ink: #000000;\n  --marquee-accent: #e52323;\n  position: relative;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  overflow: hidden;\n  width: min(100%, 30rem);\n  height: 2.5rem;\n  border: 2px solid var(--marquee-ink);\n  border-radius: 999px;\n  box-shadow: 4px 4px 0 var(--marquee-ink);\n  background: var(--marquee-bg);\n  white-space: nowrap;\n}\n\n.steezy-marquee-track {\n  position: absolute;\n  left: 0;\n  display: block;\n  width: 200%;\n  animation-name: steezy-marquee;\n  animation-timing-function: linear;\n  animation-iteration-count: infinite;\n  color: var(--marquee-ink);\n  font-size: 1.1rem;\n  font-style: italic;\n  font-weight: 900;\n  letter-spacing: 0.04em;\n  line-height: 1;\n}\n\n.steezy-marquee-track.is-pausable:hover {\n  animation-play-state: paused;\n  color: var(--marquee-accent);\n}\n\n.steezy-marquee-track span {\n  float: left;\n  width: 50%;\n  overflow: hidden;\n}\n\n@keyframes steezy-marquee {\n  0% {\n    left: 0;\n  }\n  100% {\n    left: -100%;\n  }\n}\n",
+      "type": "registry:component"
+    }
+  ]
+}

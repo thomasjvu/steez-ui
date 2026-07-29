@@ -1,0 +1,353 @@
+.filterBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0 0 2rem;
+}
+
+.filterChip {
+  appearance: none;
+  border: 1px solid #2a2a2a;
+  background: transparent;
+  color: #888;
+  font-size: 0.8125rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.filterChip:hover {
+  color: #e8e8e8;
+  border-color: #444;
+}
+
+.filterChipActive {
+  background: #fff;
+  border-color: #fff;
+  color: #0a0a0a;
+}
+
+.catalogList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid #1f1f1f;
+}
+
+.catalogRow {
+  display: block;
+  padding: 0.95rem 0;
+  border-bottom: 1px solid #1f1f1f;
+  text-decoration: none;
+  color: inherit;
+}
+
+.catalogRow:hover .catalogName {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.catalogRowMain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.catalogName {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #fff;
+}
+
+.catalogSlug {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.75rem;
+  color: #666;
+}
+
+.catalogSummary {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: #777;
+  max-width: 60ch;
+}
+
+/* Detail page */
+.breadcrumb {
+  margin: 0 0 1rem;
+  font-size: 0.8125rem;
+  color: #666;
+}
+
+.breadcrumb a {
+  color: #999;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  color: #e8e8e8;
+}
+
+.metaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0 0 1rem;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #777;
+  border: 1px solid #2a2a2a;
+  border-radius: 4px;
+  padding: 0.15rem 0.4rem;
+}
+
+.docLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2rem;
+}
+
+@media (min-width: 900px) {
+  .docLayout {
+    grid-template-columns: minmax(0, 1.4fr) minmax(240px, 0.7fr);
+    gap: 2.5rem;
+    align-items: start;
+  }
+}
+
+.block {
+  margin-bottom: 1.75rem;
+}
+
+.blockTitle {
+  margin: 0 0 0.65rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #aaa;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.previewSurface {
+  padding: 1.25rem;
+  border: 1px solid #222;
+  border-radius: 8px;
+  background: #0f0f0f;
+  min-height: 10rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.previewSurfaceShell {
+  padding: 0;
+}
+
+.codeStack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.usageLead {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: #888;
+}
+
+.codeBlock {
+  display: block;
+  margin: 0;
+  padding: 0.9rem 1rem;
+  border: 1px solid #222;
+  border-radius: 8px;
+  background: #111;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: #ccc;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
+.commandPreview {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid #222;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #111;
+}
+
+.inlineCode {
+  flex: 1;
+  min-width: 0;
+  padding: 0.75rem 0.9rem;
+  overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.78rem;
+  color: #ccc;
+  white-space: nowrap;
+}
+
+.metaText {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: #777;
+}
+
+.metaList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.metaBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.metaLabel {
+  font-size: 0.75rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.fileList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.fileItem {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.fileText {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.75rem;
+  color: #aaa;
+}
+
+.relatedList {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid #1f1f1f;
+}
+
+.relatedLink {
+  display: block;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #1f1f1f;
+  text-decoration: none;
+  color: inherit;
+}
+
+.relatedLink:hover .relatedTitle {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.relatedTitle {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #fff;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Preview helpers used by component-preview.tsx */
+.previewRow,
+.previewColumn,
+.previewLinkList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.previewColumn {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.previewText {
+  margin: 0;
+  color: #999;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.previewHeading {
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.25rem;
+}
+
+.previewNote {
+  color: #777;
+  font-size: 0.875rem;
+}
+
+.previewLink {
+  color: #e8e8e8;
+  text-decoration: none;
+}
+
+.previewLink:hover {
+  text-decoration: underline;
+}
+
+.avatarStageFigure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+}
+
+.avatarStageHead {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 999px;
+  background: #333;
+}
+
+.avatarStageBody {
+  width: 4.5rem;
+  height: 5rem;
+  border-radius: 1rem 1rem 0 0;
+  background: #2a2a2a;
+}
+
+.dottedHaloPreviewGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 1rem;
+  width: 100%;
+}

@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "paths": {
+      "@steez-ui/icons": ["../icons/dist/index.d.ts"],
+      "@steez-ui/icons/*": ["../icons/dist/*"]
+    }
+  },
+  "include": ["./src/**/*"]
+}

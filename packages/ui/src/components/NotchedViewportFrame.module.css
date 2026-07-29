@@ -1,0 +1,40 @@
+.root {
+  pointer-events: none;
+  isolation: isolate;
+}
+
+.absolute {
+  position: absolute;
+  inset: 0;
+}
+
+.fixed {
+  position: fixed;
+  inset: 0;
+}
+
+.svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+.segment {
+  fill: none;
+  stroke: color-mix(in srgb, var(--border-color) 88%, transparent);
+  stroke-linecap: square;
+  stroke-width: 1.45;
+  vector-effect: non-scaling-stroke;
+}
+
+.strong .segment {
+  stroke: color-mix(in srgb, var(--text-primary) 38%, transparent);
+}
+
+.content {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: auto;
+}

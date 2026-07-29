@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "boiling-lines-presets",
+  "type": "registry:component",
+  "title": "Boiling Lines Presets",
+  "description": "Install all boiling lines variants (default, subtle, and intense) in one package.",
+  "files": [
+    {
+      "path": "registry/boston/blocks/boiling-lines-effect/boiling-lines-effect.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nexport type BoilingLinesEffectProps = {\n  src: string\n  alt: string\n  className?: string\n  containerClassName?: string\n  speedMs?: number\n  baseFrequency?: string\n  numOctaves?: number\n  scale?: number\n  seeds?: number[]\n}\n\nexport function BoilingLinesEffect({\n  src,\n  alt,\n  className,\n  containerClassName,\n  speedMs = 100,\n  baseFrequency = \"0.015\",\n  numOctaves = 2,\n  scale = 4,\n  seeds = [1, 25, 45],\n}: BoilingLinesEffectProps) {\n  const [frame, setFrame] = React.useState(0)\n  const id = React.useId().replace(/:/g, \"\")\n\n  const filterIds = React.useMemo(\n    () => seeds.map((seed, index) => `boil-${id}-${seed}-${index}`),\n    [id, seeds]\n  )\n\n  React.useEffect(() => {\n    if (filterIds.length <= 1) return\n\n    const timer = window.setInterval(() => {\n      setFrame((current) => (current + 1) % filterIds.length)\n    }, speedMs)\n\n    return () => window.clearInterval(timer)\n  }, [filterIds.length, speedMs])\n\n  return (\n    <div className={containerClassName}>\n      <svg\n        aria-hidden=\"true\"\n        focusable=\"false\"\n        style={{ position: \"absolute\", width: 0, height: 0 }}\n      >\n        <defs>\n          {seeds.map((seed, index) => (\n            <filter id={filterIds[index]} key={filterIds[index]}>\n              <feTurbulence\n                type=\"fractalNoise\"\n                baseFrequency={baseFrequency}\n                numOctaves={numOctaves}\n                result=\"warp\"\n                seed={seed}\n              />\n              <feDisplacementMap\n                xChannelSelector=\"R\"\n                yChannelSelector=\"G\"\n                scale={scale}\n                in=\"SourceGraphic\"\n                in2=\"warp\"\n              />\n            </filter>\n          ))}\n        </defs>\n      </svg>\n\n      <img\n        src={src}\n        alt={alt}\n        className={className}\n        style={{ filter: `url(#${filterIds[frame]})` }}\n      />\n    </div>\n  )\n}\n",
+      "type": "registry:component"
+    },
+    {
+      "path": "registry/boston/blocks/boiling-lines-subtle/boiling-lines-subtle.tsx",
+      "content": "\"use client\"\n\nimport {\n  BoilingLinesEffect,\n  type BoilingLinesEffectProps,\n} from \"@/registry/boston/blocks/boiling-lines-effect/boiling-lines-effect\"\n\nexport type BoilingLinesSubtleProps = BoilingLinesEffectProps\n\nexport function BoilingLinesSubtle({\n  speedMs = 120,\n  baseFrequency = \"0.01\",\n  numOctaves = 1,\n  scale = 2,\n  seeds = [3, 11, 19],\n  ...props\n}: BoilingLinesSubtleProps) {\n  return (\n    <BoilingLinesEffect\n      speedMs={speedMs}\n      baseFrequency={baseFrequency}\n      numOctaves={numOctaves}\n      scale={scale}\n      seeds={seeds}\n      {...props}\n    />\n  )\n}\n",
+      "type": "registry:component"
+    },
+    {
+      "path": "registry/boston/blocks/boiling-lines-intense/boiling-lines-intense.tsx",
+      "content": "\"use client\"\n\nimport {\n  BoilingLinesEffect,\n  type BoilingLinesEffectProps,\n} from \"@/registry/boston/blocks/boiling-lines-effect/boiling-lines-effect\"\n\nexport type BoilingLinesIntenseProps = BoilingLinesEffectProps\n\nexport function BoilingLinesIntense({\n  speedMs = 80,\n  baseFrequency = \"0.02\",\n  numOctaves = 3,\n  scale = 6,\n  seeds = [7, 29, 53],\n  ...props\n}: BoilingLinesIntenseProps) {\n  return (\n    <BoilingLinesEffect\n      speedMs={speedMs}\n      baseFrequency={baseFrequency}\n      numOctaves={numOctaves}\n      scale={scale}\n      seeds={seeds}\n      {...props}\n    />\n  )\n}\n",
+      "type": "registry:component"
+    }
+  ]
+}

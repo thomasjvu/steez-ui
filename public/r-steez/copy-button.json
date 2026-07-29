@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "copy-button",
+  "type": "registry:component",
+  "title": "Copy Button",
+  "description": "Clipboard button with built-in success feedback.",
+  "dependencies": [
+    "@steez-ui/theme",
+    "@steez-ui/icons"
+  ],
+  "registryDependencies": [
+    "theme-tokens",
+    "icon-provider",
+    "button"
+  ],
+  "files": [
+    {
+      "path": "components/steez/CopyButton.tsx",
+      "type": "registry:component",
+      "content": "import React, { useEffect, useState } from \"react\";\n\nimport { CheckIcon, CopyIcon } from \"@steez-ui/icons\";\n\nimport styles from \"./CopyButton.module.css\";\n\nexport interface CopyButtonProps {\n  value: string;\n  size?: number;\n  className?: string;\n  title?: string;\n  feedbackDuration?: number;\n  onCopyError?: (error: unknown) => void;\n}\n\nexport function CopyButton({\n  value,\n  size = 16,\n  className = \"\",\n  title = \"Copy to clipboard\",\n  feedbackDuration = 2000,\n  onCopyError,\n}: CopyButtonProps) {\n  const [copied, setCopied] = useState(false);\n\n  useEffect(() => {\n    if (!copied) {\n      return undefined;\n    }\n\n    const timer = window.setTimeout(() => setCopied(false), feedbackDuration);\n    return () => window.clearTimeout(timer);\n  }, [copied, feedbackDuration]);\n\n  const handleCopy = async () => {\n    try {\n      await navigator.clipboard.writeText(value);\n      setCopied(true);\n    } catch (error) {\n      onCopyError?.(error);\n    }\n  };\n\n  return (\n    <button\n      type=\"button\"\n      className={`${styles.copyButton} ${copied ? styles.copied : \"\"} ${className}`.trim()}\n      onClick={handleCopy}\n      title={copied ? \"Copied!\" : title}\n      aria-label={copied ? \"Copied to clipboard\" : title}\n    >\n      {copied ? <CheckIcon width={size} height={size} /> : <CopyIcon width={size} height={size} />}\n    </button>\n  );\n}\n\n",
+      "source": "packages/ui/src/components/CopyButton.tsx"
+    },
+    {
+      "path": "components/steez/CopyButton.module.css",
+      "type": "registry:style",
+      "content": ".copyButton {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  background: transparent;\n  color: var(--text-primary);\n  border: 1px solid var(--border-color);\n  border-radius: 6px;\n  padding: 4px 8px;\n  cursor: pointer;\n  font-size: 0.75rem;\n  transition: all var(--transition-fast);\n  min-width: 32px;\n  min-height: 24px;\n}\n\n.copyButton:hover:not(:disabled) {\n  border-color: var(--progress);\n  color: var(--progress);\n}\n\n.copyButton:active {\n  transform: scale(0.95);\n}\n\n.copied {\n  border-color: var(--success);\n  color: var(--success);\n}\n\n",
+      "source": "packages/ui/src/components/CopyButton.module.css"
+    }
+  ]
+}

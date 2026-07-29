@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "corner-bracket-card",
+  "type": "registry:component",
+  "title": "Corner Bracket Card",
+  "description": "Bracketed featured surface with accent corners.",
+  "dependencies": [
+    "@steez-ui/theme",
+    "@steez-ui/icons"
+  ],
+  "registryDependencies": [
+    "theme-tokens"
+  ],
+  "files": [
+    {
+      "path": "components/steez/CornerBracketCard.tsx",
+      "type": "registry:component",
+      "content": "import React from \"react\";\n\nimport styles from \"./CornerBracketCard.module.css\";\n\nexport interface CornerBracketCardProps\n  extends Omit<React.HTMLAttributes<HTMLDivElement>, \"title\"> {\n  title?: React.ReactNode;\n  variant?: \"default\" | \"featured\";\n}\n\nexport function CornerBracketCard({\n  title,\n  variant = \"default\",\n  className = \"\",\n  children,\n  ...props\n}: CornerBracketCardProps) {\n  return (\n    <div className={`${styles.card} ${variant === \"featured\" ? styles.featured : \"\"} ${className}`.trim()} {...props}>\n      <span className={`${styles.corner} ${styles.cornerTopLeft}`} aria-hidden=\"true\" />\n      <span className={`${styles.corner} ${styles.cornerTopRight}`} aria-hidden=\"true\" />\n      <span className={`${styles.corner} ${styles.cornerBottomLeft}`} aria-hidden=\"true\" />\n      <span className={`${styles.corner} ${styles.cornerBottomRight}`} aria-hidden=\"true\" />\n      {title ? <div className={styles.title}>{title}</div> : null}\n      {children}\n    </div>\n  );\n}\n",
+      "source": "packages/ui/src/components/CornerBracketCard.tsx"
+    },
+    {
+      "path": "components/steez/CornerBracketCard.module.css",
+      "type": "registry:style",
+      "content": ".card {\n  position: relative;\n  border: 1px solid var(--border-color);\n  background: color-mix(in srgb, var(--bg-secondary) 88%, transparent);\n  padding: 1rem;\n}\n\n.featured {\n  border-color: var(--accent-primary);\n}\n\n.title {\n  margin-bottom: 0.75rem;\n  color: var(--text-primary);\n  font-family: var(--font-primary);\n  font-size: 1rem;\n  font-weight: 600;\n}\n\n.corner {\n  position: absolute;\n  width: 18px;\n  height: 18px;\n  pointer-events: none;\n}\n\n.corner::before,\n.corner::after {\n  content: \"\";\n  position: absolute;\n  background: var(--accent-primary);\n}\n\n.cornerTopLeft {\n  top: -1px;\n  left: -1px;\n}\n\n.cornerTopLeft::before,\n.cornerBottomLeft::before,\n.cornerTopRight::before,\n.cornerBottomRight::before {\n  width: 12px;\n  height: 1px;\n}\n\n.cornerTopLeft::after,\n.cornerBottomLeft::after,\n.cornerTopRight::after,\n.cornerBottomRight::after {\n  width: 1px;\n  height: 12px;\n}\n\n.cornerTopLeft::before {\n  top: 0;\n  left: 0;\n}\n\n.cornerTopLeft::after {\n  top: 0;\n  left: 0;\n}\n\n.cornerTopRight {\n  top: -1px;\n  right: -1px;\n}\n\n.cornerTopRight::before {\n  top: 0;\n  right: 0;\n}\n\n.cornerTopRight::after {\n  top: 0;\n  right: 0;\n}\n\n.cornerBottomLeft {\n  bottom: -1px;\n  left: -1px;\n}\n\n.cornerBottomLeft::before {\n  bottom: 0;\n  left: 0;\n}\n\n.cornerBottomLeft::after {\n  bottom: 0;\n  left: 0;\n}\n\n.cornerBottomRight {\n  bottom: -1px;\n  right: -1px;\n}\n\n.cornerBottomRight::before {\n  bottom: 0;\n  right: 0;\n}\n\n.cornerBottomRight::after {\n  bottom: 0;\n  right: 0;\n}\n\n",
+      "source": "packages/ui/src/components/CornerBracketCard.module.css"
+    }
+  ]
+}
