@@ -207,6 +207,18 @@ const itemDefinitions = [
     ],
   },
   {
+    name: "accordion-feature-card",
+    type: "registry:component",
+    title: "Accordion Feature Card",
+    description: "Expandable feature card with media panel, vertical title, and collapsible body.",
+    dependencies: ["@steez-ui/theme"],
+    registryDependencies: ["theme-tokens"],
+    files: [
+      { source: "packages/ui/src/components/AccordionFeatureCard.tsx", target: "components/steez/AccordionFeatureCard.tsx", type: "registry:component" },
+      { source: "packages/ui/src/components/AccordionFeatureCard.module.css", target: "components/steez/AccordionFeatureCard.module.css", type: "registry:style" },
+    ],
+  },
+  {
     name: "corner-bracket-card",
     type: "registry:component",
     title: "Corner Bracket Card",
