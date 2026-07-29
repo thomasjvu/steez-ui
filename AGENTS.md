@@ -44,40 +44,47 @@ pnpm build:react          # legacy package only (packages/react via tsup)
 pnpm dev                  # Next docs site (turbopack)
 pnpm build                # build:packages then next build
 pnpm lint                 # next lint
+pnpm typecheck            # build:packages then site tsc --noEmit
+pnpm test                 # vitest run
+pnpm test:registry-smoke  # registry install smoke script
+pnpm registry:generate    # → public/r-steez
 pnpm registry:build       # shadcn build → Boston / legacy /r surface
 ```
 
 ### Typecheck / test
 
-Root `typecheck` and `test` scripts are **not wired yet** (see plan 001). Until then:
+```bash
+pnpm typecheck            # build:packages then tsc -p tsconfig.json --noEmit
+pnpm test                 # vitest run
+pnpm test:watch           # vitest (watch mode)
+pnpm test:registry-smoke  # node scripts/registry-install-smoke.mjs
+```
+
+Package-local typecheck (when debugging a single package):
 
 ```bash
-# Packages (when needed)
 pnpm --filter @steez-ui/theme exec tsc -p ./tsconfig.json --noEmit
 pnpm --filter @steez-ui/icons exec tsc -p ./tsconfig.json --noEmit
 pnpm --filter @steez-ui/ui exec tsc -p ./tsconfig.json --noEmit
 pnpm --dir packages/react typecheck
-
-# Site
-pnpm exec tsc -p tsconfig.json --noEmit   # excludes packages/react
 ```
 
-Prefer adding root `pnpm typecheck` / `pnpm test` via plan 001 rather than inventing ad-hoc gates.
+Root `typecheck` covers the site and workspace packages via `tsconfig.json` (excludes `packages/react`). Prefer root gates over inventing ad-hoc commands.
 
 ### Registry generate
 
-| Command | Status | Output |
-| --- | --- | --- |
-| `pnpm registry:build` | Exists (`shadcn build`) | Legacy `/r` Boston surface |
-| `pnpm registry:generate` | **Planned** (plan 002) | Should write `public/r-steez` |
-
-Today `scripts/generate-registry.mjs` still targets a removed `apps/registry/public/r` path. Do not treat it as the live generator until plan 002 lands. Live steez payloads are committed under `public/r-steez/`.
+| Command | Output |
+| --- | --- |
+| `pnpm registry:generate` | Package primitives → `public/r-steez` (`scripts/generate-registry.mjs`) |
+| `pnpm registry:build` | Legacy Boston / motion blocks → `public/r` (`shadcn build`) |
+| `pnpm test:registry-smoke` | Smoke-check install paths for generated r-steez payloads |
 
 ```bash
-# After plan 002:
-# pnpm registry:generate
-# optional: pnpm test:registry-smoke
+pnpm registry:generate
+pnpm test:registry-smoke
 ```
+
+Live steez payloads are committed under `public/r-steez/`. Regenerate after adding or changing package primitives.
 
 ## Registry URL surfaces
 
@@ -86,10 +93,14 @@ Today `scripts/generate-registry.mjs` still targets a removed `apps/registry/pub
 | `/r-steez/*.json` | **Package primitives** — install path for `@steez-ui/ui` components (`public/r-steez/`) |
 | `/r/*.json` | **Legacy** Boston / motion demo blocks (`public/r/`) |
 
-Install example (canonical):
+Install example (canonical) — local dev or production (`SITE_URL` in `lib/docs/site-data.ts`):
 
 ```bash
+# Local (pnpm dev)
 pnpm dlx shadcn@latest add http://localhost:3000/r-steez/cyberpunk-tile.json
+
+# Production
+pnpm dlx shadcn@latest add https://steez-ui-6v5.pages.dev/r-steez/cyberpunk-tile.json
 ```
 
 Do not mix `/r` and `/r-steez` when documenting new work.
