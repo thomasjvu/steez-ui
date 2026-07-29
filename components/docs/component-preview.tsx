@@ -105,7 +105,7 @@ function BlinkTextPreview() {
 function CopyButtonPreview() {
   const registryOrigin =
     typeof window === "undefined" ? "https://steez-ui-6v5.pages.dev" : window.location.origin;
-  const command = `bunx shadcn@latest add ${registryOrigin}/r/button.json`;
+  const command = `pnpm dlx shadcn@latest add ${registryOrigin}/r-steez/button.json`;
 
   return (
     <div className={styles.commandPreview}>

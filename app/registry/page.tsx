@@ -17,17 +17,14 @@ export default function RegistryPage() {
           <code className={siteStyles.inlineCode}>/r/*.json</code>.
         </p>
         <ul className={siteStyles.list}>
-          {REGISTRY_ITEMS.map((item) => {
-            const href = item.href.replace("/r/", "/r-steez/");
-            return (
-              <li key={item.href} className={siteStyles.listItem}>
-                <Link href={href}>{item.label}</Link>
-                <p className={siteStyles.listMeta}>
-                  <code className={siteStyles.inlineCode}>{href}</code>
-                </p>
-              </li>
-            );
-          })}
+          {REGISTRY_ITEMS.map((item) => (
+            <li key={item.href} className={siteStyles.listItem}>
+              <Link href={item.href}>{item.label}</Link>
+              <p className={siteStyles.listMeta}>
+                <code className={siteStyles.inlineCode}>{item.href}</code>
+              </p>
+            </li>
+          ))}
           <li className={siteStyles.listItem}>
             <Link href="/components">Browse components</Link>
             <p className={siteStyles.listMeta}>Prefer the catalog over dumping every preview.</p>

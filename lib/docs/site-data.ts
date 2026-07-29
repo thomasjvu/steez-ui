@@ -45,10 +45,10 @@ export const PACKAGE_ITEMS = [
 ] as const;
 
 export const REGISTRY_ITEMS = [
-  { label: "Registry index", href: "/r/index.json" },
-  { label: "Foundation preset", href: "/r/foundation.json" },
-  { label: "Theme tokens", href: "/r/theme-tokens.json" },
-  { label: "Button item", href: "/r/button.json" },
-  { label: "Page template", href: "/r/page-template.json" },
-  { label: "Segmented control", href: "/r/segmented-control.json" },
+  { label: "Registry index", href: "/r-steez/index.json" },
+  { label: "Foundation preset", href: "/r-steez/foundation.json" },
+  { label: "Theme tokens", href: "/r-steez/theme-tokens.json" },
+  { label: "Button item", href: "/r-steez/button.json" },
+  { label: "Page template", href: "/r-steez/page-template.json" },
+  { label: "Segmented control", href: "/r-steez/segmented-control.json" },
 ] as const;

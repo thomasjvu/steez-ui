@@ -1,10 +1,20 @@
 import { Button } from "@/registry/boston/ui/button"
+import { SITE_URL } from "@/lib/docs/site-data"
 import { cn } from "@/lib/utils"
 
 export function OpenInV0Button({
   name,
   className,
 }: { name: string } & React.ComponentProps<typeof Button>) {
+  // Boston demo registry lives under /r/; this button is only used with those names.
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || SITE_URL
+  if (!baseUrl) {
+    return null
+  }
+
+  const registryUrl = `${baseUrl.replace(/\/$/, "")}/r/${name}.json`
+  const href = `https://v0.dev/chat/api/open?url=${encodeURIComponent(registryUrl)}`
+
   return (
     <Button
       aria-label="Open in v0"
@@ -15,11 +25,7 @@ export function OpenInV0Button({
       )}
       asChild
     >
-      <a
-        href={`https://v0.dev/chat/api/open?url=${process.env.NEXT_PUBLIC_BASE_URL}/r/${name}.json`}
-        target="_blank"
-        rel="noreferrer"
-      >
+      <a href={href} target="_blank" rel="noreferrer">
         Open in{" "}
         <svg
           viewBox="0 0 40 20"
