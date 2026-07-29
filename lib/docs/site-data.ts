@@ -46,7 +46,8 @@ export const PACKAGE_ITEMS = [
 
 export const REGISTRY_ITEMS = [
   { label: "Registry index", href: "/r-steez/index.json" },
-  { label: "Foundation preset", href: "/r-steez/foundation.json" },
+  { label: "Phantasy FUI preset", href: "/r-steez/phantasy-fui.json" },
+  { label: "Foundation preset (forms)", href: "/r-steez/foundation.json" },
   { label: "Theme tokens", href: "/r-steez/theme-tokens.json" },
   { label: "Button item", href: "/r-steez/button.json" },
   { label: "Page template", href: "/r-steez/page-template.json" },

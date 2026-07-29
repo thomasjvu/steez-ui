@@ -83,6 +83,20 @@ scripts/    # build helpers from upstream monorepo
 
 Locally use your dev origin; production registry base is `SITE_URL` (`https://steez-ui-6v5.pages.dev` from `lib/docs/site-data.ts`).
 
+**Phantasy FUI preset** (theme, cyberpunk-tile, fui-button-tile, loading-progress-bar):
+
+```bash
+pnpm dlx shadcn@latest add http://localhost:3000/r-steez/phantasy-fui.json
+```
+
+**Foundation preset** (forms starter — inputs, select, checkbox, slider, button):
+
+```bash
+pnpm dlx shadcn@latest add http://localhost:3000/r-steez/foundation.json
+```
+
+Single primitives:
+
 ```bash
 # Local (pnpm dev)
 pnpm dlx shadcn@latest add http://localhost:3000/r-steez/cyberpunk-tile.json

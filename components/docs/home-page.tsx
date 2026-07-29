@@ -13,7 +13,8 @@ export function HomePageContent() {
   }, []);
 
   const packageCmd = "pnpm add @steez-ui/theme @steez-ui/icons @steez-ui/ui";
-  const registryCmd = `pnpm dlx shadcn@latest add ${origin}/r-steez/foundation.json`;
+  const phantasyFuiCmd = `pnpm dlx shadcn@latest add ${origin}/r-steez/phantasy-fui.json`;
+  const foundationCmd = `pnpm dlx shadcn@latest add ${origin}/r-steez/foundation.json`;
 
   return (
     <>
@@ -41,11 +42,18 @@ export function HomePageContent() {
           <CopyButton value={packageCmd} />
         </div>
         <p className={styles.body} style={{ marginTop: "1.25rem" }}>
-          Or pull source via the registry CLI:
+          Phantasy FUI chrome (tiles + loading) via the registry CLI:
         </p>
         <div className={styles.codeBlock}>
-          <code>{registryCmd}</code>
-          <CopyButton value={registryCmd} />
+          <code>{phantasyFuiCmd}</code>
+          <CopyButton value={phantasyFuiCmd} />
+        </div>
+        <p className={styles.body} style={{ marginTop: "1.25rem" }}>
+          Forms starter preset (inputs, select, checkbox, etc.):
+        </p>
+        <div className={styles.codeBlock}>
+          <code>{foundationCmd}</code>
+          <CopyButton value={foundationCmd} />
         </div>
       </section>
 

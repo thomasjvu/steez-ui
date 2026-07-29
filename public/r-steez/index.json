@@ -268,5 +268,11 @@
     "type": "registry:block",
     "title": "Foundation Preset",
     "description": "Install theme tokens, icon provider, buttons, and core form primitives together."
+  },
+  {
+    "name": "phantasy-fui",
+    "type": "registry:block",
+    "title": "Phantasy FUI Preset",
+    "description": "Theme, tiles, and loading primitives used by Phantasy admin FUI chrome."
   }
 ]
