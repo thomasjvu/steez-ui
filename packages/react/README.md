@@ -1,5 +1,15 @@
 # @steez-ui/react
 
+> **Legacy / maintenance mode.** Prefer **`@steez-ui/ui`** (with `@steez-ui/theme` + `@steez-ui/icons`) for new apps.
+>
+> | | Canonical (new work) | This package (legacy) |
+> | --- | --- | --- |
+> | Package | `@steez-ui/ui` | `@steez-ui/react` |
+> | Styling | CSS modules + design tokens | Tailwind / CVA + bundled `styles.css` |
+> | Status | Source of truth (Phantasy + monorepo) | Portable bundle; existing consumers only |
+>
+> See the [root README](../../README.md) for install and layout. This guide remains for consumers already on `@steez-ui/react`.
+
 Portable React package for **Steez UI** — a modern, futuristic, hypebeast-leaning design system (minimal cyber chrome, signal green, cool volt blue).
 
 ## Install

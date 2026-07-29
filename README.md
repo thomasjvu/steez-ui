@@ -4,13 +4,21 @@ Source of truth for **@steez-ui** packages (consolidated from the original monor
 
 ## Packages
 
+**Canonical stack for new apps and Phantasy** (install these):
+
 | Package | Role |
 | --- | --- |
 | `@steez-ui/theme` | Design tokens + Tailwind preset |
 | `@steez-ui/icons` | Icon surface + provider |
-| `@steez-ui/ui` | React primitives (TSX + CSS modules) |
+| `@steez-ui/ui` | React primitives (TSX + CSS modules) — **source of truth** |
 
-Phantasy admin already consumes these package names from npm. This repo is where the components live and evolve.
+**Legacy (do not use for new work):**
+
+| Package | Role |
+| --- | --- |
+| `@steez-ui/react` | Portable Tailwind/CVA bundle — **legacy / maintenance mode** only |
+
+Phantasy admin already consumes the canonical package names from npm. This repo is where those components live and evolve. `@steez-ui/react` remains published for existing consumers; it is not an equal peer of `@steez-ui/ui` for new development.
 
 ## Discover site (not a component dump)
 
