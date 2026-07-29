@@ -73,6 +73,8 @@ scripts/    # build helpers from upstream monorepo
 
 ## Install a registry item
 
+Locally use your dev origin; production registry base is `SITE_URL` (`https://steez-ui-6v5.pages.dev`).
+
 ```bash
 pnpm dlx shadcn@latest add http://localhost:3000/r-steez/cyberpunk-tile.json
 pnpm dlx shadcn@latest add http://localhost:3000/r-steez/loading-progress-bar.json
