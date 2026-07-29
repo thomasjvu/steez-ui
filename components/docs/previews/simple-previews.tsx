@@ -3,6 +3,7 @@
 import React from "react";
 
 import {
+  AccordionFeatureCard,
   AsciiRippleText,
   AvatarStage,
   BlinkText,
@@ -51,6 +52,41 @@ import {
 } from "@steez-ui/icons";
 
 import styles from "../component-docs.module.css";
+
+/** 1×1 transparent PNG — avoids network dependency in offline previews. */
+const PLACEHOLDER_IMAGE_SRC =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==";
+
+export function AccordionFeatureCardPreview() {
+  return (
+    <div className={styles.previewColumn}>
+      <AccordionFeatureCard
+        title="Signal mesh"
+        eyebrow="01 / Surfaces"
+        subtitle="Collapsible feature strip"
+        description="Expand to reveal body copy, badges, and footer actions without a full accordion system."
+        imageSrc={PLACEHOLDER_IMAGE_SRC}
+        imageAlt=""
+        badge="New"
+        defaultExpanded
+        footer={<span className={styles.previewText}>Footer slot</span>}
+      >
+        <p className={styles.previewText}>
+          Body slot for richer feature detail or nested controls.
+        </p>
+      </AccordionFeatureCard>
+      <AccordionFeatureCard
+        title="Collapsed lane"
+        eyebrow="02 / Surfaces"
+        subtitle="Starts collapsed"
+        description="Toggle to open."
+        imageSrc={PLACEHOLDER_IMAGE_SRC}
+        imageAlt=""
+        defaultExpanded={false}
+      />
+    </div>
+  );
+}
 
 export function ButtonPreview() {
   return (

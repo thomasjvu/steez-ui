@@ -96,6 +96,12 @@
     "description": "Square HUD tile button with icon, label, and corner chevron for launcher grids and tool pickers."
   },
   {
+    "name": "accordion-feature-card",
+    "type": "registry:component",
+    "title": "Accordion Feature Card",
+    "description": "Expandable feature card with media panel, vertical title, and collapsible body."
+  },
+  {
     "name": "corner-bracket-card",
     "type": "registry:component",
     "title": "Corner Bracket Card",

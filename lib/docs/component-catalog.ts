@@ -244,6 +244,26 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
     tags: ["fui", "tile", "hud", "icon"],
   },
   {
+    slug: "accordion-feature-card",
+    title: "Accordion Feature Card",
+    category: "surfaces",
+    summary: "Expandable feature card with media panel, vertical title, and collapsible body.",
+    description:
+      "Use AccordionFeatureCard for marketing or product feature rows that need a cut-corner media strip and expandable detail without a full accordion system.",
+    packageImport: 'import { AccordionFeatureCard } from "@steez-ui/ui";',
+    usage: `<AccordionFeatureCard
+  title="Signal mesh"
+  eyebrow="01 / Surfaces"
+  subtitle="Collapsible feature strip"
+  description="Expand to reveal body copy and footer actions."
+  imageSrc="/window.svg"
+  imageAlt=""
+  defaultExpanded
+/>`,
+    related: ["corner-bracket-card", "themed-card", "cyberpunk-tile"],
+    tags: ["card", "accordion", "feature", "media"],
+  },
+  {
     slug: "corner-bracket-card",
     title: "Corner Bracket Card",
     category: "surfaces",
@@ -253,7 +273,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
     usage: `<CornerBracketCard title="Foundation">
   <p>Install tokens, icons, buttons, and forms together.</p>
 </CornerBracketCard>`,
-    related: ["themed-card", "cyberpunk-tile"],
+    related: ["themed-card", "cyberpunk-tile", "accordion-feature-card"],
     tags: ["featured", "accent"],
   },
   {

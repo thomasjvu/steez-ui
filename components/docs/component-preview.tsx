@@ -33,6 +33,7 @@ function fromSimple(
  * statically imports `@steez-ui/ui`.
  */
 const PREVIEW_MAP: Record<string, ComponentType> = {
+  "accordion-feature-card": makePreview(fromSimple("AccordionFeatureCardPreview")),
   "ascii-ripple-text": makePreview(fromSimple("AsciiRippleTextPreview")),
   "avatar-stage": makePreview(fromSimple("AvatarStagePreview")),
   "blink-text": makePreview(fromSimple("BlinkTextPreview")),
