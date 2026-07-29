@@ -1,6 +1,6 @@
 "use client";
 
-import { SignalTrailBackdrop } from "@steez-ui/ui";
+import { SignalTrailBackdrop } from "@steez-ui/ui/signal-trail-backdrop";
 
 import styles from "../component-docs.module.css";
 
