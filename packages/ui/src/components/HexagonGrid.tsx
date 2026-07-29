@@ -51,6 +51,7 @@ export function HexagonGrid({
   const animationRef = React.useRef<number>(0);
   const lastPointerSelectionRef = React.useRef(0);
   const autoTriggerTimeoutRef = React.useRef<number | null>(null);
+  const pausedRef = React.useRef(false);
   const [dimensions, setDimensions] = React.useState({
     width: initialWidth,
     height: initialHeight,
@@ -170,13 +171,15 @@ export function HexagonGrid({
     hexagonsRef.current = hexagons;
 
     const autoTrigger = () => {
-      const activeHexagons = hexagonsRef.current;
-      if (activeHexagons.length > 0) {
-        const randomHex = activeHexagons[randomInt(0, activeHexagons.length - 1)];
-        randomHex?.selections.push({
-          count: 0,
-          hue: randomInt(180, 220),
-        });
+      if (!pausedRef.current) {
+        const activeHexagons = hexagonsRef.current;
+        if (activeHexagons.length > 0) {
+          const randomHex = activeHexagons[randomInt(0, activeHexagons.length - 1)];
+          randomHex?.selections.push({
+            count: 0,
+            hue: randomInt(180, 220),
+          });
+        }
       }
       autoTriggerTimeoutRef.current = window.setTimeout(
         autoTrigger,
@@ -365,11 +368,14 @@ export function HexagonGrid({
       hex.sourceIndices = hex.sourceIndices.filter((sourceIndex) => sourceIndex.count < 2);
     }
 
-    animationRef.current = window.requestAnimationFrame(render);
+    if (!pausedRef.current) {
+      animationRef.current = window.requestAnimationFrame(render);
+    }
   }, [backgroundOpacity, drawHexagon, height, tone, width]);
 
   React.useEffect(() => {
     const canvas = canvasRef.current;
+    const container = containerRef.current;
     if (!canvas) {
       return undefined;
     }
@@ -377,12 +383,93 @@ export function HexagonGrid({
     canvas.width = width;
     canvas.height = height;
     init();
+
+    let isDocumentVisible =
+      typeof document !== "undefined" ? !document.hidden : true;
+    let isInViewport = true;
+    const reducedMotionQuery =
+      typeof window !== "undefined"
+        ? window.matchMedia("(prefers-reduced-motion: reduce)")
+        : null;
+    let prefersReducedMotion = reducedMotionQuery?.matches ?? false;
+
+    const updatePaused = () => {
+      pausedRef.current =
+        prefersReducedMotion || !isDocumentVisible || !isInViewport;
+    };
+
+    const stopLoop = () => {
+      window.cancelAnimationFrame(animationRef.current);
+      animationRef.current = 0;
+    };
+
+    const startLoop = () => {
+      updatePaused();
+      if (pausedRef.current || animationRef.current !== 0) {
+        return;
+      }
+      animationRef.current = window.requestAnimationFrame(render);
+    };
+
+    updatePaused();
+    // Always paint at least one frame (static under reduced-motion).
     render();
+    if (!pausedRef.current) {
+      // render() already scheduled the next frame when not paused.
+    } else {
+      stopLoop();
+    }
+
+    const onVisibilityChange = () => {
+      isDocumentVisible = !document.hidden;
+      updatePaused();
+      if (pausedRef.current) {
+        stopLoop();
+      } else {
+        startLoop();
+      }
+    };
+
+    const onReducedMotionChange = (event: MediaQueryListEvent) => {
+      prefersReducedMotion = event.matches;
+      updatePaused();
+      if (pausedRef.current) {
+        stopLoop();
+        render();
+        stopLoop();
+      } else {
+        startLoop();
+      }
+    };
+
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    reducedMotionQuery?.addEventListener("change", onReducedMotionChange);
+
+    let intersectionObserver: IntersectionObserver | null = null;
+    if (container && typeof IntersectionObserver !== "undefined") {
+      intersectionObserver = new IntersectionObserver(
+        ([entry]) => {
+          isInViewport = entry?.isIntersecting ?? true;
+          updatePaused();
+          if (pausedRef.current) {
+            stopLoop();
+          } else {
+            startLoop();
+          }
+        },
+        { threshold: 0 },
+      );
+      intersectionObserver.observe(container);
+    }
 
     return () => {
-      window.cancelAnimationFrame(animationRef.current);
+      stopLoop();
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      reducedMotionQuery?.removeEventListener("change", onReducedMotionChange);
+      intersectionObserver?.disconnect();
       if (autoTriggerTimeoutRef.current !== null) {
         window.clearTimeout(autoTriggerTimeoutRef.current);
+        autoTriggerTimeoutRef.current = null;
       }
     };
   }, [height, init, render, width]);
