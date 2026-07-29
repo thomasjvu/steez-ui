@@ -24,6 +24,8 @@ export interface CyberpunkRadioGroupProps {
   value?: string;
   onChange?: (value: string) => void;
   className?: string;
+  /** Accessible name for the radiogroup (maps to aria-label). */
+  label?: string;
 }
 
 export function CyberpunkRadioGroup({
@@ -32,9 +34,14 @@ export function CyberpunkRadioGroup({
   value,
   onChange,
   className = "",
+  label,
 }: CyberpunkRadioGroupProps) {
   return (
-    <div className={`${styles.radioGroup} ${className}`.trim()}>
+    <div
+      role="radiogroup"
+      aria-label={label || undefined}
+      className={`${styles.radioGroup} ${className}`.trim()}
+    >
       {options.map((option) => (
         <CyberpunkRadio
           key={option.value}
