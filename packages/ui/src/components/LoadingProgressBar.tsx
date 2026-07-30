@@ -17,11 +17,20 @@ export function LoadingProgressBar({
   className,
   valueLabel,
 }: LoadingProgressBarProps) {
-  const clampedProgress = Math.max(0, Math.min(100, progress));
+  const safeProgress = Number.isFinite(progress) ? progress : 0;
+  const clampedProgress = Math.max(0, Math.min(100, safeProgress));
   const filledBars = Math.round((clampedProgress / 100) * LOADING_PROGRESS_SEGMENT_COUNT);
+  const displayLabel = valueLabel ?? `${Math.round(clampedProgress)}%`;
 
   return (
-    <div className={className ? `${styles.root} ${className}` : styles.root}>
+    <div
+      className={className ? `${styles.root} ${className}` : styles.root}
+      role="progressbar"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={clampedProgress}
+      aria-label={displayLabel}
+    >
       <div className={styles.barGroup}>
         {BAR_INDEXES.map((index) => {
           const isFilled = index < filledBars;
@@ -34,7 +43,7 @@ export function LoadingProgressBar({
           );
         })}
       </div>
-      <div className={styles.value}>{valueLabel ?? `${Math.round(clampedProgress)}%`}</div>
+      <div className={styles.value}>{displayLabel}</div>
     </div>
   );
 }

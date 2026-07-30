@@ -11,6 +11,27 @@ export interface ThemeToggleProps {
   onThemeChange?: (theme: "dark" | "light") => void;
 }
 
+function isTheme(value: string | null): value is "dark" | "light" {
+  return value === "dark" || value === "light";
+}
+
+function readStoredTheme(storageKey: string): "dark" | "light" | null {
+  try {
+    const saved = window.localStorage.getItem(storageKey);
+    return isTheme(saved) ? saved : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeStoredTheme(storageKey: string, theme: "dark" | "light"): void {
+  try {
+    window.localStorage.setItem(storageKey, theme);
+  } catch {
+    // Storage may be unavailable (private mode, quota, policy).
+  }
+}
+
 export function ThemeToggle({
   storageKey = "theme",
   defaultTheme = "dark",
@@ -20,8 +41,7 @@ export function ThemeToggle({
   const [theme, setTheme] = useState<"dark" | "light">(defaultTheme);
 
   useEffect(() => {
-    const savedTheme = window.localStorage.getItem(storageKey) as "dark" | "light" | null;
-    const initialTheme = savedTheme || defaultTheme;
+    const initialTheme = readStoredTheme(storageKey) ?? defaultTheme;
     setTheme(initialTheme);
     document.documentElement.setAttribute("data-theme", initialTheme);
   }, [defaultTheme, storageKey]);
@@ -29,7 +49,7 @@ export function ThemeToggle({
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
     setTheme(newTheme);
-    window.localStorage.setItem(storageKey, newTheme);
+    writeStoredTheme(storageKey, newTheme);
     document.documentElement.setAttribute("data-theme", newTheme);
     onThemeChange?.(newTheme);
   };

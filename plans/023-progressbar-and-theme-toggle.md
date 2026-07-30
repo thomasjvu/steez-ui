@@ -16,6 +16,6 @@
 3. Invalid values fall back to defaultTheme
 
 ## Done
-- [ ] progressbar semantics; NaN safe
-- [ ] ThemeToggle safe storage
-- [ ] tests + build + registry generate for affected items
+- [x] progressbar semantics; NaN safe
+- [x] ThemeToggle safe storage
+- [x] tests + build + registry generate for affected items
