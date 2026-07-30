@@ -35,7 +35,7 @@ Execute 011–018 in order unless dependencies say otherwise.
 | 022 | Remove dead chrome + lucide | P1 | TODO |
 | 023 | LoadingProgressBar a11y + ThemeToggle | P1 | TODO |
 | 024 | TabbedPanel APG + SegmentedControl radiogroup | P2 | TODO |
-| 025 | Accordion a11y + CopyButton | P2 | TODO |
+| 025 | Accordion a11y + CopyButton | P2 | DONE |
 | 026 | Absolute registryDependencies | P2 | TODO |
 | 027 | Characterization tests forms/tabs | P2 | TODO |
 

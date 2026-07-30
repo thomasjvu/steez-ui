@@ -13,6 +13,8 @@ export interface CopyButtonProps {
   onCopyError?: (error: unknown) => void;
 }
 
+type CopyFeedback = "idle" | "copied" | "error";
+
 export function CopyButton({
   value,
   size = 16,
@@ -21,36 +23,48 @@ export function CopyButton({
   feedbackDuration = 2000,
   onCopyError,
 }: CopyButtonProps) {
-  const [copied, setCopied] = useState(false);
+  const [feedback, setFeedback] = useState<CopyFeedback>("idle");
 
   useEffect(() => {
-    if (!copied) {
+    if (feedback === "idle") {
       return undefined;
     }
 
-    const timer = window.setTimeout(() => setCopied(false), feedbackDuration);
+    const timer = window.setTimeout(() => setFeedback("idle"), feedbackDuration);
     return () => window.clearTimeout(timer);
-  }, [copied, feedbackDuration]);
+  }, [feedback, feedbackDuration]);
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(value);
-      setCopied(true);
+      setFeedback("copied");
     } catch (error) {
+      setFeedback("error");
       onCopyError?.(error);
     }
   };
 
+  const isCopied = feedback === "copied";
+  const isError = feedback === "error";
+  const accessibleLabel = isCopied
+    ? "Copied to clipboard"
+    : isError
+      ? "Failed to copy"
+      : title;
+  const nativeTitle = isCopied ? "Copied!" : isError ? "Failed to copy" : title;
+
   return (
     <button
       type="button"
-      className={`${styles.copyButton} ${copied ? styles.copied : ""} ${className}`.trim()}
+      className={`${styles.copyButton} ${isCopied ? styles.copied : ""} ${isError ? styles.error : ""} ${className}`.trim()}
       onClick={handleCopy}
-      title={copied ? "Copied!" : title}
-      aria-label={copied ? "Copied to clipboard" : title}
+      title={nativeTitle}
+      aria-label={accessibleLabel}
     >
-      {copied ? <CheckIcon width={size} height={size} /> : <CopyIcon width={size} height={size} />}
+      {isCopied ? <CheckIcon width={size} height={size} /> : <CopyIcon width={size} height={size} />}
+      <span className={styles.visuallyHidden} aria-live="polite">
+        {isCopied ? "Copied to clipboard" : isError ? "Failed to copy" : ""}
+      </span>
     </button>
   );
 }
-

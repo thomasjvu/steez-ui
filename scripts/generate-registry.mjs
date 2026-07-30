@@ -86,7 +86,7 @@ const itemDefinitions = [
     title: "Copy Button",
     description: "Clipboard button with built-in success feedback.",
     dependencies: ["@steez-ui/theme", "@steez-ui/icons"],
-    registryDependencies: ["theme-tokens", "icon-provider", "button"],
+    registryDependencies: ["theme-tokens", "icon-provider"],
     files: [
       { source: "packages/ui/src/components/CopyButton.tsx", target: "components/steez/CopyButton.tsx", type: "registry:component" },
       { source: "packages/ui/src/components/CopyButton.module.css", target: "components/steez/CopyButton.module.css", type: "registry:style" },
@@ -216,6 +216,7 @@ const itemDefinitions = [
     files: [
       { source: "packages/ui/src/components/AccordionFeatureCard.tsx", target: "components/steez/AccordionFeatureCard.tsx", type: "registry:component" },
       { source: "packages/ui/src/components/AccordionFeatureCard.module.css", target: "components/steez/AccordionFeatureCard.module.css", type: "registry:style" },
+      { source: "packages/ui/src/hooks/useStableId.ts", target: "components/hooks/useStableId.ts", type: "registry:file" },
     ],
   },
   {

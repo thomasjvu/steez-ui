@@ -129,6 +129,15 @@
   transition: transform 450ms var(--ease-out-expo);
 }
 
+/*
+ * Keep the collapsed panel painted for the vertical title strip and width
+ * transitions. The HTML `hidden` attribute still removes the region from the
+ * accessibility tree (and blocks focus), which is the a11y goal.
+ */
+.layout[hidden] {
+  display: flex;
+}
+
 .verticalTitle {
   margin: 0;
   font-family: var(--font-mono);

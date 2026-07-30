@@ -20,6 +20,6 @@
 - CopyButton: mock clipboard reject → onCopyError or error label
 
 ## Done
-- [ ] collapsed content not in a11y tree
-- [ ] copy-button registry deps correct
-- [ ] clipboard failure feedback
+- [x] collapsed content not in a11y tree
+- [x] copy-button registry deps correct
+- [x] clipboard failure feedback
