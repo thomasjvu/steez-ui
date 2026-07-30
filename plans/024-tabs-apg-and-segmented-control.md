@@ -23,6 +23,6 @@ Implement:
 RTL: select tab by click; arrow key moves; panel shows content. SegmentedControl selection.
 
 ## Done
-- [ ] TabbedPanel linked ids + keyboard
-- [ ] SegmentedControl not fake tabs
-- [ ] tests + build + registry:generate
+- [x] TabbedPanel linked ids + keyboard
+- [x] SegmentedControl not fake tabs
+- [x] tests + build + registry:generate

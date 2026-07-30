@@ -1,5 +1,6 @@
 import React from "react";
 
+import { useStableId } from "../hooks/useStableId.js";
 import styles from "./TabbedPanel.module.css";
 
 export interface TabbedPanelTab {
@@ -37,11 +38,22 @@ export function TabbedPanel({
   navClassName = "",
   panelClassName = "",
 }: TabbedPanelProps) {
+  const baseId = useStableId("tabbed-panel");
   const isControlled = typeof activeTab === "string";
   const initialTabId = defaultTab || activeTab || tabs[0]?.id || "";
   const [internalTabId, setInternalTabId] = React.useState(initialTabId);
   const currentTabId = isControlled ? activeTab || tabs[0]?.id || "" : internalTabId;
   const currentTab = tabs.find((tab) => tab.id === currentTabId) ?? tabs[0];
+  const tabRefs = React.useRef<Map<string, HTMLButtonElement>>(new Map());
+
+  const getTabDomId = React.useCallback(
+    (tabId: string) => `${baseId}-tab-${tabId}`,
+    [baseId],
+  );
+  const getPanelDomId = React.useCallback(
+    (tabId: string) => `${baseId}-panel-${tabId}`,
+    [baseId],
+  );
 
   React.useEffect(() => {
     if (!tabs.length) {
@@ -71,6 +83,63 @@ export function TabbedPanel({
     [isControlled, onChange, onTabChange],
   );
 
+  const focusTab = React.useCallback((tabId: string) => {
+    tabRefs.current.get(tabId)?.focus();
+  }, []);
+
+  const handleTabKeyDown = React.useCallback(
+    (event: React.KeyboardEvent<HTMLButtonElement>, tabId: string) => {
+      const enabledTabs = tabs.filter((tab) => !tab.disabled);
+      if (!enabledTabs.length) {
+        return;
+      }
+
+      const currentIndex = enabledTabs.findIndex((tab) => tab.id === tabId);
+      if (currentIndex === -1) {
+        return;
+      }
+
+      let nextIndex: number | null = null;
+
+      switch (event.key) {
+        case "ArrowRight":
+        case "ArrowDown":
+          nextIndex = (currentIndex + 1) % enabledTabs.length;
+          break;
+        case "ArrowLeft":
+        case "ArrowUp":
+          nextIndex = (currentIndex - 1 + enabledTabs.length) % enabledTabs.length;
+          break;
+        case "Home":
+          nextIndex = 0;
+          break;
+        case "End":
+          nextIndex = enabledTabs.length - 1;
+          break;
+        default:
+          return;
+      }
+
+      event.preventDefault();
+      const nextTabId = enabledTabs[nextIndex]!.id;
+      handleSelect(nextTabId);
+      // Focus after selection so roving tabIndex updates before focus lands.
+      queueMicrotask(() => focusTab(nextTabId));
+    },
+    [focusTab, handleSelect, tabs],
+  );
+
+  const setTabRef = React.useCallback((tabId: string, node: HTMLButtonElement | null) => {
+    if (node) {
+      tabRefs.current.set(tabId, node);
+    } else {
+      tabRefs.current.delete(tabId);
+    }
+  }, []);
+
+  const activePanelId = currentTab ? getPanelDomId(currentTab.id) : undefined;
+  const activeTabDomId = currentTab ? getTabDomId(currentTab.id) : undefined;
+
   return (
     <div className={`${styles.root} ${className}`.trim()}>
       {label || hint ? (
@@ -85,19 +154,30 @@ export function TabbedPanel({
           return (
             <button
               key={tab.id}
+              ref={(node) => setTabRef(tab.id, node)}
+              id={getTabDomId(tab.id)}
               type="button"
               role="tab"
               aria-selected={isActive}
+              aria-controls={getPanelDomId(tab.id)}
+              tabIndex={isActive ? 0 : -1}
               disabled={tab.disabled}
               className={`${styles.tab} ${isActive ? styles.tabActive : ""}`.trim()}
               onClick={() => handleSelect(tab.id)}
+              onKeyDown={(event) => handleTabKeyDown(event, tab.id)}
             >
               {tab.label}
             </button>
           );
         })}
       </div>
-      <div className={`${styles.panel} ${panelClassName}`.trim()} role="tabpanel">
+      <div
+        id={activePanelId}
+        className={`${styles.panel} ${panelClassName}`.trim()}
+        role="tabpanel"
+        aria-labelledby={activeTabDomId}
+        tabIndex={0}
+      >
         <div className={styles.panelBody}>{currentTab?.content ?? currentTab?.panel ?? null}</div>
       </div>
     </div>
