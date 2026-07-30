@@ -86,7 +86,7 @@ Live steez payloads are committed under `public/r-steez/`. Regenerate after addi
 | Path | Meaning |
 | --- | --- |
 | `/r-steez/*.json` | **Package primitives** — install path for `@steez-ui/ui` components (`public/r-steez/`) |
-| `/r/*.json` | **Legacy** Boston / motion demo blocks (`public/r/`) |
+| `/r/*.json` | **Legacy** Boston / motion demo blocks (`public/r/`) — **archival / freeze**; do not extend as the package install path |
 
 Install example (canonical) — local dev or production (`SITE_URL` in `lib/docs/site-data.ts`):
 
