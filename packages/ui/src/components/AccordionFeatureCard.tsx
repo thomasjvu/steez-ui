@@ -1,5 +1,6 @@
 import React from "react";
 
+import { useStableId } from "../hooks/useStableId.js";
 import styles from "./AccordionFeatureCard.module.css";
 
 export interface AccordionFeatureCardProps
@@ -44,9 +45,14 @@ export function AccordionFeatureCard({
   style,
   ...props
 }: AccordionFeatureCardProps) {
-  const panelId = id ? `${id}-panel` : undefined;
+  // Always generate a stable panel id so aria-controls is set even without a user id.
+  const panelId = useStableId(
+    "accordion-feature-panel",
+    id ? `${id}-panel` : undefined,
+  );
   const [internalExpanded, setInternalExpanded] = React.useState(defaultExpanded);
   const isExpanded = collapsible ? expanded ?? internalExpanded : true;
+  const isPanelCollapsed = collapsible && !isExpanded;
 
   const handleToggle = React.useCallback(() => {
     if (!collapsible) {
@@ -87,7 +93,16 @@ export function AccordionFeatureCard({
         <div className={`${styles.innerFrame} ${styles.contentInner}`}>
           {badge ? <div className={styles.badge}>{badge}</div> : null}
 
-          <div id={panelId} className={styles.layout}>
+          {/*
+            Prefer `hidden` on the expandable content region so collapsed copy is
+            out of the a11y tree. Override UA `display: none` in CSS so the
+            vertical title strip / transitions stay painted.
+          */}
+          <div
+            id={panelId}
+            className={styles.layout}
+            hidden={isPanelCollapsed || undefined}
+          >
             <h2 className={styles.verticalTitle}>
               {verticalTitle ?? title}
             </h2>

@@ -25,9 +25,23 @@ Execute 011–018 in order unless dependencies say otherwise.
 - **014 / 015 / 016 / 017** independent of each other; can parallelize after 011/012.
 - **018** barrel removal may need catalog/preview updates; run after 012 if Accordion work touches previews.
 
-## Findings considered and rejected (second audit)
+## Residual cycle 019–027 (third audit, HEAD `7475016`)
 
-- Full `@steez-ui/react` merge: still needs consumer inventory.
-- Empty `new-york` deletion: product decision on Boston demos.
-- Bare absolute `registryDependencies` URLs: needs live shadcn confirmation.
-- CSS-modules consumer packaging rewrite: by-design flat system; document only unless product demands emit change.
+| Plan | Title | Priority | Status |
+|------|-------|----------|--------|
+| 019 | Clean dist + packageManager pin | P1 | TODO |
+| 020 | Publish package READMEs + fix ui README API | P1 | TODO |
+| 021 | CI build + jest-dom setup | P1 | TODO |
+| 022 | Remove dead chrome + lucide | P1 | TODO |
+| 023 | LoadingProgressBar a11y + ThemeToggle | P1 | TODO |
+| 024 | TabbedPanel APG + SegmentedControl radiogroup | P2 | TODO |
+| 025 | Accordion a11y + CopyButton | P2 | DONE |
+| 026 | Absolute registryDependencies | P2 | TODO |
+| 027 | Characterization tests forms/tabs | P2 | TODO |
+
+## Findings considered and rejected
+
+- Full `@steez-ui/react` merge: needs consumer inventory.
+- Empty `new-york` / Boston deletion: product call (freeze docs only in 022).
+- CSS-modules packaging rewrite: by-design flat system.
+- Bare absolute `registryDependencies`: planned as 026 with env base URL.
