@@ -38,3 +38,6 @@ jobs:
 
       - name: Registry smoke
         run: pnpm test:registry-smoke
+
+      - name: Build
+        run: pnpm build
