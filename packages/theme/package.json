@@ -16,7 +16,7 @@
     "./tailwind-preset": "./dist/tailwind-preset.js"
   },
   "scripts": {
-    "build": "tsc -p ./tsconfig.json && node ../../scripts/copy-static-assets.mjs ."
+    "build": "rm -rf dist && tsc -p ./tsconfig.json && node ../../scripts/copy-static-assets.mjs ."
   },
   "publishConfig": {
     "access": "public"
