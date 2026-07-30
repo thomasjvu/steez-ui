@@ -9,16 +9,16 @@
     "@steez-ui/icons"
   ],
   "registryDependencies": [
-    "theme-tokens",
-    "icon-provider",
-    "button",
-    "copy-button",
-    "cyberpunk-input",
-    "cyberpunk-select",
-    "cyberpunk-textarea",
-    "cyberpunk-checkbox",
-    "cyberpunk-radio",
-    "cyberpunk-slider"
+    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/icon-provider.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/button.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/copy-button.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/cyberpunk-input.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/cyberpunk-select.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/cyberpunk-textarea.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/cyberpunk-checkbox.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/cyberpunk-radio.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/cyberpunk-slider.json"
   ],
   "files": []
 }

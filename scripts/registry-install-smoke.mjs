@@ -10,7 +10,18 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".."
 const registryDir = path.join(repoRoot, "public/r-steez");
 const sampleDir = path.join(repoRoot, "tmp/registry-install-smoke");
 
-async function loadItem(name) {
+/** Accept bare names or absolute registry URLs; load from public/r-steez by basename. */
+function dependencyBasename(dep) {
+  const raw = String(dep).trim();
+  const withoutQuery = raw.split("?")[0].split("#")[0];
+  const segment = withoutQuery.includes("/")
+    ? withoutQuery.split("/").filter(Boolean).pop()
+    : withoutQuery;
+  return segment.replace(/\.json$/i, "");
+}
+
+async function loadItem(nameOrUrl) {
+  const name = dependencyBasename(nameOrUrl);
   const itemPath = path.join(registryDir, `${name}.json`);
   return JSON.parse(await fs.readFile(itemPath, "utf8"));
 }

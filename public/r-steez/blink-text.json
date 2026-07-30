@@ -8,7 +8,7 @@
     "@steez-ui/theme"
   ],
   "registryDependencies": [
-    "theme-tokens"
+    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json"
   ],
   "files": [
     {

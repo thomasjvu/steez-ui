@@ -81,6 +81,14 @@ pnpm test:registry-smoke
 
 Live steez payloads are committed under `public/r-steez/`. Regenerate after adding or changing package primitives.
 
+**Absolute `registryDependencies`:** `scripts/generate-registry.mjs` writes each dep as a full URL so `shadcn add` can resolve cross-item deps off-host:
+
+- Default base: `https://steez-ui-6v5.pages.dev/r-steez` (matches `SITE_URL` + `/r-steez`)
+- Override for local demos: `STEEZ_REGISTRY_BASE_URL=http://localhost:3000/r-steez pnpm registry:generate`
+- Smoke (`test:registry-smoke`) loads deps by basename whether bare or absolute
+
+Committed `public/r-steez/*.json` should use the production default base. Re-generate with the env override only for local shadcn install demos; do not commit localhost URLs.
+
 ## Registry URL surfaces
 
 | Path | Meaning |
@@ -91,7 +99,7 @@ Live steez payloads are committed under `public/r-steez/`. Regenerate after addi
 Install example (canonical) — local dev or production (`SITE_URL` in `lib/docs/site-data.ts`):
 
 ```bash
-# Local (pnpm dev)
+# Local (pnpm dev) — regenerate with STEEZ_REGISTRY_BASE_URL if deps must point at localhost
 pnpm dlx shadcn@latest add http://localhost:3000/r-steez/cyberpunk-tile.json
 
 # Production

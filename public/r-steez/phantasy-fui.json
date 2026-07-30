@@ -9,11 +9,11 @@
     "@steez-ui/icons"
   ],
   "registryDependencies": [
-    "theme-tokens",
-    "icon-provider",
-    "cyberpunk-tile",
-    "fui-button-tile",
-    "loading-progress-bar"
+    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/icon-provider.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/cyberpunk-tile.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/fui-button-tile.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/loading-progress-bar.json"
   ],
   "files": []
 }
