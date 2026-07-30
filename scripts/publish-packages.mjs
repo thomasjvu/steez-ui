@@ -2,8 +2,9 @@ import fs from "fs/promises";
 import os from "os";
 import path from "path";
 import { spawnSync } from "child_process";
+import { fileURLToPath } from "url";
 
-const repoRoot = path.resolve(new URL("..", import.meta.url).pathname);
+const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const rootPackagePath = path.join(repoRoot, "package.json");
 const rootPackage = JSON.parse(await fs.readFile(rootPackagePath, "utf8"));
 
@@ -122,7 +123,16 @@ for (const packageDir of packageDirs) {
     `${JSON.stringify(stagedManifest, null, 2)}\n`,
     "utf8",
   );
-  await fs.copyFile(path.join(repoRoot, "README.md"), path.join(stagingDir, "README.md"));
+
+  const packageReadme = path.join(packageDir, "README.md");
+  let readmeSource = path.join(repoRoot, "README.md");
+  try {
+    await fs.access(packageReadme);
+    readmeSource = packageReadme;
+  } catch {
+    // Prefer package-local README when present; otherwise ship monorepo README.
+  }
+  await fs.copyFile(readmeSource, path.join(stagingDir, "README.md"));
   await fs.copyFile(licensePath, path.join(stagingDir, "LICENSE"));
 
   const publishArgs = ["publish", "--access", "public", "--cache", npmCacheDir];

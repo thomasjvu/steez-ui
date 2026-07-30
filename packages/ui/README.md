@@ -42,8 +42,8 @@ export function Example() {
   return (
     <>
       <Button variant="primary">Enter</Button>
-      <CyberpunkTile title="Signal" />
-      <LoadingProgressBar value={0.6} />
+      <CyberpunkTile>Signal</CyberpunkTile>
+      <LoadingProgressBar progress={60} />
       <FUIButtonTile label="Deploy" />
     </>
   );
