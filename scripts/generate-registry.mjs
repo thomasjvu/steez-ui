@@ -5,6 +5,23 @@ import { fileURLToPath } from "url";
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const registryDir = path.join(repoRoot, "public/r-steez");
 
+/** Production default; override with STEEZ_REGISTRY_BASE_URL for localhost demos. */
+const DEFAULT_REGISTRY_BASE_URL = "https://steez-ui-6v5.pages.dev/r-steez";
+const registryBaseUrl = (
+  process.env.STEEZ_REGISTRY_BASE_URL?.trim() || DEFAULT_REGISTRY_BASE_URL
+).replace(/\/$/, "");
+
+/**
+ * Bare names become absolute registry URLs so shadcn can resolve deps off-host.
+ * Already-absolute deps are left unchanged.
+ */
+function toAbsoluteRegistryDependency(dep) {
+  if (!dep || typeof dep !== "string") return dep;
+  if (/^https?:\/\//i.test(dep)) return dep;
+  const name = dep.replace(/\.json$/i, "");
+  return `${registryBaseUrl}/${name}.json`;
+}
+
 const itemDefinitions = [
   {
     name: "theme-tokens",
@@ -624,7 +641,7 @@ for (const item of itemDefinitions) {
     title: item.title,
     description: item.description,
     dependencies: item.dependencies,
-    registryDependencies: item.registryDependencies,
+    registryDependencies: item.registryDependencies.map(toAbsoluteRegistryDependency),
     files,
   };
 

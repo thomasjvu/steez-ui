@@ -9,9 +9,9 @@
     "@steez-ui/icons"
   ],
   "registryDependencies": [
-    "theme-tokens",
-    "icon-provider",
-    "page-header"
+    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/icon-provider.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/page-header.json"
   ],
   "files": [
     {
