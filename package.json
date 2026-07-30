@@ -2,6 +2,7 @@
   "name": "steez-ui",
   "version": "0.2.0",
   "private": true,
+  "packageManager": "pnpm@9.15.9",
   "description": "Steez UI — design system packages + registry docs",
   "scripts": {
     "dev": "next dev --turbopack",
