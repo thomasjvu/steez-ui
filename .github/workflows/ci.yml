@@ -36,6 +36,11 @@ jobs:
       - name: Lint
         run: pnpm lint
 
+      - name: Registry generate clean
+        run: |
+          pnpm registry:generate
+          git diff --exit-code -- public/r-steez
+
       - name: Registry smoke
         run: pnpm test:registry-smoke
 
