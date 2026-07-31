@@ -16,10 +16,14 @@ export function CyberpunkTextarea({
   className = "",
   id,
   helperText,
+  "aria-describedby": ariaDescribedBy,
   ...props
 }: CyberpunkTextareaProps) {
   const textareaId = useStableId("textarea", id);
   const helperId = useStableId("textarea-helper");
+  const describedBy =
+    [ariaDescribedBy, helperText ? helperId : undefined].filter(Boolean).join(" ") ||
+    undefined;
 
   return (
     <div className={`${styles.cyberTextarea} ${styles[variant]} ${className}`.trim()}>
@@ -33,7 +37,7 @@ export function CyberpunkTextarea({
           id={textareaId}
           className={styles.textarea}
           {...props}
-          aria-describedby={helperText ? helperId : undefined}
+          aria-describedby={describedBy}
         />
       </div>
       {helperText ? (

@@ -20,11 +20,15 @@ export function CyberpunkInput({
   readOnly,
   helperText,
   icon,
+  "aria-describedby": ariaDescribedBy,
   ...props
 }: CyberpunkInputProps) {
   const inputId = useStableId("input", id);
   const helperId = useStableId("input-helper");
   const isDisabledOrReadOnly = disabled || readOnly;
+  const describedBy =
+    [ariaDescribedBy, helperText ? helperId : undefined].filter(Boolean).join(" ") ||
+    undefined;
 
   return (
     <div className={`${styles.cyberInput} ${styles[variant]} ${className}`.trim()}>
@@ -43,7 +47,7 @@ export function CyberpunkInput({
           disabled={disabled}
           readOnly={readOnly}
           {...props}
-          aria-describedby={helperText ? helperId : undefined}
+          aria-describedby={describedBy}
         />
       </div>
       {helperText ? (
