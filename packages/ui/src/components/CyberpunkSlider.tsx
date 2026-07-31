@@ -36,11 +36,15 @@ export function CyberpunkSlider({
   showValue = true,
   value = 0,
   helperText,
+  "aria-describedby": ariaDescribedBy,
   ...props
 }: CyberpunkSliderProps) {
   const inputId = useStableId("slider", id);
   const helperId = useStableId("slider-helper");
   const percentage = sliderPercentage(value as number | string, min, max);
+  const describedBy =
+    [ariaDescribedBy, helperText ? helperId : undefined].filter(Boolean).join(" ") ||
+    undefined;
 
   return (
     <div className={`${styles.wrapper} ${className}`.trim()}>
@@ -64,7 +68,7 @@ export function CyberpunkSlider({
             } as React.CSSProperties
           }
           {...props}
-          aria-describedby={helperText ? helperId : undefined}
+          aria-describedby={describedBy}
         />
         {showValue ? <span className={styles.value}>{value}</span> : null}
       </div>

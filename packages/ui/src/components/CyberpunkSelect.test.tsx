@@ -39,4 +39,43 @@ describe("CyberpunkSelect", () => {
     const select = screen.getByRole("combobox", { name: "Region" });
     expect(select.getAttribute("aria-describedby")).toBeNull();
   });
+
+  it("preserves consumer aria-describedby when helperText is absent", () => {
+    render(
+      <CyberpunkSelect
+        label="Region"
+        options={options}
+        defaultValue="alpha"
+        aria-describedby="err-region"
+      />,
+    );
+
+    const select = screen.getByRole("combobox", { name: "Region" });
+    expect(select.getAttribute("aria-describedby")).toBe("err-region");
+  });
+
+  it("merges consumer aria-describedby with helperId", () => {
+    render(
+      <CyberpunkSelect
+        label="Region"
+        helperText="Affects latency and pricing."
+        options={options}
+        defaultValue="alpha"
+        aria-describedby="err-region"
+      />,
+    );
+
+    const select = screen.getByRole("combobox", { name: "Region" });
+    const describedBy = select.getAttribute("aria-describedby");
+    expect(describedBy).toBeTruthy();
+
+    const ids = describedBy!.split(/\s+/);
+    expect(ids).toContain("err-region");
+    expect(ids).toHaveLength(2);
+
+    const helperId = ids.find((id) => id !== "err-region")!;
+    expect(document.getElementById(helperId)?.textContent).toBe(
+      "Affects latency and pricing.",
+    );
+  });
 });

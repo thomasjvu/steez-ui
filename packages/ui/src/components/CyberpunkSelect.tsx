@@ -24,10 +24,14 @@ export function CyberpunkSelect({
   id,
   value,
   helperText,
+  "aria-describedby": ariaDescribedBy,
   ...props
 }: CyberpunkSelectProps) {
   const selectId = useStableId("select", id);
   const helperId = useStableId("select-helper");
+  const describedBy =
+    [ariaDescribedBy, helperText ? helperId : undefined].filter(Boolean).join(" ") ||
+    undefined;
 
   return (
     <div className={`${styles.cyberSelect} ${styles[variant]} ${className}`.trim()}>
@@ -41,7 +45,7 @@ export function CyberpunkSelect({
         className={styles.select}
         value={value}
         {...props}
-        aria-describedby={helperText ? helperId : undefined}
+        aria-describedby={describedBy}
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
