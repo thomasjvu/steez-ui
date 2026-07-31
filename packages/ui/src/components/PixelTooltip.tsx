@@ -1,5 +1,6 @@
 import React from "react";
 
+import { useStableId } from "../hooks/useStableId.js";
 import styles from "./PixelTooltip.module.css";
 
 export type PixelTooltipPosition = "top" | "bottom" | "left" | "right";
@@ -40,32 +41,62 @@ export function PixelTooltip({
   const [coords, setCoords] = React.useState({ x: 0, y: 0, width: 0 });
   const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const triggerRef = React.useRef<HTMLDivElement>(null);
+  const openIntentRef = React.useRef({ hover: false, focus: false });
+  const tooltipId = useStableId("pixel-tooltip");
 
-  const handleMouseEnter = React.useCallback(() => {
+  const clearShowTimeout = React.useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+  }, []);
+
+  const scheduleShow = React.useCallback(() => {
+    clearShowTimeout();
     timeoutRef.current = setTimeout(() => {
       if (triggerRef.current) {
         const rect = triggerRef.current.getBoundingClientRect();
         setCoords(coordsForPosition(rect, position));
       }
       setIsVisible(true);
+      timeoutRef.current = null;
     }, delay);
-  }, [delay, position]);
+  }, [clearShowTimeout, delay, position]);
+
+  const hideIfIdle = React.useCallback(() => {
+    const { hover, focus } = openIntentRef.current;
+    if (hover || focus) {
+      return;
+    }
+    clearShowTimeout();
+    setIsVisible(false);
+  }, [clearShowTimeout]);
+
+  const handleMouseEnter = React.useCallback(() => {
+    openIntentRef.current.hover = true;
+    scheduleShow();
+  }, [scheduleShow]);
 
   const handleMouseLeave = React.useCallback(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
-    setIsVisible(false);
-  }, []);
+    openIntentRef.current.hover = false;
+    hideIfIdle();
+  }, [hideIfIdle]);
+
+  const handleFocus = React.useCallback(() => {
+    openIntentRef.current.focus = true;
+    scheduleShow();
+  }, [scheduleShow]);
+
+  const handleBlur = React.useCallback(() => {
+    openIntentRef.current.focus = false;
+    hideIfIdle();
+  }, [hideIfIdle]);
 
   React.useEffect(
     () => () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
+      clearShowTimeout();
     },
-    [],
+    [clearShowTimeout],
   );
 
   return (
@@ -75,12 +106,17 @@ export function PixelTooltip({
         className={styles.trigger}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        aria-describedby={isVisible ? tooltipId : undefined}
       >
         {children}
       </div>
 
       {isVisible ? (
         <div
+          id={tooltipId}
+          role="tooltip"
           className={`${styles.tooltip} ${styles[position]} ${styles.show}`.trim()}
           style={{
             left: `${coords.x}px`,
