@@ -15,3 +15,8 @@ Mirror TabbedPanel: ids, aria-controls, panel association for content region, ro
 Demote to non-tab buttons if APG unfit — do not leave half-ARIA.
 
 ## Tests + registry:generate for page-template.
+
+## Done
+- [x] PageTemplate sub-tabs: ids, aria-controls, tabpanel, roving tabIndex, arrows/Home/End → onSubTabChange
+- [x] Keep activeSubTab API (controlled)
+- [x] tests + registry:generate
