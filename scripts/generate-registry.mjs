@@ -430,6 +430,7 @@ const itemDefinitions = [
     files: [
       { source: "packages/ui/src/components/PixelTooltip.tsx", target: "components/steez/PixelTooltip.tsx", type: "registry:component" },
       { source: "packages/ui/src/components/PixelTooltip.module.css", target: "components/steez/PixelTooltip.module.css", type: "registry:style" },
+      { source: "packages/ui/src/hooks/useStableId.ts", target: "components/hooks/useStableId.ts", type: "registry:file" },
     ],
   },
   {
