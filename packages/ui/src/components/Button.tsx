@@ -22,12 +22,17 @@ export function Button({
   size = "medium",
   className = "",
   children,
+  type = "button",
   ...props
 }: ButtonProps) {
   const sizeClass = size === "small" ? styles.small : size === "large" ? styles.large : "";
 
   return (
-    <button className={`${styles[variant]} ${sizeClass} ${className}`.trim()} {...props}>
+    <button
+      type={type}
+      className={`${styles[variant]} ${sizeClass} ${className}`.trim()}
+      {...props}
+    >
       {children}
     </button>
   );
