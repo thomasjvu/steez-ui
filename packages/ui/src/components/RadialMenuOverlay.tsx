@@ -11,6 +11,21 @@ const JOYSTICK_ACTIVATION_RATIO = 0.34;
 const JOYSTICK_COMMIT_RATIO = 0.78;
 const EMPTY_ITEMS: readonly RadialMenuItem[] = [];
 
+const FOCUSABLE_SELECTOR = [
+  'a[href]',
+  "button:not([disabled])",
+  'input:not([disabled]):not([type="hidden"])',
+  "select:not([disabled])",
+  "textarea:not([disabled])",
+  '[tabindex]:not([tabindex="-1"])',
+].join(",");
+
+function getFocusableElements(root: HTMLElement): HTMLElement[] {
+  return Array.from(root.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(
+    (element) => element.tabIndex >= 0,
+  );
+}
+
 export interface RadialMenuItem {
   id: string;
   label: string;
@@ -53,6 +68,8 @@ export function RadialMenuOverlay({
   const [activeId, setActiveId] = React.useState(safeItems[0]?.id ?? "");
   const [isDragging, setIsDragging] = React.useState(false);
   const [stickOffset, setStickOffset] = React.useState({ x: 0, y: 0 });
+  const overlayRef = React.useRef<HTMLDivElement | null>(null);
+  const closeButtonRef = React.useRef<HTMLButtonElement | null>(null);
   const wheelRef = React.useRef<HTMLDivElement | null>(null);
   const activeIdRef = React.useRef(activeId);
   const dragPointerIdRef = React.useRef<number | null>(null);
@@ -86,9 +103,52 @@ export function RadialMenuOverlay({
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
+    const shouldTrapFocus = !contained;
+    const previousFocus =
+      shouldTrapFocus && document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+
+    if (shouldTrapFocus) {
+      const focusTarget =
+        closeButtonRef.current ??
+        (overlayRef.current ? getFocusableElements(overlayRef.current)[0] : undefined);
+      focusTarget?.focus();
+    }
+
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         onClose();
+        return;
+      }
+
+      if (!shouldTrapFocus || event.key !== "Tab") {
+        return;
+      }
+
+      const root = overlayRef.current;
+      if (!root) {
+        return;
+      }
+
+      const focusable = getFocusableElements(root);
+      if (focusable.length === 0) {
+        event.preventDefault();
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement;
+
+      if (event.shiftKey) {
+        if (active === first || !active || !root.contains(active)) {
+          event.preventDefault();
+          last.focus();
+        }
+      } else if (active === last || !active || !root.contains(active)) {
+        event.preventDefault();
+        first.focus();
       }
     };
 
@@ -96,8 +156,15 @@ export function RadialMenuOverlay({
     return () => {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", onKeyDown);
+      if (
+        previousFocus &&
+        typeof previousFocus.focus === "function" &&
+        document.contains(previousFocus)
+      ) {
+        previousFocus.focus();
+      }
     };
-  }, [onClose, open]);
+  }, [contained, onClose, open]);
 
   const getClosestItem = React.useCallback((angle: number) => {
     const currentItems = itemsRef.current;
@@ -242,6 +309,7 @@ export function RadialMenuOverlay({
 
   return (
     <div
+      ref={overlayRef}
       className={`${styles.overlay} ${contained ? styles.contained : ""} ${className}`.trim()}
       role="dialog"
       aria-modal={contained ? undefined : "true"}
@@ -262,6 +330,7 @@ export function RadialMenuOverlay({
               {brand ? <div className={styles.brand}>{brand}</div> : null}
             </div>
             <button
+              ref={closeButtonRef}
               type="button"
               className={styles.closeButton}
               onClick={onClose}
