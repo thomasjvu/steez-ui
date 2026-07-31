@@ -14,7 +14,7 @@
     "publish:packages": "node scripts/publish-packages.mjs",
     "start": "next start",
     "lint": "next lint",
-    "typecheck:packages": "pnpm build:packages",
+    "typecheck:packages": "tsc -p packages/theme/tsconfig.json --noEmit && tsc -p packages/icons/tsconfig.json --noEmit && tsc -p packages/ui/tsconfig.typecheck.json --noEmit",
     "typecheck:site": "tsc -p tsconfig.json --noEmit",
     "typecheck": "pnpm typecheck:packages && pnpm typecheck:site",
     "test": "vitest run",

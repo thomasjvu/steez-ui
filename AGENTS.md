@@ -45,8 +45,8 @@ pnpm dev                  # Next docs site (turbopack)
 pnpm build                # build:packages then next build
 pnpm lint                 # next lint
 pnpm typecheck            # typecheck:packages then typecheck:site
-pnpm typecheck:packages   # build:packages (supplies dist for site types)
-pnpm typecheck:site       # site tsc --noEmit (fast when dist is warm)
+pnpm typecheck:packages   # per-package tsc --noEmit (no rebuild)
+pnpm typecheck:site       # site tsc --noEmit (source path maps; no dist required)
 pnpm test                 # vitest run
 pnpm test:registry-smoke  # registry install smoke script
 pnpm registry:generate    # → public/r-steez
@@ -57,15 +57,15 @@ pnpm registry:build       # shadcn build → Boston / legacy /r surface
 
 ```bash
 pnpm typecheck            # typecheck:packages then typecheck:site
-pnpm typecheck:packages   # build:packages (emit validates packages; supplies dist for site)
-pnpm typecheck:site       # tsc --noEmit for the docs app (fast when dist is warm)
+pnpm typecheck:packages   # theme + icons + ui via tsc --noEmit
+pnpm typecheck:site       # docs app tsc --noEmit
 pnpm test                 # vitest run
 pnpm test:watch           # vitest (watch mode)
 pnpm test:registry-smoke  # node scripts/registry-install-smoke.mjs
 pnpm --dir packages/react typecheck   # legacy package only
 ```
 
-`typecheck:packages` uses `build:packages` rather than pure `tsc --noEmit` because `@steez-ui/ui` resolves `@steez-ui/icons` via `dist` path maps. Root gates exclude `packages/react`.
+`typecheck:packages` uses pure `tsc --noEmit` (not `build:packages`). `@steez-ui/ui` build still path-maps `@steez-ui/icons` to `icons/dist` for emit; typecheck uses `packages/ui/tsconfig.typecheck.json` which path-maps icons to **source** so no prior rebuild is required. Root `tsconfig.json` path-maps `@steez-ui/*` to package sources so `typecheck:site` also works with cold `dist`. `pnpm build` / `build:packages` still full-emit for publish and Next. Root gates exclude `packages/react`.
 ### Registry generate
 
 | Command | Output |
