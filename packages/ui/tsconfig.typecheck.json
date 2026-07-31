@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": false,
+    "inlineSources": false,
+    "rootDir": "../..",
+    "paths": {
+      "@steez-ui/icons": ["../icons/src/index.ts"],
+      "@steez-ui/icons/*": ["../icons/src/*"]
+    }
+  }
+}

@@ -19,7 +19,13 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@steez-ui/icons": ["./packages/icons/src/index.ts"],
+      "@steez-ui/icons/*": ["./packages/icons/src/*"],
+      "@steez-ui/theme": ["./packages/theme/src/index.ts"],
+      "@steez-ui/theme/*": ["./packages/theme/src/*"],
+      "@steez-ui/ui": ["./packages/ui/src/index.ts"],
+      "@steez-ui/ui/signal-trail-backdrop": ["./packages/ui/src/components/SignalTrailBackdrop.tsx"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
