@@ -56,7 +56,6 @@ export {
   type HeartbeatIndicatorProps,
   type HeartbeatPulseProps,
 } from "./components/HeartbeatPulse.js";
-export { HexagonGrid, type HexagonGridProps } from "./components/HexagonGrid.js";
 export {
   LoadingOverlayCrystalline,
   type LoadingOverlayCrystallineProps,

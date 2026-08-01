@@ -12,13 +12,13 @@ Source of truth for **@steez-ui** packages (consolidated from the original monor
 | `@steez-ui/icons` | Icon surface + provider |
 | `@steez-ui/ui` | React primitives (TSX + CSS modules) — **source of truth** |
 
-**Legacy (do not use for new work):**
+**Deprecated (migrate away):**
 
 | Package | Role |
 | --- | --- |
-| `@steez-ui/react` | Portable Tailwind/CVA bundle — **legacy / maintenance mode** only |
+| `@steez-ui/react` | Portable Tailwind/CVA bundle — **deprecated**; no new features |
 
-Phantasy admin already consumes the canonical package names from npm. This repo is where those components live and evolve. `@steez-ui/react` remains published for existing consumers; it is not an equal peer of `@steez-ui/ui` for new development.
+Phantasy admin consumes the **canonical** package names. `@steez-ui/react` may still install for existing apps; migrate to `@steez-ui/ui` + theme + icons.
 
 ## Discover site (not a component dump)
 
@@ -71,12 +71,12 @@ packages/
   theme/    # tokens
   icons/    # icons
   ui/       # canonical primitives (source of truth)
-  react/    # legacy portable package (optional)
+  react/    # DEPRECATED portable package (sunset)
 
 app/        # Next docs + discover site
 public/r-steez/  # generated registry JSON for package primitives
-public/r/        # legacy motion / demo blocks
-scripts/    # build helpers from upstream monorepo
+public/r/        # archival Boston motion / demo blocks (frozen)
+scripts/    # build helpers
 ```
 
 ## Install a registry item

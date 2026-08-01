@@ -33,6 +33,10 @@
       "types": "./dist/components/SignalTrailBackdrop.d.ts",
       "import": "./dist/components/SignalTrailBackdrop.js"
     },
+    "./hexagon-grid": {
+      "types": "./dist/components/HexagonGrid.d.ts",
+      "import": "./dist/components/HexagonGrid.js"
+    },
     "./styles/Buttons.module.css": "./dist/styles/Buttons.module.css"
   },
   "scripts": {

@@ -8,6 +8,8 @@ export interface CyberpunkInputProps
   label?: string;
   variant?: "default" | "long" | "full";
   helperText?: string;
+  /** Field-level error message; sets aria-invalid and joins aria-describedby. */
+  error?: string;
   icon?: ReactNode;
 }
 
@@ -19,19 +21,30 @@ export function CyberpunkInput({
   disabled,
   readOnly,
   helperText,
+  error,
   icon,
   "aria-describedby": ariaDescribedBy,
+  "aria-invalid": ariaInvalid,
   ...props
 }: CyberpunkInputProps) {
   const inputId = useStableId("input", id);
   const helperId = useStableId("input-helper");
+  const errorId = useStableId("input-error");
   const isDisabledOrReadOnly = disabled || readOnly;
+  const hasError = Boolean(error);
   const describedBy =
-    [ariaDescribedBy, helperText ? helperId : undefined].filter(Boolean).join(" ") ||
-    undefined;
+    [
+      ariaDescribedBy,
+      helperText ? helperId : undefined,
+      hasError ? errorId : undefined,
+    ]
+      .filter(Boolean)
+      .join(" ") || undefined;
 
   return (
-    <div className={`${styles.cyberInput} ${styles[variant]} ${className}`.trim()}>
+    <div
+      className={`${styles.cyberInput} ${styles[variant]} ${hasError ? styles.hasError : ""} ${className}`.trim()}
+    >
       {label ? (
         <label htmlFor={inputId} className={styles.label}>
           {label}
@@ -47,12 +60,18 @@ export function CyberpunkInput({
           disabled={disabled}
           readOnly={readOnly}
           {...props}
+          aria-invalid={ariaInvalid ?? (hasError ? true : undefined)}
           aria-describedby={describedBy}
         />
       </div>
       {helperText ? (
         <div id={helperId} className={styles.helperText}>
           {helperText}
+        </div>
+      ) : null}
+      {hasError ? (
+        <div id={errorId} className={styles.errorText} role="alert">
+          {error}
         </div>
       ) : null}
     </div>

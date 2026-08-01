@@ -103,3 +103,16 @@
   font-family: var(--font-mono);
 }
 
+.hasError .label {
+  color: var(--danger, #ff5c5c);
+}
+
+.errorText {
+  margin-top: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--danger, #ff5c5c);
+  line-height: 1.3;
+}
+
+

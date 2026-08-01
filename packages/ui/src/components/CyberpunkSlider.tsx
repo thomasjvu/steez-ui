@@ -11,6 +11,7 @@ export interface CyberpunkSliderProps
   step?: number;
   showValue?: boolean;
   helperText?: string;
+  error?: string;
 }
 
 /** Fill percentage for the track; 0 when max===min or non-finite. Clamped to [0, 100]. */
@@ -36,18 +37,27 @@ export function CyberpunkSlider({
   showValue = true,
   value = 0,
   helperText,
+  error,
   "aria-describedby": ariaDescribedBy,
+  "aria-invalid": ariaInvalid,
   ...props
 }: CyberpunkSliderProps) {
   const inputId = useStableId("slider", id);
   const helperId = useStableId("slider-helper");
+  const errorId = useStableId("slider-error");
+  const hasError = Boolean(error);
   const percentage = sliderPercentage(value as number | string, min, max);
   const describedBy =
-    [ariaDescribedBy, helperText ? helperId : undefined].filter(Boolean).join(" ") ||
-    undefined;
+    [
+      ariaDescribedBy,
+      helperText ? helperId : undefined,
+      hasError ? errorId : undefined,
+    ]
+      .filter(Boolean)
+      .join(" ") || undefined;
 
   return (
-    <div className={`${styles.wrapper} ${className}`.trim()}>
+    <div className={`${styles.wrapper} ${hasError ? styles.hasError : ""} ${className}`.trim()}>
       {label ? (
         <label htmlFor={inputId} className={styles.label}>
           {label}
@@ -68,6 +78,7 @@ export function CyberpunkSlider({
             } as React.CSSProperties
           }
           {...props}
+          aria-invalid={ariaInvalid ?? (hasError ? true : undefined)}
           aria-describedby={describedBy}
         />
         {showValue ? <span className={styles.value}>{value}</span> : null}
@@ -75,6 +86,11 @@ export function CyberpunkSlider({
       {helperText ? (
         <div id={helperId} className={styles.helperText}>
           {helperText}
+        </div>
+      ) : null}
+      {hasError ? (
+        <div id={errorId} className={styles.errorText} role="alert">
+          {error}
         </div>
       ) : null}
     </div>

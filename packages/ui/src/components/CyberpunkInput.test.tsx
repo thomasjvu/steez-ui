@@ -68,4 +68,33 @@ describe("CyberpunkInput", () => {
       "Used in URLs and install paths.",
     );
   });
+
+  it("sets aria-invalid and error alert when error is provided", () => {
+    render(
+      <CyberpunkInput
+        label="Handle"
+        helperText="Used in URLs."
+        error="Handle is taken"
+        defaultValue="steez"
+      />,
+    );
+
+    const input = screen.getByRole("textbox", { name: "Handle" });
+    expect(input.getAttribute("aria-invalid")).toBe("true");
+
+    const alert = screen.getByRole("alert");
+    expect(alert.textContent).toBe("Handle is taken");
+
+    const describedBy = input.getAttribute("aria-describedby");
+    expect(describedBy).toBeTruthy();
+    const ids = describedBy!.split(/\s+/);
+    expect(ids).toHaveLength(2);
+    expect(ids.some((id) => document.getElementById(id)?.textContent === "Used in URLs.")).toBe(
+      true,
+    );
+    expect(
+      ids.some((id) => document.getElementById(id)?.textContent === "Handle is taken"),
+    ).toBe(true);
+  });
 });
+

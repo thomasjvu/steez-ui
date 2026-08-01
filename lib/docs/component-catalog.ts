@@ -490,7 +490,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
     category: "surfaces",
     summary: "Animated hex field backdrop for avatars, launch surfaces, and atmospheric panels.",
     description: "Use HexagonGrid when a surface needs a reactive geometric backdrop without rebuilding the canvas animation and timing logic locally.",
-    packageImport: 'import { HexagonGrid } from "@steez-ui/ui";',
+    packageImport: 'import { HexagonGrid } from "@steez-ui/ui/hexagon-grid";',
     usage: `<div style={{ position: "relative", minHeight: "18rem" }}>
   <HexagonGrid pointerReactive backgroundOpacity={0.12} />
 </div>`,

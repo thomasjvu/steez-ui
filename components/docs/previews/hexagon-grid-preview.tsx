@@ -1,6 +1,6 @@
 "use client";
 
-import { HexagonGrid } from "@steez-ui/ui";
+import { HexagonGrid } from "@steez-ui/ui/hexagon-grid";
 
 import styles from "../component-docs.module.css";
 

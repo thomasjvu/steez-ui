@@ -27,12 +27,21 @@ import { SignalTrailBackdrop } from "@steez-ui/ui/signal-trail-backdrop";
 
 Apps that never import the backdrop do not need `three`.
 
+### Heavy canvas: HexagonGrid (subpath only)
+
+```tsx
+import { HexagonGrid } from "@steez-ui/ui/hexagon-grid";
+```
+
+`HexagonGrid` is not re-exported from the main `@steez-ui/ui` barrel (same pattern as SignalTrailBackdrop).
+
 ## Usage
 
 ```tsx
 import "@steez-ui/theme/tokens.css";
 import {
   CyberpunkTile,
+  CyberpunkInput,
   LoadingProgressBar,
   FUIButtonTile,
   Button,
@@ -45,10 +54,17 @@ export function Example() {
       <CyberpunkTile>Signal</CyberpunkTile>
       <LoadingProgressBar progress={60} />
       <FUIButtonTile label="Deploy" />
+      <CyberpunkInput
+        label="Handle"
+        helperText="Used in URLs."
+        error="Handle is taken"
+      />
     </>
   );
 }
 ```
+
+Form controls accept optional `error` (sets `aria-invalid`, `role="alert"` copy, and merges into `aria-describedby` with `helperText`).
 
 ## Registry install (docs site)
 

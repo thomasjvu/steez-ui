@@ -14,6 +14,7 @@ export interface CyberpunkSelectProps
   variant?: "default" | "long" | "full";
   options?: CyberpunkSelectOption[];
   helperText?: string;
+  error?: string;
 }
 
 export function CyberpunkSelect({
@@ -24,17 +25,28 @@ export function CyberpunkSelect({
   id,
   value,
   helperText,
+  error,
   "aria-describedby": ariaDescribedBy,
+  "aria-invalid": ariaInvalid,
   ...props
 }: CyberpunkSelectProps) {
   const selectId = useStableId("select", id);
   const helperId = useStableId("select-helper");
+  const errorId = useStableId("select-error");
+  const hasError = Boolean(error);
   const describedBy =
-    [ariaDescribedBy, helperText ? helperId : undefined].filter(Boolean).join(" ") ||
-    undefined;
+    [
+      ariaDescribedBy,
+      helperText ? helperId : undefined,
+      hasError ? errorId : undefined,
+    ]
+      .filter(Boolean)
+      .join(" ") || undefined;
 
   return (
-    <div className={`${styles.cyberSelect} ${styles[variant]} ${className}`.trim()}>
+    <div
+      className={`${styles.cyberSelect} ${styles[variant]} ${hasError ? styles.hasError : ""} ${className}`.trim()}
+    >
       {label ? (
         <label htmlFor={selectId} className={styles.label}>
           {label}
@@ -45,6 +57,7 @@ export function CyberpunkSelect({
         className={styles.select}
         value={value}
         {...props}
+        aria-invalid={ariaInvalid ?? (hasError ? true : undefined)}
         aria-describedby={describedBy}
       >
         {options.map((option) => (
@@ -61,6 +74,11 @@ export function CyberpunkSelect({
       {helperText ? (
         <div id={helperId} className={styles.helperText}>
           {helperText}
+        </div>
+      ) : null}
+      {hasError ? (
+        <div id={errorId} className={styles.errorText} role="alert">
+          {error}
         </div>
       ) : null}
     </div>

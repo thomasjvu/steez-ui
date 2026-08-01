@@ -1,9 +1,10 @@
 {
   "name": "@steez-ui/react",
   "version": "0.2.1",
-  "description": "Steez UI — modern futuristic hypebeast React components",
+  "description": "DEPRECATED — prefer @steez-ui/ui + theme + icons. Legacy Tailwind/CVA portable bundle.",
   "type": "module",
   "license": "MIT",
+  "deprecated": "Use @steez-ui/ui with @steez-ui/theme and @steez-ui/icons. This package is legacy/maintenance-only and will not receive new features.",
   "publishConfig": {
     "access": "public"
   },

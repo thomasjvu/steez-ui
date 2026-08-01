@@ -1,14 +1,18 @@
 # @steez-ui/react
 
-> **Legacy / maintenance mode.** Prefer **`@steez-ui/ui`** (with `@steez-ui/theme` + `@steez-ui/icons`) for new apps.
+> **DEPRECATED / sunset in progress.** Do not start new work on this package.
 >
 > | | Canonical (new work) | This package (legacy) |
 > | --- | --- | --- |
 > | Package | `@steez-ui/ui` | `@steez-ui/react` |
 > | Styling | CSS modules + design tokens | Tailwind / CVA + bundled `styles.css` |
-> | Status | Source of truth (Phantasy + monorepo) | Portable bundle; existing consumers only |
+> | Status | Source of truth (Phantasy + monorepo) | **No new features**; security/critical fixes only |
 >
-> See the [root README](../../README.md) for install and layout. This guide remains for consumers already on `@steez-ui/react`.
+> **Migrate:** `pnpm add @steez-ui/theme @steez-ui/icons @steez-ui/ui` and import from `@steez-ui/ui` (CSS modules). See the [root README](../../README.md).
+>
+> Install this package only if you already depend on it and cannot migrate yet.
+>
+> Workspace installs use the **root** `pnpm-lock.yaml` only (nested lockfile removed).
 
 Portable React package for **Steez UI** — a modern, futuristic, hypebeast-leaning design system (minimal cyber chrome, signal green, cool volt blue).
 

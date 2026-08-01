@@ -9,38 +9,38 @@ packages/
   theme/   # @steez-ui/theme — design tokens + Tailwind preset (canonical)
   icons/   # @steez-ui/icons — icon surface + provider (canonical)
   ui/      # @steez-ui/ui — React primitives, CSS modules (canonical source of truth)
-  react/   # @steez-ui/react — legacy portable Tailwind/CVA bundle (maintenance only)
+  react/   # @steez-ui/react — DEPRECATED Tailwind/CVA bundle (sunset; no new features)
 
 app/           # Next.js docs + discovery site
 components/    # Site-local components (not published packages)
 lib/           # Docs catalog, registry helpers, utilities
 public/r-steez/  # Registry JSON for package primitives (shadcn install path)
-public/r/        # Legacy Boston / motion demo blocks
-registry/      # shadcn registry sources (Boston / new-york style trees)
+public/r/        # ARCHIVAL Boston / motion demo blocks (frozen)
+registry/boston/ # ARCHIVAL shadcn sources for /r demos only
 scripts/       # Build helpers, registry generators, publish scripts
 plans/         # Execution plans (advisor work)
 ```
 
-pnpm workspace: `packages/*` (see `pnpm-workspace.yaml`).
+pnpm workspace: `packages/*` (see `pnpm-workspace.yaml`). Single root lockfile only.
 
 ## Canonical vs legacy
 
 | Surface | Packages | Styling | Use for |
 | --- | --- | --- | --- |
 | **Canonical** | `@steez-ui/theme`, `@steez-ui/icons`, `@steez-ui/ui` | CSS modules + tokens | New apps, Phantasy, monorepo work |
-| **Legacy** | `@steez-ui/react` | Tailwind / CVA + bundled CSS | Existing consumers only |
+| **Deprecated** | `@steez-ui/react` | Tailwind / CVA + bundled CSS | Existing consumers only; migrate ASAP |
 
-- Do **not** steer new features or docs toward `@steez-ui/react`.
+- Do **not** add features to `@steez-ui/react` or document it as equal to `@steez-ui/ui`.
 - Root `tsconfig.json` **excludes** `packages/react`.
-- `packages/react` has a nested `pnpm-lock.yaml` (known debt; do not “fix” by deleting in drive-by PRs).
-- Full sunset of `@steez-ui/react` is a separate product decision.
+- `packages/react` uses the **root** lockfile (nested lock removed). `build:react` / `publish:react:forgejo` are legacy escape hatches.
+- Heavy canvas: `HexagonGrid` and `SignalTrailBackdrop` are **subpath-only** (`@steez-ui/ui/hexagon-grid`, `@steez-ui/ui/signal-trail-backdrop`).
 
 ## Commands
 
 ```bash
 pnpm install              # workspace install (root)
 pnpm build:packages       # theme → icons → ui (canonical build order)
-pnpm build:react          # legacy package only (packages/react via tsup)
+pnpm build:react          # DEPRECATED package only (escape hatch)
 pnpm dev                  # Next docs site (turbopack)
 pnpm build                # build:packages then next build
 pnpm lint                 # next lint
@@ -49,8 +49,8 @@ pnpm typecheck:packages   # per-package tsc --noEmit (no rebuild)
 pnpm typecheck:site       # site tsc --noEmit (source path maps; no dist required)
 pnpm test                 # vitest run
 pnpm test:registry-smoke  # registry install smoke script
-pnpm registry:generate    # → public/r-steez
-pnpm registry:build       # shadcn build → Boston / legacy /r surface
+pnpm registry:generate    # → public/r-steez (canonical)
+pnpm registry:build       # archival only — Boston /r demos (do not extend)
 ```
 
 ### Typecheck / test
@@ -71,7 +71,7 @@ pnpm --dir packages/react typecheck   # legacy package only
 | Command | Output |
 | --- | --- |
 | `pnpm registry:generate` | Package primitives → `public/r-steez` (`scripts/generate-registry.mjs`) |
-| `pnpm registry:build` | Legacy Boston / motion blocks → `public/r` (`shadcn build`) |
+| `pnpm registry:build` | **Archival** Boston demos → `public/r` only; do not add new blocks |
 | `pnpm test:registry-smoke` | Smoke-check install paths for generated r-steez payloads |
 
 ```bash
@@ -94,7 +94,7 @@ Committed `public/r-steez/*.json` should use the production default base. Re-gen
 | Path | Meaning |
 | --- | --- |
 | `/r-steez/*.json` | **Package primitives** — install path for `@steez-ui/ui` components (`public/r-steez/`) |
-| `/r/*.json` | **Legacy** Boston / motion demo blocks (`public/r/`) — **archival / freeze**; do not extend as the package install path |
+| `/r/*.json` | **Archival** Boston / motion demos (`public/r/` + `registry/boston/`) — freeze; empty `new-york` style tree removed |
 
 Install example (canonical) — local dev or production (`SITE_URL` in `lib/docs/site-data.ts`):
 

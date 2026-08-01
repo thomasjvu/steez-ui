@@ -14,9 +14,13 @@ Plans **001–027** completed earlier. Batch **028–035** residual (HEAD was `d
 | 034 | Characterization tests 028–033 | DONE (covered by 028–033 tests) |
 | 035 | typecheck packages noEmit | DONE (merged) |
 
-## Deferred
+## Deferred follow-ups 036–039 (2026-07-31)
 
-- `@steez-ui/react` sunset / nested lockfile
-- Boston `/r` deletion (freeze only)
-- HexagonGrid subpath
-- Form error API product design
+| Plan | Title | Status |
+|------|-------|--------|
+| 036 | HexagonGrid subpath | DONE |
+| 037 | Form error API | DONE |
+| 038 | Soft sunset @steez-ui/react | DONE |
+| 039 | new-york removal + Boston archive docs | DONE |
+
+Still product-gated: hard delete `packages/react` / `public/r` Boston content; TW preset expansion.
