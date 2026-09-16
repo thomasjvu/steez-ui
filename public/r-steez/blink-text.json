@@ -21,7 +21,7 @@
       "path": "components/steez/BlinkText.module.css",
       "type": "registry:file",
       "target": "components/steez/BlinkText.module.css",
-      "content": ".root {\n  display: inline-flex;\n  align-items: center;\n}\n\n.mount {\n  animation: blinkText var(--blink-duration, 420ms) steps(2, end)\n    var(--blink-delay, 0ms) var(--blink-iterations, 3);\n}\n\n.always {\n  animation: blinkText var(--blink-duration, 420ms) steps(2, end)\n    var(--blink-delay, 0ms) infinite;\n}\n\n.hover:hover {\n  animation: blinkText var(--blink-duration, 420ms) steps(2, end)\n    var(--blink-delay, 0ms) var(--blink-iterations, 3);\n}\n\n@keyframes blinkText {\n  0%,\n  100% {\n    opacity: 1;\n  }\n\n  20%,\n  40%,\n  60%,\n  80% {\n    opacity: var(--blink-dim-opacity, 0.12);\n  }\n\n  30%,\n  50%,\n  70%,\n  90% {\n    opacity: 1;\n  }\n}\n",
+      "content": ".root {\n  display: inline-flex;\n  align-items: center;\n}\n\n.mount {\n  animation: blinkText var(--blink-duration, 420ms) steps(2, end)\n    var(--blink-delay, 0ms) var(--blink-iterations, 3);\n}\n\n.always {\n  animation: blinkText var(--blink-duration, 420ms) steps(2, end)\n    var(--blink-delay, 0ms) infinite;\n}\n\n.hover:hover {\n  animation: blinkText var(--blink-duration, 420ms) steps(2, end)\n    var(--blink-delay, 0ms) var(--blink-iterations, 3);\n}\n\n@keyframes blinkText {\n  0%,\n  100% {\n    opacity: 1;\n  }\n\n  20%,\n  40%,\n  60%,\n  80% {\n    opacity: var(--blink-dim-opacity, 0.12);\n  }\n\n  30%,\n  50%,\n  70%,\n  90% {\n    opacity: 1;\n  }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .mount,\n  .always,\n  .hover:hover {\n    animation: none;\n  }\n}\n",
       "source": "packages/ui/src/components/BlinkText.module.css"
     }
   ]
