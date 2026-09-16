@@ -62,23 +62,29 @@ export function CyberpunkSlider({
         </label>
       ) : null}
       <div className={styles.sliderContainer}>
-        <input
-          id={inputId}
-          type="range"
-          min={min}
-          max={max}
-          step={step}
-          value={value}
-          className={styles.slider}
+        <div
+          className={styles.track}
           style={
             {
-              ["--slider-percentage" as string]: `${percentage}%`,
+              ["--slider-percentage" as string]: percentage,
             } as React.CSSProperties
           }
-          {...props}
-          aria-invalid={ariaInvalid ?? (hasError ? true : undefined)}
-          aria-describedby={describedBy}
-        />
+        >
+          <div className={styles.trackBase} aria-hidden="true" />
+          <div className={styles.fill} aria-hidden="true" />
+          <input
+            id={inputId}
+            type="range"
+            min={min}
+            max={max}
+            step={step}
+            value={value}
+            className={styles.slider}
+            {...props}
+            aria-invalid={ariaInvalid ?? (hasError ? true : undefined)}
+            aria-describedby={describedBy}
+          />
+        </div>
         {showValue ? <span className={styles.value}>{value}</span> : null}
       </div>
       {helperText ? (
