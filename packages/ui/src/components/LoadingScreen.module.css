@@ -119,3 +119,13 @@
   font-family: var(--font-mono);
   font-size: 14px;
 }
+
+
+
+@media (prefers-reduced-motion: reduce) {
+  .crossContainer {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -9,6 +9,10 @@ const packageIndexPath = path.join(process.cwd(), "packages/ui/src/index.ts");
 
 /** Non-component registry items that are allowed without a catalog slug. */
 const NON_COMPONENT_REGISTRY_NAMES = new Set([
+  "stable-id",
+  "field-description",
+  "roving-tabs",
+  "button-styles",
   "theme-tokens",
   "icon-provider",
   "foundation",

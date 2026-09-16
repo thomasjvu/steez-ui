@@ -330,8 +330,6 @@ const itemDefinitions = [
     files: [
       { source: "packages/ui/src/components/RadialMenuOverlay.tsx", target: "components/steez/RadialMenuOverlay.tsx", type: "registry:component" },
       { source: "packages/ui/src/components/RadialMenuOverlay.module.css", target: "components/steez/RadialMenuOverlay.module.css", type: "registry:style" },
-      { source: "packages/ui/src/components/NotchedViewportFrame.tsx", target: "components/steez/NotchedViewportFrame.tsx", type: "registry:component" },
-      { source: "packages/ui/src/components/NotchedViewportFrame.module.css", target: "components/steez/NotchedViewportFrame.module.css", type: "registry:style" },
     ],
   },
   {
@@ -352,12 +350,10 @@ const itemDefinitions = [
     title: "Loading Screen",
     description: "Fullscreen or contained loading shell with progress, cross field, and neutral branding hooks.",
     dependencies: ["@steez-ui/theme", "@steez-ui/icons"],
-    registryDependencies: ["theme-tokens", "icon-provider", "loading-progress-bar"],
+    registryDependencies: ["theme-tokens", "icon-provider"],
     files: [
       { source: "packages/ui/src/components/LoadingScreen.tsx", target: "components/steez/LoadingScreen.tsx", type: "registry:component" },
       { source: "packages/ui/src/components/LoadingScreen.module.css", target: "components/steez/LoadingScreen.module.css", type: "registry:style" },
-      { source: "packages/ui/src/components/LoadingProgressBar.tsx", target: "components/steez/LoadingProgressBar.tsx", type: "registry:component" },
-      { source: "packages/ui/src/components/LoadingProgressBar.module.css", target: "components/steez/LoadingProgressBar.module.css", type: "registry:style" },
     ],
   },
   {
@@ -377,7 +373,7 @@ const itemDefinitions = [
     type: "registry:component",
     title: "Loading Progress Bar",
     description: "Progress bar with segmented loading bars.",
-    dependencies: ["@steez-ui/theme", "@steez-ui/icons"],
+    dependencies: ["@steez-ui/theme"],
     registryDependencies: ["theme-tokens"],
     files: [
       { source: "packages/ui/src/components/LoadingProgressBar.tsx", target: "components/steez/LoadingProgressBar.tsx", type: "registry:component" },
@@ -603,9 +599,54 @@ const itemDefinitions = [
   },
 ];
 
+// Shared source has one owning item; consumers depend on it rather than copying it.
+for (const [name, source, target] of [
+  ["stable-id", "packages/ui/src/hooks/useStableId.ts", "components/hooks/useStableId.ts"],
+  ["field-description", "packages/ui/src/hooks/useFieldDescription.ts", "components/hooks/useFieldDescription.ts"],
+  ["roving-tabs", "packages/ui/src/hooks/useRovingTabs.ts", "components/hooks/useRovingTabs.ts"],
+  ["button-styles", "packages/ui/src/styles/Buttons.module.css", "components/styles/Buttons.module.css"],
+]) {
+  for (const item of itemDefinitions) {
+    if (item.files.some((file) => file.source === source)) {
+      item.files = item.files.filter((file) => file.source !== source);
+      item.registryDependencies.push(name);
+    }
+  }
+  itemDefinitions.push({ name, type: "registry:lib", title: name,
+    description: "Shared implementation dependency.", dependencies: [], registryDependencies: [],
+    files: [{ source, target, type: "registry:file" }] });
+}
+
+itemDefinitions.push({
+  name: "boiling-lines", type: "registry:component", title: "Boiling Lines",
+  description: "Hand-drawn line motion with subtle, default, and intense presets.",
+  dependencies: [], registryDependencies: ["theme-tokens"],
+  files: ["tsx", "module.css"].map((extension) => ({
+    source: `packages/ui/src/components/BoilingLines.${extension}`,
+    target: `components/steez/BoilingLines.${extension}`, type: "registry:file",
+  })),
+});
+
+const owners = new Map();
+for (const item of itemDefinitions) {
+  for (const file of item.files) {
+    if (owners.has(file.source)) throw new Error(`Duplicate source: ${file.source}`);
+    owners.set(file.source, { item: item.name, target: file.target });
+  }
+}
+
 function validateItem(item) {
-  if (!item.name || !item.type || !Array.isArray(item.files) || !Array.isArray(item.dependencies)) {
+  if (
+    !item.name ||
+    !item.type ||
+    !Array.isArray(item.files) ||
+    !Array.isArray(item.dependencies) ||
+    !Array.isArray(item.registryDependencies)
+  ) {
     throw new Error(`Invalid registry item: ${item.name || "<missing>"}`);
+  }
+  if (item.type === "registry:component" && item.files.length === 0) {
+    throw new Error(`Registry component ${item.name} must own at least one file`);
   }
 }
 
@@ -615,6 +656,20 @@ async function readFileContent(relativePath) {
     absolutePath,
     content: await fs.readFile(absolutePath, "utf8"),
   };
+}
+
+/**
+ * Package sources use explicit `.js` specifiers for emitted ESM. Registry
+ * files are copied into TypeScript consumers, where extensionless imports
+ * resolve through the consumer's normal TS/bundler rules.
+ */
+const relativeImportPattern = /((?:\bfrom\s+|\bimport\s*(?:\(\s*)?|\bexport\s+from\s*)["'])(\.\.?\/[^"']+)(["'])/g;
+
+function makeRegistryContentPortable(content) {
+  return content.replace(relativeImportPattern, (_match, prefix, specifier, suffix) => {
+    const portableSpecifier = specifier.replace(/\.(?:cjs|jsx?|mjs)$/i, "");
+    return `${prefix}${portableSpecifier}${suffix}`;
+  });
 }
 
 await fs.mkdir(registryDir, { recursive: true });
@@ -630,20 +685,39 @@ for (const item of itemDefinitions) {
     const fileData = await readFileContent(file.source);
     files.push({
       path: file.target,
-      type: file.type,
-      content: fileData.content,
+      type: "registry:file",
+      target: file.target,
+      content: makeRegistryContentPortable(
+        fileData.content.replace(/(["'])@steez-ui\/icons\1/g, (_match, quote) => {
+          let relative = path.posix.relative(path.posix.dirname(file.target), "lib/steez/icons/index");
+          if (!relative.startsWith(".")) relative = `./${relative}`;
+          return `${quote}${relative}${quote}`;
+        }),
+      ),
       source: file.source,
     });
   }
 
+  const registryDependencies = new Set(item.registryDependencies.filter((dep) => dep !== "icon-provider"));
+  for (const file of item.files) {
+    const source = (await readFileContent(file.source)).content;
+    if (source.includes('"@steez-ui/icons"')) registryDependencies.add("icon-provider");
+    for (const match of source.matchAll(/(?:from\s*|import\s*)["'](\.[^"']+)["']/g)) {
+      const resolved = path.posix.normalize(path.posix.join(path.posix.dirname(file.source), match[1]));
+      const owner = owners.get(resolved) || owners.get(resolved.replace(/\.js$/, ".tsx")) || owners.get(resolved.replace(/\.js$/, ".ts"));
+      if (!owner) throw new Error(`Unresolved registry import: ${file.source} -> ${match[1]}`);
+      if (owner.item !== item.name) registryDependencies.add(owner.item);
+    }
+  }
   const payload = {
     $schema: "https://ui.shadcn.com/schema/registry-item.json",
     name: item.name,
     type: item.type,
     title: item.title,
     description: item.description,
-    dependencies: item.dependencies,
-    registryDependencies: item.registryDependencies.map(toAbsoluteRegistryDependency),
+    dependencies: item.dependencies.filter((dep) => !dep.startsWith("@steez-ui/")),
+    registryDependencies: [...registryDependencies].map(toAbsoluteRegistryDependency),
+    docs: "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
     files,
   };
 

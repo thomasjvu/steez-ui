@@ -1,5 +1,8 @@
+"use client";
+
 import React, { InputHTMLAttributes } from "react";
 
+import { useFieldDescription } from "../hooks/useFieldDescription.js";
 import { useStableId } from "../hooks/useStableId.js";
 import styles from "./CyberpunkSlider.module.css";
 
@@ -43,18 +46,13 @@ export function CyberpunkSlider({
   ...props
 }: CyberpunkSliderProps) {
   const inputId = useStableId("slider", id);
-  const helperId = useStableId("slider-helper");
-  const errorId = useStableId("slider-error");
-  const hasError = Boolean(error);
   const percentage = sliderPercentage(value as number | string, min, max);
-  const describedBy =
-    [
-      ariaDescribedBy,
-      helperText ? helperId : undefined,
-      hasError ? errorId : undefined,
-    ]
-      .filter(Boolean)
-      .join(" ") || undefined;
+  const { errorId, hasError, helperId, describedBy } = useFieldDescription({
+    prefix: "slider",
+    helperText,
+    error,
+    describedBy: ariaDescribedBy,
+  });
 
   return (
     <div className={`${styles.wrapper} ${hasError ? styles.hasError : ""} ${className}`.trim()}>

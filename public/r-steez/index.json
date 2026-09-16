@@ -274,5 +274,35 @@
     "type": "registry:block",
     "title": "Phantasy FUI Preset",
     "description": "Theme, tiles, and loading primitives used by Phantasy admin FUI chrome."
+  },
+  {
+    "name": "stable-id",
+    "type": "registry:lib",
+    "title": "stable-id",
+    "description": "Shared implementation dependency."
+  },
+  {
+    "name": "field-description",
+    "type": "registry:lib",
+    "title": "field-description",
+    "description": "Shared implementation dependency."
+  },
+  {
+    "name": "roving-tabs",
+    "type": "registry:lib",
+    "title": "roving-tabs",
+    "description": "Shared implementation dependency."
+  },
+  {
+    "name": "button-styles",
+    "type": "registry:lib",
+    "title": "button-styles",
+    "description": "Shared implementation dependency."
+  },
+  {
+    "name": "boiling-lines",
+    "type": "registry:component",
+    "title": "Boiling Lines",
+    "description": "Hand-drawn line motion with subtle, default, and intense presets."
   }
 ]

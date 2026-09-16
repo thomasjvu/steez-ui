@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 import { LightCrossIcon } from "@steez-ui/icons";
@@ -46,10 +48,16 @@ function resolveIsLightMode(themeMode: LoadingScreenProps["themeMode"]) {
     return false;
   }
 
-  return (
-    document.documentElement.getAttribute("data-theme") === "light" ||
-    window.localStorage.getItem("theme") === "light"
-  );
+  if (document.documentElement.getAttribute("data-theme") === "light") {
+    return true;
+  }
+
+  try {
+    return window.localStorage.getItem("theme") === "light";
+  } catch {
+    // Storage can be unavailable in privacy-restricted or sandboxed contexts.
+    return false;
+  }
 }
 
 export function LoadingScreen({

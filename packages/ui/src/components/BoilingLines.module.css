@@ -1,0 +1,12 @@
+.root { position: relative; }
+.filters { position: absolute; width: 0; height: 0; pointer-events: none; }
+.content { animation: boil var(--boil-duration, 300ms) steps(1, end) infinite; }
+.content[data-paused] { animation-play-state: paused; }
+@keyframes boil {
+  0%, 100% { filter: var(--boil-frame-0); }
+  33.333% { filter: var(--boil-frame-1); }
+  66.666% { filter: var(--boil-frame-2); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .content { animation: none; filter: none; }
+}

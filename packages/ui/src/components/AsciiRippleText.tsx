@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 import styles from "./AsciiRippleText.module.css";
@@ -6,6 +8,7 @@ const WAVE_THRESHOLD = 3;
 const CHARACTER_MULTIPLIER = 3;
 const ANIMATION_STEP_MS = 40;
 const WAVE_BUFFER = 5;
+const MAX_ACTIVE_WAVES = 8;
 const DEFAULT_CHARACTER_SET =
   ".,·-─~+:;=*π\"\"┐┌┘┴┬╗╔╝╚╬╠╣╩╦║░▒▓█▄▀▌▐■!?&#$@0123456789*";
 
@@ -53,6 +56,14 @@ export function AsciiRippleText({
       return undefined;
     }
 
+    const reducedMotion =
+      typeof window !== "undefined" &&
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducedMotion) {
+      return undefined;
+    }
+
     let originalText = text;
     let originalChars = originalText.split("");
     let isAnimating = false;
@@ -60,7 +71,11 @@ export function AsciiRippleText({
     let cursorPosition = 0;
     let waves: WaveState[] = [];
     let animationId: number | null = null;
+    let queuedWaveFrame: number | null = null;
+    let queuedWavePosition: number | null = null;
     let lockedWidth: number | null = null;
+    const safeCharacterSet = characterSet.length > 0 ? characterSet : DEFAULT_CHARACTER_SET;
+    const safeDurationMs = Number.isFinite(durationMs) ? Math.max(durationMs, 1) : 900;
 
     const setRenderedText = (nextText: string) => {
       if (element.textContent !== nextText) {
@@ -76,7 +91,7 @@ export function AsciiRippleText({
     };
 
     const cleanupWaves = (timestamp: number) => {
-      waves = waves.filter((wave) => timestamp - wave.startTime < durationMs);
+      waves = waves.filter((wave) => timestamp - wave.startTime < safeDurationMs);
     };
 
     const calculateWaveEffect = (characterIndex: number, timestamp: number) => {
@@ -85,7 +100,7 @@ export function AsciiRippleText({
 
       for (const wave of waves) {
         const age = timestamp - wave.startTime;
-        const progress = Math.min(age / durationMs, 1);
+        const progress = Math.min(age / safeDurationMs, 1);
         const distance = Math.abs(characterIndex - wave.startPos);
         const maxDistance = Math.max(wave.startPos, originalChars.length - wave.startPos - 1);
         const radius = (progress * (maxDistance + WAVE_BUFFER)) / Math.max(spread, 0.001);
@@ -97,8 +112,8 @@ export function AsciiRippleText({
           if (intensity <= WAVE_THRESHOLD && intensity > 0) {
             const glyphIndex =
               (distance * CHARACTER_MULTIPLIER + Math.floor(age / ANIMATION_STEP_MS)) %
-              characterSet.length;
-            nextCharacter = characterSet[glyphIndex];
+              safeCharacterSet.length;
+            nextCharacter = safeCharacterSet[glyphIndex] ?? nextCharacter;
           }
         }
       }
@@ -160,14 +175,36 @@ export function AsciiRippleText({
       animationId = requestAnimationFrame(animate);
     };
 
-    const startWave = () => {
-      waves.push({
-        startPos: cursorPosition,
-        startTime: Date.now(),
-      });
-
+    const appendWave = (startPos: number) => {
+      waves = [
+        ...waves.slice(-(MAX_ACTIVE_WAVES - 1)),
+        {
+          startPos,
+          startTime: Date.now(),
+        },
+      ];
       if (!isAnimating) {
         start();
+      }
+    };
+
+    const flushQueuedWave = () => {
+      queuedWaveFrame = null;
+      if (queuedWavePosition === null) {
+        return;
+      }
+
+      const nextPosition = queuedWavePosition;
+      queuedWavePosition = null;
+      appendWave(nextPosition);
+    };
+
+    const startWave = () => {
+      // Pointer events can arrive several times between paint frames. Keep only
+      // the latest position so a fast pointer cannot create an unbounded queue.
+      queuedWavePosition = cursorPosition;
+      if (queuedWaveFrame === null) {
+        queuedWaveFrame = requestAnimationFrame(flushQueuedWave);
       }
     };
 
@@ -214,6 +251,11 @@ export function AsciiRippleText({
       element.removeEventListener("mouseleave", handleLeave);
       element.removeEventListener("focus", handleFocus);
       element.removeEventListener("blur", handleBlur);
+      if (queuedWaveFrame !== null) {
+        cancelAnimationFrame(queuedWaveFrame);
+        queuedWaveFrame = null;
+      }
+      queuedWavePosition = null;
       stop();
       originalText = text;
       originalChars = text.split("");

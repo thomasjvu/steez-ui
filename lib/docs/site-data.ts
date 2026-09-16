@@ -1,5 +1,5 @@
 export const SITE_URL = "https://steez-ui-6v5.pages.dev";
-export const REPOSITORY_URL = "https://github.com/thomasjvu/steez-ui";
+export const REPOSITORY_URL = "https://forgejo.thomasjvu.com/steez-ui/steez-ui";
 export const NPM_THEME_URL = "https://www.npmjs.com/package/@steez-ui/theme";
 export const NPM_ICONS_URL = "https://www.npmjs.com/package/@steez-ui/icons";
 export const NPM_UI_URL = "https://www.npmjs.com/package/@steez-ui/ui";
@@ -46,10 +46,12 @@ export const PACKAGE_ITEMS = [
 
 export const REGISTRY_ITEMS = [
   { label: "Registry index", href: "/r-steez/index.json" },
-  { label: "Phantasy FUI preset", href: "/r-steez/phantasy-fui.json" },
   { label: "Foundation preset (forms)", href: "/r-steez/foundation.json" },
+  { label: "Cyberpunk tile", href: "/r-steez/cyberpunk-tile.json" },
+  { label: "Boiling lines", href: "/r-steez/boiling-lines.json" },
   { label: "Theme tokens", href: "/r-steez/theme-tokens.json" },
   { label: "Button item", href: "/r-steez/button.json" },
   { label: "Page template", href: "/r-steez/page-template.json" },
   { label: "Segmented control", href: "/r-steez/segmented-control.json" },
+  { label: "Phantasy FUI preset (optional)", href: "/r-steez/phantasy-fui.json" },
 ] as const;

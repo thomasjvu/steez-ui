@@ -71,4 +71,22 @@ describe("CyberpunkSlider aria-describedby", () => {
     const helperId = ids.find((id) => id !== "err-volume")!;
     expect(document.getElementById(helperId)?.textContent).toBe("0 is silent.");
   });
+
+  it("associates an error message and marks the slider invalid", () => {
+    render(
+      <CyberpunkSlider
+        label="Volume"
+        error="Volume must be within range."
+        value={40}
+        onChange={noop}
+      />,
+    );
+
+    const slider = screen.getByRole("slider", { name: "Volume" });
+    const error = screen.getByRole("alert");
+
+    expect(slider.getAttribute("aria-invalid")).toBe("true");
+    expect(slider.getAttribute("aria-describedby")).toBe(error.id);
+    expect(error.textContent).toBe("Volume must be within range.");
+  });
 });

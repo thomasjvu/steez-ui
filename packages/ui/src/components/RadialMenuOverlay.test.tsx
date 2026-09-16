@@ -150,4 +150,56 @@ describe("RadialMenuOverlay focus trap", () => {
     await user.keyboard("{Escape}");
     expect(onClose).toHaveBeenCalledTimes(1);
   });
+
+  it("keeps focus in place when the onClose callback changes while open", () => {
+    const openerFocus = vi.fn();
+    const firstOnClose = vi.fn();
+    const { rerender } = render(
+      <>
+        <button type="button" onFocus={openerFocus}>
+          Open menu
+        </button>
+        <RadialMenuOverlay
+          open={false}
+          items={items}
+          onClose={firstOnClose}
+        />
+      </>,
+    );
+
+    const opener = screen.getByRole("button", { name: "Open menu" });
+    opener.focus();
+    rerender(
+      <>
+        <button type="button" onFocus={openerFocus}>
+          Open menu
+        </button>
+        <RadialMenuOverlay
+          open
+          items={items}
+          onClose={() => undefined}
+        />
+      </>,
+    );
+
+    const closeControl = screen.getByTitle("Close navigation");
+    closeControl.focus();
+    const focusCountBeforeRerender = openerFocus.mock.calls.length;
+
+    rerender(
+      <>
+        <button type="button" onFocus={openerFocus}>
+          Open menu
+        </button>
+        <RadialMenuOverlay
+          open
+          items={items}
+          onClose={() => undefined}
+        />
+      </>,
+    );
+
+    expect(openerFocus).toHaveBeenCalledTimes(focusCountBeforeRerender);
+    expect(document.activeElement).toBe(closeControl);
+  });
 });

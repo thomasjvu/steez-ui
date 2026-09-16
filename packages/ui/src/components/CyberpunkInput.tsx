@@ -1,5 +1,8 @@
+"use client";
+
 import React, { InputHTMLAttributes, ReactNode } from "react";
 
+import { useFieldDescription } from "../hooks/useFieldDescription.js";
 import { useStableId } from "../hooks/useStableId.js";
 import styles from "./CyberpunkInput.module.css";
 
@@ -28,18 +31,13 @@ export function CyberpunkInput({
   ...props
 }: CyberpunkInputProps) {
   const inputId = useStableId("input", id);
-  const helperId = useStableId("input-helper");
-  const errorId = useStableId("input-error");
   const isDisabledOrReadOnly = disabled || readOnly;
-  const hasError = Boolean(error);
-  const describedBy =
-    [
-      ariaDescribedBy,
-      helperText ? helperId : undefined,
-      hasError ? errorId : undefined,
-    ]
-      .filter(Boolean)
-      .join(" ") || undefined;
+  const { errorId, hasError, helperId, describedBy } = useFieldDescription({
+    prefix: "input",
+    helperText,
+    error,
+    describedBy: ariaDescribedBy,
+  });
 
   return (
     <div

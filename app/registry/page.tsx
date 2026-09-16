@@ -16,6 +16,13 @@ export default function RegistryPage() {
           Older motion blocks from this app:{" "}
           <code className={siteStyles.inlineCode}>/r/*.json</code>.
         </p>
+        <p className={siteStyles.body}>
+          Install one component by URL with shadcn. Its shared dependencies install automatically.
+          Source files go into components/steez at your project root. Import the copied
+          styles/steez/tokens.css once in your root layout or global stylesheet; no Steez
+          npm packages are needed. Customize those files locally, or use the npm packages
+          when you want shared updates across projects.
+        </p>
         <ul className={siteStyles.list}>
           {REGISTRY_ITEMS.map((item) => (
             <li key={item.href} className={siteStyles.listItem}>

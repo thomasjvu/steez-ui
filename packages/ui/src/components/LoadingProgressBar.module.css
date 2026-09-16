@@ -40,3 +40,9 @@
   letter-spacing: 2px;
 }
 
+
+@media (prefers-reduced-motion: reduce) {
+  .bar {
+    transition: none;
+  }
+}

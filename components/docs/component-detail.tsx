@@ -68,6 +68,10 @@ export function ComponentDetail({ slug }: { slug: string }) {
 
   const registryOrigin = origin || "http://localhost:3000";
   const registryCommand = `pnpm dlx shadcn@latest add ${registryOrigin}/r-steez/${component.slug}.json`;
+  const installedComponent = manifest?.files.find((file) => file.path.endsWith(".tsx"));
+  const registryImport = installedComponent
+    ? component.packageImport.replace(/"@steez-ui\/ui(?:\/[^"]+)?"/, `"<project-root>/${installedComponent.path.replace(/\.tsx$/, "")}"`)
+    : "";
   const packageInstallCommand = "pnpm add @steez-ui/theme @steez-ui/icons @steez-ui/ui";
   const relatedComponents = component.related
     .map((relatedSlug) => getComponentDoc(relatedSlug))
@@ -143,6 +147,12 @@ export function ComponentDetail({ slug }: { slug: string }) {
               <code className={styles.inlineCode}>{registryCommand}</code>
               <CopyButton value={registryCommand} />
             </div>
+            <p className={styles.metaText}>
+              Source files install at your project root. Import styles/steez/tokens.css once
+              in your global stylesheet or root layout. No Steez packages needed.
+            </p>
+            {registryImport && <code className={styles.codeBlock}>{registryImport}</code>}
+            <p className={styles.metaText}>Replace &lt;project-root&gt; with a relative path from your file.</p>
           </div>
 
           {relatedComponents.length > 0 ? (

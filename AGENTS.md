@@ -43,13 +43,14 @@ pnpm build:packages       # theme → icons → ui (canonical build order)
 pnpm build:react          # DEPRECATED package only (escape hatch)
 pnpm dev                  # Next docs site (turbopack)
 pnpm build                # build:packages then next build
-pnpm lint                 # next lint
+pnpm lint                 # eslint .
 pnpm typecheck            # typecheck:packages then typecheck:site
 pnpm typecheck:packages   # per-package tsc --noEmit (no rebuild)
 pnpm typecheck:site       # site tsc --noEmit (source path maps; no dist required)
 pnpm test                 # vitest run
 pnpm test:registry-smoke  # registry install smoke script
 pnpm registry:generate    # → public/r-steez (canonical)
+pnpm deploy:pages         # Cloudflare Pages (needs wrangler auth / CF token)
 pnpm registry:build       # archival only — Boston /r demos (do not extend)
 ```
 
@@ -78,6 +79,12 @@ pnpm --dir packages/react typecheck   # legacy package only
 pnpm registry:generate
 pnpm test:registry-smoke
 ```
+
+Registry payloads use explicit project-root targets and local source imports. Do not add
+Steez npm dependencies to source installs. Shared source files have one owning registry
+item; depend on it instead of copying it into another payload. The smoke test checks every
+item independently without workspace path aliases. React component entry files declare
+`"use client"` so copied and packaged interactive primitives work in Next.js.
 
 Live steez payloads are committed under `public/r-steez/`. Regenerate after adding or changing package primitives.
 

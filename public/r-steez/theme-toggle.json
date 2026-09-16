@@ -4,24 +4,24 @@
   "type": "registry:component",
   "title": "Theme Toggle",
   "description": "Shared dark and light theme toggle.",
-  "dependencies": [
-    "@steez-ui/theme",
-    "@steez-ui/icons"
-  ],
+  "dependencies": [],
   "registryDependencies": [
     "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json",
     "https://steez-ui-6v5.pages.dev/r-steez/icon-provider.json"
   ],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
   "files": [
     {
       "path": "components/steez/ThemeToggle.tsx",
-      "type": "registry:component",
-      "content": "import React, { useEffect, useState } from \"react\";\n\nimport { MoonIcon, SunIcon } from \"@steez-ui/icons\";\n\nimport styles from \"./ThemeToggle.module.css\";\n\nexport interface ThemeToggleProps {\n  storageKey?: string;\n  defaultTheme?: \"dark\" | \"light\";\n  className?: string;\n  onThemeChange?: (theme: \"dark\" | \"light\") => void;\n}\n\nfunction isTheme(value: string | null): value is \"dark\" | \"light\" {\n  return value === \"dark\" || value === \"light\";\n}\n\nfunction readStoredTheme(storageKey: string): \"dark\" | \"light\" | null {\n  try {\n    const saved = window.localStorage.getItem(storageKey);\n    return isTheme(saved) ? saved : null;\n  } catch {\n    return null;\n  }\n}\n\nfunction writeStoredTheme(storageKey: string, theme: \"dark\" | \"light\"): void {\n  try {\n    window.localStorage.setItem(storageKey, theme);\n  } catch {\n    // Storage may be unavailable (private mode, quota, policy).\n  }\n}\n\nexport function ThemeToggle({\n  storageKey = \"theme\",\n  defaultTheme = \"dark\",\n  className = \"\",\n  onThemeChange,\n}: ThemeToggleProps) {\n  const [theme, setTheme] = useState<\"dark\" | \"light\">(defaultTheme);\n\n  useEffect(() => {\n    const initialTheme = readStoredTheme(storageKey) ?? defaultTheme;\n    setTheme(initialTheme);\n    document.documentElement.setAttribute(\"data-theme\", initialTheme);\n  }, [defaultTheme, storageKey]);\n\n  const toggleTheme = () => {\n    const newTheme = theme === \"dark\" ? \"light\" : \"dark\";\n    setTheme(newTheme);\n    writeStoredTheme(storageKey, newTheme);\n    document.documentElement.setAttribute(\"data-theme\", newTheme);\n    onThemeChange?.(newTheme);\n  };\n\n  return (\n    <button\n      type=\"button\"\n      className={`${styles.themeToggle} ${styles.iconButton} ${className}`.trim()}\n      onClick={toggleTheme}\n      aria-label={`Switch to ${theme === \"dark\" ? \"light\" : \"dark\"} mode`}\n      title={`Switch to ${theme === \"dark\" ? \"light\" : \"dark\"} mode`}\n    >\n      {theme === \"dark\" ? <SunIcon width={14} height={14} /> : <MoonIcon width={14} height={14} />}\n    </button>\n  );\n}\n\n",
+      "type": "registry:file",
+      "target": "components/steez/ThemeToggle.tsx",
+      "content": "\"use client\";\n\nimport React, { useEffect, useState } from \"react\";\n\nimport { MoonIcon, SunIcon } from \"../../lib/steez/icons/index\";\n\nimport styles from \"./ThemeToggle.module.css\";\n\nexport interface ThemeToggleProps {\n  storageKey?: string;\n  defaultTheme?: \"dark\" | \"light\";\n  className?: string;\n  onThemeChange?: (theme: \"dark\" | \"light\") => void;\n}\n\nfunction isTheme(value: string | null): value is \"dark\" | \"light\" {\n  return value === \"dark\" || value === \"light\";\n}\n\nfunction readStoredTheme(storageKey: string): \"dark\" | \"light\" | null {\n  try {\n    const saved = window.localStorage.getItem(storageKey);\n    return isTheme(saved) ? saved : null;\n  } catch {\n    return null;\n  }\n}\n\nfunction writeStoredTheme(storageKey: string, theme: \"dark\" | \"light\"): void {\n  try {\n    window.localStorage.setItem(storageKey, theme);\n  } catch {\n    // Storage may be unavailable (private mode, quota, policy).\n  }\n}\n\nexport function ThemeToggle({\n  storageKey = \"theme\",\n  defaultTheme = \"dark\",\n  className = \"\",\n  onThemeChange,\n}: ThemeToggleProps) {\n  const [theme, setTheme] = useState<\"dark\" | \"light\">(defaultTheme);\n\n  useEffect(() => {\n    const initialTheme = readStoredTheme(storageKey) ?? defaultTheme;\n    setTheme(initialTheme);\n    document.documentElement.setAttribute(\"data-theme\", initialTheme);\n  }, [defaultTheme, storageKey]);\n\n  const toggleTheme = () => {\n    const newTheme = theme === \"dark\" ? \"light\" : \"dark\";\n    setTheme(newTheme);\n    writeStoredTheme(storageKey, newTheme);\n    document.documentElement.setAttribute(\"data-theme\", newTheme);\n    onThemeChange?.(newTheme);\n  };\n\n  return (\n    <button\n      type=\"button\"\n      className={`${styles.themeToggle} ${styles.iconButton} ${className}`.trim()}\n      onClick={toggleTheme}\n      aria-label={`Switch to ${theme === \"dark\" ? \"light\" : \"dark\"} mode`}\n      title={`Switch to ${theme === \"dark\" ? \"light\" : \"dark\"} mode`}\n    >\n      {theme === \"dark\" ? <SunIcon width={14} height={14} /> : <MoonIcon width={14} height={14} />}\n    </button>\n  );\n}\n\n",
       "source": "packages/ui/src/components/ThemeToggle.tsx"
     },
     {
       "path": "components/steez/ThemeToggle.module.css",
-      "type": "registry:style",
+      "type": "registry:file",
+      "target": "components/steez/ThemeToggle.module.css",
       "content": ".themeToggle {\n  border: 1px solid var(--border-color);\n  background: color-mix(in srgb, var(--bg-secondary) 85%, transparent);\n  color: var(--text-primary);\n  border-radius: 999px;\n  padding: 0.5rem;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  cursor: pointer;\n  transition: all var(--transition-fast);\n}\n\n.themeToggle:hover {\n  border-color: var(--interactive-secondary-border-hover);\n  background: var(--interactive-secondary-bg-hover);\n}\n\n.iconButton {\n  width: 2.25rem;\n  height: 2.25rem;\n}\n\n",
       "source": "packages/ui/src/components/ThemeToggle.module.css"
     }

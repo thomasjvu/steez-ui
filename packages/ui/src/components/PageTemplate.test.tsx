@@ -131,6 +131,35 @@ describe("PageTemplate sub-tabs", () => {
     expect(onSubTabChange).toHaveBeenLastCalledWith("overview");
   });
 
+  it("skips disabled sub-tabs when arrowing", async () => {
+    const user = userEvent.setup();
+    const onSubTabChange = vi.fn();
+    const mixedSubTabs = [
+      { id: "overview", label: "Overview" },
+      { id: "details", label: "Details", disabled: true },
+      { id: "history", label: "History" },
+    ];
+
+    render(
+      <PageTemplate
+        title="Inventory"
+        subTabs={mixedSubTabs}
+        activeSubTab="overview"
+        onSubTabChange={onSubTabChange}
+      >
+        Panel body
+      </PageTemplate>,
+    );
+
+    const disabledTab = screen.getByRole("tab", { name: "Details" });
+    expect(disabledTab.hasAttribute("disabled")).toBe(true);
+
+    screen.getByRole("tab", { name: "Overview" }).focus();
+    await user.keyboard("{ArrowRight}");
+
+    expect(onSubTabChange).toHaveBeenCalledWith("history");
+  });
+
   it("does not expose tabpanel when there are no sub-tabs", () => {
     render(
       <PageTemplate title="Inventory">

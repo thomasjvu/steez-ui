@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 import { CloseIcon } from "@steez-ui/icons";
@@ -118,7 +120,7 @@ export function RadialMenuOverlay({
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        onClose();
+        onCloseRef.current();
         return;
       }
 
@@ -164,7 +166,7 @@ export function RadialMenuOverlay({
         previousFocus.focus();
       }
     };
-  }, [contained, onClose, open]);
+  }, [contained, open]);
 
   const getClosestItem = React.useCallback((angle: number) => {
     const currentItems = itemsRef.current;

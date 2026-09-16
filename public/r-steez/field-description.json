@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "field-description",
+  "type": "registry:lib",
+  "title": "field-description",
+  "description": "Shared implementation dependency.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://steez-ui-6v5.pages.dev/r-steez/stable-id.json"
+  ],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/hooks/useFieldDescription.ts",
+      "type": "registry:file",
+      "target": "components/hooks/useFieldDescription.ts",
+      "content": "import { useStableId } from \"./useStableId\";\n\nexport interface UseFieldDescriptionOptions {\n  prefix: string;\n  helperText?: string;\n  error?: string;\n  describedBy?: string;\n}\n\nexport interface FieldDescriptionState {\n  errorId: string;\n  hasError: boolean;\n  helperId: string;\n  describedBy: string | undefined;\n}\n\n/**\n * Builds stable helper/error IDs and merges them with a consumer's\n * aria-describedby value without dropping any referenced description.\n */\nexport function useFieldDescription({\n  prefix,\n  helperText,\n  error,\n  describedBy: consumerDescribedBy,\n}: UseFieldDescriptionOptions): FieldDescriptionState {\n  const helperId = useStableId(`${prefix}-helper`);\n  const errorId = useStableId(`${prefix}-error`);\n  const hasError = Boolean(error);\n  const describedBy = [\n    consumerDescribedBy,\n    helperText ? helperId : undefined,\n    hasError ? errorId : undefined,\n  ]\n    .filter(Boolean)\n    .join(\" \") || undefined;\n\n  return { errorId, hasError, helperId, describedBy };\n}\n",
+      "source": "packages/ui/src/hooks/useFieldDescription.ts"
+    }
+  ]
+}

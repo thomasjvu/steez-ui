@@ -78,4 +78,22 @@ describe("CyberpunkSelect", () => {
       "Affects latency and pricing.",
     );
   });
+
+  it("associates an error message and marks the select invalid", () => {
+    render(
+      <CyberpunkSelect
+        label="Region"
+        error="Choose a supported region."
+        options={options}
+        defaultValue="alpha"
+      />,
+    );
+
+    const select = screen.getByRole("combobox", { name: "Region" });
+    const error = screen.getByRole("alert");
+
+    expect(select.getAttribute("aria-invalid")).toBe("true");
+    expect(select.getAttribute("aria-describedby")).toBe(error.id);
+    expect(error.textContent).toBe("Choose a supported region.");
+  });
 });
