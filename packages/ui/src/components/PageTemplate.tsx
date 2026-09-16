@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 
+import { useRovingTabs } from "../hooks/useRovingTabs.js";
 import { useStableId } from "../hooks/useStableId.js";
 import { PageHeader, type PageHeaderProps } from "./PageHeader.js";
 import styles from "./PageTemplate.module.css";
@@ -7,6 +10,7 @@ import styles from "./PageTemplate.module.css";
 interface SubTab {
   id: string;
   label: string;
+  disabled?: boolean;
 }
 
 export interface PageTemplateProps
@@ -64,7 +68,6 @@ export function PageTemplate({
   const baseId = useStableId("page-template");
   const headerExtra = extra ?? actions;
   const hasContent = loading || React.Children.count(children) > 0;
-  const tabRefs = React.useRef<Map<string, HTMLButtonElement>>(new Map());
 
   const getTabDomId = React.useCallback(
     (tabId: string) => `${baseId}-tab-${tabId}`,
@@ -84,59 +87,10 @@ export function PageTemplate({
     },
     [onSubTabChange],
   );
-
-  const focusTab = React.useCallback((tabId: string) => {
-    tabRefs.current.get(tabId)?.focus();
-  }, []);
-
-  const handleTabKeyDown = React.useCallback(
-    (event: React.KeyboardEvent<HTMLButtonElement>, tabId: string) => {
-      if (!subTabs?.length) {
-        return;
-      }
-
-      const currentIndex = subTabs.findIndex((tab) => tab.id === tabId);
-      if (currentIndex === -1) {
-        return;
-      }
-
-      let nextIndex: number | null = null;
-
-      switch (event.key) {
-        case "ArrowRight":
-        case "ArrowDown":
-          nextIndex = (currentIndex + 1) % subTabs.length;
-          break;
-        case "ArrowLeft":
-        case "ArrowUp":
-          nextIndex = (currentIndex - 1 + subTabs.length) % subTabs.length;
-          break;
-        case "Home":
-          nextIndex = 0;
-          break;
-        case "End":
-          nextIndex = subTabs.length - 1;
-          break;
-        default:
-          return;
-      }
-
-      event.preventDefault();
-      const nextTabId = subTabs[nextIndex]!.id;
-      handleSelect(nextTabId);
-      // Focus after selection so roving tabIndex updates before focus lands.
-      queueMicrotask(() => focusTab(nextTabId));
-    },
-    [focusTab, handleSelect, subTabs],
-  );
-
-  const setTabRef = React.useCallback((tabId: string, node: HTMLButtonElement | null) => {
-    if (node) {
-      tabRefs.current.set(tabId, node);
-    } else {
-      tabRefs.current.delete(tabId);
-    }
-  }, []);
+  const { handleKeyDown: handleTabKeyDown, setTabRef } = useRovingTabs({
+    tabs: subTabs ?? [],
+    onSelect: handleSelect,
+  });
 
   const activePanelId = resolvedActiveTabId ? getPanelDomId(resolvedActiveTabId) : undefined;
   const activeTabDomId = resolvedActiveTabId ? getTabDomId(resolvedActiveTabId) : undefined;
@@ -182,6 +136,7 @@ export function PageTemplate({
                 aria-selected={isActive}
                 aria-controls={getPanelDomId(tab.id)}
                 tabIndex={isActive ? 0 : -1}
+                disabled={tab.disabled}
               >
                 {tab.label}
               </button>

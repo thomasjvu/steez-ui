@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 import { CloseIcon, RefreshIcon, WarningIcon } from "@steez-ui/icons";

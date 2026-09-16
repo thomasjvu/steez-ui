@@ -1,3 +1,5 @@
+"use client";
+
 import React, { ReactNode } from "react";
 
 import { EyeIcon, Icon, SlidersIcon } from "@steez-ui/icons";

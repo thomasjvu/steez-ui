@@ -68,4 +68,21 @@ describe("CyberpunkTextarea", () => {
       "Markdown is not supported.",
     );
   });
+
+  it("associates an error message and marks the textarea invalid", () => {
+    render(
+      <CyberpunkTextarea
+        label="Notes"
+        error="Notes are required."
+        defaultValue=""
+      />,
+    );
+
+    const textarea = screen.getByRole("textbox", { name: "Notes" });
+    const error = screen.getByRole("alert");
+
+    expect(textarea.getAttribute("aria-invalid")).toBe("true");
+    expect(textarea.getAttribute("aria-describedby")).toBe(error.id);
+    expect(error.textContent).toBe("Notes are required.");
+  });
 });

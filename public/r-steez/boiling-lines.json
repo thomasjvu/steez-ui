@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "boiling-lines",
+  "type": "registry:component",
+  "title": "Boiling Lines",
+  "description": "Hand-drawn line motion with subtle, default, and intense presets.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json"
+  ],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/steez/BoilingLines.tsx",
+      "type": "registry:file",
+      "target": "components/steez/BoilingLines.tsx",
+      "content": "\"use client\";\n\nimport React, { useId } from \"react\";\nimport styles from \"./BoilingLines.module.css\";\n\nexport interface BoilingLinesProps extends React.HTMLAttributes<HTMLDivElement> {\n  children: React.ReactNode;\n  /** Presets share one implementation; use scale to fine-tune displacement. */\n  intensity?: \"subtle\" | \"default\" | \"intense\";\n  /** Milliseconds per frame, clamped to at least 16ms. */\n  speedMs?: number;\n  scale?: number;\n  paused?: boolean;\n}\n\nconst scales = { subtle: 2, default: 4, intense: 8 };\nconst seeds = [1, 25, 45];\n\n/** Wrap artwork, an SVG, or a decorative border. Keep long text outside the effect. */\nexport function BoilingLines({\n  children, intensity = \"default\", speedMs = 100, scale, paused = false,\n  className = \"\", style, ...props\n}: BoilingLinesProps) {\n  const id = `steez-boil-${useId().replace(/[^a-zA-Z0-9_-]/g, \"\")}`;\n  const displacement = scale ?? scales[intensity];\n  const effectStyle = {\n    ...style,\n    \"--boil-duration\": `${(Number.isFinite(speedMs) ? Math.max(16, speedMs) : 100) * 3}ms`,\n    ...Object.fromEntries(seeds.map((_, i) => [`--boil-frame-${i}`, `url(#${id}-${i})`])),\n  } as React.CSSProperties;\n\n  return (\n    <div {...props} className={`${styles.root} ${className}`.trim()} style={effectStyle}>\n      <svg className={styles.filters} aria-hidden=\"true\" focusable=\"false\">\n        <defs>\n          {seeds.map((seed, i) => (\n            <filter key={seed} id={`${id}-${i}`} x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"140%\">\n              <feTurbulence type=\"fractalNoise\" baseFrequency=\"0.015\" numOctaves={2} seed={seed} result=\"warp\" />\n              <feDisplacementMap in=\"SourceGraphic\" in2=\"warp\" scale={Number.isFinite(displacement) ? Math.max(0, displacement) : 4} xChannelSelector=\"R\" yChannelSelector=\"G\" />\n            </filter>\n          ))}\n        </defs>\n      </svg>\n      <div className={styles.content} data-paused={paused || undefined}>{children}</div>\n    </div>\n  );\n}\n",
+      "source": "packages/ui/src/components/BoilingLines.tsx"
+    },
+    {
+      "path": "components/steez/BoilingLines.module.css",
+      "type": "registry:file",
+      "target": "components/steez/BoilingLines.module.css",
+      "content": ".root { position: relative; }\n.filters { position: absolute; width: 0; height: 0; pointer-events: none; }\n.content { animation: boil var(--boil-duration, 300ms) steps(1, end) infinite; }\n.content[data-paused] { animation-play-state: paused; }\n@keyframes boil {\n  0%, 100% { filter: var(--boil-frame-0); }\n  33.333% { filter: var(--boil-frame-1); }\n  66.666% { filter: var(--boil-frame-2); }\n}\n@media (prefers-reduced-motion: reduce) {\n  .content { animation: none; filter: none; }\n}\n",
+      "source": "packages/ui/src/components/BoilingLines.module.css"
+    }
+  ]
+}

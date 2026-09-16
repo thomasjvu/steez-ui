@@ -1,5 +1,8 @@
+"use client";
+
 import React, { TextareaHTMLAttributes } from "react";
 
+import { useFieldDescription } from "../hooks/useFieldDescription.js";
 import { useStableId } from "../hooks/useStableId.js";
 import styles from "./CyberpunkTextarea.module.css";
 
@@ -23,17 +26,12 @@ export function CyberpunkTextarea({
   ...props
 }: CyberpunkTextareaProps) {
   const textareaId = useStableId("textarea", id);
-  const helperId = useStableId("textarea-helper");
-  const errorId = useStableId("textarea-error");
-  const hasError = Boolean(error);
-  const describedBy =
-    [
-      ariaDescribedBy,
-      helperText ? helperId : undefined,
-      hasError ? errorId : undefined,
-    ]
-      .filter(Boolean)
-      .join(" ") || undefined;
+  const { errorId, hasError, helperId, describedBy } = useFieldDescription({
+    prefix: "textarea",
+    helperText,
+    error,
+    describedBy: ariaDescribedBy,
+  });
 
   return (
     <div

@@ -13,48 +13,85 @@ export function HomePageContent() {
   }, []);
 
   const packageCmd = "pnpm add @steez-ui/theme @steez-ui/icons @steez-ui/ui";
-  const phantasyFuiCmd = `pnpm dlx shadcn@latest add ${origin}/r-steez/phantasy-fui.json`;
   const foundationCmd = `pnpm dlx shadcn@latest add ${origin}/r-steez/foundation.json`;
+  const tileCmd = `pnpm dlx shadcn@latest add ${origin}/r-steez/cyberpunk-tile.json`;
+  const boilingCmd = `pnpm dlx shadcn@latest add ${origin}/r-steez/boiling-lines.json`;
 
   return (
     <>
       <section className={styles.hero}>
-        <h1 className={styles.heroTitle}>A small React design system.</h1>
+        <h1 className={styles.heroTitle}>A small design system you can install.</h1>
         <p className={styles.heroLead}>
-          Tokens, icons, and UI primitives as npm packages — with a docs catalog for one
-          component at a time.
+          Tokens, CSS-module primitives, and a shadcn-compatible registry.
+          Built for inspectable demos: clean APIs, motion that respects reduced
+          preference, and source you can own or share via npm.
         </p>
         <div className={styles.actions}>
           <Link href="/components" className={styles.button}>
             Browse components
           </Link>
           <Link href="/docs" className={`${styles.button} ${styles.buttonGhost}`}>
-            Read docs
+            Authoring docs
           </Link>
         </div>
       </section>
 
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>Install</h2>
-        <p className={styles.body}>Packages (recommended for apps like Phantasy admin):</p>
+        <p className={styles.body}>Packages when you want shared updates:</p>
         <div className={styles.codeBlock}>
           <code>{packageCmd}</code>
           <CopyButton value={packageCmd} />
         </div>
         <p className={styles.body} style={{ marginTop: "1.25rem" }}>
-          Phantasy FUI chrome (tiles + loading) via the registry CLI:
-        </p>
-        <div className={styles.codeBlock}>
-          <code>{phantasyFuiCmd}</code>
-          <CopyButton value={phantasyFuiCmd} />
-        </div>
-        <p className={styles.body} style={{ marginTop: "1.25rem" }}>
-          Forms starter preset (inputs, select, checkbox, etc.):
+          Forms starter via the registry CLI:
         </p>
         <div className={styles.codeBlock}>
           <code>{foundationCmd}</code>
           <CopyButton value={foundationCmd} />
         </div>
+        <p className={styles.body} style={{ marginTop: "1.25rem" }}>
+          Signature surface:
+        </p>
+        <div className={styles.codeBlock}>
+          <code>{tileCmd}</code>
+          <CopyButton value={tileCmd} />
+        </div>
+        <p className={styles.body} style={{ marginTop: "1.25rem" }}>
+          Hand-drawn motion:
+        </p>
+        <div className={styles.codeBlock}>
+          <code>{boilingCmd}</code>
+          <CopyButton value={boilingCmd} />
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>Signature craft</h2>
+        <p className={styles.body}>
+          Start with one surface, one motion treatment, and familiar controls.
+          Shared tokens tie the pieces together; the consuming app supplies brand and content.
+        </p>
+        <ul className={styles.list}>
+          <li className={styles.listItem}>
+            <Link href="/components/cyberpunk-tile">Cyberpunk Tile</Link>
+            <p className={styles.listMeta}>
+              Cut-corner surface with clear framing props. Primary signature component.
+            </p>
+          </li>
+          <li className={styles.listItem}>
+            <Link href="/components/boiling-lines">Boiling Lines</Link>
+            <p className={styles.listMeta}>
+              One motion primitive, three intensity presets, automatic reduced motion.
+            </p>
+          </li>
+          <li className={styles.listItem}>
+            <Link href="/components/cyberpunk-input">Foundation forms</Link>
+            <p className={styles.listMeta}>
+              Inputs, select, checkbox, slider — labeled fields with described-by wiring.
+            </p>
+          </li>
+        </ul>
       </section>
 
       <section className={styles.section}>
@@ -76,23 +113,19 @@ export function HomePageContent() {
       </section>
 
       <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Start here</h2>
+        <h2 className={styles.sectionTitle}>Explore</h2>
         <ul className={styles.list}>
           <li className={styles.listItem}>
-            <Link href="/components/cyberpunk-tile">Cyberpunk Tile</Link>
-            <p className={styles.listMeta}>Cut-corner surface used in admin grids.</p>
+            <Link href="/components">Component catalog</Link>
+            <p className={styles.listMeta}>Filter by category; open one primitive at a time.</p>
           </li>
           <li className={styles.listItem}>
-            <Link href="/components/loading-progress-bar">Loading Progress Bar</Link>
-            <p className={styles.listMeta}>Segmented progress for load screens.</p>
+            <Link href="/registry">Registry endpoints</Link>
+            <p className={styles.listMeta}>Canonical payloads under /r-steez.</p>
           </li>
           <li className={styles.listItem}>
-            <Link href="/components/fui-button-tile">FUI Button Tile</Link>
-            <p className={styles.listMeta}>Square HUD button with icon + label.</p>
-          </li>
-          <li className={styles.listItem}>
-            <Link href="/components">All components</Link>
-            <p className={styles.listMeta}>Full catalog, filtered by category.</p>
+            <Link href="/docs">Authoring model</Link>
+            <p className={styles.listMeta}>Package → catalog → preview → registry.</p>
           </li>
         </ul>
       </section>

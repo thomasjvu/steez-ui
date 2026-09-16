@@ -1,3 +1,4 @@
+export { BoilingLines, type BoilingLinesProps } from "./components/BoilingLines.js";
 export {
   AsciiRippleText,
   type AsciiRippleTextProps,

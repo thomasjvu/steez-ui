@@ -38,6 +38,16 @@ export type ComponentFilter = (typeof COMPONENT_FILTERS)[number]["value"];
 
 export const COMPONENT_DOCS: ComponentDoc[] = [
   {
+    slug: "boiling-lines", title: "Boiling Lines", category: "surfaces",
+    summary: "Hand-drawn motion for artwork, SVG lines, and decorative borders.",
+    description: "One effect with subtle, default, and intense presets. Wrap artwork or a border; keep long text outside the distortion. Respects reduced motion automatically. Use paused to stop motion, speedMs for timing, and scale to tune displacement.",
+    packageImport: 'import { BoilingLines } from "@steez-ui/ui";',
+    usage: `<BoilingLines intensity="subtle" speedMs={120}>
+  <img src="/artwork.svg" alt="Hand-drawn studio mark" />
+</BoilingLines>`,
+    related: ["cyberpunk-tile", "stroked-text"], tags: ["motion", "illustration", "hand-drawn"],
+  },
+  {
     slug: "ascii-ripple-text",
     title: "ASCII Ripple Text",
     category: "feedback",

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { InputHTMLAttributes } from "react";
 
 import { useStableId } from "../hooks/useStableId.js";

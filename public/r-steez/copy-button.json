@@ -4,24 +4,24 @@
   "type": "registry:component",
   "title": "Copy Button",
   "description": "Clipboard button with built-in success feedback.",
-  "dependencies": [
-    "@steez-ui/theme",
-    "@steez-ui/icons"
-  ],
+  "dependencies": [],
   "registryDependencies": [
     "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json",
     "https://steez-ui-6v5.pages.dev/r-steez/icon-provider.json"
   ],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
   "files": [
     {
       "path": "components/steez/CopyButton.tsx",
-      "type": "registry:component",
-      "content": "import React, { useEffect, useState } from \"react\";\n\nimport { CheckIcon, CopyIcon } from \"@steez-ui/icons\";\n\nimport styles from \"./CopyButton.module.css\";\n\nexport interface CopyButtonProps {\n  value: string;\n  size?: number;\n  className?: string;\n  title?: string;\n  feedbackDuration?: number;\n  onCopyError?: (error: unknown) => void;\n}\n\ntype CopyFeedback = \"idle\" | \"copied\" | \"error\";\n\nexport function CopyButton({\n  value,\n  size = 16,\n  className = \"\",\n  title = \"Copy to clipboard\",\n  feedbackDuration = 2000,\n  onCopyError,\n}: CopyButtonProps) {\n  const [feedback, setFeedback] = useState<CopyFeedback>(\"idle\");\n\n  useEffect(() => {\n    if (feedback === \"idle\") {\n      return undefined;\n    }\n\n    const timer = window.setTimeout(() => setFeedback(\"idle\"), feedbackDuration);\n    return () => window.clearTimeout(timer);\n  }, [feedback, feedbackDuration]);\n\n  const handleCopy = async () => {\n    try {\n      await navigator.clipboard.writeText(value);\n      setFeedback(\"copied\");\n    } catch (error) {\n      setFeedback(\"error\");\n      onCopyError?.(error);\n    }\n  };\n\n  const isCopied = feedback === \"copied\";\n  const isError = feedback === \"error\";\n  const accessibleLabel = isCopied\n    ? \"Copied to clipboard\"\n    : isError\n      ? \"Failed to copy\"\n      : title;\n  const nativeTitle = isCopied ? \"Copied!\" : isError ? \"Failed to copy\" : title;\n\n  return (\n    <button\n      type=\"button\"\n      className={`${styles.copyButton} ${isCopied ? styles.copied : \"\"} ${isError ? styles.error : \"\"} ${className}`.trim()}\n      onClick={handleCopy}\n      title={nativeTitle}\n      aria-label={accessibleLabel}\n    >\n      {isCopied ? <CheckIcon width={size} height={size} /> : <CopyIcon width={size} height={size} />}\n      <span className={styles.visuallyHidden} aria-live=\"polite\">\n        {isCopied ? \"Copied to clipboard\" : isError ? \"Failed to copy\" : \"\"}\n      </span>\n    </button>\n  );\n}\n",
+      "type": "registry:file",
+      "target": "components/steez/CopyButton.tsx",
+      "content": "\"use client\";\n\nimport React, { useEffect, useState } from \"react\";\n\nimport { CheckIcon, CopyIcon } from \"../../lib/steez/icons/index\";\n\nimport styles from \"./CopyButton.module.css\";\n\nexport interface CopyButtonProps {\n  value: string;\n  size?: number;\n  className?: string;\n  title?: string;\n  feedbackDuration?: number;\n  onCopyError?: (error: unknown) => void;\n}\n\ntype CopyFeedback = \"idle\" | \"copied\" | \"error\";\n\nexport function CopyButton({\n  value,\n  size = 16,\n  className = \"\",\n  title = \"Copy to clipboard\",\n  feedbackDuration = 2000,\n  onCopyError,\n}: CopyButtonProps) {\n  const [feedback, setFeedback] = useState<CopyFeedback>(\"idle\");\n\n  useEffect(() => {\n    if (feedback === \"idle\") {\n      return undefined;\n    }\n\n    const timer = window.setTimeout(() => setFeedback(\"idle\"), feedbackDuration);\n    return () => window.clearTimeout(timer);\n  }, [feedback, feedbackDuration]);\n\n  const handleCopy = async () => {\n    try {\n      await navigator.clipboard.writeText(value);\n      setFeedback(\"copied\");\n    } catch (error) {\n      setFeedback(\"error\");\n      onCopyError?.(error);\n    }\n  };\n\n  const isCopied = feedback === \"copied\";\n  const isError = feedback === \"error\";\n  const accessibleLabel = isCopied\n    ? \"Copied to clipboard\"\n    : isError\n      ? \"Failed to copy\"\n      : title;\n  const nativeTitle = isCopied ? \"Copied!\" : isError ? \"Failed to copy\" : title;\n\n  return (\n    <button\n      type=\"button\"\n      className={`${styles.copyButton} ${isCopied ? styles.copied : \"\"} ${isError ? styles.error : \"\"} ${className}`.trim()}\n      onClick={handleCopy}\n      title={nativeTitle}\n      aria-label={accessibleLabel}\n    >\n      {isCopied ? <CheckIcon width={size} height={size} /> : <CopyIcon width={size} height={size} />}\n      <span className={styles.visuallyHidden} aria-live=\"polite\">\n        {isCopied ? \"Copied to clipboard\" : isError ? \"Failed to copy\" : \"\"}\n      </span>\n    </button>\n  );\n}\n",
       "source": "packages/ui/src/components/CopyButton.tsx"
     },
     {
       "path": "components/steez/CopyButton.module.css",
-      "type": "registry:style",
+      "type": "registry:file",
+      "target": "components/steez/CopyButton.module.css",
       "content": ".copyButton {\n  position: relative;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  background: transparent;\n  color: var(--text-primary);\n  border: 1px solid var(--border-color);\n  border-radius: 6px;\n  padding: 4px 8px;\n  cursor: pointer;\n  font-size: 0.75rem;\n  transition: all var(--transition-fast);\n  min-width: 32px;\n  min-height: 24px;\n}\n\n.copyButton:hover:not(:disabled) {\n  border-color: var(--progress);\n  color: var(--progress);\n}\n\n.copyButton:active {\n  transform: scale(0.95);\n}\n\n.copied {\n  border-color: var(--success);\n  color: var(--success);\n}\n\n.error {\n  border-color: var(--danger);\n  color: var(--danger);\n}\n\n.visuallyHidden {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  padding: 0;\n  margin: -1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  white-space: nowrap;\n  border: 0;\n}\n\n",
       "source": "packages/ui/src/components/CopyButton.module.css"
     }

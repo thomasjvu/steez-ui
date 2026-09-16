@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 import styles from "./StatCard.module.css";
@@ -17,6 +19,9 @@ export function StatCard({
   onClick,
   color = "default",
   className = "",
+  onKeyDown: onKeyDownProp,
+  role: roleProp,
+  tabIndex: tabIndexProp,
   ...props
 }: StatCardProps) {
   const valueToneClass =
@@ -27,12 +32,30 @@ export function StatCard({
         : color === "warning"
           ? styles.valueWarning
           : "";
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    onKeyDownProp?.(event);
+    if (
+      !onClick ||
+      event.defaultPrevented ||
+      event.target !== event.currentTarget
+    ) {
+      return;
+    }
+
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      onClick();
+    }
+  };
 
   return (
     <div
-      className={`${styles.root} ${onClick ? styles.interactive : ""} ${className}`.trim()}
-      onClick={onClick}
       {...props}
+      className={`${styles.root} ${onClick ? styles.interactive : ""} ${className}`.trim()}
+      role={onClick ? roleProp ?? "button" : roleProp}
+      tabIndex={onClick ? tabIndexProp ?? 0 : tabIndexProp}
+      onClick={onClick}
+      onKeyDown={handleKeyDown}
     >
       <div className={styles.label}>{label}</div>
       <div className={`${styles.value} ${valueToneClass}`.trim()}>{value}</div>

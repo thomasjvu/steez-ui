@@ -1,5 +1,8 @@
+"use client";
+
 import React, { SelectHTMLAttributes } from "react";
 
+import { useFieldDescription } from "../hooks/useFieldDescription.js";
 import { useStableId } from "../hooks/useStableId.js";
 import styles from "./CyberpunkSelect.module.css";
 
@@ -31,17 +34,12 @@ export function CyberpunkSelect({
   ...props
 }: CyberpunkSelectProps) {
   const selectId = useStableId("select", id);
-  const helperId = useStableId("select-helper");
-  const errorId = useStableId("select-error");
-  const hasError = Boolean(error);
-  const describedBy =
-    [
-      ariaDescribedBy,
-      helperText ? helperId : undefined,
-      hasError ? errorId : undefined,
-    ]
-      .filter(Boolean)
-      .join(" ") || undefined;
+  const { errorId, hasError, helperId, describedBy } = useFieldDescription({
+    prefix: "select",
+    helperText,
+    error,
+    describedBy: ariaDescribedBy,
+  });
 
   return (
     <div

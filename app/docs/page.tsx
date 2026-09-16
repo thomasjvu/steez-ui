@@ -82,6 +82,8 @@ import { CyberpunkTile } from "@steez-ui/ui";`}
               </code>
             </div>
             <p className={siteStyles.listMeta} style={{ marginTop: "0.75rem" }}>
+              Import the copied styles/steez/tokens.css once and use local imports from
+              components/steez. Registry installs do not require Steez npm packages.
               Legacy Boston / motion demo blocks live under{" "}
               <code className={siteStyles.inlineCode}>/r/*.json</code> only — do not mix them with
               package primitives.
@@ -143,8 +145,8 @@ import { CyberpunkTile } from "@steez-ui/ui";`}
               Wire a preview loader in{" "}
               <code className={siteStyles.inlineCode}>components/docs/component-preview.tsx</code>{" "}
               (<code className={siteStyles.inlineCode}>PREVIEW_MAP</code>). Lightweight demos go in{" "}
-              <code className={siteStyles.inlineCode}>components/docs/previews/simple-previews.tsx</code>
-              ; heavy WebGL/canvas demos get a dedicated file under{" "}
+              <code className={siteStyles.inlineCode}>components/docs/previews/preview-*.tsx</code>
+              ; keep lightweight demos in bounded category modules and give heavy WebGL/canvas demos a dedicated file under{" "}
               <code className={siteStyles.inlineCode}>components/docs/previews/</code> and a dynamic
               import so they stay code-split.
             </p>
@@ -187,10 +189,10 @@ import { CyberpunkTile } from "@steez-ui/ui";`}
           <li className={siteStyles.listItem}>
             <span className={siteStyles.mono}>7. Tokens in consumer apps</span>
             <p className={siteStyles.listMeta}>
-              Apps must import{" "}
-              <code className={siteStyles.inlineCode}>@steez-ui/theme/tokens.css</code> once (e.g. root
-              layout) so CSS modules that reference token variables resolve. Do not re-bundle tokens
-              inside each primitive.
+              Package consumers import <code className={siteStyles.inlineCode}>@steez-ui/theme/tokens.css</code>.
+              Registry consumers import the copied <code className={siteStyles.inlineCode}>styles/steez/tokens.css</code>.
+              Load tokens once in the root layout or global stylesheet so CSS module variables resolve.
+              Do not bundle tokens inside each primitive.
             </p>
           </li>
         </ul>

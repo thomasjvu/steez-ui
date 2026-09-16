@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 import { CheckIcon, ErrorIcon, InfoIcon } from "@steez-ui/icons";

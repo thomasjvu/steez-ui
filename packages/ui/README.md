@@ -66,6 +66,28 @@ export function Example() {
 
 Form controls accept optional `error` (sets `aria-invalid`, `role="alert"` copy, and merges into `aria-describedby` with `helperText`).
 
+## Public API
+
+The package barrel is the canonical surface for ordinary primitives. Choose the smallest
+family that matches the job and compose it before introducing a new wrapper:
+
+| Family | Exports |
+| --- | --- |
+| Actions | `Button`, `CopyButton`, `OverlayButton`, `FUIButtonTile` |
+| Forms | `CyberpunkInput`, `CyberpunkSelect`, `CyberpunkTextarea`, `CyberpunkCheckbox`, `CyberpunkRadio`, `CyberpunkRadioGroup`, `CyberpunkSlider`, `SegmentedControl` |
+| Surfaces | `CyberpunkTile` (`CyberTile` alias), `ThemedCard`, `CornerBracketCard`, `DottedHaloCard`, `WidgetCard`, `QuickInfoCard`, `StatCard`, `AvatarStage`, `NotchedViewportFrame` |
+| Layout | `Section`, `SectionHeader`, `PageHeader`, `PageTemplate`, `TabbedPanel`, `RadialMenuOverlay` |
+| Motion and text | `BoilingLines`, `AsciiRippleText`, `BlinkText`, `StrokedText`, `HeartbeatPulse`, `HeartbeatIndicator`, `MarqueeStrip` |
+| Feedback and loading | `StatusMessage`, `ErrorMessage`, `PixelTooltip`, `LoadingProgressBar`, `LoadingScreen`, `LoadingOverlayCrystalline`, `ThemeToggle`, `RuntimeOrbitDiagram` |
+
+`HexagonGrid` and `SignalTrailBackdrop` remain subpath-only because they bring canvas or
+WebGL work into the consuming bundle. Every export has a matching reference page at
+`/components/[slug]` in the documentation site.
+
+The card and tile exports are intentionally related, not interchangeable aliases: use
+`CyberpunkTile` for the signature cut-corner treatment, `ThemedCard` for a quiet content
+surface, and the specialized card variants only when their framing communicates meaning.
+
 ## Registry install (docs site)
 
 Local (`pnpm dev` from repo root) or production (`SITE_URL` = `https://steez-ui-6v5.pages.dev`):
@@ -80,7 +102,25 @@ pnpm dlx shadcn@latest add https://steez-ui-6v5.pages.dev/r-steez/cyberpunk-tile
 pnpm dlx shadcn@latest add https://steez-ui-6v5.pages.dev/r-steez/loading-progress-bar.json
 ```
 
-Use **`/r-steez`**, not legacy `/r`.
+Use **`/r-steez`**, not legacy `/r`. Registry installs copy the source and shared
+helpers into your project root; no Steez npm packages are required. Import the copied
+`styles/steez/tokens.css` once, then import from `components/steez` using a relative
+path from your file. These paths are explicit even in apps using `src/`.
+
+### Boiling lines
+
+```tsx
+import { BoilingLines } from "@steez-ui/ui";
+
+<BoilingLines intensity="subtle" speedMs={120}>
+  <img src="/studio-mark.svg" alt="Studio mark" />
+</BoilingLines>
+```
+
+Use `intensity="default"` or `"intense"` for stronger motion, `scale` to customize
+it, and `paused` to stop animation. Reduced-motion preferences disable the effect.
+Wrap illustrations, SVG strokes, or decorative borders; keep body copy outside.
+This is the canonical replacement for the archived boiling-line demos.
 
 ## Build (from monorepo root)
 

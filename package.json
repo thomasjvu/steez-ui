@@ -13,7 +13,7 @@
     "publish:react:forgejo": "node packages/react/scripts/publish-forgejo.mjs",
     "publish:packages": "node scripts/publish-packages.mjs",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "typecheck:packages": "tsc -p packages/theme/tsconfig.json --noEmit && tsc -p packages/icons/tsconfig.json --noEmit && tsc -p packages/ui/tsconfig.typecheck.json --noEmit",
     "typecheck:site": "tsc -p tsconfig.json --noEmit",
     "typecheck": "pnpm typecheck:packages && pnpm typecheck:site",
@@ -21,24 +21,17 @@
     "test:watch": "vitest",
     "test:registry-smoke": "node scripts/registry-install-smoke.mjs",
     "registry:build": "shadcn build",
-    "registry:generate": "node scripts/generate-registry.mjs"
+    "registry:generate": "node scripts/generate-registry.mjs",
+    "deploy:pages": "node scripts/deploy-pages.mjs"
   },
   "dependencies": {
-    "@radix-ui/react-label": "^2.1.7",
-    "@radix-ui/react-slot": "^1.2.3",
     "@steez-ui/icons": "workspace:*",
     "@steez-ui/theme": "workspace:*",
     "@steez-ui/ui": "workspace:*",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "next": "15.5.9",
+    "next": "15.5.25",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "shadcn": "^3.0.0",
-    "tailwind-merge": "^3.3.1",
-    "three": "^0.179.1",
-    "tw-animate-css": "^1.3.6",
-    "zod": "^3.25.76"
+    "three": "^0.179.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
@@ -52,10 +45,28 @@
     "@types/three": "^0.179.0",
     "@vitejs/plugin-react": "^6.0.4",
     "eslint": "^9.32.0",
-    "eslint-config-next": "15.5.9",
+    "eslint-config-next": "15.5.25",
     "jsdom": "^30.0.0",
     "tailwindcss": "^4.1.11",
     "typescript": "^5.9.2",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.10",
+    "@radix-ui/react-label": "^2.1.7",
+    "@radix-ui/react-slot": "^1.2.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "shadcn": "^3.0.0",
+    "tailwind-merge": "^3.3.1",
+    "tw-animate-css": "^1.3.6",
+    "zod": "^3.25.76"
+  },
+  "pnpm": {
+    "overrides": {
+      "@types/react": "19.1.2",
+      "@types/react-dom": "19.1.2",
+      "sharp": "0.35.4",
+      "postcss": "8.5.28",
+      "nanoid": "3.3.18",
+      "browserslist": "4.28.9"
+    }
   }
 }

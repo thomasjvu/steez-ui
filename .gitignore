@@ -55,3 +55,4 @@ packages/*/*.tgz
 
 # scratch
 tmp/
+.pages-dist/

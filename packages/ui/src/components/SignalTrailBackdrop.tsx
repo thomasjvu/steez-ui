@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import * as THREE from "three";
 
@@ -121,27 +123,52 @@ const FRAGMENT_SHADER = `
   }
 `;
 
+const DEFAULT_LINES_COUNT = 110;
+const DEFAULT_SEGMENTS = 800;
+const MIN_LINES_COUNT = 2;
+const MIN_SEGMENTS = 1;
+const MAX_LINES_COUNT = 200;
+const MAX_SEGMENTS = 1200;
+
+function clampGeometryCount(
+  value: number,
+  fallback: number,
+  minimum: number,
+  maximum: number,
+) {
+  if (!Number.isFinite(value)) {
+    return fallback;
+  }
+
+  return Math.min(maximum, Math.max(minimum, Math.floor(value)));
+}
+
 function createGeometry(linesCount: number, segments: number): THREE.BufferGeometry {
   const width = 32;
   const height = 24;
   const geometry = new THREE.BufferGeometry();
-  const positions: number[] = [];
-  const uvs: number[] = [];
-  const indices: number[] = [];
+  const vertexCount = linesCount * (segments + 1);
+  const positions = new Float32Array(vertexCount * 3);
+  const uvs = new Float32Array(vertexCount * 2);
+  const indices = new Uint32Array(linesCount * segments * 2);
+  let vertexOffset = 0;
+  let uvOffset = 0;
+  let indexOffset = 0;
 
   for (let lineIndex = 0; lineIndex < linesCount; lineIndex += 1) {
     const y = (lineIndex / (linesCount - 1)) * height - height / 2;
     for (let segmentIndex = 0; segmentIndex <= segments; segmentIndex += 1) {
       const x = (segmentIndex / segments) * width - width / 2;
-      positions.push(x, y, 0);
-      uvs.push(
-        segmentIndex / segments,
-        lineIndex / Math.max(linesCount - 1, 1),
-      );
+      positions[vertexOffset++] = x;
+      positions[vertexOffset++] = y;
+      positions[vertexOffset++] = 0;
+      uvs[uvOffset++] = segmentIndex / segments;
+      uvs[uvOffset++] = lineIndex / (linesCount - 1);
 
       if (segmentIndex < segments) {
         const index = lineIndex * (segments + 1) + segmentIndex;
-        indices.push(index, index + 1);
+        indices[indexOffset++] = index;
+        indices[indexOffset++] = index + 1;
       }
     }
   }
@@ -151,15 +178,15 @@ function createGeometry(linesCount: number, segments: number): THREE.BufferGeome
     new THREE.Float32BufferAttribute(positions, 3),
   );
   geometry.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
-  geometry.setIndex(indices);
+  geometry.setIndex(new THREE.Uint32BufferAttribute(indices, 1));
   return geometry;
 }
 
 export function SignalTrailBackdrop({
   className = "",
   color = "#7ae4ff",
-  linesCount = 110,
-  segments = 800,
+  linesCount = DEFAULT_LINES_COUNT,
+  segments = DEFAULT_SEGMENTS,
   lineSpeed = 0.22,
   signalDensity = 0.24,
   trailLength = 0.16,
@@ -171,6 +198,45 @@ export function SignalTrailBackdrop({
   shapeOpacity = 0.2,
 }: SignalTrailBackdropProps) {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
+  const materialRef = React.useRef<THREE.ShaderMaterial | null>(null);
+  const meshRef = React.useRef<THREE.LineSegments | null>(null);
+  const visualOptionsRef = React.useRef({
+    color,
+    lineSpeed,
+    signalDensity,
+    trailLength,
+    shapeSize,
+    amplitude,
+    tiltX,
+    tiltY,
+    baseOpacity,
+    shapeOpacity,
+  });
+  visualOptionsRef.current = {
+    color,
+    lineSpeed,
+    signalDensity,
+    trailLength,
+    shapeSize,
+    amplitude,
+    tiltX,
+    tiltY,
+    baseOpacity,
+    shapeOpacity,
+  };
+
+  const safeLinesCount = clampGeometryCount(
+    linesCount,
+    DEFAULT_LINES_COUNT,
+    MIN_LINES_COUNT,
+    MAX_LINES_COUNT,
+  );
+  const safeSegments = clampGeometryCount(
+    segments,
+    DEFAULT_SEGMENTS,
+    MIN_SEGMENTS,
+    MAX_SEGMENTS,
+  );
 
   React.useEffect(() => {
     const container = containerRef.current;
@@ -178,11 +244,21 @@ export function SignalTrailBackdrop({
       return undefined;
     }
 
+    delete container.dataset.webglUnavailable;
+
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
     camera.position.set(-10, 0, 15);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    } catch {
+      container.dataset.webglUnavailable = "true";
+      return undefined;
+    }
+
+    const options = visualOptionsRef.current;
     renderer.setClearColor(0x000000, 0);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.domElement.className = styles.canvas;
@@ -193,15 +269,15 @@ export function SignalTrailBackdrop({
       fragmentShader: FRAGMENT_SHADER,
       uniforms: {
         uTime: { value: 0 },
-        uColor: { value: new THREE.Color(color) },
-        uSize: { value: shapeSize },
-        uAmplitude: { value: amplitude },
+        uColor: { value: new THREE.Color(options.color) },
+        uSize: { value: options.shapeSize },
+        uAmplitude: { value: options.amplitude },
         uRotZ: { value: 0 },
         uScaleX: { value: 1.05 },
-        uTrailLength: { value: trailLength },
-        uDensity: { value: signalDensity },
-        uBaseOpacity: { value: baseOpacity },
-        uShapeOpacity: { value: shapeOpacity },
+        uTrailLength: { value: options.trailLength },
+        uDensity: { value: options.signalDensity },
+        uBaseOpacity: { value: options.baseOpacity },
+        uShapeOpacity: { value: options.shapeOpacity },
       },
       transparent: true,
       depthTest: false,
@@ -209,11 +285,13 @@ export function SignalTrailBackdrop({
     });
 
     const mesh = new THREE.LineSegments(
-      createGeometry(linesCount, segments),
+      createGeometry(safeLinesCount, safeSegments),
       material,
     );
-    mesh.rotation.x = tiltX;
-    mesh.rotation.y = tiltY;
+    mesh.rotation.x = options.tiltX;
+    mesh.rotation.y = options.tiltY;
+    materialRef.current = material;
+    meshRef.current = mesh;
     scene.add(mesh);
 
     const clock = new THREE.Clock();
@@ -236,15 +314,22 @@ export function SignalTrailBackdrop({
     };
 
     resize();
-    const resizeObserver = new ResizeObserver(resize);
-    resizeObserver.observe(container);
+    const resizeObserver =
+      typeof ResizeObserver === "undefined" ? null : new ResizeObserver(resize);
+    resizeObserver?.observe(container);
 
     const shouldAnimate = () =>
       !prefersReducedMotion && isDocumentVisible && isInViewport;
 
     const renderFrame = () => {
       material.uniforms.uTime.value +=
-        clock.getDelta() * Math.max(lineSpeed, 0.01);
+        clock.getDelta() *
+        Math.max(
+          Number.isFinite(visualOptionsRef.current.lineSpeed)
+            ? visualOptionsRef.current.lineSpeed
+            : 0.01,
+          0.01,
+        );
       renderer.render(scene, camera);
     };
 
@@ -319,21 +404,42 @@ export function SignalTrailBackdrop({
       document.removeEventListener("visibilitychange", onVisibilityChange);
       reducedMotionQuery?.removeEventListener("change", onReducedMotionChange);
       intersectionObserver?.disconnect();
-      resizeObserver.disconnect();
+      resizeObserver?.disconnect();
       mesh.geometry.dispose();
       material.dispose();
       renderer.dispose();
+      if (materialRef.current === material) {
+        materialRef.current = null;
+      }
+      if (meshRef.current === mesh) {
+        meshRef.current = null;
+      }
       if (renderer.domElement.parentNode === container) {
         container.removeChild(renderer.domElement);
       }
     };
+  }, [safeLinesCount, safeSegments]);
+
+  React.useEffect(() => {
+    const material = materialRef.current;
+    const mesh = meshRef.current;
+    if (!material || !mesh) {
+      return;
+    }
+
+    material.uniforms.uColor.value.set(color);
+    material.uniforms.uSize.value = shapeSize;
+    material.uniforms.uAmplitude.value = amplitude;
+    material.uniforms.uTrailLength.value = trailLength;
+    material.uniforms.uDensity.value = signalDensity;
+    material.uniforms.uBaseOpacity.value = baseOpacity;
+    material.uniforms.uShapeOpacity.value = shapeOpacity;
+    mesh.rotation.x = tiltX;
+    mesh.rotation.y = tiltY;
   }, [
     amplitude,
     baseOpacity,
     color,
-    lineSpeed,
-    linesCount,
-    segments,
     shapeOpacity,
     shapeSize,
     signalDensity,

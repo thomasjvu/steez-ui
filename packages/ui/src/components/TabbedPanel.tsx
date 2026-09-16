@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 
+import { useRovingTabs } from "../hooks/useRovingTabs.js";
 import { useStableId } from "../hooks/useStableId.js";
 import styles from "./TabbedPanel.module.css";
 
@@ -44,7 +47,6 @@ export function TabbedPanel({
   const [internalTabId, setInternalTabId] = React.useState(initialTabId);
   const currentTabId = isControlled ? activeTab || tabs[0]?.id || "" : internalTabId;
   const currentTab = tabs.find((tab) => tab.id === currentTabId) ?? tabs[0];
-  const tabRefs = React.useRef<Map<string, HTMLButtonElement>>(new Map());
 
   const getTabDomId = React.useCallback(
     (tabId: string) => `${baseId}-tab-${tabId}`,
@@ -82,60 +84,10 @@ export function TabbedPanel({
     },
     [isControlled, onChange, onTabChange],
   );
-
-  const focusTab = React.useCallback((tabId: string) => {
-    tabRefs.current.get(tabId)?.focus();
-  }, []);
-
-  const handleTabKeyDown = React.useCallback(
-    (event: React.KeyboardEvent<HTMLButtonElement>, tabId: string) => {
-      const enabledTabs = tabs.filter((tab) => !tab.disabled);
-      if (!enabledTabs.length) {
-        return;
-      }
-
-      const currentIndex = enabledTabs.findIndex((tab) => tab.id === tabId);
-      if (currentIndex === -1) {
-        return;
-      }
-
-      let nextIndex: number | null = null;
-
-      switch (event.key) {
-        case "ArrowRight":
-        case "ArrowDown":
-          nextIndex = (currentIndex + 1) % enabledTabs.length;
-          break;
-        case "ArrowLeft":
-        case "ArrowUp":
-          nextIndex = (currentIndex - 1 + enabledTabs.length) % enabledTabs.length;
-          break;
-        case "Home":
-          nextIndex = 0;
-          break;
-        case "End":
-          nextIndex = enabledTabs.length - 1;
-          break;
-        default:
-          return;
-      }
-
-      event.preventDefault();
-      const nextTabId = enabledTabs[nextIndex]!.id;
-      handleSelect(nextTabId);
-      // Focus after selection so roving tabIndex updates before focus lands.
-      queueMicrotask(() => focusTab(nextTabId));
-    },
-    [focusTab, handleSelect, tabs],
-  );
-
-  const setTabRef = React.useCallback((tabId: string, node: HTMLButtonElement | null) => {
-    if (node) {
-      tabRefs.current.set(tabId, node);
-    } else {
-      tabRefs.current.delete(tabId);
-    }
-  }, []);
+  const { handleKeyDown: handleTabKeyDown, setTabRef } = useRovingTabs({
+    tabs,
+    onSelect: handleSelect,
+  });
 
   const activePanelId = currentTab ? getPanelDomId(currentTab.id) : undefined;
   const activeTabDomId = currentTab ? getTabDomId(currentTab.id) : undefined;
