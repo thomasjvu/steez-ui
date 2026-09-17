@@ -1,5 +1,5 @@
 export const SITE_URL = "https://steez-ui-6v5.pages.dev";
-export const REPOSITORY_URL = "https://forgejo.thomasjvu.com/steez-ui/steez-ui";
+export const REPOSITORY_URL = "https://github.com/thomasjvu/steez-ui";
 export const NPM_THEME_URL = "https://www.npmjs.com/package/@steez-ui/theme";
 export const NPM_ICONS_URL = "https://www.npmjs.com/package/@steez-ui/icons";
 export const NPM_UI_URL = "https://www.npmjs.com/package/@steez-ui/ui";

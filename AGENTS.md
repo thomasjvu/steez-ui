@@ -2,6 +2,12 @@
 
 Conventions for agents and humans working in this repo.
 
+## Public mirror
+
+- **SoT (private):** Forgejo `https://forgejo.thomasjvu.com/steez-ui/steez-ui`
+- **Public mirror:** GitHub `https://github.com/thomasjvu/steez-ui` (portfolio / recruiter link)
+- Keep them in sync: after landing on Forgejo `main`, push the same tip to GitHub `main`.
+
 ## Workspace layout
 
 ```text
