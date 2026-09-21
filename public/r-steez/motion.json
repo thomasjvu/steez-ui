@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "motion",
+  "type": "registry:block",
+  "title": "Motion Preset",
+  "description": "Small, composable text and surface motion treatments with reduced-motion support.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/boiling-lines.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/ascii-ripple-text.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/blink-text.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/stroked-text.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/heartbeat-pulse.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/marquee-strip.json"
+  ],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": []
+}

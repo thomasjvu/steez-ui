@@ -280,5 +280,23 @@
     "type": "registry:block",
     "title": "Phantasy FUI Preset",
     "description": "Theme, tiles, and loading primitives used by Phantasy admin FUI chrome."
+  },
+  {
+    "name": "surfaces",
+    "type": "registry:block",
+    "title": "Surface Preset",
+    "description": "Signature tiles, quiet cards, and compact metrics for a coherent Steez surface language."
+  },
+  {
+    "name": "motion",
+    "type": "registry:block",
+    "title": "Motion Preset",
+    "description": "Small, composable text and surface motion treatments with reduced-motion support."
+  },
+  {
+    "name": "app-shell",
+    "type": "registry:block",
+    "title": "App Shell Preset",
+    "description": "Navigation, layout, feedback, and loading primitives for a complete Steez app shell."
   }
 ]

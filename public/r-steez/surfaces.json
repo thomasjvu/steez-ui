@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "surfaces",
+  "type": "registry:block",
+  "title": "Surface Preset",
+  "description": "Signature tiles, quiet cards, and compact metrics for a coherent Steez surface language.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/cyberpunk-tile.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/themed-card.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/corner-bracket-card.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/dotted-halo-card.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/stat-card.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/widget-card.json"
+  ],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": []
+}
