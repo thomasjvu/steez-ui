@@ -4,10 +4,15 @@ import { describe, expect, it } from "vitest";
 
 import { PREVIEW_SLUGS } from "../../components/docs/component-preview";
 import { COMPONENT_DOCS } from "./component-catalog";
+import { COMPONENT_MANIFEST } from "./component-manifest.mjs";
 
 const registryDir = path.join(process.cwd(), "public/r-steez");
 const packageIndexPath = path.join(process.cwd(), "packages/ui/src/index.ts");
 const packageBlocksPath = path.join(process.cwd(), "packages/ui/src/blocks.ts");
+const packageSubpathPaths = [
+  path.join(process.cwd(), "packages/ui/src/components/HexagonGrid.tsx"),
+  path.join(process.cwd(), "packages/ui/src/components/SignalTrailBackdrop.tsx"),
+];
 
 /** Non-component registry items that are allowed without a catalog slug. */
 const NON_COMPONENT_REGISTRY_NAMES = new Set([
@@ -94,6 +99,43 @@ function parseComponentExports(source: string): string[] {
 }
 
 describe("registry parity", () => {
+  it("keeps manifest slugs aligned with catalog, package exports, previews, and registry components", () => {
+    const manifestSlugs = new Set(COMPONENT_MANIFEST.map((component) => component.slug));
+    const catalogSlugs = new Set(COMPONENT_DOCS.map((doc) => doc.slug));
+    const previewSlugs = new Set(
+      COMPONENT_MANIFEST
+        .filter((component) => component.previewLoader)
+        .map((component) => component.slug),
+    );
+    const registrySlugs = new Set(
+      fs
+        .readdirSync(registryDir)
+        .filter((name) => name.endsWith(".json") && name !== "index.json")
+        .map((name) => JSON.parse(fs.readFileSync(path.join(registryDir, name), "utf8")))
+        .filter((item) => item.type === "registry:component")
+        .map((item) => item.name),
+    );
+    const packageExports = [
+      parseComponentExports(fs.readFileSync(packageIndexPath, "utf8")),
+      parseComponentExports(fs.readFileSync(packageBlocksPath, "utf8")),
+      packageSubpathPaths.flatMap((sourcePath) =>
+        [...fs.readFileSync(sourcePath, "utf8").matchAll(/export function (\w+)/g)].map(
+          (match) => match[1],
+        ),
+      ),
+    ].flat();
+    const packageSlugs = new Set(
+      packageExports
+        .filter((name) => !NON_CATALOG_COMPONENT_EXPORTS.has(name))
+        .map(pascalToKebab),
+    );
+
+    expect([...catalogSlugs].sort()).toEqual([...manifestSlugs].sort());
+    expect([...previewSlugs].sort()).toEqual([...manifestSlugs].sort());
+    expect([...registrySlugs].sort()).toEqual([...manifestSlugs].sort());
+    expect([...packageSlugs].sort()).toEqual([...manifestSlugs].sort());
+  });
+
   it("has a public/r-steez JSON payload for every COMPONENT_DOCS slug", () => {
     const missing: string[] = [];
 

@@ -1,3 +1,5 @@
+import { COMPONENT_MANIFEST } from "./component-manifest.mjs";
+
 export type ComponentCategory =
   | "actions"
   | "forms"
@@ -36,12 +38,10 @@ export const COMPONENT_FILTERS = [
 
 export type ComponentFilter = (typeof COMPONENT_FILTERS)[number]["value"];
 
-export const COMPONENT_DOCS: ComponentDoc[] = [
+const COMPONENT_DOC_DETAILS = [
   {
-    slug: "boiling-lines", title: "Boiling Lines", category: "surfaces",
+    slug: "boiling-lines",
     summary: "Hand-drawn motion for artwork, SVG lines, and decorative borders.",
-    description: "One effect with subtle, default, and intense presets. Wrap artwork or a border; keep long text outside the distortion. Respects reduced motion automatically. Use paused to stop motion, speedMs for timing, and scale to tune displacement.",
-    packageImport: 'import { BoilingLines } from "@steez-ui/ui";',
     usage: `<BoilingLines intensity="subtle" speedMs={120}>
   <img src="/artwork.svg" alt="Hand-drawn studio mark" />
 </BoilingLines>`,
@@ -49,11 +49,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "ascii-ripple-text",
-    title: "ASCII Ripple Text",
-    category: "feedback",
     summary: "Hover-driven glitch ripple that scrambles characters outward from the cursor position.",
-    description: "Use AsciiRippleText for editorial links, launch-page navigation, and mono-heavy text moments where you want motion without adding glow, gradients, or a full button shell.",
-    packageImport: 'import { AsciiRippleText } from "@steez-ui/ui";',
     usage: `<a href="/docs">
   <AsciiRippleText>Documentation</AsciiRippleText>
 </a>`,
@@ -62,11 +58,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "avatar-stage",
-    title: "Avatar Stage",
-    category: "surfaces",
     summary: "Framed avatar viewport with a stable shell, viewport width, and bottom divider.",
-    description: "Use AvatarStage when VRM, Live2D, PNGTuber, or image-based character views need one stable shell instead of per-page framing logic.",
-    packageImport: 'import { AvatarStage } from "@steez-ui/ui";',
     usage: `<AvatarStage stageHeight="34rem" viewportWidth="min(100%, 30rem)">
   <img src="/companion.png" alt="Companion preview" />
 </AvatarStage>`,
@@ -75,22 +67,14 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "blink-text",
-    title: "Blink Text",
-    category: "feedback",
     summary: "Minimal blink treatment for hover or mount-triggered attention cues.",
-    description: "Use BlinkText for quick-jump links, terminal hints, or other subtle attention grabs without building custom keyframes in every app.",
-    packageImport: 'import { BlinkText } from "@steez-ui/ui";',
     usage: `<BlinkText trigger="hover">「 quick jump 」</BlinkText>`,
     related: ["stroked-text", "button"],
     tags: ["motion", "text"],
   },
   {
     slug: "button",
-    title: "Button",
-    category: "actions",
     summary: "Primary, secondary, and danger actions with shared Steez button styling.",
-    description: "Use Button for direct actions where you want the shared Steez interaction surface without reauthoring local variants.",
-    packageImport: 'import { Button } from "@steez-ui/ui";',
     usage: `<Button>Deploy</Button>
 <Button variant="secondary">Preview</Button>
 <Button variant="danger">Remove</Button>`,
@@ -99,11 +83,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "copy-button",
-    title: "Copy Button",
-    category: "actions",
     summary: "Clipboard action with built-in copied state and icon feedback.",
-    description: "Use CopyButton anywhere a command, ID, or token needs to be copied without wiring your own success state.",
-    packageImport: 'import { CopyButton } from "@steez-ui/ui";',
     usage: `<CopyButton value="bun add @steez-ui/ui" />
 <CopyButton value={command} title="Copy command" />`,
     related: ["button", "status-message"],
@@ -111,11 +91,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "cyberpunk-input",
-    title: "Cyberpunk Input",
-    category: "forms",
     summary: "Monospace text input with label, helper copy, and optional leading icon.",
-    description: "Use CyberpunkInput for text, handle, slug, and credential fields that should match the Steez form surface.",
-    packageImport: 'import { CyberpunkInput } from "@steez-ui/ui";',
     usage: `<CyberpunkInput
   label="Companion name"
   placeholder="rally"
@@ -126,11 +102,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "cyberpunk-select",
-    title: "Cyberpunk Select",
-    category: "forms",
     summary: "Select field with shared Steez framing and arrow treatment.",
-    description: "Use CyberpunkSelect for compact controlled choices that need to stay visually consistent with the rest of the form system.",
-    packageImport: 'import { CyberpunkSelect } from "@steez-ui/ui";',
     usage: `<CyberpunkSelect
   label="Model tier"
   value={tier}
@@ -145,11 +117,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "cyberpunk-textarea",
-    title: "Cyberpunk Textarea",
-    category: "forms",
     summary: "Shared multiline input for prompts, notes, and longer authored content.",
-    description: "Use CyberpunkTextarea when the field needs Steez spacing and typography but more room than a single-line input.",
-    packageImport: 'import { CyberpunkTextarea } from "@steez-ui/ui";',
     usage: `<CyberpunkTextarea
   label="System prompt"
   rows={6}
@@ -160,11 +128,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "cyberpunk-checkbox",
-    title: "Cyberpunk Checkbox",
-    category: "forms",
     summary: "Checkbox primitive with label and Steez form spacing.",
-    description: "Use CyberpunkCheckbox for boolean settings where a compact inline control is enough.",
-    packageImport: 'import { CyberpunkCheckbox } from "@steez-ui/ui";',
     usage: `<CyberpunkCheckbox
   label="Enable auto-posting"
   checked={enabled}
@@ -175,11 +139,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "cyberpunk-radio",
-    title: "Cyberpunk Radio",
-    category: "forms",
     summary: "Radio and radio-group primitives for exclusive choices.",
-    description: "Use CyberpunkRadioGroup for compact exclusive selections that should read clearly at a glance.",
-    packageImport: 'import { CyberpunkRadioGroup } from "@steez-ui/ui";',
     usage: `<CyberpunkRadioGroup
   name="runtime"
   value={runtime}
@@ -194,11 +154,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "cyberpunk-slider",
-    title: "Cyberpunk Slider",
-    category: "forms",
     summary: "Range input with Steez progress styling and value display.",
-    description: "Use CyberpunkSlider for tunable settings such as intensity, thresholds, or timing windows.",
-    packageImport: 'import { CyberpunkSlider } from "@steez-ui/ui";',
     usage: `<CyberpunkSlider
   label="Reply energy"
   value={energy}
@@ -209,11 +165,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "themed-card",
-    title: "Themed Card",
-    category: "surfaces",
     summary: "Base content container with optional title and featured emphasis.",
-    description: "Use ThemedCard as the default flat surface for settings blocks, docs sections, and dashboard cards.",
-    packageImport: 'import { ThemedCard } from "@steez-ui/ui";',
     usage: `<ThemedCard title="Deployment">
   <p>Point the companion at a public URL and publish.</p>
 </ThemedCard>`,
@@ -222,12 +174,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "cyberpunk-tile",
-    title: "Cyberpunk Tile",
-    category: "surfaces",
     summary: "Cut-corner tile with dual-layer border (top-right + bottom-left clips).",
-    description:
-      "Use CyberpunkTile for dashboards, launch grids, and compact summaries. Aliased as CyberTile for Phantasy admin compatibility.",
-    packageImport: 'import { CyberpunkTile, CyberTile } from "@steez-ui/ui";',
     usage: `<CyberpunkTile>
   <strong>Site runtime</strong>
   <p>Deploy pages, media, and publishing flows.</p>
@@ -238,12 +185,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "fui-button-tile",
-    title: "FUI Button Tile",
-    category: "actions",
     summary: "Square HUD tile button with icon, label, and corner chevron.",
-    description:
-      "Use FUIButtonTile for companion admin launch grids and dense tool pickers. Matches Phantasy admin media/companion tiles.",
-    packageImport: 'import { FUIButtonTile } from "@steez-ui/ui";',
     usage: `<FUIButtonTile
   label="Media"
   icon={<EyeIcon />}
@@ -255,12 +197,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "accordion-feature-card",
-    title: "Accordion Feature Card",
-    category: "surfaces",
     summary: "Expandable feature card with media panel, vertical title, and collapsible body.",
-    description:
-      "Use AccordionFeatureCard for marketing or product feature rows that need a cut-corner media strip and expandable detail without a full accordion system.",
-    packageImport: 'import { AccordionFeatureCard } from "@steez-ui/ui/blocks";',
     usage: `<AccordionFeatureCard
   title="Signal mesh"
   eyebrow="01 / Surfaces"
@@ -275,11 +212,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "corner-bracket-card",
-    title: "Corner Bracket Card",
-    category: "surfaces",
     summary: "Bracketed feature surface with accent corners for standout content.",
-    description: "Use CornerBracketCard when a section needs more visual emphasis without introducing gradients or glow-heavy chrome.",
-    packageImport: 'import { CornerBracketCard } from "@steez-ui/ui";',
     usage: `<CornerBracketCard title="Foundation">
   <p>Install tokens, icons, buttons, and forms together.</p>
 </CornerBracketCard>`,
@@ -288,11 +221,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "dotted-halo-card",
-    title: "Dotted Halo Card",
-    category: "surfaces",
     summary: "Flat card with an outer dotted field that sits beyond the main border.",
-    description: "Use DottedHaloCard when you want a sharper editorial or showcase surface without gradients, glow, or an extra nested wrapper just to get the outside pattern treatment.",
-    packageImport: 'import { DottedHaloCard } from "@steez-ui/ui";',
     usage: `<DottedHaloCard title="My Card">
   <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
 </DottedHaloCard>`,
@@ -301,11 +230,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "segmented-control",
-    title: "Segmented Control",
-    category: "layout",
     summary: "Compact tab-like control for mode switches and view filters.",
-    description: "Use SegmentedControl for small, immediate view switches where the content can update in place.",
-    packageImport: 'import { SegmentedControl } from "@steez-ui/ui";',
     usage: `<SegmentedControl
   value={mode}
   onChange={setMode}
@@ -319,11 +244,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "tabbed-panel",
-    title: "Tabbed Panel",
-    category: "layout",
     summary: "Simple tabbed container for grouped content and install flows.",
-    description: "Use TabbedPanel when each tab needs its own panel content and the interaction should remain explicit.",
-    packageImport: 'import { TabbedPanel } from "@steez-ui/ui";',
     usage: `<TabbedPanel
   defaultTab="install"
   tabs={[
@@ -336,11 +257,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "page-header",
-    title: "Page Header",
-    category: "layout",
     summary: "Neutral page header with title, brand slot, and optional controls.",
-    description: "Use PageHeader for consistent page titles and lightweight shell actions without hardcoding product-specific branding.",
-    packageImport: 'import { PageHeader } from "@steez-ui/ui";',
     usage: `<PageHeader
   title="Providers"
   description="Routing, failover, and API surfaces."
@@ -352,11 +269,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "page-template",
-    title: "Page Template",
-    category: "layout",
     summary: "Page wrapper that composes the header, subtabs, and content area.",
-    description: "Use PageTemplate when a consuming app needs a neutral page shell it can brand and extend locally.",
-    packageImport: 'import { PageTemplate } from "@steez-ui/ui";',
     usage: `<PageTemplate
   title="Steez UI"
   description="Standalone primitives and registry payloads."
@@ -372,11 +285,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "notched-viewport-frame",
-    title: "Notched Viewport Frame",
-    category: "layout",
     summary: "Bitkraft-style notched outline shell for viewport framing and overlay chrome.",
-    description: "Use NotchedViewportFrame when the interface should live inside one continuous shell instead of isolated corner decorations.",
-    packageImport: 'import { NotchedViewportFrame } from "@steez-ui/ui";',
     usage: `<div style={{ position: "relative", minHeight: "28rem" }}>
   <NotchedViewportFrame tone="strong" />
 </div>`,
@@ -385,11 +294,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "radial-menu-overlay",
-    title: "Radial Menu Overlay",
-    category: "layout",
     summary: "Full-screen radial navigation surface built around the notched viewport shell.",
-    description: "Use RadialMenuOverlay when the product needs one authored navigation moment instead of scattering section links across the viewport.",
-    packageImport: 'import { RadialMenuOverlay } from "@steez-ui/ui/blocks";',
     usage: `<RadialMenuOverlay
   open={open}
   onClose={() => setOpen(false)}
@@ -403,33 +308,21 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "theme-toggle",
-    title: "Theme Toggle",
-    category: "layout",
     summary: "Shared light and dark mode switch with document-level persistence.",
-    description: "Use ThemeToggle when the consuming app wants the Steez theme switch behavior without rewriting storage and root-attribute wiring.",
-    packageImport: 'import { ThemeToggle } from "@steez-ui/ui";',
     usage: `<ThemeToggle storageKey="steez-ui-theme" defaultTheme="dark" />`,
     related: ["page-header", "button"],
     tags: ["theme", "light", "dark"],
   },
   {
     slug: "loading-progress-bar",
-    title: "Loading Progress Bar",
-    category: "feedback",
     summary: "Segmented loading bar for build, deploy, and initialization progress.",
-    description: "Use LoadingProgressBar for visible progress states that should feel mechanical and legible rather than glossy.",
-    packageImport: 'import { LoadingProgressBar } from "@steez-ui/ui";',
     usage: `<LoadingProgressBar progress={72} valueLabel="72% synced" />`,
     related: ["status-message", "error-message"],
     tags: ["progress", "loading"],
   },
   {
     slug: "loading-screen",
-    title: "Loading Screen",
-    category: "feedback",
     summary: "Fullscreen or contained loading shell with progress, cross field, and optional branding slots.",
-    description: "Use LoadingScreen when an app needs a complete loading state with neutral branding hooks instead of baking product names, logos, and sound behavior into the component itself.",
-    packageImport: 'import { LoadingScreen, useLoadingProgress } from "@steez-ui/ui";',
     usage: `<LoadingScreen
   progress={68}
   message="Syncing runtime"
@@ -443,11 +336,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "loading-overlay-crystalline",
-    title: "Loading Overlay Crystalline",
-    category: "feedback",
     summary: "Compact centered loading card for viewers, canvases, and media shells.",
-    description: "Use LoadingOverlayCrystalline when only one surface is loading and you need a small overlay message instead of a full-screen takeover.",
-    packageImport: 'import { LoadingOverlayCrystalline } from "@steez-ui/ui/blocks";',
     usage: `<LoadingOverlayCrystalline
   message="Preparing avatar"
   subtext="Loading model assets"
@@ -458,22 +347,14 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "status-message",
-    title: "Status Message",
-    category: "feedback",
     summary: "Inline success, info, and error status surface with shared icon treatment.",
-    description: "Use StatusMessage for concise feedback that should stay embedded in the current layout.",
-    packageImport: 'import { StatusMessage } from "@steez-ui/ui";',
     usage: `<StatusMessage type="success" message="Registry payloads generated." />`,
     related: ["error-message", "copy-button"],
     tags: ["success", "info", "error"],
   },
   {
     slug: "error-message",
-    title: "Error Message",
-    category: "feedback",
     summary: "Inline, card, and full-screen error surfaces with optional actions.",
-    description: "Use ErrorMessage when the failure state needs more context or retry actions than a compact status line can provide.",
-    packageImport: 'import { ErrorMessage } from "@steez-ui/ui";',
     usage: `<ErrorMessage
   title="Build failed"
   message="Registry generation could not finish."
@@ -485,22 +366,14 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "heartbeat-pulse",
-    title: "Heartbeat Pulse",
-    category: "feedback",
     summary: "Orb and line heartbeat indicators for wake-up loops, sync state, and background activity.",
-    description: "Use HeartbeatPulse and HeartbeatIndicator for runtime heartbeat UI without rebuilding the SVG motion treatment in every product.",
-    packageImport: 'import { HeartbeatPulse } from "@steez-ui/ui";',
     usage: `<HeartbeatPulse variant="line" width={240} height={84} color="var(--accent-primary)" />`,
     related: ["loading-progress-bar", "status-message"],
     tags: ["heartbeat", "status", "activity"],
   },
   {
     slug: "hexagon-grid",
-    title: "Hexagon Grid",
-    category: "surfaces",
     summary: "Animated hex field backdrop for avatars, launch surfaces, and atmospheric panels.",
-    description: "Use HexagonGrid when a surface needs a reactive geometric backdrop without rebuilding the canvas animation and timing logic locally.",
-    packageImport: 'import { HexagonGrid } from "@steez-ui/ui/hexagon-grid";',
     usage: `<div style={{ position: "relative", minHeight: "18rem" }}>
   <HexagonGrid pointerReactive backgroundOpacity={0.12} />
 </div>`,
@@ -509,11 +382,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "quick-info-card",
-    title: "Quick Info Card",
-    category: "surfaces",
     summary: "Compact multi-stat summary surface with an optional storage meter.",
-    description: "Use QuickInfoCard when several small operational stats should sit in one flat summary band instead of separate tiles.",
-    packageImport: 'import { QuickInfoCard } from "@steez-ui/ui/blocks";',
     usage: `<QuickInfoCard
   items={[
     { label: "Status", value: "Live", valueColor: "success" },
@@ -525,11 +394,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "widget-card",
-    title: "Widget Card",
-    category: "surfaces",
     summary: "Dashboard widget shell with grid-size presets, header slot, and overlay support.",
-    description: "Use WidgetCard when grid-driven admin or monitoring surfaces need a flat reusable widget frame instead of one-off card markup.",
-    packageImport: 'import { WidgetCard } from "@steez-ui/ui/blocks";',
     usage: `<WidgetCard title="Scene" size="sm-b" overlay={<OverlayButton>+</OverlayButton>}>
   <div>Widget body</div>
 </WidgetCard>`,
@@ -538,11 +403,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "marquee-strip",
-    title: "Marquee Strip",
-    category: "layout",
     summary: "Continuous horizontal marquee for providers, extensions, or launch lanes.",
-    description: "Use MarqueeStrip when a row of repeated pills or labels should move as a single track with consistent duplication and spacing.",
-    packageImport: 'import { MarqueeStrip } from "@steez-ui/ui";',
     usage: `<MarqueeStrip
   items={providers}
   durationSeconds={28}
@@ -553,11 +414,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "section",
-    title: "Section",
-    category: "layout",
     summary: "Simple content section with optional monospace title treatment.",
-    description: "Use Section when a page needs consistent vertical rhythm and a lightweight labeled block without a full header card.",
-    packageImport: 'import { Section } from "@steez-ui/ui";',
     usage: `<Section title="Browse services">
   <ThemedCard>...</ThemedCard>
 </Section>`,
@@ -566,11 +423,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "overlay-button",
-    title: "Overlay Button",
-    category: "actions",
     summary: "Compact floating control button for viewer tools and absolute-positioned UI.",
-    description: "Use OverlayButton for media, avatar, or preview controls that need to sit on top of another surface without pulling in a full toolbar system.",
-    packageImport: 'import { OverlayButton } from "@steez-ui/ui";',
     usage: `<OverlayButton aria-label="Expand viewer" active>
   <EyeIcon width={16} height={16} />
 </OverlayButton>`,
@@ -579,11 +432,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "pixel-tooltip",
-    title: "Pixel Tooltip",
-    category: "feedback",
     summary: "Compact hover tooltip with crisp monospace styling for short contextual hints.",
-    description: "Use PixelTooltip when controls need inline explanations without adding a larger floating-popover system to the page.",
-    packageImport: 'import { PixelTooltip } from "@steez-ui/ui";',
     usage: `<PixelTooltip content="Save configuration" position="top">
   <OverlayButton aria-label="Save">S</OverlayButton>
 </PixelTooltip>`,
@@ -592,11 +441,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "section-header",
-    title: "Section Header",
-    category: "layout",
     summary: "Framed header row for settings and control panels with optional actions.",
-    description: "Use SectionHeader when a product area needs a stronger header surface than a plain title but should stay flat and token-driven.",
-    packageImport: 'import { SectionHeader } from "@steez-ui/ui";',
     usage: `<SectionHeader
   title="Appearance Configuration"
   description="Configure avatar rendering and expressions."
@@ -607,11 +452,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "signal-trail-backdrop",
-    title: "Signal Trail Backdrop",
-    category: "surfaces",
     summary: "WebGL signal-field backdrop for avatar stages and technical hero surfaces.",
-    description: "Use SignalTrailBackdrop when a surface needs the animated figure-field treatment without reauthoring the Three.js shader and resize lifecycle locally. Requires optional peer dependency `three` (`pnpm add three`). Import only from the subpath `@steez-ui/ui/signal-trail-backdrop` so WebGL stays out of the main package surface.",
-    packageImport: 'import { SignalTrailBackdrop } from "@steez-ui/ui/signal-trail-backdrop";',
     usage: `<div style={{ position: "relative", minHeight: "22rem" }}>
   <SignalTrailBackdrop color="#7ae4ff" signalDensity={0.36} />
 </div>`,
@@ -620,11 +461,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "stat-card",
-    title: "Stat Card",
-    category: "surfaces",
     summary: "Small numeric stat block with optional tone and subvalue.",
-    description: "Use StatCard for compact dashboard stats that should read clearly without a larger tile or widget frame.",
-    packageImport: 'import { StatCard } from "@steez-ui/ui";',
     usage: `<StatCard
   label="Messages"
   value="1,248"
@@ -635,11 +472,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "stroked-text",
-    title: "Stroked Text",
-    category: "layout",
     summary: "Outlined accent text with optional stroke-to-fill blink on mount.",
-    description: "Use StrokedText for large launch words, hero accents, and standout callouts that need a sharper high-contrast treatment than plain filled text.",
-    packageImport: 'import { StrokedText } from "@steez-ui/ui";',
     usage: `<StrokedText color="#ff7a72" animateOnMount>
   SPELLBINDING
 </StrokedText>`,
@@ -648,11 +481,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   },
   {
     slug: "runtime-orbit-diagram",
-    title: "Runtime Orbit Diagram",
-    category: "layout",
     summary: "Animated path diagram for workspace systems, flows, and runtime maps.",
-    description: "Use RuntimeOrbitDiagram when a product surface needs a compact animated topology instead of static icon rows or screenshot placeholders.",
-    packageImport: 'import { RuntimeOrbitDiagram } from "@steez-ui/ui/blocks";',
     usage: `<RuntimeOrbitDiagram
   nodes={nodes}
   pathOrder={["character", "site", "business", "automations", "operations"]}
@@ -661,6 +490,29 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
     tags: ["diagram", "topology", "animation"],
   },
 ];
+
+const manifestBySlug = new Map(
+  COMPONENT_MANIFEST.map((manifest) => [manifest.slug, manifest]),
+);
+
+export const COMPONENT_DOCS: ComponentDoc[] = COMPONENT_DOC_DETAILS.map((details) => {
+  const manifest = manifestBySlug.get(details.slug);
+  if (!manifest) {
+    throw new Error(`Missing component manifest entry for ${details.slug}`);
+  }
+
+  return {
+    slug: manifest.slug,
+    title: manifest.title,
+    category: manifest.category,
+    summary: details.summary,
+    description: manifest.description,
+    packageImport: `import { ${manifest.packageExports.join(", ")} } from "${manifest.packageEntrypoint}";`,
+    usage: details.usage,
+    related: details.related,
+    tags: details.tags,
+  };
+});
 
 export function getComponentDoc(slug: string) {
   return COMPONENT_DOCS.find((component) => component.slug === slug);

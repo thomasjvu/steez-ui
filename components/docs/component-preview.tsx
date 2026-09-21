@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import type { ComponentType } from "react";
 
+import { COMPONENT_MANIFEST } from "../../lib/docs/component-manifest.mjs";
 import styles from "./component-docs.module.css";
 
 type PreviewModule = { default: ComponentType };
@@ -100,7 +101,9 @@ const PREVIEW_MAP: Record<string, ComponentType> = {
 };
 
 /** Slugs with a preview module (for parity checks). */
-export const PREVIEW_SLUGS = Object.keys(PREVIEW_MAP);
+export const PREVIEW_SLUGS = COMPONENT_MANIFEST
+  .filter((component) => component.previewLoader)
+  .map((component) => component.slug);
 
 export function ComponentPreview({ slug }: { slug: string }) {
   const Preview = PREVIEW_MAP[slug];
