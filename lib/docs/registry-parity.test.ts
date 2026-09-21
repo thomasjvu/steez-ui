@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { describe, expect, it } from "vitest";
 
+import { PREVIEW_SLUGS } from "../../components/docs/component-preview";
 import { COMPONENT_DOCS } from "./component-catalog";
 
 const registryDir = path.join(process.cwd(), "public/r-steez");
@@ -19,6 +20,9 @@ const NON_COMPONENT_REGISTRY_NAMES = new Set([
   "foundation",
   "phantasy-fui",
   "index",
+  "surfaces",
+  "motion",
+  "app-shell",
 ]);
 
 /**
@@ -105,6 +109,22 @@ describe("registry parity", () => {
     expect(
       unexpected,
       `Registry files without catalog slug or allowlist entry: ${unexpected.join(", ")}`,
+    ).toEqual([]);
+  });
+
+  it("has a preview loader for every catalog slug", () => {
+    const catalogSlugs = new Set(COMPONENT_DOCS.map((doc) => doc.slug));
+    const previewSlugs = new Set(PREVIEW_SLUGS);
+    const missing = [...catalogSlugs].filter((slug) => !previewSlugs.has(slug));
+    const unexpected = [...previewSlugs].filter((slug) => !catalogSlugs.has(slug));
+
+    expect(
+      missing,
+      `Catalog slugs without preview loaders: ${missing.join(", ")}`,
+    ).toEqual([]);
+    expect(
+      unexpected,
+      `Preview loaders without catalog slugs: ${unexpected.join(", ")}`,
     ).toEqual([]);
   });
 
