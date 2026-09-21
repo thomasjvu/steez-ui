@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tab-list-styles",
+  "type": "registry:lib",
+  "title": "tab-list-styles",
+  "description": "Shared implementation dependency.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/steez/TabList.module.css",
+      "type": "registry:file",
+      "target": "components/steez/TabList.module.css",
+      "content": ".tabList {\n  position: relative;\n}\n\n.panel {\n  min-width: 0;\n}\n\n.panelBody {\n  min-width: 0;\n}\n",
+      "source": "packages/ui/src/components/TabList.module.css"
+    }
+  ]
+}

@@ -6,7 +6,8 @@
   "description": "Flat content card with a dotted field extending beyond the main border.",
   "dependencies": [],
   "registryDependencies": [
-    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json"
+    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/card-frame.json"
   ],
   "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
   "files": [
@@ -14,7 +15,7 @@
       "path": "components/steez/DottedHaloCard.tsx",
       "type": "registry:file",
       "target": "components/steez/DottedHaloCard.tsx",
-      "content": "\"use client\";\n\nimport React from \"react\";\n\nimport styles from \"./DottedHaloCard.module.css\";\n\nexport interface DottedHaloCardProps\n  extends Omit<React.HTMLAttributes<HTMLDivElement>, \"title\"> {\n  title?: React.ReactNode;\n  bodyClassName?: string;\n  patternInset?: string;\n  patternSize?: string;\n  patternDotSize?: string;\n}\n\nexport function DottedHaloCard({\n  title,\n  children,\n  className = \"\",\n  bodyClassName = \"\",\n  patternInset,\n  patternSize,\n  patternDotSize,\n  style,\n  ...props\n}: DottedHaloCardProps) {\n  return (\n    <div\n      className={`${styles.root} ${className}`.trim()}\n      style={\n        {\n          \"--dotted-halo-inset\": patternInset,\n          \"--dotted-halo-pattern-size\": patternSize,\n          \"--dotted-halo-dot-size\": patternDotSize,\n          ...style,\n        } as React.CSSProperties\n      }\n      {...props}\n    >\n      {title ? <h3 className={styles.title}>{title}</h3> : null}\n      <div className={`${styles.body} ${bodyClassName}`.trim()}>{children}</div>\n    </div>\n  );\n}\n\nexport default DottedHaloCard;\n",
+      "content": "\"use client\";\n\nimport React from \"react\";\n\nimport { CardFrame } from \"./CardFrame\";\nimport styles from \"./DottedHaloCard.module.css\";\n\nexport interface DottedHaloCardProps\n  extends Omit<React.HTMLAttributes<HTMLDivElement>, \"title\"> {\n  title?: React.ReactNode;\n  bodyClassName?: string;\n  patternInset?: string;\n  patternSize?: string;\n  patternDotSize?: string;\n}\n\nexport function DottedHaloCard({\n  title,\n  children,\n  className = \"\",\n  bodyClassName = \"\",\n  patternInset,\n  patternSize,\n  patternDotSize,\n  style,\n  ...props\n}: DottedHaloCardProps) {\n  return (\n    <CardFrame\n      className={`${styles.root} ${className}`.trim()}\n      title={title}\n      titleAs=\"h3\"\n      titleClassName={styles.title}\n      bodyClassName={`${styles.body} ${bodyClassName}`.trim()}\n      style={\n        {\n          \"--dotted-halo-inset\": patternInset,\n          \"--dotted-halo-pattern-size\": patternSize,\n          \"--dotted-halo-dot-size\": patternDotSize,\n          ...style,\n        } as React.CSSProperties\n      }\n      {...props}\n    >\n      {children}\n    </CardFrame>\n  );\n}\n\nexport default DottedHaloCard;\n",
       "source": "packages/ui/src/components/DottedHaloCard.tsx"
     },
     {

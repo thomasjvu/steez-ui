@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "card-frame-styles",
+  "type": "registry:lib",
+  "title": "card-frame-styles",
+  "description": "Shared implementation dependency.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/steez/CardFrame.module.css",
+      "type": "registry:file",
+      "target": "components/steez/CardFrame.module.css",
+      "content": ".body {\n  min-width: 0;\n}\n",
+      "source": "packages/ui/src/components/CardFrame.module.css"
+    }
+  ]
+}

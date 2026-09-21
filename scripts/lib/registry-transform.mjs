@@ -63,6 +63,8 @@ export function resolveRegistryImport(sourcePath, specifier, owners) {
     resolved,
     resolved.replace(/\.js$/, ".tsx"),
     resolved.replace(/\.js$/, ".ts"),
+    `${resolved}.tsx`,
+    `${resolved}.ts`,
   ];
   const owner = candidates.map((candidate) => owners.get(candidate)).find(Boolean);
 

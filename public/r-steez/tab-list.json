@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tab-list",
+  "type": "registry:lib",
+  "title": "tab-list",
+  "description": "Shared implementation dependency.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://steez-ui-6v5.pages.dev/r-steez/tab-list-styles.json"
+  ],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/steez/TabList.tsx",
+      "type": "registry:file",
+      "target": "components/steez/TabList.tsx",
+      "content": "\"use client\";\n\nimport React from \"react\";\n\nimport styles from \"./TabList.module.css\";\n\nexport interface TabListRecord {\n  id: string;\n  label: React.ReactNode;\n  disabled?: boolean;\n}\n\nexport interface TabListProps {\n  tabs: readonly TabListRecord[];\n  activeTabId?: string;\n  getTabDomId: (tabId: string) => string;\n  getPanelDomId: (tabId: string) => string;\n  setTabRef: (tabId: string, element: HTMLButtonElement | null) => void;\n  onSelect: (tabId: string) => void;\n  onKeyDown: (\n    event: React.KeyboardEvent<HTMLButtonElement>,\n    tabId: string,\n  ) => void;\n  tabListClassName?: string;\n  tabClassName?: string;\n  activeTabClassName?: string;\n  panelClassName?: string;\n  panelBodyClassName?: string;\n  ariaLabel?: string;\n  panelContent?: React.ReactNode;\n  renderPanel?: boolean;\n}\n\n/**\n * Shared private tab list and panel renderer. Consumers own selection state,\n * ids, roving focus behavior, and variant-specific classes.\n */\nexport function TabList({\n  tabs,\n  activeTabId,\n  getTabDomId,\n  getPanelDomId,\n  setTabRef,\n  onSelect,\n  onKeyDown,\n  tabListClassName = \"\",\n  tabClassName = \"\",\n  activeTabClassName = \"\",\n  panelClassName = \"\",\n  panelBodyClassName = \"\",\n  ariaLabel,\n  panelContent,\n  renderPanel = true,\n}: TabListProps) {\n  const resolvedActiveTabId =\n    activeTabId || tabs[0]?.id || \"\";\n  const activeTab = tabs.find((tab) => tab.id === resolvedActiveTabId);\n  const activePanelId = activeTab ? getPanelDomId(activeTab.id) : undefined;\n  const activeTabDomId = activeTab ? getTabDomId(activeTab.id) : undefined;\n\n  return (\n    <>\n      <div\n        className={`${styles.tabList} ${tabListClassName}`.trim()}\n        role=\"tablist\"\n        aria-label={ariaLabel}\n      >\n        {tabs.map((tab) => {\n          const isActive = tab.id === activeTab?.id;\n          return (\n            <button\n              key={tab.id}\n              ref={(node) => setTabRef(tab.id, node)}\n              id={getTabDomId(tab.id)}\n              type=\"button\"\n              role=\"tab\"\n              aria-selected={isActive}\n              aria-controls={getPanelDomId(tab.id)}\n              tabIndex={isActive ? 0 : -1}\n              disabled={tab.disabled}\n              className={`${tabClassName} ${isActive ? activeTabClassName : \"\"}`.trim()}\n              onClick={() => onSelect(tab.id)}\n              onKeyDown={(event) => onKeyDown(event, tab.id)}\n            >\n              {tab.label}\n            </button>\n          );\n        })}\n      </div>\n      {renderPanel ? (\n        <div\n          id={activePanelId}\n          className={`${styles.panel} ${panelClassName}`.trim()}\n          role=\"tabpanel\"\n          aria-labelledby={activeTabDomId}\n          tabIndex={0}\n        >\n          {panelBodyClassName ? (\n            <div className={`${styles.panelBody} ${panelBodyClassName}`.trim()}>\n              {panelContent}\n            </div>\n          ) : (\n            panelContent\n          )}\n        </div>\n      ) : null}\n    </>\n  );\n}\n",
+      "source": "packages/ui/src/components/TabList.tsx"
+    }
+  ]
+}

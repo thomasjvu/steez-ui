@@ -6,7 +6,8 @@
   "description": "Default Steez card surface.",
   "dependencies": [],
   "registryDependencies": [
-    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json"
+    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/card-frame.json"
   ],
   "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
   "files": [
@@ -14,7 +15,7 @@
       "path": "components/steez/ThemedCard.tsx",
       "type": "registry:file",
       "target": "components/steez/ThemedCard.tsx",
-      "content": "\"use client\";\n\nimport React from \"react\";\n\nimport styles from \"./ThemedCard.module.css\";\n\nexport interface ThemedCardProps\n  extends Omit<React.HTMLAttributes<HTMLDivElement>, \"title\"> {\n  title?: React.ReactNode;\n  variant?: \"default\" | \"featured\";\n}\n\nexport function ThemedCard({\n  title,\n  variant = \"default\",\n  className = \"\",\n  children,\n  ...props\n}: ThemedCardProps) {\n  return (\n    <div className={`${styles.card} ${variant === \"featured\" ? styles.featured : \"\"} ${className}`.trim()} {...props}>\n      {title ? <div className={styles.title}>{title}</div> : null}\n      {children}\n    </div>\n  );\n}\n",
+      "content": "\"use client\";\n\nimport React from \"react\";\n\nimport { CardFrame } from \"./CardFrame\";\nimport styles from \"./ThemedCard.module.css\";\n\nexport interface ThemedCardProps\n  extends Omit<React.HTMLAttributes<HTMLDivElement>, \"title\"> {\n  title?: React.ReactNode;\n  variant?: \"default\" | \"featured\";\n}\n\nexport function ThemedCard({\n  title,\n  variant = \"default\",\n  className = \"\",\n  children,\n  ...props\n}: ThemedCardProps) {\n  return (\n    <CardFrame\n      className={`${styles.card} ${variant === \"featured\" ? styles.featured : \"\"} ${className}`}\n      title={title}\n      titleClassName={styles.title}\n      {...props}\n    >\n      {children}\n    </CardFrame>\n  );\n}\n",
       "source": "packages/ui/src/components/ThemedCard.tsx"
     },
     {

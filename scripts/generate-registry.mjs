@@ -599,6 +599,10 @@ for (const [name, source, target] of [
   ["field-description", "packages/ui/src/hooks/useFieldDescription.ts", "components/hooks/useFieldDescription.ts"],
   ["roving-tabs", "packages/ui/src/hooks/useRovingTabs.ts", "components/hooks/useRovingTabs.ts"],
   ["button-styles", "packages/ui/src/styles/Buttons.module.css", "components/styles/Buttons.module.css"],
+  ["card-frame", "packages/ui/src/components/CardFrame.tsx", "components/steez/CardFrame.tsx"],
+  ["card-frame-styles", "packages/ui/src/components/CardFrame.module.css", "components/steez/CardFrame.module.css"],
+  ["tab-list", "packages/ui/src/components/TabList.tsx", "components/steez/TabList.tsx"],
+  ["tab-list-styles", "packages/ui/src/components/TabList.module.css", "components/steez/TabList.module.css"],
 ]) {
   for (const item of itemDefinitions) {
     if (item.files.some((file) => file.source === source)) {

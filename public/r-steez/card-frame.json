@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "card-frame",
+  "type": "registry:lib",
+  "title": "card-frame",
+  "description": "Shared implementation dependency.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://steez-ui-6v5.pages.dev/r-steez/card-frame-styles.json"
+  ],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/steez/CardFrame.tsx",
+      "type": "registry:file",
+      "target": "components/steez/CardFrame.tsx",
+      "content": "\"use client\";\n\nimport React from \"react\";\n\nimport styles from \"./CardFrame.module.css\";\n\nexport interface CardFrameProps\n  extends Omit<React.HTMLAttributes<HTMLDivElement>, \"title\"> {\n  title?: React.ReactNode;\n  titleAs?: \"div\" | \"h3\";\n  titleClassName?: string;\n  bodyClassName?: string;\n  decoration?: React.ReactNode;\n}\n\n/**\n * Shared private frame for cards with an optional title, body, and decoration.\n * Public cards supply their own root/title/body classes so each visual variant\n * keeps its existing CSS contract.\n */\nexport function CardFrame({\n  title,\n  titleAs = \"div\",\n  titleClassName = \"\",\n  bodyClassName = \"\",\n  decoration,\n  className = \"\",\n  children,\n  ...props\n}: CardFrameProps) {\n  const Title = titleAs;\n\n  return (\n    <div className={className.trim()} {...props}>\n      {decoration}\n      {title ? <Title className={titleClassName.trim()}>{title}</Title> : null}\n      <div className={`${styles.body} ${bodyClassName}`.trim()}>{children}</div>\n    </div>\n  );\n}\n",
+      "source": "packages/ui/src/components/CardFrame.tsx"
+    }
+  ]
+}

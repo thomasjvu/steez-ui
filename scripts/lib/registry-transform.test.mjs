@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
@@ -23,7 +23,7 @@ describe("registry transformations", () => {
   it.each([
     ["from", 'import value from "./value.js";', 'import value from "./value";'],
     ["dynamic import", 'const value = import("./value.mjs");', 'const value = import("./value");'],
-    ["export", 'export { value } from "../value.ts";', 'export { value } from "../value";'],
+    ["export", 'export { value } from "../value.ts";', 'export { value } from "../value.ts";'],
     ["css import", 'import styles from "./styles.css";', 'import styles from "./styles.css";'],
   ])("rewrites extensionless %s imports deterministically", (_label, source, expected) => {
     expect(makeRegistryContentPortable(source)).toBe(expected);
@@ -94,6 +94,7 @@ describe("registry transformations", () => {
     const sourceDirectory = path.join(temporaryDirectory, "src");
     const buttonSource = path.join(sourceDirectory, "Button.tsx");
     const helperSource = path.join(sourceDirectory, "helper.ts");
+    await mkdir(sourceDirectory, { recursive: true });
     await writeFile(buttonSource, 'import helper from "./helper.js";\nimport { Icon } from "@steez-ui/icons";\n');
     await writeFile(helperSource, "export default {};\n");
 

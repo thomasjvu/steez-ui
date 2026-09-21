@@ -6,7 +6,8 @@
   "description": "Bracketed featured surface with accent corners.",
   "dependencies": [],
   "registryDependencies": [
-    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json"
+    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/card-frame.json"
   ],
   "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
   "files": [
@@ -14,7 +15,7 @@
       "path": "components/steez/CornerBracketCard.tsx",
       "type": "registry:file",
       "target": "components/steez/CornerBracketCard.tsx",
-      "content": "\"use client\";\n\nimport React from \"react\";\n\nimport styles from \"./CornerBracketCard.module.css\";\n\nexport interface CornerBracketCardProps\n  extends Omit<React.HTMLAttributes<HTMLDivElement>, \"title\"> {\n  title?: React.ReactNode;\n  variant?: \"default\" | \"featured\";\n}\n\nexport function CornerBracketCard({\n  title,\n  variant = \"default\",\n  className = \"\",\n  children,\n  ...props\n}: CornerBracketCardProps) {\n  return (\n    <div className={`${styles.card} ${variant === \"featured\" ? styles.featured : \"\"} ${className}`.trim()} {...props}>\n      <span className={`${styles.corner} ${styles.cornerTopLeft}`} aria-hidden=\"true\" />\n      <span className={`${styles.corner} ${styles.cornerTopRight}`} aria-hidden=\"true\" />\n      <span className={`${styles.corner} ${styles.cornerBottomLeft}`} aria-hidden=\"true\" />\n      <span className={`${styles.corner} ${styles.cornerBottomRight}`} aria-hidden=\"true\" />\n      {title ? <div className={styles.title}>{title}</div> : null}\n      {children}\n    </div>\n  );\n}\n",
+      "content": "\"use client\";\n\nimport React from \"react\";\n\nimport { CardFrame } from \"./CardFrame\";\nimport styles from \"./CornerBracketCard.module.css\";\n\nexport interface CornerBracketCardProps\n  extends Omit<React.HTMLAttributes<HTMLDivElement>, \"title\"> {\n  title?: React.ReactNode;\n  variant?: \"default\" | \"featured\";\n}\n\nexport function CornerBracketCard({\n  title,\n  variant = \"default\",\n  className = \"\",\n  children,\n  ...props\n}: CornerBracketCardProps) {\n  return (\n    <CardFrame\n      className={`${styles.card} ${variant === \"featured\" ? styles.featured : \"\"} ${className}`}\n      title={title}\n      titleClassName={styles.title}\n      decoration={\n        <>\n          <span className={`${styles.corner} ${styles.cornerTopLeft}`} aria-hidden=\"true\" />\n          <span className={`${styles.corner} ${styles.cornerTopRight}`} aria-hidden=\"true\" />\n          <span className={`${styles.corner} ${styles.cornerBottomLeft}`} aria-hidden=\"true\" />\n          <span className={`${styles.corner} ${styles.cornerBottomRight}`} aria-hidden=\"true\" />\n        </>\n      }\n      {...props}\n    >\n      {children}\n    </CardFrame>\n  );\n}\n",
       "source": "packages/ui/src/components/CornerBracketCard.tsx"
     },
     {

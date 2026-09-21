@@ -8,8 +8,12 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".."
 const registryDir = path.join(repoRoot, "public/r-steez");
 const sampleDir = path.join(repoRoot, "tmp/registry-install-smoke");
 const index = JSON.parse(await fs.readFile(path.join(registryDir, "index.json"), "utf8"));
-const items = new Map(await Promise.all(index.map(async ({ name }) => [name,
-  JSON.parse(await fs.readFile(path.join(registryDir, `${name}.json`), "utf8"))])));
+const payloadFiles = (await fs.readdir(registryDir))
+  .filter((file) => file.endsWith(".json") && file !== "index.json");
+const items = new Map(await Promise.all(payloadFiles.map(async (file) => {
+  const name = file.slice(0, -".json".length);
+  return [name, JSON.parse(await fs.readFile(path.join(registryDir, file), "utf8"))];
+})));
 const indexedNames = new Set();
 
 for (const entry of index) {
@@ -19,11 +23,9 @@ for (const entry of index) {
   indexedNames.add(entry.name);
 }
 
-for (const file of await fs.readdir(registryDir)) {
-  if (file === "index.json" || !file.endsWith(".json")) continue;
-  const name = file.slice(0, -".json".length);
-  if (!indexedNames.has(name)) {
-    throw new Error(`Registry payload is missing from index: ${file}`);
+for (const [name, item] of items) {
+  if (item?.name !== name) {
+    throw new Error(`Registry payload name does not match filename: ${name}.json`);
   }
 }
 

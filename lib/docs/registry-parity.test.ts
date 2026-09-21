@@ -15,6 +15,10 @@ const NON_COMPONENT_REGISTRY_NAMES = new Set([
   "field-description",
   "roving-tabs",
   "button-styles",
+  "card-frame",
+  "card-frame-styles",
+  "tab-list",
+  "tab-list-styles",
   "theme-tokens",
   "icon-provider",
   "foundation",
@@ -30,6 +34,10 @@ const INTERNAL_HELPER_REGISTRY_NAMES = [
   "field-description",
   "roving-tabs",
   "button-styles",
+  "card-frame",
+  "card-frame-styles",
+  "tab-list",
+  "tab-list-styles",
 ];
 
 /**
