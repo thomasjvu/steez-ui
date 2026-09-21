@@ -2,6 +2,7 @@
 
 import React from "react";
 
+import { CardFrame } from "./CardFrame.js";
 import styles from "./CornerBracketCard.module.css";
 
 export interface CornerBracketCardProps
@@ -18,13 +19,21 @@ export function CornerBracketCard({
   ...props
 }: CornerBracketCardProps) {
   return (
-    <div className={`${styles.card} ${variant === "featured" ? styles.featured : ""} ${className}`.trim()} {...props}>
-      <span className={`${styles.corner} ${styles.cornerTopLeft}`} aria-hidden="true" />
-      <span className={`${styles.corner} ${styles.cornerTopRight}`} aria-hidden="true" />
-      <span className={`${styles.corner} ${styles.cornerBottomLeft}`} aria-hidden="true" />
-      <span className={`${styles.corner} ${styles.cornerBottomRight}`} aria-hidden="true" />
-      {title ? <div className={styles.title}>{title}</div> : null}
+    <CardFrame
+      className={`${styles.card} ${variant === "featured" ? styles.featured : ""} ${className}`}
+      title={title}
+      titleClassName={styles.title}
+      decoration={
+        <>
+          <span className={`${styles.corner} ${styles.cornerTopLeft}`} aria-hidden="true" />
+          <span className={`${styles.corner} ${styles.cornerTopRight}`} aria-hidden="true" />
+          <span className={`${styles.corner} ${styles.cornerBottomLeft}`} aria-hidden="true" />
+          <span className={`${styles.corner} ${styles.cornerBottomRight}`} aria-hidden="true" />
+        </>
+      }
+      {...props}
+    >
       {children}
-    </div>
+    </CardFrame>
   );
 }

@@ -2,6 +2,7 @@
 
 import React from "react";
 
+import { CardFrame } from "./CardFrame.js";
 import styles from "./DottedHaloCard.module.css";
 
 export interface DottedHaloCardProps
@@ -25,8 +26,12 @@ export function DottedHaloCard({
   ...props
 }: DottedHaloCardProps) {
   return (
-    <div
+    <CardFrame
       className={`${styles.root} ${className}`.trim()}
+      title={title}
+      titleAs="h3"
+      titleClassName={styles.title}
+      bodyClassName={`${styles.body} ${bodyClassName}`.trim()}
       style={
         {
           "--dotted-halo-inset": patternInset,
@@ -37,9 +42,8 @@ export function DottedHaloCard({
       }
       {...props}
     >
-      {title ? <h3 className={styles.title}>{title}</h3> : null}
-      <div className={`${styles.body} ${bodyClassName}`.trim()}>{children}</div>
-    </div>
+      {children}
+    </CardFrame>
   );
 }
 

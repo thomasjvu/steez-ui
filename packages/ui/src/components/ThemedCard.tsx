@@ -2,6 +2,7 @@
 
 import React from "react";
 
+import { CardFrame } from "./CardFrame.js";
 import styles from "./ThemedCard.module.css";
 
 export interface ThemedCardProps
@@ -18,9 +19,13 @@ export function ThemedCard({
   ...props
 }: ThemedCardProps) {
   return (
-    <div className={`${styles.card} ${variant === "featured" ? styles.featured : ""} ${className}`.trim()} {...props}>
-      {title ? <div className={styles.title}>{title}</div> : null}
+    <CardFrame
+      className={`${styles.card} ${variant === "featured" ? styles.featured : ""} ${className}`}
+      title={title}
+      titleClassName={styles.title}
+      {...props}
+    >
       {children}
-    </div>
+    </CardFrame>
   );
 }

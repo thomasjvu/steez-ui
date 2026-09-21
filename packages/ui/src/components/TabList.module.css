@@ -1,0 +1,11 @@
+.tabList {
+  position: relative;
+}
+
+.panel {
+  min-width: 0;
+}
+
+.panelBody {
+  min-width: 0;
+}

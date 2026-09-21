@@ -48,13 +48,10 @@ export {
 } from "./components/DottedHaloCard.js";
 export { ErrorMessage, type ErrorMessageProps } from "./components/ErrorMessage.js";
 export {
-  HeartbeatIndicator,
   HeartbeatPulse,
-  type HeartbeatIndicatorProps,
   type HeartbeatPulseProps,
 } from "./components/HeartbeatPulse.js";
 export {
-  LOADING_PROGRESS_SEGMENT_COUNT,
   LoadingProgressBar,
   type LoadingProgressBarProps,
 } from "./components/LoadingProgressBar.js";

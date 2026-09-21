@@ -6,6 +6,7 @@ import { useRovingTabs } from "../hooks/useRovingTabs.js";
 import { useStableId } from "../hooks/useStableId.js";
 import { PageHeader, type PageHeaderProps } from "./PageHeader.js";
 import styles from "./PageTemplate.module.css";
+import { TabList } from "./TabList.js";
 
 interface SubTab {
   id: string;
@@ -92,8 +93,6 @@ export function PageTemplate({
     onSelect: handleSelect,
   });
 
-  const activePanelId = resolvedActiveTabId ? getPanelDomId(resolvedActiveTabId) : undefined;
-  const activeTabDomId = resolvedActiveTabId ? getTabDomId(resolvedActiveTabId) : undefined;
   const hasSubTabs = Boolean(subTabs?.length);
 
   return (
@@ -120,43 +119,24 @@ export function PageTemplate({
       ) : null}
 
       {hasSubTabs ? (
-        <div className={styles.subTabs} role="tablist" aria-label={`${title} sections`}>
-          {subTabs!.map((tab) => {
-            const isActive = tab.id === resolvedActiveTabId;
-            return (
-              <button
-                key={tab.id}
-                ref={(node) => setTabRef(tab.id, node)}
-                id={getTabDomId(tab.id)}
-                onClick={() => handleSelect(tab.id)}
-                onKeyDown={(event) => handleTabKeyDown(event, tab.id)}
-                className={`${styles.subTabButton} ${isActive ? styles.subTabButtonActive : ""}`.trim()}
-                type="button"
-                role="tab"
-                aria-selected={isActive}
-                aria-controls={getPanelDomId(tab.id)}
-                tabIndex={isActive ? 0 : -1}
-                disabled={tab.disabled}
-              >
-                {tab.label}
-              </button>
-            );
-          })}
-        </div>
-      ) : null}
-
-      {hasContent ? (
-        <div
-          className={styles.content}
-          {...(hasSubTabs
-            ? {
-                id: activePanelId,
-                role: "tabpanel" as const,
-                "aria-labelledby": activeTabDomId,
-                tabIndex: 0,
-              }
-            : {})}
-        >
+        <TabList
+          tabs={subTabs!}
+          activeTabId={resolvedActiveTabId}
+          getTabDomId={getTabDomId}
+          getPanelDomId={getPanelDomId}
+          setTabRef={setTabRef}
+          onSelect={handleSelect}
+          onKeyDown={handleTabKeyDown}
+          tabListClassName={styles.subTabs}
+          tabClassName={styles.subTabButton}
+          activeTabClassName={styles.subTabButtonActive}
+          panelClassName={styles.content}
+          ariaLabel={`${title} sections`}
+          renderPanel={hasContent}
+          panelContent={loading ? <div className={styles.loading}>Loading...</div> : children ?? null}
+        />
+      ) : hasContent ? (
+        <div className={styles.content}>
           {loading ? <div className={styles.loading}>Loading...</div> : children ?? null}
         </div>
       ) : null}

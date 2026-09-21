@@ -4,6 +4,7 @@ import React from "react";
 
 import { useRovingTabs } from "../hooks/useRovingTabs.js";
 import { useStableId } from "../hooks/useStableId.js";
+import { TabList } from "./TabList.js";
 import styles from "./TabbedPanel.module.css";
 
 export interface TabbedPanelTab {
@@ -89,9 +90,6 @@ export function TabbedPanel({
     onSelect: handleSelect,
   });
 
-  const activePanelId = currentTab ? getPanelDomId(currentTab.id) : undefined;
-  const activeTabDomId = currentTab ? getTabDomId(currentTab.id) : undefined;
-
   return (
     <div className={`${styles.root} ${className}`.trim()}>
       {label || hint ? (
@@ -100,38 +98,22 @@ export function TabbedPanel({
           {hint ? <div className={styles.hint}>{hint}</div> : null}
         </div>
       ) : null}
-      <div className={`${styles.tabs} ${navClassName}`.trim()} role="tablist" aria-label={ariaLabel || label}>
-        {tabs.map((tab) => {
-          const isActive = tab.id === currentTab?.id;
-          return (
-            <button
-              key={tab.id}
-              ref={(node) => setTabRef(tab.id, node)}
-              id={getTabDomId(tab.id)}
-              type="button"
-              role="tab"
-              aria-selected={isActive}
-              aria-controls={getPanelDomId(tab.id)}
-              tabIndex={isActive ? 0 : -1}
-              disabled={tab.disabled}
-              className={`${styles.tab} ${isActive ? styles.tabActive : ""}`.trim()}
-              onClick={() => handleSelect(tab.id)}
-              onKeyDown={(event) => handleTabKeyDown(event, tab.id)}
-            >
-              {tab.label}
-            </button>
-          );
-        })}
-      </div>
-      <div
-        id={activePanelId}
-        className={`${styles.panel} ${panelClassName}`.trim()}
-        role="tabpanel"
-        aria-labelledby={activeTabDomId}
-        tabIndex={0}
-      >
-        <div className={styles.panelBody}>{currentTab?.content ?? currentTab?.panel ?? null}</div>
-      </div>
+      <TabList
+        tabs={tabs}
+        activeTabId={currentTab?.id}
+        getTabDomId={getTabDomId}
+        getPanelDomId={getPanelDomId}
+        setTabRef={setTabRef}
+        onSelect={handleSelect}
+        onKeyDown={handleTabKeyDown}
+        tabListClassName={`${styles.tabs} ${navClassName}`}
+        tabClassName={styles.tab}
+        activeTabClassName={styles.tabActive}
+        panelClassName={`${styles.panel} ${panelClassName}`}
+        panelBodyClassName={styles.panelBody}
+        ariaLabel={ariaLabel || label}
+        panelContent={currentTab?.content ?? currentTab?.panel ?? null}
+      />
     </div>
   );
 }

@@ -27,9 +27,7 @@ const NON_COMPONENT_REGISTRY_NAMES = new Set([
  */
 const NON_CATALOG_COMPONENT_EXPORTS = new Set([
   "CyberTile", // alias of CyberpunkTile
-  "LOADING_PROGRESS_SEGMENT_COUNT",
   "useLoadingProgress",
-  "HeartbeatIndicator", // covered by heartbeat-pulse
   "CyberpunkRadioGroup", // covered by cyberpunk-radio
 ]);
 
