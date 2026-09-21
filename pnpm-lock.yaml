@@ -11,7 +11,6 @@ overrides:
   postcss: 8.5.28
   nanoid: 3.3.18
   browserslist: 4.28.9
-  '@babel/core': 7.29.6
 
 importers:
 
@@ -66,6 +65,9 @@ importers:
       '@types/react-dom':
         specifier: 19.1.2
         version: 19.1.2(@types/react@19.1.2)
+      '@types/three':
+        specifier: ^0.179.0
+        version: 0.179.0
       '@vitejs/plugin-react':
         specifier: ^6.0.4
         version: 6.0.4(vite@8.1.5(@types/node@20.19.9)(esbuild@0.27.7)(jiti@2.5.1))
