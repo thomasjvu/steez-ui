@@ -38,6 +38,10 @@ export const COMPONENT_FILTERS = [
 
 export type ComponentFilter = (typeof COMPONENT_FILTERS)[number]["value"];
 
+type ComponentDocDetails = Pick<ComponentDoc, "summary" | "usage" | "related" | "tags"> & {
+  slug: string;
+};
+
 const COMPONENT_DOC_DETAILS = [
   {
     slug: "boiling-lines",
@@ -489,7 +493,7 @@ const COMPONENT_DOC_DETAILS = [
     related: ["hexagon-grid", "marquee-strip"],
     tags: ["diagram", "topology", "animation"],
   },
-];
+] satisfies ComponentDocDetails[];
 
 const manifestBySlug = new Map(
   COMPONENT_MANIFEST.map((manifest) => [manifest.slug, manifest]),
