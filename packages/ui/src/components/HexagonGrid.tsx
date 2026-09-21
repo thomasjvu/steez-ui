@@ -12,10 +12,13 @@ export interface HexagonGridProps {
   tone?: "default" | "light" | "dark";
   autoTriggerBaseDelayMs?: number;
   autoTriggerJitterMs?: number;
+  /** Maximum number of cells rendered for one grid. Defaults to 512. */
+  cellBudget?: number;
 }
 
 const RADIUS = 25;
 const RATE = 0.98;
+const DEFAULT_CELL_BUDGET = 512;
 const COUNT_MIN = 5;
 const COUNT_MAX = 50;
 const LUMINANCE_MIN = 8;
@@ -46,10 +49,12 @@ export function HexagonGrid({
   tone = "default",
   autoTriggerBaseDelayMs = 2000,
   autoTriggerJitterMs = 1000,
+  cellBudget = DEFAULT_CELL_BUDGET,
 }: HexagonGridProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const hexagonsRef = React.useRef<HexagonData[]>([]);
+  const gridRadiusRef = React.useRef(RADIUS);
   const animationRef = React.useRef<number>(0);
   const lastPointerSelectionRef = React.useRef(0);
   const autoTriggerTimeoutRef = React.useRef<number | null>(null);
@@ -65,17 +70,23 @@ export function HexagonGrid({
       return undefined;
     }
 
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const { width, height } = entry.contentRect;
-        if (width > 0 && height > 0) {
-          setDimensions({ width: Math.floor(width), height: Math.floor(height) });
-        }
-      }
-    });
+    const resizeObserver =
+      typeof ResizeObserver === "undefined"
+        ? null
+        : new ResizeObserver((entries) => {
+            for (const entry of entries) {
+              const { width, height } = entry.contentRect;
+              if (width > 0 && height > 0) {
+                setDimensions({ width: Math.floor(width), height: Math.floor(height) });
+              }
+            }
+          });
 
-    resizeObserver.observe(container);
-    return () => resizeObserver.disconnect();
+    if (resizeObserver) {
+      resizeObserver.observe(container);
+    }
+
+    return () => resizeObserver?.disconnect();
   }, []);
 
   const width = dimensions.width;
@@ -83,18 +94,19 @@ export function HexagonGrid({
 
   const triggerHexSelection = React.useCallback((x: number, y: number) => {
     const hexagons = hexagonsRef.current;
-    const hexWidth = RADIUS * Math.cos(Math.PI / 6) * 2;
+    const radius = gridRadiusRef.current;
+    const hexWidth = radius * Math.cos(Math.PI / 6) * 2;
 
     for (const hex of hexagons) {
       if (
         x < hex.x - hexWidth / 2 ||
         x > hex.x + hexWidth / 2 ||
-        y < hex.y - RADIUS ||
-        y > hex.y + RADIUS ||
+        y < hex.y - radius ||
+        y > hex.y + radius ||
         (y < hex.y &&
-          Math.abs((x - hex.x) / (y - hex.y + RADIUS)) > Math.tan(Math.PI / 3)) ||
+          Math.abs((x - hex.x) / (y - hex.y + radius)) > Math.tan(Math.PI / 3)) ||
         (y > hex.y &&
-          Math.abs((x - hex.x) / (y - hex.y - RADIUS)) > Math.tan(Math.PI / 3))
+          Math.abs((x - hex.x) / (y - hex.y - radius)) > Math.tan(Math.PI / 3))
       ) {
         continue;
       }
@@ -110,11 +122,44 @@ export function HexagonGrid({
       return;
     }
 
-    const hexWidth = RADIUS * Math.cos(Math.PI / 6) * 2;
-    const hexHeight = RADIUS * (2 - Math.sin(Math.PI / 6));
+    const baseHexWidth = RADIUS * Math.cos(Math.PI / 6) * 2;
+    const baseHexHeight = RADIUS * (2 - Math.sin(Math.PI / 6));
 
-    const countX = Math.ceil(width / hexWidth) + 1;
-    const countY = Math.ceil(height / hexHeight) + 1;
+    const requestedCountX = Math.ceil(width / baseHexWidth) + 1;
+    const requestedCountY = Math.ceil(height / baseHexHeight) + 1;
+    const safeCellBudget = Number.isFinite(cellBudget)
+      ? Math.max(1, Math.floor(cellBudget))
+      : DEFAULT_CELL_BUDGET;
+    const requestedCellCount = requestedCountX * requestedCountY;
+    let countX = requestedCountX;
+    let countY = requestedCountY;
+
+    if (requestedCellCount > safeCellBudget) {
+      countX = Math.min(
+        requestedCountX,
+        safeCellBudget,
+        Math.max(
+          1,
+          Math.floor(
+            Math.sqrt((safeCellBudget * requestedCountX) / requestedCountY),
+          ),
+        ),
+      );
+      countY = Math.min(
+        requestedCountY,
+        Math.max(1, Math.floor(safeCellBudget / countX)),
+      );
+    }
+
+    const spacingScale = Math.max(
+      1,
+      width / (countX * baseHexWidth),
+      height / (countY * baseHexHeight),
+    );
+    const hexWidth = baseHexWidth * spacingScale;
+    const hexHeight = baseHexHeight * spacingScale;
+    gridRadiusRef.current = RADIUS * spacingScale;
+
     const offsetX = -((countX * hexWidth - width) / 2);
     const offsetY = -((countY * hexHeight - height) / 2);
 
@@ -171,26 +216,7 @@ export function HexagonGrid({
     });
 
     hexagonsRef.current = hexagons;
-
-    const autoTrigger = () => {
-      if (!pausedRef.current) {
-        const activeHexagons = hexagonsRef.current;
-        if (activeHexagons.length > 0) {
-          const randomHex = activeHexagons[randomInt(0, activeHexagons.length - 1)];
-          randomHex?.selections.push({
-            count: 0,
-            hue: randomInt(180, 220),
-          });
-        }
-      }
-      autoTriggerTimeoutRef.current = window.setTimeout(
-        autoTrigger,
-        autoTriggerBaseDelayMs + randomFloat() * autoTriggerJitterMs,
-      );
-    };
-
-    autoTriggerTimeoutRef.current = window.setTimeout(autoTrigger, autoTriggerBaseDelayMs);
-  }, [autoTriggerBaseDelayMs, autoTriggerJitterMs, height, width]);
+  }, [cellBudget, height, width]);
 
   const drawHexagon = React.useCallback(
     (
@@ -254,7 +280,7 @@ export function HexagonGrid({
       ctx.clearRect(0, 0, width, height);
     }
 
-    const radius = RADIUS * RATE;
+    const radius = gridRadiusRef.current * RATE;
 
     for (const hex of hexagons) {
       const baseFillLightness =
@@ -390,10 +416,46 @@ export function HexagonGrid({
       typeof document !== "undefined" ? !document.hidden : true;
     let isInViewport = true;
     const reducedMotionQuery =
-      typeof window !== "undefined"
+      typeof window !== "undefined" && typeof window.matchMedia === "function"
         ? window.matchMedia("(prefers-reduced-motion: reduce)")
         : null;
     let prefersReducedMotion = reducedMotionQuery?.matches ?? false;
+
+    const clearAutoTrigger = () => {
+      if (autoTriggerTimeoutRef.current !== null) {
+        window.clearTimeout(autoTriggerTimeoutRef.current);
+        autoTriggerTimeoutRef.current = null;
+      }
+    };
+
+    const scheduleAutoTrigger = () => {
+      if (pausedRef.current || autoTriggerTimeoutRef.current !== null) {
+        return;
+      }
+
+      const autoTrigger = () => {
+        autoTriggerTimeoutRef.current = null;
+        if (pausedRef.current) {
+          return;
+        }
+
+        const activeHexagons = hexagonsRef.current;
+        if (activeHexagons.length > 0) {
+          const randomHex = activeHexagons[randomInt(0, activeHexagons.length - 1)];
+          randomHex?.selections.push({
+            count: 0,
+            hue: randomInt(180, 220),
+          });
+        }
+
+        scheduleAutoTrigger();
+      };
+
+      autoTriggerTimeoutRef.current = window.setTimeout(
+        autoTrigger,
+        autoTriggerBaseDelayMs + randomFloat() * autoTriggerJitterMs,
+      );
+    };
 
     const updatePaused = () => {
       pausedRef.current =
@@ -405,28 +467,37 @@ export function HexagonGrid({
       animationRef.current = 0;
     };
 
+    const stopActivity = () => {
+      stopLoop();
+      clearAutoTrigger();
+    };
+
     const startLoop = () => {
       updatePaused();
-      if (pausedRef.current || animationRef.current !== 0) {
+      if (pausedRef.current) {
+        stopActivity();
         return;
       }
-      animationRef.current = window.requestAnimationFrame(render);
+      if (animationRef.current === 0) {
+        animationRef.current = window.requestAnimationFrame(render);
+      }
+      scheduleAutoTrigger();
     };
 
     updatePaused();
     // Always paint at least one frame (static under reduced-motion).
     render();
     if (!pausedRef.current) {
-      // render() already scheduled the next frame when not paused.
+      scheduleAutoTrigger();
     } else {
-      stopLoop();
+      stopActivity();
     }
 
     const onVisibilityChange = () => {
       isDocumentVisible = !document.hidden;
       updatePaused();
       if (pausedRef.current) {
-        stopLoop();
+        stopActivity();
       } else {
         startLoop();
       }
@@ -436,7 +507,7 @@ export function HexagonGrid({
       prefersReducedMotion = event.matches;
       updatePaused();
       if (pausedRef.current) {
-        stopLoop();
+        stopActivity();
         render();
         stopLoop();
       } else {
@@ -454,7 +525,7 @@ export function HexagonGrid({
           isInViewport = entry?.isIntersecting ?? true;
           updatePaused();
           if (pausedRef.current) {
-            stopLoop();
+            stopActivity();
           } else {
             startLoop();
           }
@@ -465,16 +536,19 @@ export function HexagonGrid({
     }
 
     return () => {
-      stopLoop();
+      stopActivity();
       document.removeEventListener("visibilitychange", onVisibilityChange);
       reducedMotionQuery?.removeEventListener("change", onReducedMotionChange);
       intersectionObserver?.disconnect();
-      if (autoTriggerTimeoutRef.current !== null) {
-        window.clearTimeout(autoTriggerTimeoutRef.current);
-        autoTriggerTimeoutRef.current = null;
-      }
     };
-  }, [height, init, render, width]);
+  }, [
+    autoTriggerBaseDelayMs,
+    autoTriggerJitterMs,
+    height,
+    init,
+    render,
+    width,
+  ]);
 
   const handlePointerMove = React.useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
