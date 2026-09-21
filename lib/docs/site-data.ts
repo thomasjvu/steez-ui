@@ -54,4 +54,7 @@ export const REGISTRY_ITEMS = [
   { label: "Page template", href: "/r-steez/page-template.json" },
   { label: "Segmented control", href: "/r-steez/segmented-control.json" },
   { label: "Phantasy FUI preset (optional)", href: "/r-steez/phantasy-fui.json" },
+  { label: "Surface preset", href: "/r-steez/surfaces.json" },
+  { label: "Motion preset", href: "/r-steez/motion.json" },
+  { label: "App shell preset", href: "/r-steez/app-shell.json" },
 ] as const;

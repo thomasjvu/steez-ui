@@ -300,7 +300,7 @@ export function SignalTrailBackdrop({
     let isInViewport = true;
 
     const reducedMotionQuery =
-      typeof window !== "undefined"
+      typeof window !== "undefined" && typeof window.matchMedia === "function"
         ? window.matchMedia("(prefers-reduced-motion: reduce)")
         : null;
     let prefersReducedMotion = reducedMotionQuery?.matches ?? false;

@@ -23,14 +23,23 @@ Plans **001–027** completed earlier. Batch **028–035** residual (HEAD was `d
 | 038 | Soft sunset @steez-ui/react | DONE |
 | 039 | new-york removal + Boston archive docs | DONE |
 
-## Retirement gate follow-up (2026-09-21)
-
-| Plan | Title | Status |
-|------|-------|--------|
-| 045 | Isolate deprecated `@steez-ui/react` behind a retirement gate | **BLOCKED** — no external consumer inventory or deprecation deadline is recorded; documentation and opt-in checks are complete, package retained |
-
-Plan 045 remains blocked until the exact published versions, dated consuming-repository
-inventory, per-consumer migration status, and approved public deprecation deadline
-are recorded. Until then, keep `packages/react` published and workspace-visible.
-
 Still product-gated: hard delete `packages/react` / `public/r` Boston content; TW preset expansion.
+
+## Slimming audit plans (2026-09-21)
+
+| Plan | Title | Priority | Effort | Depends on | Status |
+|------|-------|----------|--------|------------|--------|
+| 040 | Remove unused root dependency ownership | P1 | S | — | DONE (safe subset reviewed in isolated commit 5b85e25; archive deps deferred to 045) |
+| 041 | Move specialized compositions behind a blocks entrypoint | P1 | L | 040 | DONE (reviewed in isolated commit 57fdb60) |
+| 042 | Share card framing and tab rendering internals | P1 | M | 041 | DONE (reviewed in isolated commits 22a3bf5 + c421dad) |
+| 043 | Make registry metadata and discoverability smaller and safer | P2 | L | 041, 042 | DONE (reviewed in 8c0c076 + 503ba61 + 05bd4bc; integrated 125 tests/build/smoke pass) |
+| 044 | Bound HexagonGrid runtime work | P2 | M | — | DONE (reviewed in isolated commit f802c64) |
+| 045 | Isolate the deprecated React package behind a retirement gate | P2 | L | 040 | BLOCKED (docs/checks reviewed in isolated commit 02312b7; no external consumer evidence or deadline) |
+| 046 | Refresh duplicate transitive lockfile entries | P3 | S | 040 | DONE (reviewed in isolated commit f22c7b6) |
+
+### Dependency notes
+
+- 041 depends on 040 because package ownership changes must settle before changing public entrypoints.
+- 042 depends on 041 to avoid refactoring components while their export tier is moving.
+- 043 depends on 041 and 042 because the manifest must describe the final public barrels.
+- 046 runs after 040 so dedupe does not immediately become stale.

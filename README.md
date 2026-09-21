@@ -151,6 +151,24 @@ pnpm dlx shadcn@latest add http://localhost:3000/r-steez/foundation.json
 pnpm dlx shadcn@latest add http://localhost:3000/r-steez/phantasy-fui.json
 ```
 
+**Surface preset** (tiles, cards, and compact metrics):
+
+```bash
+pnpm dlx shadcn@latest add http://localhost:3000/r-steez/surfaces.json
+```
+
+**Motion preset** (hand-drawn, text, marquee, and heartbeat treatments):
+
+```bash
+pnpm dlx shadcn@latest add http://localhost:3000/r-steez/motion.json
+```
+
+**App shell preset** (navigation, layout, feedback, and loading primitives):
+
+```bash
+pnpm dlx shadcn@latest add http://localhost:3000/r-steez/app-shell.json
+```
+
 Single primitives:
 
 ```bash

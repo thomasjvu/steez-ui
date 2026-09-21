@@ -93,6 +93,16 @@ import { CyberpunkTile } from "@steez-ui/ui";`}
       </section>
 
       <section className={siteStyles.section}>
+        <h2 className={siteStyles.sectionTitle}>Intent presets</h2>
+        <p className={siteStyles.body}>
+          Start with a coherent family when a project needs more than one primitive:
+          <code className={siteStyles.inlineCode}>surfaces</code>,{" "}
+          <code className={siteStyles.inlineCode}>motion</code>, or{" "}
+          <code className={siteStyles.inlineCode}>app-shell</code>. Individual item URLs remain{" "}
+          the smaller path when a project needs only one primitive.
+        </p>
+      </section>
+      <section className={siteStyles.section}>
         <h2 className={siteStyles.sectionTitle}>Add a primitive (checklist)</h2>
         <p className={siteStyles.body}>
           Keep these surfaces in lockstep. Skipping the catalog, preview, or generator is what
