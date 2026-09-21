@@ -25,6 +25,13 @@ const NON_COMPONENT_REGISTRY_NAMES = new Set([
   "app-shell",
 ]);
 
+const INTERNAL_HELPER_REGISTRY_NAMES = [
+  "stable-id",
+  "field-description",
+  "roving-tabs",
+  "button-styles",
+];
+
 /**
  * Value exports from packages/ui that are not primary catalog components:
  * aliases, hooks, constants, and secondary exports covered by another slug.
@@ -110,6 +117,18 @@ describe("registry parity", () => {
       unexpected,
       `Registry files without catalog slug or allowlist entry: ${unexpected.join(", ")}`,
     ).toEqual([]);
+  });
+
+  it("keeps internal helper payloads resolvable without listing them in the public index", () => {
+    const index = JSON.parse(
+      fs.readFileSync(path.join(registryDir, "index.json"), "utf8"),
+    ) as Array<{ name: string }>;
+    const indexedNames = new Set(index.map((item) => item.name));
+
+    for (const helperName of INTERNAL_HELPER_REGISTRY_NAMES) {
+      expect(fs.existsSync(path.join(registryDir, `${helperName}.json`))).toBe(true);
+      expect(indexedNames.has(helperName)).toBe(false);
+    }
   });
 
   it("has a preview loader for every catalog slug", () => {

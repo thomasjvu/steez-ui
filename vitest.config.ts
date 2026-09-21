@@ -18,6 +18,7 @@ export default defineConfig({
       "packages/ui/src/**/*.test.tsx",
       "lib/**/*.test.ts",
       "lib/**/*.test.tsx",
+      "scripts/**/*.test.mjs",
     ],
     css: {
       modules: {

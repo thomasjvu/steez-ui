@@ -1,26 +1,20 @@
 import fs from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
+import {
+  DEFAULT_REGISTRY_BASE_URL,
+  buildSourceOwners,
+  collectRegistryDependencies,
+  makeRegistryContentPortable,
+  toAbsoluteRegistryDependency,
+} from "./lib/registry-transform.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const registryDir = path.join(repoRoot, "public/r-steez");
 
-/** Production default; override with STEEZ_REGISTRY_BASE_URL for localhost demos. */
-const DEFAULT_REGISTRY_BASE_URL = "https://steez-ui-6v5.pages.dev/r-steez";
 const registryBaseUrl = (
   process.env.STEEZ_REGISTRY_BASE_URL?.trim() || DEFAULT_REGISTRY_BASE_URL
 ).replace(/\/$/, "");
-
-/**
- * Bare names become absolute registry URLs so shadcn can resolve deps off-host.
- * Already-absolute deps are left unchanged.
- */
-function toAbsoluteRegistryDependency(dep) {
-  if (!dep || typeof dep !== "string") return dep;
-  if (/^https?:\/\//i.test(dep)) return dep;
-  const name = dep.replace(/\.json$/i, "");
-  return `${registryBaseUrl}/${name}.json`;
-}
 
 const itemDefinitions = [
   {
@@ -612,7 +606,7 @@ for (const [name, source, target] of [
       item.registryDependencies.push(name);
     }
   }
-  itemDefinitions.push({ name, type: "registry:lib", title: name,
+  itemDefinitions.push({ name, type: "registry:lib", title: name, index: false,
     description: "Shared implementation dependency.", dependencies: [], registryDependencies: [],
     files: [{ source, target, type: "registry:file" }] });
 }
@@ -627,13 +621,7 @@ itemDefinitions.push({
   })),
 });
 
-const owners = new Map();
-for (const item of itemDefinitions) {
-  for (const file of item.files) {
-    if (owners.has(file.source)) throw new Error(`Duplicate source: ${file.source}`);
-    owners.set(file.source, { item: item.name, target: file.target });
-  }
-}
+const owners = buildSourceOwners(itemDefinitions);
 
 function validateItem(item) {
   if (
@@ -656,20 +644,6 @@ async function readFileContent(relativePath) {
     absolutePath,
     content: await fs.readFile(absolutePath, "utf8"),
   };
-}
-
-/**
- * Package sources use explicit `.js` specifiers for emitted ESM. Registry
- * files are copied into TypeScript consumers, where extensionless imports
- * resolve through the consumer's normal TS/bundler rules.
- */
-const relativeImportPattern = /((?:\bfrom\s+|\bimport\s*(?:\(\s*)?|\bexport\s+from\s*)["'])(\.\.?\/[^"']+)(["'])/g;
-
-function makeRegistryContentPortable(content) {
-  return content.replace(relativeImportPattern, (_match, prefix, specifier, suffix) => {
-    const portableSpecifier = specifier.replace(/\.(?:cjs|jsx?|mjs)$/i, "");
-    return `${prefix}${portableSpecifier}${suffix}`;
-  });
 }
 
 await fs.mkdir(registryDir, { recursive: true });
@@ -698,17 +672,13 @@ for (const item of itemDefinitions) {
     });
   }
 
-  const registryDependencies = new Set(item.registryDependencies.filter((dep) => dep !== "icon-provider"));
-  for (const file of item.files) {
-    const source = (await readFileContent(file.source)).content;
-    if (source.includes('"@steez-ui/icons"')) registryDependencies.add("icon-provider");
-    for (const match of source.matchAll(/(?:from\s*|import\s*)["'](\.[^"']+)["']/g)) {
-      const resolved = path.posix.normalize(path.posix.join(path.posix.dirname(file.source), match[1]));
-      const owner = owners.get(resolved) || owners.get(resolved.replace(/\.js$/, ".tsx")) || owners.get(resolved.replace(/\.js$/, ".ts"));
-      if (!owner) throw new Error(`Unresolved registry import: ${file.source} -> ${match[1]}`);
-      if (owner.item !== item.name) registryDependencies.add(owner.item);
-    }
-  }
+  const sourceContents = await Promise.all(
+    item.files.map(async (file) => ({
+      sourcePath: file.source,
+      content: (await readFileContent(file.source)).content,
+    })),
+  );
+  const registryDependencies = collectRegistryDependencies(item, sourceContents, owners);
   const payload = {
     $schema: "https://ui.shadcn.com/schema/registry-item.json",
     name: item.name,
@@ -716,7 +686,9 @@ for (const item of itemDefinitions) {
     title: item.title,
     description: item.description,
     dependencies: item.dependencies.filter((dep) => !dep.startsWith("@steez-ui/")),
-    registryDependencies: [...registryDependencies].map(toAbsoluteRegistryDependency),
+    registryDependencies: registryDependencies.map((dependency) =>
+      toAbsoluteRegistryDependency(dependency, registryBaseUrl),
+    ),
     docs: "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
     files,
   };
@@ -726,12 +698,14 @@ for (const item of itemDefinitions) {
     `${JSON.stringify(payload, null, 2)}\n`,
   );
 
-  indexItems.push({
-    name: item.name,
-    type: item.type,
-    title: item.title,
-    description: item.description,
-  });
+  if (item.index !== false) {
+    indexItems.push({
+      name: item.name,
+      type: item.type,
+      title: item.title,
+      description: item.description,
+    });
+  }
 }
 
 await fs.writeFile(
