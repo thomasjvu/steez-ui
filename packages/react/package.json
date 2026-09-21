@@ -36,7 +36,8 @@
     "build": "tsup",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "dev": "tsup --watch",
-    "pack:local": "tsup && pnpm pack"
+    "pack:local": "tsup && pnpm pack",
+    "verify": "pnpm typecheck && pnpm pack:local"
   },
   "peerDependencies": {
     "react": ">=18",

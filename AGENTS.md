@@ -41,12 +41,37 @@ pnpm workspace: `packages/*` (see `pnpm-workspace.yaml`). Single root lockfile o
 - `packages/react` uses the **root** lockfile (nested lock removed). `build:react` / `publish:react:forgejo` are legacy escape hatches.
 - Heavy canvas: `HexagonGrid` and `SignalTrailBackdrop` are **subpath-only** (`@steez-ui/ui/hexagon-grid`, `@steez-ui/ui/signal-trail-backdrop`).
 
+### `@steez-ui/react` retirement gate
+
+The legacy package is **deprecated-but-supported** for existing consumers. It stays
+workspace-visible and publishable while the retirement gate is blocked. Do not
+delete it, narrow the workspace glob, remove its root lockfile importer, revoke
+publication, or change its API without all of the following evidence:
+
+1. The exact published version list, registry metadata or URLs, and final supported
+   version.
+2. A dated inventory of every known consuming repository, owner, package range or
+   lockfile reference, and the search scope. No search result may be treated as
+   proof that no consumers exist.
+3. A per-consumer migration status with its canonical target, verification date,
+   and any approved blocker or exception.
+4. A public deprecation notice with an owner-approved support end and removal
+   deadline.
+
+The repository currently records no external consumer inventory or deprecation
+deadline. Until that evidence is supplied, the package is not **safe-to-remove**.
+See [`packages/react/README.md`](packages/react/README.md) for the export migration
+map and the legacy verification commands.
+
 ## Commands
 
 ```bash
 pnpm install              # workspace install (root)
 pnpm build:packages       # theme → icons → ui (canonical build order)
-pnpm build:react          # DEPRECATED package only (escape hatch)
+pnpm typecheck:react      # opt-in DEPRECATED package check
+pnpm build:react          # opt-in DEPRECATED package build
+pnpm pack:react           # opt-in DEPRECATED package build + tarball
+pnpm verify:react         # opt-in legacy typecheck, build, and pack check
 pnpm dev                  # Next docs site (turbopack)
 pnpm build                # build:packages then next build
 pnpm lint                 # eslint .
@@ -59,6 +84,12 @@ pnpm registry:generate    # → public/r-steez (canonical)
 pnpm deploy:pages         # Cloudflare Pages (needs wrangler auth / CF token)
 pnpm registry:build       # archival only — Boston /r demos (do not extend)
 ```
+
+`build:packages` and `typecheck:packages` name only the canonical theme, icons,
+and ui packages, so canonical gates remain independent of the legacy package.
+Legacy checks run only when explicitly requested with the commands above. The
+package-local equivalents are `pnpm --dir packages/react typecheck`, `build`, and
+`pack:local`.
 
 ### Typecheck / test
 

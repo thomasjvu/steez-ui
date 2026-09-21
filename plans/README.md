@@ -23,4 +23,14 @@ Plans **001–027** completed earlier. Batch **028–035** residual (HEAD was `d
 | 038 | Soft sunset @steez-ui/react | DONE |
 | 039 | new-york removal + Boston archive docs | DONE |
 
+## Retirement gate follow-up (2026-09-21)
+
+| Plan | Title | Status |
+|------|-------|--------|
+| 045 | Isolate deprecated `@steez-ui/react` behind a retirement gate | **BLOCKED** — no external consumer inventory or deprecation deadline is recorded; documentation and opt-in checks are complete, package retained |
+
+Plan 045 remains blocked until the exact published versions, dated consuming-repository
+inventory, per-consumer migration status, and approved public deprecation deadline
+are recorded. Until then, keep `packages/react` published and workspace-visible.
+
 Still product-gated: hard delete `packages/react` / `public/r` Boston content; TW preset expansion.

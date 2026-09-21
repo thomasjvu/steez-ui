@@ -66,6 +66,15 @@ for new projects.
 
 `@steez-ui/react` may still install for existing apps; migrate to `@steez-ui/ui` + theme + icons.
 
+The legacy package is currently **deprecated-but-supported**: it remains published
+for existing consumers, receives only security or critical fixes, and stays in the
+workspace while its retirement gate is incomplete. Before isolating or removing it,
+record the exact published versions, a dated inventory of known consuming repos,
+per-consumer migration status, and an owner-approved public deprecation deadline.
+This repository currently records no external consumer inventory or deadline, so
+Plan 045 remains blocked. See [`packages/react/README.md`](packages/react/README.md)
+for the export migration map and explicit legacy verification commands.
+
 ## Discover site (not a component dump)
 
 Open one primitive at a time:

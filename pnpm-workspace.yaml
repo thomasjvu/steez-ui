@@ -1,6 +1,10 @@
 packages:
   - "packages/*"
 
+# Keep @steez-ui/react workspace-visible while its retirement gate is blocked on
+# external consumer evidence. Canonical root gates use explicit package filters;
+# legacy verification is opt-in until the package can be safely isolated.
+
 allowBuilds:
   "@tailwindcss/oxide": true
   esbuild: true
