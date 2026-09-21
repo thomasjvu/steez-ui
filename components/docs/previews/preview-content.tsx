@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  AccordionFeatureCard,
   AsciiRippleText,
   AvatarStage,
   BlinkText,
@@ -12,6 +11,7 @@ import {
   StrokedText,
   ThemedCard,
 } from "@steez-ui/ui";
+import { AccordionFeatureCard } from "@steez-ui/ui/blocks";
 
 import styles from "../component-docs.module.css";
 

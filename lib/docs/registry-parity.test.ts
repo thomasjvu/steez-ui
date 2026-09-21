@@ -6,6 +6,7 @@ import { COMPONENT_DOCS } from "./component-catalog";
 
 const registryDir = path.join(process.cwd(), "public/r-steez");
 const packageIndexPath = path.join(process.cwd(), "packages/ui/src/index.ts");
+const packageBlocksPath = path.join(process.cwd(), "packages/ui/src/blocks.ts");
 
 /** Non-component registry items that are allowed without a catalog slug. */
 const NON_COMPONENT_REGISTRY_NAMES = new Set([
@@ -110,8 +111,12 @@ describe("registry parity", () => {
   });
 
   it("has a catalog slug for every package component export (export ↔ catalog parity)", () => {
-    const source = fs.readFileSync(packageIndexPath, "utf8");
-    const exports = parseComponentExports(source);
+    const mainSource = fs.readFileSync(packageIndexPath, "utf8");
+    const blocksSource = fs.readFileSync(packageBlocksPath, "utf8");
+    const exports = [
+      ...parseComponentExports(mainSource),
+      ...parseComponentExports(blocksSource),
+    ];
     const catalogSlugs = new Set(COMPONENT_DOCS.map((doc) => doc.slug));
     const missing: string[] = [];
 

@@ -3,15 +3,17 @@
 import {
   ErrorMessage,
   HeartbeatPulse,
-  LoadingOverlayCrystalline,
   LoadingProgressBar,
   MarqueeStrip,
   OverlayButton,
-  QuickInfoCard,
   StatCard,
   StatusMessage,
-  WidgetCard,
 } from "@steez-ui/ui";
+import {
+  LoadingOverlayCrystalline,
+  QuickInfoCard,
+  WidgetCard,
+} from "@steez-ui/ui/blocks";
 import { EyeIcon, InfoIcon, RefreshIcon } from "@steez-ui/icons";
 
 import styles from "../component-docs.module.css";

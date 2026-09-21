@@ -5,12 +5,12 @@ import React from "react";
 import {
   NotchedViewportFrame,
   PageTemplate,
-  RadialMenuOverlay,
   Section,
   TabbedPanel,
   ThemedCard,
   ThemeToggle,
 } from "@steez-ui/ui";
+import { RadialMenuOverlay } from "@steez-ui/ui/blocks";
 import { MenuIcon } from "@steez-ui/icons";
 
 import styles from "../component-docs.module.css";

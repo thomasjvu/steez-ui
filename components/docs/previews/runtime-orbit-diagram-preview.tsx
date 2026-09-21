@@ -7,7 +7,7 @@ import {
   RefreshIcon,
   SlidersIcon,
 } from "@steez-ui/icons";
-import { RuntimeOrbitDiagram } from "@steez-ui/ui";
+import { RuntimeOrbitDiagram } from "@steez-ui/ui/blocks";
 
 import styles from "../component-docs.module.css";
 

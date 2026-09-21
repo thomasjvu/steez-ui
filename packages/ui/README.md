@@ -75,10 +75,29 @@ family that matches the job and compose it before introducing a new wrapper:
 | --- | --- |
 | Actions | `Button`, `CopyButton`, `OverlayButton`, `FUIButtonTile` |
 | Forms | `CyberpunkInput`, `CyberpunkSelect`, `CyberpunkTextarea`, `CyberpunkCheckbox`, `CyberpunkRadio`, `CyberpunkRadioGroup`, `CyberpunkSlider`, `SegmentedControl` |
-| Surfaces | `CyberpunkTile` (`CyberTile` alias), `ThemedCard`, `CornerBracketCard`, `DottedHaloCard`, `WidgetCard`, `QuickInfoCard`, `StatCard`, `AvatarStage`, `NotchedViewportFrame` |
-| Layout | `Section`, `SectionHeader`, `PageHeader`, `PageTemplate`, `TabbedPanel`, `RadialMenuOverlay` |
+| Surfaces | `CyberpunkTile` (`CyberTile` alias), `ThemedCard`, `CornerBracketCard`, `DottedHaloCard`, `StatCard`, `AvatarStage`, `NotchedViewportFrame` |
+| Layout | `Section`, `SectionHeader`, `PageHeader`, `PageTemplate`, `TabbedPanel` |
 | Motion and text | `BoilingLines`, `AsciiRippleText`, `BlinkText`, `StrokedText`, `HeartbeatPulse`, `HeartbeatIndicator`, `MarqueeStrip` |
-| Feedback and loading | `StatusMessage`, `ErrorMessage`, `PixelTooltip`, `LoadingProgressBar`, `LoadingScreen`, `LoadingOverlayCrystalline`, `ThemeToggle`, `RuntimeOrbitDiagram` |
+| Feedback and loading | `StatusMessage`, `ErrorMessage`, `PixelTooltip`, `LoadingProgressBar`, `LoadingScreen`, `ThemeToggle` |
+
+Product-shaped compositions live behind the `@steez-ui/ui/blocks` entrypoint:
+
+| Family | Exports |
+| --- | --- |
+| Feature surfaces | `AccordionFeatureCard`, `QuickInfoCard`, `WidgetCard` |
+| Navigation and topology | `RadialMenuOverlay`, `RuntimeOrbitDiagram` |
+| Loading overlays | `LoadingOverlayCrystalline` |
+
+```tsx
+import {
+  AccordionFeatureCard,
+  LoadingOverlayCrystalline,
+  QuickInfoCard,
+  RadialMenuOverlay,
+  RuntimeOrbitDiagram,
+  WidgetCard,
+} from "@steez-ui/ui/blocks";
+```
 
 `HexagonGrid` and `SignalTrailBackdrop` remain subpath-only because they bring canvas or
 WebGL work into the consuming bundle. Every export has a matching reference page at

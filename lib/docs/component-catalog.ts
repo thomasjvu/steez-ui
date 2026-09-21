@@ -260,7 +260,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
     summary: "Expandable feature card with media panel, vertical title, and collapsible body.",
     description:
       "Use AccordionFeatureCard for marketing or product feature rows that need a cut-corner media strip and expandable detail without a full accordion system.",
-    packageImport: 'import { AccordionFeatureCard } from "@steez-ui/ui";',
+    packageImport: 'import { AccordionFeatureCard } from "@steez-ui/ui/blocks";',
     usage: `<AccordionFeatureCard
   title="Signal mesh"
   eyebrow="01 / Surfaces"
@@ -389,7 +389,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
     category: "layout",
     summary: "Full-screen radial navigation surface built around the notched viewport shell.",
     description: "Use RadialMenuOverlay when the product needs one authored navigation moment instead of scattering section links across the viewport.",
-    packageImport: 'import { RadialMenuOverlay } from "@steez-ui/ui";',
+    packageImport: 'import { RadialMenuOverlay } from "@steez-ui/ui/blocks";',
     usage: `<RadialMenuOverlay
   open={open}
   onClose={() => setOpen(false)}
@@ -447,7 +447,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
     category: "feedback",
     summary: "Compact centered loading card for viewers, canvases, and media shells.",
     description: "Use LoadingOverlayCrystalline when only one surface is loading and you need a small overlay message instead of a full-screen takeover.",
-    packageImport: 'import { LoadingOverlayCrystalline } from "@steez-ui/ui";',
+    packageImport: 'import { LoadingOverlayCrystalline } from "@steez-ui/ui/blocks";',
     usage: `<LoadingOverlayCrystalline
   message="Preparing avatar"
   subtext="Loading model assets"
@@ -513,7 +513,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
     category: "surfaces",
     summary: "Compact multi-stat summary surface with an optional storage meter.",
     description: "Use QuickInfoCard when several small operational stats should sit in one flat summary band instead of separate tiles.",
-    packageImport: 'import { QuickInfoCard } from "@steez-ui/ui";',
+    packageImport: 'import { QuickInfoCard } from "@steez-ui/ui/blocks";',
     usage: `<QuickInfoCard
   items={[
     { label: "Status", value: "Live", valueColor: "success" },
@@ -529,7 +529,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
     category: "surfaces",
     summary: "Dashboard widget shell with grid-size presets, header slot, and overlay support.",
     description: "Use WidgetCard when grid-driven admin or monitoring surfaces need a flat reusable widget frame instead of one-off card markup.",
-    packageImport: 'import { WidgetCard } from "@steez-ui/ui";',
+    packageImport: 'import { WidgetCard } from "@steez-ui/ui/blocks";',
     usage: `<WidgetCard title="Scene" size="sm-b" overlay={<OverlayButton>+</OverlayButton>}>
   <div>Widget body</div>
 </WidgetCard>`,
@@ -652,7 +652,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
     category: "layout",
     summary: "Animated path diagram for workspace systems, flows, and runtime maps.",
     description: "Use RuntimeOrbitDiagram when a product surface needs a compact animated topology instead of static icon rows or screenshot placeholders.",
-    packageImport: 'import { RuntimeOrbitDiagram } from "@steez-ui/ui";',
+    packageImport: 'import { RuntimeOrbitDiagram } from "@steez-ui/ui/blocks";',
     usage: `<RuntimeOrbitDiagram
   nodes={nodes}
   pathOrder={["character", "site", "business", "automations", "operations"]}
