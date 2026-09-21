@@ -20,18 +20,22 @@ export function DocsSiteLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const isHome = currentNav === "home";
+  const visibleNav = isHome
+    ? SITE_NAV.filter((item) => item.key === "components" || item.key === "docs")
+    : SITE_NAV;
 
   return (
     <SteezIconProvider size={16} strokeWidth={2}>
       <div className={styles.app}>
-        <div className={styles.shell}>
+        <div className={`${styles.shell} ${isHome ? styles.homeShell : ""}`}>
           <header className={styles.header}>
             <Link href="/" className={styles.brand}>
               Steez UI
             </Link>
 
             <nav className={styles.nav} aria-label="Primary">
-              {SITE_NAV.map((item) => {
+              {visibleNav.map((item) => {
                 const isActive =
                   item.key === currentNav ||
                   (item.key === "components" && pathname.startsWith("/components"));
@@ -58,7 +62,7 @@ export function DocsSiteLayout({
             </div>
           </header>
 
-          <main className={styles.main}>
+          <main className={`${styles.main} ${isHome ? styles.homeMain : ""}`}>
             {title ? (
               <div>
                 <h1 className={styles.pageTitle}>{title}</h1>

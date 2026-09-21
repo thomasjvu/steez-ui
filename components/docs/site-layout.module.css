@@ -1,6 +1,6 @@
 .app {
   min-height: 100vh;
-  background: #0a0a0a;
+  background: #090a0c;
   color: #e8e8e8;
 }
 
@@ -8,6 +8,12 @@
   max-width: 880px;
   margin: 0 auto;
   padding: 0 1.25rem 4rem;
+}
+
+.homeShell {
+  max-width: 1440px;
+  padding-right: clamp(1.25rem, 4vw, 4.5rem);
+  padding-left: clamp(1.25rem, 4vw, 4.5rem);
 }
 
 .header {
@@ -75,6 +81,10 @@
 
 .main {
   padding-top: 2.5rem;
+}
+
+.homeMain {
+  padding-top: 0;
 }
 
 .pageTitle {
@@ -265,6 +275,643 @@
   align-items: center;
 }
 
+/* Homepage direction: spacious editorial layout with one visual focal point. */
+.homePage {
+  --home-accent: #b8ff3d;
+  --home-violet: #8b66ff;
+  --home-ink: #f5f3ec;
+  position: relative;
+  overflow-x: clip;
+  isolation: isolate;
+}
+
+.homePage::before {
+  position: absolute;
+  z-index: -1;
+  top: -1rem;
+  right: -20vw;
+  left: -20vw;
+  height: 720px;
+  content: "";
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 72% 42%, rgba(139, 102, 255, 0.12), transparent 25rem),
+    radial-gradient(circle at 58% 52%, rgba(184, 255, 61, 0.06), transparent 22rem),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 72%);
+}
+
+.homeHero {
+  display: grid;
+  grid-template-columns: minmax(360px, 0.95fr) minmax(0, 1.05fr);
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: center;
+  min-height: 650px;
+  padding: clamp(4rem, 8vw, 7.5rem) 0 5.5rem;
+}
+
+.heroCopy {
+  position: relative;
+  z-index: 1;
+}
+
+.eyebrow,
+.stageHeader,
+.stageFooter,
+.cardStatus,
+.componentCardMeta,
+.sectionKicker,
+.indexNote,
+.eyebrowTag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  align-items: center;
+  margin-bottom: 2rem;
+  color: #858791;
+}
+
+.eyebrowTag {
+  padding: 0.45rem 0.65rem;
+  border: 1px solid color-mix(in srgb, var(--home-accent) 68%, transparent);
+  color: var(--home-accent);
+  clip-path: polygon(0 0, calc(100% - 0.55rem) 0, 100% 0.55rem, 100% 100%, 0 100%);
+}
+
+.eyebrowDot {
+  color: var(--home-accent);
+}
+
+.homeTitle {
+  max-width: 7.2ch;
+  margin: 0;
+  color: var(--home-ink);
+  font-family: var(--font-display);
+  font-size: clamp(3.8rem, 6vw, 6.6rem);
+  font-weight: 700;
+  letter-spacing: -0.085em;
+  line-height: 0.86;
+}
+
+.homeTitle span {
+  color: var(--home-accent);
+}
+
+.homeLead {
+  max-width: 31ch;
+  margin: 2.1rem 0 2rem;
+  color: #a5a6ad;
+  font-size: clamp(1rem, 1.3vw, 1.18rem);
+  line-height: 1.55;
+}
+
+.homeActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.accentButton,
+.textButton,
+.installLink,
+.sectionLink {
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.accentButton {
+  display: inline-flex;
+  gap: 1rem;
+  align-items: center;
+  min-height: 3.3rem;
+  padding: 0 1.35rem;
+  background: var(--home-accent);
+  color: #0a0c0b;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  clip-path: polygon(0 0, calc(100% - 1rem) 0, 100% 1rem, 100% 100%, 0 100%);
+}
+
+.accentButton:hover {
+  background: #d1ff78;
+  transform: translateY(-2px);
+}
+
+.textButton {
+  display: inline-flex;
+  gap: 0.65rem;
+  align-items: center;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid #71737b;
+  color: var(--home-ink);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.textButton:hover,
+.installLink:hover,
+.sectionLink:hover {
+  color: var(--home-accent);
+  border-color: var(--home-accent);
+}
+
+.heroNote {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin-top: 5.5rem;
+  color: #70727b;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.17em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+.crossMark {
+  display: block;
+  margin-bottom: 0.55rem;
+  color: #b7bbc3;
+  font-family: var(--font-primary);
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.heroStage {
+  position: relative;
+  min-width: 0;
+  min-height: 510px;
+}
+
+.stageGlow {
+  position: absolute;
+  top: 15%;
+  right: 12%;
+  width: 55%;
+  height: 65%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(184, 255, 61, 0.16), rgba(139, 102, 255, 0.1) 40%, transparent 72%);
+  filter: blur(25px);
+}
+
+.stageGrid {
+  position: absolute;
+  inset: -1rem -2rem;
+  opacity: 0.42;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 4rem 4rem;
+  mask-image: linear-gradient(90deg, transparent, #000 16%, #000 82%, transparent);
+}
+
+.stageFrame {
+  position: relative;
+  min-height: 500px;
+  overflow: hidden;
+  border: 1px solid rgba(218, 221, 226, 0.32);
+  background: linear-gradient(135deg, rgba(18, 20, 25, 0.92), rgba(12, 13, 17, 0.72));
+  clip-path: polygon(0 0, calc(100% - 4.4rem) 0, 100% 4.4rem, 100% calc(100% - 2rem), calc(100% - 2rem) 100%, 0 100%);
+  box-shadow: 0 2.5rem 6rem rgba(0, 0, 0, 0.32);
+}
+
+.stageFrame::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background: linear-gradient(125deg, transparent 18%, rgba(255, 255, 255, 0.05) 48%, transparent 49%);
+}
+
+.stageHeader,
+.stageFooter {
+  position: absolute;
+  z-index: 4;
+  right: 2.75rem;
+  left: 2.75rem;
+  display: flex;
+  justify-content: space-between;
+  color: #9a9da8;
+}
+
+.stageHeader {
+  top: 2rem;
+}
+
+.stageHeader span:last-child {
+  color: var(--home-ink);
+}
+
+.stageFooter {
+  bottom: 1.65rem;
+  align-items: center;
+}
+
+.stageProgress {
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+}
+
+.stageProgress i {
+  display: block;
+  width: 2.15rem;
+  height: 2px;
+  background: #333741;
+}
+
+.stageProgress i:first-child {
+  background: var(--home-accent);
+}
+
+.stageArt {
+  position: absolute;
+  inset: 4.5rem 2rem 3.4rem;
+}
+
+.stageShape {
+  position: absolute;
+  border: 1px solid rgba(218, 221, 226, 0.28);
+  background: rgba(19, 21, 28, 0.62);
+  clip-path: polygon(0 0, 82% 0, 100% 18%, 100% 100%, 18% 100%, 0 82%);
+}
+
+.stageShapeBack {
+  inset: 11% 2% 5% 7%;
+  transform: rotate(-8deg);
+  border-color: rgba(139, 102, 255, 0.42);
+  background: linear-gradient(120deg, rgba(139, 102, 255, 0.08), rgba(15, 16, 22, 0.8));
+}
+
+.stageShapeMid {
+  inset: 5% 14% 10% 4%;
+  transform: rotate(6deg);
+  border-color: rgba(184, 255, 61, 0.35);
+  background: linear-gradient(140deg, rgba(184, 255, 61, 0.05), transparent 48%);
+}
+
+.stageShapeFront {
+  inset: 17% 18% 1% 11%;
+  transform: rotate(-3deg);
+  border-color: rgba(218, 221, 226, 0.2);
+}
+
+.featuredCard {
+  position: absolute;
+  z-index: 2;
+  top: 23%;
+  right: 8%;
+  bottom: 13%;
+  left: 16%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2rem;
+  border: 1px solid rgba(218, 221, 226, 0.42);
+  background: linear-gradient(145deg, rgba(19, 21, 28, 0.94), rgba(8, 9, 12, 0.84));
+  clip-path: polygon(0 0, calc(100% - 2rem) 0, 100% 2rem, 100% 100%, 2rem 100%, 0 calc(100% - 2rem));
+  box-shadow: 0 1.75rem 3rem rgba(0, 0, 0, 0.35);
+}
+
+.cardStatus {
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+  color: #9a9da8;
+}
+
+.statusDot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--home-accent);
+  box-shadow: 0 0 1.2rem rgba(184, 255, 61, 0.9);
+}
+
+.featuredCardRow {
+  display: flex;
+  gap: 1rem;
+  align-items: end;
+  justify-content: space-between;
+}
+
+.featuredCard h2 {
+  margin: 0 0 0.45rem;
+  color: var(--home-ink);
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  letter-spacing: -0.05em;
+}
+
+.featuredCard p {
+  max-width: 24ch;
+  margin: 0;
+  color: #858791;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.cardArrow {
+  display: grid;
+  width: 3.25rem;
+  height: 3.25rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid #676a75;
+  color: var(--home-ink);
+  font-size: 1.35rem;
+}
+
+.stageSideNote {
+  position: absolute;
+  top: 2.5rem;
+  right: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  color: #777a83;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.17em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+.stageCaption {
+  position: absolute;
+  right: 2rem;
+  bottom: -1.8rem;
+  color: #737680;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.installRow {
+  display: grid;
+  grid-template-columns: minmax(170px, 0.34fr) minmax(0, 1fr) auto;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1.35rem 0;
+  border-top: 1px solid rgba(218, 221, 226, 0.16);
+  border-bottom: 1px solid rgba(218, 221, 226, 0.16);
+}
+
+.installLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  color: #8d909a;
+  font-size: 0.8rem;
+}
+
+.sectionKicker {
+  color: var(--home-accent);
+}
+
+.commandBar {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  border: 1px solid rgba(218, 221, 226, 0.16);
+  background: rgba(21, 23, 28, 0.72);
+}
+
+.commandBar code {
+  min-width: 0;
+  flex: 1;
+  overflow-x: auto;
+  padding: 0.8rem 1rem;
+  color: #c9cbd0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.commandBar :global(button) {
+  width: 2.8rem;
+  height: 2.8rem;
+  border-left: 1px solid rgba(218, 221, 226, 0.16);
+  border-radius: 0;
+  color: #aeb1ba;
+}
+
+.installLink,
+.sectionLink {
+  display: inline-flex;
+  gap: 0.55rem;
+  align-items: center;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid #555862;
+  color: var(--home-ink);
+  font-size: 0.78rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.componentSection {
+  padding: 7rem 0 6rem;
+}
+
+.sectionHeadingRow {
+  display: flex;
+  gap: 2rem;
+  align-items: end;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.sectionHeading {
+  margin: 0.75rem 0 0;
+  color: var(--home-ink);
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.6rem);
+  letter-spacing: -0.07em;
+  line-height: 0.95;
+}
+
+.componentRail {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.componentCard {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid rgba(218, 221, 226, 0.18);
+  background: linear-gradient(145deg, rgba(21, 23, 28, 0.82), rgba(12, 13, 17, 0.82));
+  color: var(--home-ink);
+  text-decoration: none;
+  clip-path: polygon(0 0, calc(100% - 1rem) 0, 100% 1rem, 100% 100%, 0 100%);
+  transition:
+    border-color var(--transition-normal),
+    background-color var(--transition-normal),
+    transform var(--transition-normal);
+}
+
+.componentCard:hover {
+  border-color: color-mix(in srgb, var(--home-accent) 65%, transparent);
+  background: linear-gradient(145deg, rgba(28, 31, 36, 0.92), rgba(12, 13, 17, 0.9));
+  transform: translateY(-4px);
+}
+
+.componentArt {
+  display: grid;
+  min-height: 150px;
+  place-items: center;
+  border-bottom: 1px solid rgba(218, 221, 226, 0.12);
+}
+
+.artSurface {
+  display: flex;
+  width: 84%;
+  min-height: 3.2rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(218, 221, 226, 0.32);
+  color: #bfc2ca;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.buttonArt {
+  border-color: var(--home-accent);
+  color: var(--home-accent);
+  clip-path: polygon(0 0, calc(100% - 0.75rem) 0, 100% 0.75rem, 100% 100%, 0 100%);
+}
+
+.inputArt {
+  justify-content: space-between;
+  padding: 0 1rem;
+  color: #70737c;
+  border-radius: 0.2rem;
+}
+
+.inputArt::after {
+  width: 0.8rem;
+  height: 0.8rem;
+  content: "⌕";
+  color: #9b9ea8;
+  font-size: 1rem;
+}
+
+.toggleArt {
+  width: 5rem;
+  min-height: 2.2rem;
+  justify-content: end;
+  padding: 0.2rem;
+  border-color: var(--home-accent);
+  border-radius: 999px;
+}
+
+.toggleKnob {
+  display: block;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #a8abb8, #4a4b57 70%);
+  box-shadow: 0 0 1.2rem rgba(184, 255, 61, 0.35);
+}
+
+.tabsArt {
+  gap: 1rem;
+  justify-content: space-around;
+  border-color: rgba(218, 221, 226, 0.2);
+  font-size: 0.62rem;
+}
+
+.tabActive {
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--home-accent);
+  color: var(--home-ink);
+}
+
+.componentCardMeta {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 1rem;
+  color: #898c96;
+}
+
+.componentCardMeta span:last-child {
+  color: var(--home-ink);
+  font-size: 0.9rem;
+}
+
+.homeIndex {
+  display: grid;
+  grid-template-columns: 0.8fr 1.4fr 0.8fr;
+  gap: 2rem;
+  align-items: center;
+  padding: 1.35rem 0;
+  border-top: 1px solid rgba(218, 221, 226, 0.16);
+  color: #858791;
+}
+
+.indexBrand {
+  color: var(--home-ink);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.indexLinks {
+  display: flex;
+  justify-content: center;
+  gap: clamp(1rem, 4vw, 3rem);
+}
+
+.indexLinks a {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  color: #858791;
+  font-size: 0.76rem;
+  text-decoration: none;
+}
+
+.indexLinks a:hover {
+  color: var(--home-accent);
+}
+
+.indexLinks span {
+  color: #555862;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+}
+
+.indexLinks b {
+  color: var(--home-ink);
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+.indexNote {
+  justify-self: end;
+  color: #737680;
+  text-align: right;
+}
+
+.indexNote span {
+  margin-left: 0.45rem;
+  color: var(--home-accent);
+}
+
 @media (max-width: 640px) {
   .header {
     flex-wrap: wrap;
@@ -272,5 +919,154 @@
 
   .heroTitle {
     max-width: none;
+  }
+}
+
+@media (max-width: 1000px) {
+  .homeHero {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    padding-top: 5rem;
+  }
+
+  .homeTitle {
+    max-width: 8ch;
+  }
+
+  .heroNote {
+    margin-top: 2.75rem;
+  }
+
+  .heroStage {
+    min-height: min(70vw, 510px);
+  }
+
+  .stageSideNote {
+    display: none;
+  }
+
+  .installRow {
+    grid-template-columns: 1fr 1.8fr;
+  }
+
+  .installLink {
+    grid-column: 2;
+    justify-self: end;
+  }
+}
+
+@media (max-width: 700px) {
+  .homeShell .headerActions {
+    display: none;
+  }
+
+  .homeHero {
+    min-height: auto;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .homeTitle {
+    font-size: clamp(3.7rem, 17vw, 6rem);
+  }
+
+  .heroStage {
+    min-height: 390px;
+  }
+
+  .stageFrame {
+    min-height: 380px;
+  }
+
+  .stageHeader,
+  .stageFooter {
+    right: 1.25rem;
+    left: 1.25rem;
+  }
+
+  .stageArt {
+    inset: 4rem 0.8rem 3rem;
+  }
+
+  .featuredCard {
+    top: 22%;
+    right: 5%;
+    bottom: 13%;
+    left: 9%;
+    padding: 1.2rem;
+  }
+
+  .featuredCard h2 {
+    font-size: 1.35rem;
+  }
+
+  .cardArrow {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .installRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+  }
+
+  .installLabel,
+  .commandBar {
+    width: 100%;
+  }
+
+  .installLink {
+    margin-left: auto;
+  }
+
+  .componentSection {
+    padding: 5rem 0;
+  }
+
+  .sectionHeadingRow {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .componentRail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .componentArt {
+    min-height: 120px;
+  }
+
+  .homeIndex {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+
+  .indexLinks {
+    justify-content: start;
+    flex-wrap: wrap;
+  }
+
+  .indexNote {
+    justify-self: start;
+    text-align: left;
+  }
+}
+
+@media (max-width: 420px) {
+  .homeShell .nav {
+    gap: 0.25rem 0.7rem;
+  }
+
+  .homeShell .navLink {
+    font-size: 0.76rem;
+  }
+
+  .componentRail {
+    grid-template-columns: 1fr;
+  }
+
+  .componentArt {
+    min-height: 140px;
   }
 }
