@@ -7,12 +7,14 @@
 
 .filterChip {
   appearance: none;
-  border: 1px solid #2a2a2a;
+  border: 1px solid #34363d;
   background: transparent;
   color: #888;
+  font-family: var(--font-mono);
   font-size: 0.8125rem;
+  letter-spacing: 0.04em;
   padding: 0.35rem 0.7rem;
-  border-radius: 999px;
+  border-radius: 0;
   cursor: pointer;
 }
 
@@ -22,9 +24,9 @@
 }
 
 .filterChipActive {
-  background: #fff;
-  border-color: #fff;
-  color: #0a0a0a;
+  background: #b8ff3d;
+  border-color: #b8ff3d;
+  color: #0a0c0b;
 }
 
 .catalogList {
@@ -36,10 +38,16 @@
 
 .catalogRow {
   display: block;
-  padding: 0.95rem 0;
+  padding: 1.2rem 1rem;
   border-bottom: 1px solid #1f1f1f;
   text-decoration: none;
   color: inherit;
+  transition: background-color var(--transition-fast), padding-left var(--transition-fast);
+}
+
+.catalogRow:hover {
+  padding-left: 1.35rem;
+  background: rgba(184, 255, 61, 0.045);
 }
 
 .catalogRow:hover .catalogName {
@@ -56,9 +64,11 @@
 }
 
 .catalogName {
-  font-size: 0.9375rem;
-  font-weight: 500;
-  color: #fff;
+  color: #f5f3ec;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.005em;
 }
 
 .catalogSlug {
@@ -71,15 +81,18 @@
   margin: 0;
   font-size: 0.8125rem;
   line-height: 1.5;
-  color: #777;
+  color: #858791;
   max-width: 60ch;
 }
 
 /* Detail page */
 .breadcrumb {
-  margin: 0 0 1rem;
-  font-size: 0.8125rem;
-  color: #666;
+  margin: 0 0 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6f727b;
 }
 
 .breadcrumb a {
@@ -106,7 +119,7 @@
   text-transform: uppercase;
   color: #777;
   border: 1px solid #2a2a2a;
-  border-radius: 4px;
+  border-radius: 0;
   padding: 0.15rem 0.4rem;
 }
 
@@ -140,8 +153,8 @@
 .previewSurface {
   padding: 1.25rem;
   border: 1px solid #222;
-  border-radius: 8px;
-  background: #0f0f0f;
+  border-radius: 0;
+  background: linear-gradient(145deg, rgba(21, 23, 28, 0.84), rgba(12, 13, 17, 0.84));
   min-height: 10rem;
   display: flex;
   flex-direction: column;
@@ -171,8 +184,8 @@
   margin: 0;
   padding: 0.9rem 1rem;
   border: 1px solid #222;
-  border-radius: 8px;
-  background: #111;
+  border-radius: 0;
+  background: #111318;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 0.78rem;
   line-height: 1.55;
@@ -185,9 +198,9 @@
   display: flex;
   align-items: stretch;
   border: 1px solid #222;
-  border-radius: 8px;
+  border-radius: 0;
   overflow: hidden;
-  background: #111;
+  background: #111318;
 }
 
 .inlineCode {
@@ -262,6 +275,12 @@
   border-bottom: 1px solid #1f1f1f;
   text-decoration: none;
   color: inherit;
+  transition: background-color var(--transition-fast), padding-left var(--transition-fast);
+}
+
+.relatedLink:hover {
+  padding-left: 0.5rem;
+  background: rgba(184, 255, 61, 0.045);
 }
 
 .relatedLink:hover .relatedTitle {

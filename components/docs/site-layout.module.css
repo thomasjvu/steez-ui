@@ -5,21 +5,19 @@
 }
 
 .shell {
-  max-width: 880px;
+  max-width: 1320px;
   margin: 0 auto;
-  padding: 0 1.25rem 4rem;
+  padding: 0 clamp(1.25rem, 4vw, 4.5rem) 4rem;
 }
 
 .homeShell {
-  max-width: 1440px;
-  padding-right: clamp(1.25rem, 4vw, 4.5rem);
-  padding-left: clamp(1.25rem, 4vw, 4.5rem);
+  max-width: 1320px;
 }
 
 .header {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
   gap: 1rem;
   padding: 1.25rem 0;
   border-bottom: 1px solid #222;
@@ -31,6 +29,7 @@
 }
 
 .brand {
+  justify-self: start;
   font-size: 0.9375rem;
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -47,6 +46,7 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 0.25rem 1rem;
+  justify-self: center;
 }
 
 .navLink {
@@ -67,6 +67,7 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  justify-self: end;
 }
 
 .headerActions a {
@@ -80,40 +81,47 @@
 }
 
 .main {
-  padding-top: 2.5rem;
+  max-width: 1060px;
+  margin: 0 auto;
+  padding-top: clamp(3rem, 7vw, 5.5rem);
 }
 
 .homeMain {
+  max-width: none;
+  margin: 0;
   padding-top: 0;
 }
 
 .pageTitle {
-  margin: 0 0 0.5rem;
-  font-size: 1.75rem;
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 1.2;
-  color: #fff;
+  margin: 0 0 1rem;
+  color: #f5f3ec;
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 0.95;
 }
 
 .pageLead {
-  margin: 0 0 2rem;
+  margin: 0 0 4rem;
   max-width: 52ch;
-  font-size: 0.9375rem;
+  font-size: 1rem;
   line-height: 1.6;
-  color: #999;
+  color: #a5a6ad;
 }
 
 .section {
-  margin-bottom: 2.5rem;
+  margin-bottom: 4.5rem;
 }
 
 .sectionTitle {
-  margin: 0 0 0.75rem;
-  font-size: 1rem;
+  margin: 0 0 1rem;
+  color: #f5f3ec;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.5vw, 2rem);
   font-weight: 600;
-  letter-spacing: -0.02em;
-  color: #fff;
+  letter-spacing: -0.01em;
+  line-height: 1;
 }
 
 .body {
@@ -135,7 +143,7 @@
   margin: 0 0 0.75rem;
   font-size: clamp(1.75rem, 4vw, 2.25rem);
   font-weight: 600;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.02em;
   line-height: 1.15;
   color: #fff;
   max-width: 18ch;
@@ -162,7 +170,7 @@
   justify-content: center;
   height: 2.25rem;
   padding: 0 0.9rem;
-  border-radius: 6px;
+  border-radius: 0;
   border: 1px solid transparent;
   font-size: 0.875rem;
   font-weight: 500;
@@ -232,7 +240,7 @@
   gap: 0;
   margin: 0.75rem 0 0;
   border: 1px solid #222;
-  border-radius: 8px;
+  border-radius: 0;
   overflow: hidden;
   background: #111;
 }
@@ -253,7 +261,7 @@
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 0.85em;
   padding: 0.1em 0.35em;
-  border-radius: 4px;
+  border-radius: 0;
   background: #161616;
   color: #ccc;
 }
@@ -357,7 +365,7 @@
   font-family: var(--font-display);
   font-size: clamp(3.8rem, 6vw, 6.6rem);
   font-weight: 700;
-  letter-spacing: -0.085em;
+  letter-spacing: -0.06em;
   line-height: 0.86;
 }
 
@@ -483,18 +491,34 @@
   position: relative;
   min-height: 500px;
   overflow: hidden;
-  border: 1px solid rgba(218, 221, 226, 0.32);
-  background: linear-gradient(135deg, rgba(18, 20, 25, 0.92), rgba(12, 13, 17, 0.72));
+  --frame-border: rgba(218, 221, 226, 0.32);
+  border: 0;
+  background: transparent;
   clip-path: polygon(0 0, calc(100% - 4.4rem) 0, 100% 4.4rem, 100% calc(100% - 2rem), calc(100% - 2rem) 100%, 0 100%);
   box-shadow: 0 2.5rem 6rem rgba(0, 0, 0, 0.32);
+  isolation: isolate;
+}
+
+.stageFrame::before,
+.stageFrame::after {
+  position: absolute;
+  content: "";
+  pointer-events: none;
+}
+
+.stageFrame::before {
+  z-index: -2;
+  inset: 0;
+  background: var(--frame-border);
 }
 
 .stageFrame::after {
-  position: absolute;
-  inset: 0;
-  content: "";
-  pointer-events: none;
-  background: linear-gradient(125deg, transparent 18%, rgba(255, 255, 255, 0.05) 48%, transparent 49%);
+  z-index: -1;
+  inset: 1px;
+  clip-path: polygon(0 0, calc(100% - 4.4rem - 1px) 0, calc(100% - 1px) 4.4rem, calc(100% - 1px) calc(100% - 2rem - 1px), calc(100% - 2rem - 1px) calc(100% - 1px), 0 calc(100% - 1px));
+  background:
+    linear-gradient(125deg, transparent 18%, rgba(255, 255, 255, 0.05) 48%, transparent 49%),
+    linear-gradient(135deg, rgba(18, 20, 25, 0.92), rgba(12, 13, 17, 0.72));
 }
 
 .stageHeader,
@@ -581,10 +605,32 @@
   flex-direction: column;
   justify-content: space-between;
   padding: 2rem;
-  border: 1px solid rgba(218, 221, 226, 0.42);
-  background: linear-gradient(145deg, rgba(19, 21, 28, 0.94), rgba(8, 9, 12, 0.84));
+  --card-border: rgba(218, 221, 226, 0.42);
+  border: 0;
+  background: transparent;
   clip-path: polygon(0 0, calc(100% - 2rem) 0, 100% 2rem, 100% 100%, 2rem 100%, 0 calc(100% - 2rem));
   box-shadow: 0 1.75rem 3rem rgba(0, 0, 0, 0.35);
+  isolation: isolate;
+}
+
+.featuredCard::before,
+.featuredCard::after {
+  position: absolute;
+  content: "";
+  pointer-events: none;
+}
+
+.featuredCard::before {
+  z-index: -2;
+  inset: 0;
+  background: var(--card-border);
+}
+
+.featuredCard::after {
+  z-index: -1;
+  inset: 1px;
+  clip-path: polygon(0 0, calc(100% - 2rem - 1px) 0, calc(100% - 1px) calc(2rem + 1px), calc(100% - 1px) calc(100% - 1px), calc(2rem + 1px) calc(100% - 1px), 0 calc(100% - 2rem - 1px));
+  background: linear-gradient(145deg, rgba(19, 21, 28, 0.94), rgba(8, 9, 12, 0.84));
 }
 
 .cardStatus {
@@ -614,7 +660,7 @@
   color: var(--home-ink);
   font-family: var(--font-display);
   font-size: clamp(1.5rem, 3vw, 2.25rem);
-  letter-spacing: -0.05em;
+  letter-spacing: -0.03em;
 }
 
 .featuredCard p {
@@ -680,6 +726,16 @@
   font-size: 0.8rem;
 }
 
+.installTitle {
+  color: var(--home-accent);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
 .sectionKicker {
   color: var(--home-accent);
 }
@@ -741,7 +797,7 @@
   color: var(--home-ink);
   font-family: var(--font-display);
   font-size: clamp(2rem, 4vw, 3.6rem);
-  letter-spacing: -0.07em;
+  letter-spacing: -0.045em;
   line-height: 0.95;
 }
 
@@ -752,22 +808,46 @@
 }
 
 .componentCard {
+  --tile-border: rgba(218, 221, 226, 0.28);
+  --tile-surface: linear-gradient(145deg, rgba(21, 23, 28, 0.82), rgba(12, 13, 17, 0.82));
+  position: relative;
   min-width: 0;
   padding: 1rem;
-  border: 1px solid rgba(218, 221, 226, 0.18);
-  background: linear-gradient(145deg, rgba(21, 23, 28, 0.82), rgba(12, 13, 17, 0.82));
+  border: 0;
+  background: transparent;
   color: var(--home-ink);
   text-decoration: none;
   clip-path: polygon(0 0, calc(100% - 1rem) 0, 100% 1rem, 100% 100%, 0 100%);
+  isolation: isolate;
   transition:
     border-color var(--transition-normal),
     background-color var(--transition-normal),
     transform var(--transition-normal);
 }
 
+.componentCard::before,
+.componentCard::after {
+  position: absolute;
+  content: "";
+  pointer-events: none;
+}
+
+.componentCard::before {
+  z-index: -2;
+  inset: 0;
+  background: var(--tile-border);
+}
+
+.componentCard::after {
+  z-index: -1;
+  inset: 1px;
+  clip-path: polygon(0 0, calc(100% - 1rem - 1px) 0, calc(100% - 1px) calc(1rem + 1px), calc(100% - 1px) calc(100% - 1px), 0 calc(100% - 1px));
+  background: var(--tile-surface);
+}
+
 .componentCard:hover {
-  border-color: color-mix(in srgb, var(--home-accent) 65%, transparent);
-  background: linear-gradient(145deg, rgba(28, 31, 36, 0.92), rgba(12, 13, 17, 0.9));
+  --tile-border: color-mix(in srgb, var(--home-accent) 65%, transparent);
+  --tile-surface: linear-gradient(145deg, rgba(28, 31, 36, 0.92), rgba(12, 13, 17, 0.9));
   transform: translateY(-4px);
 }
 
@@ -791,9 +871,34 @@
 }
 
 .buttonArt {
-  border-color: var(--home-accent);
+  --art-border: var(--home-accent);
+  --art-surface: transparent;
+  position: relative;
+  border: 0;
+  background: transparent;
   color: var(--home-accent);
   clip-path: polygon(0 0, calc(100% - 0.75rem) 0, 100% 0.75rem, 100% 100%, 0 100%);
+  isolation: isolate;
+}
+
+.buttonArt::before,
+.buttonArt::after {
+  position: absolute;
+  content: "";
+  pointer-events: none;
+}
+
+.buttonArt::before {
+  z-index: -2;
+  inset: 0;
+  background: var(--art-border);
+}
+
+.buttonArt::after {
+  z-index: -1;
+  inset: 1px;
+  clip-path: polygon(0 0, calc(100% - 0.75rem - 1px) 0, calc(100% - 1px) calc(0.75rem + 1px), calc(100% - 1px) calc(100% - 1px), 0 calc(100% - 1px));
+  background: var(--art-surface);
 }
 
 .inputArt {
@@ -914,7 +1019,13 @@
 
 @media (max-width: 640px) {
   .header {
-    flex-wrap: wrap;
+    grid-template-columns: 1fr auto;
+  }
+
+  .nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: start;
   }
 
   .heroTitle {
@@ -956,7 +1067,7 @@
 }
 
 @media (max-width: 700px) {
-  .homeShell .headerActions {
+  .headerActions {
     display: none;
   }
 

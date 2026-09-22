@@ -18,14 +18,6 @@ export function HomePageContent() {
     <div className={styles.homePage}>
       <section className={styles.homeHero}>
         <div className={styles.heroCopy}>
-          <div className={styles.eyebrow}>
-            <span className={styles.eyebrowTag}>v1.0</span>
-            <span>Modular</span>
-            <span className={styles.eyebrowDot} aria-hidden="true">
-              •
-            </span>
-            <span>Open source</span>
-          </div>
           <h1 className={styles.homeTitle}>
             Build
             <br />
@@ -101,7 +93,7 @@ export function HomePageContent() {
 
       <section className={styles.installRow} id="install">
         <div className={styles.installLabel}>
-          <span className={styles.sectionKicker}>Install</span>
+          <span className={styles.installTitle}>Install</span>
           <span>One command to get started.</span>
         </div>
         <div className={styles.commandBar}>
@@ -116,7 +108,6 @@ export function HomePageContent() {
       <section className={styles.componentSection}>
         <div className={styles.sectionHeadingRow}>
           <div>
-            <span className={styles.sectionKicker}>A small surface area</span>
             <h2 className={styles.sectionHeading}>Start with the essentials.</h2>
           </div>
           <Link href="/components" className={styles.sectionLink}>

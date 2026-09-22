@@ -21,9 +21,6 @@ export function DocsSiteLayout({
 }) {
   const pathname = usePathname();
   const isHome = currentNav === "home";
-  const visibleNav = isHome
-    ? SITE_NAV.filter((item) => item.key === "components" || item.key === "docs")
-    : SITE_NAV;
 
   return (
     <SteezIconProvider size={16} strokeWidth={2}>
@@ -35,7 +32,7 @@ export function DocsSiteLayout({
             </Link>
 
             <nav className={styles.nav} aria-label="Primary">
-              {visibleNav.map((item) => {
+              {SITE_NAV.map((item) => {
                 const isActive =
                   item.key === currentNav ||
                   (item.key === "components" && pathname.startsWith("/components"));
