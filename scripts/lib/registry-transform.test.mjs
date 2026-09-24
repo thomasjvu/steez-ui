@@ -23,7 +23,7 @@ describe("registry transformations", () => {
   it.each([
     ["from", 'import value from "./value.js";', 'import value from "./value";'],
     ["dynamic import", 'const value = import("./value.mjs");', 'const value = import("./value");'],
-    ["export", 'export { value } from "../value.ts";', 'export { value } from "../value.ts";'],
+    ["TypeScript export", 'export { value } from "../value.ts";', 'export { value } from "../value";'],
     ["css import", 'import styles from "./styles.css";', 'import styles from "./styles.css";'],
   ])("rewrites extensionless %s imports deterministically", (_label, source, expected) => {
     expect(makeRegistryContentPortable(source)).toBe(expected);

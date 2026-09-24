@@ -7,7 +7,7 @@ import { LightCrossIcon } from "@steez-ui/icons";
 import {
   LoadingProgressBar,
   LOADING_PROGRESS_SEGMENT_COUNT,
-} from "./LoadingProgressBar.js";
+} from "./LoadingProgressBar.tsx";
 import styles from "./LoadingScreen.module.css";
 
 export interface LoadingScreenProps {

@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { CardFrame } from "./CardFrame.js";
+import { CardFrame } from "./CardFrame.tsx";
 import styles from "./DottedHaloCard.module.css";
 
 export interface DottedHaloCardProps

@@ -55,6 +55,7 @@ const PREVIEW_MAP: Record<string, ComponentType> = {
   "accordion-feature-card": makePreview(fromContent("AccordionFeatureCardPreview")),
   "ascii-ripple-text": makePreview(fromContent("AsciiRippleTextPreview")),
   "avatar-stage": makePreview(fromContent("AvatarStagePreview")),
+  "character-afterimage": makePreview(fromContent("CharacterAfterimagePreview")),
   "blink-text": makePreview(fromContent("BlinkTextPreview")),
   button: makePreview(fromControls("ButtonPreview")),
   "copy-button": makePreview(fromControls("CopyButtonPreview")),

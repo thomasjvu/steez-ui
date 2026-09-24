@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { useStableId } from "../hooks/useStableId.js";
+import { useStableId } from "../hooks/useStableId.ts";
 import styles from "./PixelTooltip.module.css";
 
 export type PixelTooltipPosition = "top" | "bottom" | "left" | "right";

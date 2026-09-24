@@ -2,8 +2,8 @@
 
 import React from "react";
 
-import { useSteezIconDefaults } from "./IconProvider.js";
-import type { SteezIconProps } from "./types.js";
+import { useSteezIconDefaults } from "./IconProvider.tsx";
+import type { SteezIconProps } from "./types.ts";
 
 function createIcon(
   render: (

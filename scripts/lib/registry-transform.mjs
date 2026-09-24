@@ -18,16 +18,16 @@ export function toAbsoluteRegistryDependency(
 }
 
 /**
- * Package sources use explicit `.js` specifiers for emitted ESM. Registry
- * files are copied into TypeScript consumers, where extensionless imports
- * resolve through the consumer's normal TS/bundler rules.
+ * Package sources use TypeScript extensions so source bundlers can resolve
+ * them directly. Registry files are copied into TypeScript consumers, where
+ * extensionless imports resolve through the consumer's normal TS/bundler rules.
  */
 const relativeImportPattern =
   /((?:\bfrom\s+|\bimport\s*(?:\(\s*)?|\bexport\s+from\s*)["'])(\.\.?\/[^"']+)(["'])/g;
 
 export function makeRegistryContentPortable(content) {
   return content.replace(relativeImportPattern, (_match, prefix, specifier, suffix) => {
-    const portableSpecifier = specifier.replace(/\.(?:cjs|jsx?|mjs)$/i, "");
+    const portableSpecifier = specifier.replace(/\.(?:cjs|jsx?|mjs|tsx?)$/i, "");
     return `${prefix}${portableSpecifier}${suffix}`;
   });
 }

@@ -27,8 +27,8 @@ import {
   WarningIcon,
   WorkflowsTileIcon,
   YouTubeIcon,
-} from "./icons.js";
-import type { SteezIconName, SteezIconProps } from "./types.js";
+} from "./icons.tsx";
+import type { SteezIconName, SteezIconProps } from "./types.ts";
 
 const ICONS: Record<SteezIconName, React.ComponentType<SteezIconProps>> = {
   check: CheckIcon,

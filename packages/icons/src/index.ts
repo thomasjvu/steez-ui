@@ -1,6 +1,6 @@
-export type { SteezIconName, SteezIconProps } from "./types.js";
-export { Icon } from "./Icon.js";
-export { SteezIconProvider, useSteezIconDefaults } from "./IconProvider.js";
+export type { SteezIconName, SteezIconProps } from "./types.ts";
+export { Icon } from "./Icon.tsx";
+export { SteezIconProvider, useSteezIconDefaults } from "./IconProvider.tsx";
 export {
   CheckIcon,
   ChevronLeftIcon,
@@ -26,4 +26,4 @@ export {
   WarningIcon,
   WorkflowsTileIcon,
   YouTubeIcon,
-} from "./icons.js";
+} from "./icons.tsx";

@@ -1,4 +1,4 @@
-import { useStableId } from "./useStableId.js";
+import { useStableId } from "./useStableId.ts";
 
 export interface UseFieldDescriptionOptions {
   prefix: string;

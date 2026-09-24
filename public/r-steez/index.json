@@ -36,6 +36,12 @@
     "description": "Core button primitive with standard and cyberpunk-styled variants."
   },
   {
+    "name": "character-afterimage",
+    "type": "registry:component",
+    "title": "Character Afterimage",
+    "description": "Character artwork with cycling holographic silhouettes and an optional entrance trail."
+  },
+  {
     "name": "copy-button",
     "type": "registry:component",
     "title": "Copy Button",

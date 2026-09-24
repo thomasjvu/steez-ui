@@ -2,7 +2,7 @@
 
 import React, { InputHTMLAttributes } from "react";
 
-import { useStableId } from "../hooks/useStableId.js";
+import { useStableId } from "../hooks/useStableId.ts";
 import styles from "./CyberpunkRadio.module.css";
 
 export interface CyberpunkRadioProps extends InputHTMLAttributes<HTMLInputElement> {

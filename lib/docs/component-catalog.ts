@@ -86,6 +86,19 @@ const COMPONENT_DOC_DETAILS = [
     tags: ["primary", "secondary", "danger"],
   },
   {
+    slug: "character-afterimage",
+    summary: "Rainbow holographic silhouettes with an optional one-time entrance trail for character art.",
+    usage: `<CharacterAfterimage
+  src="/companion.png"
+  alt="Pixel companion"
+  width={180}
+  height={260}
+  entrance
+/>`,
+    related: ["avatar-stage", "boiling-lines"],
+    tags: ["motion", "character", "holographic"],
+  },
+  {
     slug: "copy-button",
     summary: "Clipboard action with built-in copied state and icon feedback.",
     usage: `<CopyButton value="bun add @steez-ui/ui" />

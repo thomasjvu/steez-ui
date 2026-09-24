@@ -74,7 +74,7 @@ family that matches the job and compose it before introducing a new wrapper:
 | Forms | `CyberpunkInput`, `CyberpunkSelect`, `CyberpunkTextarea`, `CyberpunkCheckbox`, `CyberpunkRadio`, `CyberpunkRadioGroup`, `CyberpunkSlider`, `SegmentedControl` |
 | Surfaces | `CyberpunkTile` (`CyberTile` alias), `ThemedCard`, `CornerBracketCard`, `DottedHaloCard`, `StatCard`, `AvatarStage`, `NotchedViewportFrame` |
 | Layout | `Section`, `SectionHeader`, `PageHeader`, `PageTemplate`, `TabbedPanel` |
-| Motion and text | `BoilingLines`, `AsciiRippleText`, `BlinkText`, `StrokedText`, `HeartbeatPulse`, `MarqueeStrip` |
+| Motion and text | `CharacterAfterimage`, `BoilingLines`, `AsciiRippleText`, `BlinkText`, `StrokedText`, `HeartbeatPulse`, `MarqueeStrip` |
 | Feedback and loading | `StatusMessage`, `ErrorMessage`, `PixelTooltip`, `LoadingProgressBar`, `LoadingScreen`, `ThemeToggle` |
 
 Product-shaped compositions live behind the `@steez-ui/ui/blocks` entrypoint:
@@ -137,6 +137,25 @@ Use `intensity="default"` or `"intense"` for stronger motion, `scale` to customi
 it, and `paused` to stop animation. Reduced-motion preferences disable the effect.
 Wrap illustrations, SVG strokes, or decorative borders; keep body copy outside.
 This is the canonical replacement for the archived boiling-line demos.
+
+### Character afterimage
+
+```tsx
+import { CharacterAfterimage } from "@steez-ui/ui";
+
+<CharacterAfterimage
+  src="/companion.png"
+  alt="Pixel companion"
+  width={180}
+  height={260}
+  entrance
+/>
+```
+
+The component adds three cycling holographic silhouettes by default. Set `entrance`
+to play the slide-in and temporary trail on mount; use `ghostCount`, `ghostOffset`,
+`cycleDurationMs`, or `entranceDurationMs` to tune it. Decorative copies are hidden
+from assistive technology, and reduced-motion preferences disable the animations.
 
 ## Build (from monorepo root)
 

@@ -2,11 +2,11 @@
 
 import React from "react";
 
-import { useRovingTabs } from "../hooks/useRovingTabs.js";
-import { useStableId } from "../hooks/useStableId.js";
-import { PageHeader, type PageHeaderProps } from "./PageHeader.js";
+import { useRovingTabs } from "../hooks/useRovingTabs.ts";
+import { useStableId } from "../hooks/useStableId.ts";
+import { PageHeader, type PageHeaderProps } from "./PageHeader.tsx";
 import styles from "./PageTemplate.module.css";
-import { TabList } from "./TabList.js";
+import { TabList } from "./TabList.tsx";
 
 interface SubTab {
   id: string;

@@ -68,6 +68,23 @@
     ]
   },
   {
+    "name": "character-afterimage",
+    "title": "Character Afterimage",
+    "path": "/copy/steez/character-afterimage.tsx",
+    "exports": [
+      "CharacterAfterimage"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/CharacterAfterimage.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/CharacterAfterimage.module.css"
+    ]
+  },
+  {
     "name": "copy-button",
     "title": "Copy Button",
     "path": "/copy/steez/copy-button.tsx",

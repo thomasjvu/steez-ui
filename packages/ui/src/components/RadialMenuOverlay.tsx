@@ -4,7 +4,7 @@ import React from "react";
 
 import { CloseIcon } from "@steez-ui/icons";
 
-import { NotchedViewportFrame } from "./NotchedViewportFrame.js";
+import { NotchedViewportFrame } from "./NotchedViewportFrame.tsx";
 import styles from "./RadialMenuOverlay.module.css";
 
 const FULL_CIRCLE_DEGREES = 360;

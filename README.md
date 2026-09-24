@@ -49,6 +49,7 @@ where the host framework uses one.
 | Interactive launcher | `FUIButtonTile` | Use a button for an action; tiles frame content. |
 | Quiet content surface | `ThemedCard` | Use `CornerBracketCard` or `DottedHaloCard` when that framing serves the design. |
 | Hand-drawn motion | `BoilingLines` | One component with `subtle`, `default`, and `intense` presets. |
+| Character art | `CharacterAfterimage` | Rainbow holographic silhouettes with an optional entrance trail. |
 | Text accents | `StrokedText`, `AsciiRippleText`, `BlinkText` | Choose one treatment for a focal point; keep body text readable. |
 | Progress | `LoadingProgressBar` | Compose into `LoadingScreen` for full loading states. |
 | Ambient canvas | `HexagonGrid` | Opt in through its dedicated package subpath. |
@@ -68,6 +69,10 @@ visual variations belong as props or a documented compatibility alias.
 attributes. It preserves artwork alt text and disables animation for reduced motion.
 The older `/r/boiling-lines-*` demos remain archival; use `/r-steez/boiling-lines.json`
 for new projects.
+
+`CharacterAfterimage` wraps an image with decorative, aria-hidden holographic copies.
+Its optional entrance motion and persistent color cycling respect reduced-motion
+preferences; position and size the wrapper from the consuming layout.
 
 ## Packages
 

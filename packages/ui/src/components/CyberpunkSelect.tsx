@@ -2,8 +2,8 @@
 
 import React, { SelectHTMLAttributes } from "react";
 
-import { useFieldDescription } from "../hooks/useFieldDescription.js";
-import { useStableId } from "../hooks/useStableId.js";
+import { useFieldDescription } from "../hooks/useFieldDescription.ts";
+import { useStableId } from "../hooks/useStableId.ts";
 import styles from "./CyberpunkSelect.module.css";
 
 export interface CyberpunkSelectOption {
