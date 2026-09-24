@@ -90,9 +90,6 @@ const PREVIEW_MAP: Record<string, ComponentType> = {
   ),
   section: makePreview(fromNavigation("SectionPreview")),
   "section-header": makePreview(fromControls("SectionHeaderPreview")),
-  "signal-trail-backdrop": makePreview(
-    () => import("./previews/signal-trail-backdrop-preview"),
-  ),
   "stat-card": makePreview(fromFeedback("StatCardPreview")),
   "status-message": makePreview(fromFeedback("StatusMessagePreview")),
   "error-message": makePreview(fromFeedback("ErrorMessagePreview")),

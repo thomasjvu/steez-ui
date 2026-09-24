@@ -7,11 +7,11 @@ import { COMPONENT_DOCS } from "./component-catalog";
 import { COMPONENT_MANIFEST } from "./component-manifest.mjs";
 
 const registryDir = path.join(process.cwd(), "public/r-steez");
+const standaloneDir = path.join(process.cwd(), "public/copy/steez");
 const packageIndexPath = path.join(process.cwd(), "packages/ui/src/index.ts");
 const packageBlocksPath = path.join(process.cwd(), "packages/ui/src/blocks.ts");
 const packageSubpathPaths = [
   path.join(process.cwd(), "packages/ui/src/components/HexagonGrid.tsx"),
-  path.join(process.cwd(), "packages/ui/src/components/SignalTrailBackdrop.tsx"),
 ];
 
 /** Non-component registry items that are allowed without a catalog slug. */
@@ -149,6 +149,28 @@ describe("registry parity", () => {
     expect(missing, `Missing registry JSON for catalog slugs: ${missing.join(", ")}`).toEqual(
       [],
     );
+  });
+
+  it("has one generated standalone TSX file for every COMPONENT_DOCS slug", () => {
+    const missing: string[] = [];
+
+    for (const doc of COMPONENT_DOCS) {
+      const standalonePath = path.join(standaloneDir, `${doc.slug}.tsx`);
+      if (!fs.existsSync(standalonePath)) {
+        missing.push(doc.slug);
+        continue;
+      }
+
+      const source = fs.readFileSync(standalonePath, "utf8");
+      expect(source).not.toContain("@steez-ui/");
+      expect(source).not.toMatch(/\b(?:from|import)\s*["']\.[^"']+["']/);
+      expect(source).not.toMatch(/\b(?:from|import)\s*["'][^"']*\.module\.css["']/);
+    }
+
+    expect(
+      missing,
+      `Missing standalone TSX copies for catalog slugs: ${missing.join(", ")}`,
+    ).toEqual([]);
   });
 
   it("does not leave catalog components without registry coverage (allowlist only non-components)", () => {

@@ -39,7 +39,7 @@ pnpm workspace: `packages/*` (see `pnpm-workspace.yaml`). Single root lockfile o
 - Do **not** add features to `@steez-ui/react` or document it as equal to `@steez-ui/ui`.
 - Root `tsconfig.json` **excludes** `packages/react`.
 - `packages/react` uses the **root** lockfile (nested lock removed). `build:react` / `publish:react:forgejo` are legacy escape hatches.
-- Heavy canvas: `HexagonGrid` and `SignalTrailBackdrop` are **subpath-only** (`@steez-ui/ui/hexagon-grid`, `@steez-ui/ui/signal-trail-backdrop`).
+- Heavy canvas: `HexagonGrid` is **subpath-only** (`@steez-ui/ui/hexagon-grid`).
 
 ### `@steez-ui/react` retirement gate
 
@@ -108,9 +108,10 @@ pnpm --dir packages/react typecheck   # legacy package only
 
 | Command | Output |
 | --- | --- |
-| `pnpm registry:generate` | Package primitives → `public/r-steez` (`scripts/generate-registry.mjs`) |
+| `pnpm registry:generate` | Package primitives → `public/r-steez` and standalone copies → `public/copy/steez` (`scripts/generate-registry.mjs`, `scripts/generate-standalone.mjs`) |
 | `pnpm registry:build` | **Archival** Boston demos → `public/r` only; do not add new blocks |
 | `pnpm test:registry-smoke` | Smoke-check install paths for generated r-steez payloads |
+| `pnpm test:standalone-smoke` | Compile-check every generated single-file copy without Steez package imports |
 
 ```bash
 pnpm registry:generate
@@ -125,6 +126,11 @@ item independently without workspace path aliases. React component entry files d
 
 Live steez payloads are committed under `public/r-steez/`. Regenerate after adding or changing package primitives.
 
+Standalone copy payloads are committed under `public/copy/steez/`. Each file is a generated,
+single-file TSX component with embedded scoped CSS and local helper/icon implementations. Keep
+`packages/ui/src` as the only source of truth; do not hand-edit standalone files. Standalone
+copies assume React is already installed and provide fallbacks for theme tokens.
+
 **Absolute `registryDependencies`:** `scripts/generate-registry.mjs` writes each dep as a full URL so `shadcn add` can resolve cross-item deps off-host:
 
 - Default base: `https://steez-ui-6v5.pages.dev/r-steez` (matches `SITE_URL` + `/r-steez`)
@@ -138,6 +144,7 @@ Committed `public/r-steez/*.json` should use the production default base. Re-gen
 | Path | Meaning |
 | --- | --- |
 | `/r-steez/*.json` | **Package primitives** — install path for `@steez-ui/ui` components (`public/r-steez/`) |
+| `/copy/steez/*.tsx` | **Standalone primitives** — single-file manual copy path (`public/copy/steez/`) |
 | `/r/*.json` | **Archival** Boston / motion demos (`public/r/` + `registry/boston/`) — freeze; empty `new-york` style tree removed |
 
 Install example (canonical) — local dev or production (`SITE_URL` in `lib/docs/site-data.ts`):

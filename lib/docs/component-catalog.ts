@@ -455,15 +455,6 @@ const COMPONENT_DOC_DETAILS = [
     tags: ["header", "settings", "actions"],
   },
   {
-    slug: "signal-trail-backdrop",
-    summary: "WebGL signal-field backdrop for avatar stages and technical hero surfaces.",
-    usage: `<div style={{ position: "relative", minHeight: "22rem" }}>
-  <SignalTrailBackdrop color="#7ae4ff" signalDensity={0.36} />
-</div>`,
-    related: ["avatar-stage", "hexagon-grid"],
-    tags: ["webgl", "backdrop", "motion"],
-  },
-  {
     slug: "stat-card",
     summary: "Small numeric stat block with optional tone and subvalue.",
     usage: `<StatCard

@@ -22,6 +22,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:registry-smoke": "node scripts/registry-install-smoke.mjs",
+    "test:standalone-smoke": "node scripts/standalone-copy-smoke.mjs",
     "registry:build": "shadcn build",
     "registry:generate": "node scripts/generate-registry.mjs",
     "deploy:pages": "node scripts/deploy-pages.mjs"
@@ -43,7 +44,6 @@
     "@types/node": "^20.19.9",
     "@types/react": "19.1.2",
     "@types/react-dom": "19.1.2",
-    "@types/three": "^0.179.0",
     "@vitejs/plugin-react": "^6.0.4",
     "eslint": "^9.32.0",
     "eslint-config-next": "15.5.25",
@@ -52,7 +52,6 @@
     "@radix-ui/react-slot": "^1.2.3",
     "class-variance-authority": "^0.7.1",
     "tailwindcss": "^4.1.11",
-    "three": "^0.179.1",
     "typescript": "^5.9.2",
     "vitest": "^4.1.10",
     "clsx": "^2.1.1",

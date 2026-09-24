@@ -17,8 +17,8 @@ export const VALUE_TILES = [
     body: "Author tokens, icons, and primitives once in the workspace packages.",
   },
   {
-    title: "Two install paths",
-    body: "Use npm packages for shared updates or registry items for source-level installs.",
+    title: "Three install paths",
+    body: "Use npm packages for shared updates, registry items for source installs, or standalone files for one-paste ownership.",
   },
   {
     title: "Flat system",
@@ -46,6 +46,7 @@ export const PACKAGE_ITEMS = [
 
 export const REGISTRY_ITEMS = [
   { label: "Registry index", href: "/r-steez/index.json" },
+  { label: "Standalone copy index", href: "/copy/steez/index.json" },
   { label: "Foundation preset (forms)", href: "/r-steez/foundation.json" },
   { label: "Cyberpunk tile", href: "/r-steez/cyberpunk-tile.json" },
   { label: "Boiling lines", href: "/r-steez/boiling-lines.json" },

@@ -5,8 +5,10 @@ Source of truth for **@steez-ui** packages (consolidated from the original monor
 ## Start a project
 
 Use the npm packages when projects should receive shared updates. Use the registry
-when a project should own and customize the source. Choose one approach per component.
-Both are generated from `packages/ui/src`; do not maintain a second implementation.
+when a project should own and customize the source. Use standalone copies when a
+component should be pasted into an app with no Steez package or registry setup.
+Choose one approach per component. Every surface is generated from
+`packages/ui/src`; do not maintain a second implementation.
 
 ```bash
 pnpm dlx shadcn@latest add https://steez-ui-6v5.pages.dev/r-steez/cyberpunk-tile.json
@@ -20,6 +22,25 @@ project root, including for apps that use a `src` directory. Import the generate
 installed component with a relative path from your file. Registry consumers do not
 need any `@steez-ui/*` npm packages. CSS modules require no Tailwind preset.
 
+### Standalone copy
+
+Every catalog component also has a generated single-file copy under
+[`public/copy/steez/`](public/copy/steez/). Open the component’s `.tsx` file, copy
+the entire file, and paste it into a React project—for example:
+
+```text
+components/ui/CyberpunkTile.tsx
+```
+
+Standalone files embed the component’s CSS, local hooks, and required Steez icons.
+They use CSS-variable fallbacks, so importing `@steez-ui/theme` is optional. The
+only normal requirement is that the destination app already has React. Standalone
+copies are generated artifacts: edit `packages/ui/src` and run
+`pnpm registry:generate` when the canonical component changes.
+
+Components that depend on browser APIs still require a client component boundary
+where the host framework uses one.
+
 ## A small design language
 
 | Need | Start with | Guidance |
@@ -30,7 +51,7 @@ need any `@steez-ui/*` npm packages. CSS modules require no Tailwind preset.
 | Hand-drawn motion | `BoilingLines` | One component with `subtle`, `default`, and `intense` presets. |
 | Text accents | `StrokedText`, `AsciiRippleText`, `BlinkText` | Choose one treatment for a focal point; keep body text readable. |
 | Progress | `LoadingProgressBar` | Compose into `LoadingScreen` for full loading states. |
-| Ambient canvas | `HexagonGrid`, `SignalTrailBackdrop` | Opt in through dedicated package subpaths. |
+| Ambient canvas | `HexagonGrid` | Opt in through its dedicated package subpath. |
 
 Start with shared theme tokens, use one signature surface and one motion treatment,
 and compose existing primitives before adding new ones. Change color tokens in the
@@ -88,6 +109,7 @@ Open one primitive at a time:
 | `/packages` | npm package surface |
 | `/registry` | Registry endpoints |
 | `/r-steez/*.json` | Package registry payloads |
+| `/copy/steez/*.tsx` | Generated standalone files for manual copy/paste |
 | `/r/*.json` | Legacy Boston / motion blocks |
 
 Signature surfaces to inspect first:
@@ -131,6 +153,7 @@ packages/
 
 app/        # Next docs + discover site
 public/r-steez/  # generated registry JSON for package primitives
+public/copy/steez/ # generated single-file standalone copies
 public/r/        # archival Boston motion / demo blocks (frozen)
 scripts/    # build helpers
 ```
@@ -180,6 +203,20 @@ pnpm dlx shadcn@latest add http://localhost:3000/r-steez/loading-progress-bar.js
 pnpm dlx shadcn@latest add https://steez-ui-6v5.pages.dev/r-steez/cyberpunk-tile.json
 pnpm dlx shadcn@latest add https://steez-ui-6v5.pages.dev/r-steez/loading-progress-bar.json
 ```
+
+## Copy a standalone component
+
+Standalone copies are served as plain TypeScript files. For example:
+
+1. Open [`CyberpunkTile.tsx`](https://steez-ui-6v5.pages.dev/copy/steez/cyberpunk-tile.tsx).
+2. Copy the entire file.
+3. Paste it into `components/ui/CyberpunkTile.tsx` in a React app.
+4. Import it from that local path and render it.
+
+This path does not install `@steez-ui/theme`, `@steez-ui/icons`, or
+`@steez-ui/ui`. It is intended for one-off ownership and customization. Use the
+package path for shared updates, or the registry path when you want source files
+and dependency wiring installed automatically.
 
 ## License
 

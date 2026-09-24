@@ -26,7 +26,6 @@
       "@steez-ui/theme/*": ["./packages/theme/src/*"],
       "@steez-ui/ui": ["./packages/ui/src/index.ts"],
       "@steez-ui/ui/blocks": ["./packages/ui/src/blocks.ts"],
-      "@steez-ui/ui/signal-trail-backdrop": ["./packages/ui/src/components/SignalTrailBackdrop.tsx"],
       "@steez-ui/ui/hexagon-grid": ["./packages/ui/src/components/HexagonGrid.tsx"]
     }
   },

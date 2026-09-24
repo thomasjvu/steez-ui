@@ -28,6 +28,7 @@ interface RegistryManifest {
 export function ComponentDetail({ slug }: { slug: string }) {
   const component = getComponentDoc(slug);
   const [manifest, setManifest] = React.useState<RegistryManifest | null>(null);
+  const [standaloneSource, setStandaloneSource] = React.useState<string | null>(null);
   const [origin, setOrigin] = React.useState("");
 
   React.useEffect(() => {
@@ -55,6 +56,28 @@ export function ComponentDetail({ slug }: { slug: string }) {
     };
   }, [component]);
 
+  React.useEffect(() => {
+    if (!component) return;
+    setStandaloneSource(null);
+    let cancelled = false;
+
+    async function loadStandaloneSource() {
+      try {
+        const response = await fetch(`/copy/steez/${component!.slug}.tsx`);
+        if (!response.ok) throw new Error("missing");
+        const source = await response.text();
+        if (!cancelled) setStandaloneSource(source);
+      } catch {
+        if (!cancelled) setStandaloneSource(null);
+      }
+    }
+
+    void loadStandaloneSource();
+    return () => {
+      cancelled = true;
+    };
+  }, [component]);
+
   if (!component) {
     return (
       <div className={styles.emptyState}>
@@ -68,6 +91,7 @@ export function ComponentDetail({ slug }: { slug: string }) {
 
   const registryOrigin = origin || "http://localhost:3000";
   const registryCommand = `pnpm dlx shadcn@latest add ${registryOrigin}/r-steez/${component.slug}.json`;
+  const standalonePath = `/copy/steez/${component.slug}.tsx`;
   const installedComponent = manifest?.files.find((file) => file.path.endsWith(".tsx"));
   const registryImport = installedComponent
     ? component.packageImport.replace(/"@steez-ui\/ui(?:\/[^"]+)?"/, `"<project-root>/${installedComponent.path.replace(/\.tsx$/, "")}"`)
@@ -153,6 +177,30 @@ export function ComponentDetail({ slug }: { slug: string }) {
             </p>
             {registryImport && <code className={styles.codeBlock}>{registryImport}</code>}
             <p className={styles.metaText}>Replace &lt;project-root&gt; with a relative path from your file.</p>
+          </div>
+
+          <div className={styles.block}>
+            <h2 className={styles.blockTitle}>Copy standalone file</h2>
+            <div className={styles.commandPreview}>
+              <code className={styles.inlineCode}>{standalonePath}</code>
+              {standaloneSource ? (
+                <CopyButton value={standaloneSource} title="Copy standalone component" />
+              ) : (
+                <span className={styles.metaText}>Loading…</span>
+              )}
+            </div>
+            <p className={styles.metaText}>
+              Copy the entire generated TSX file into your React project. It embeds CSS, local
+              helpers, icons, and theme fallbacks, so no Steez npm packages are required.
+            </p>
+            <a
+              href={standalonePath}
+              target="_blank"
+              rel="noreferrer"
+              className={siteStyles.buttonGhost + " " + siteStyles.button}
+            >
+              Open standalone source
+            </a>
           </div>
 
           {relatedComponents.length > 0 ? (

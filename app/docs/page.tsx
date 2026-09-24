@@ -44,11 +44,12 @@ export default function DocsPage() {
       </section>
 
       <section className={siteStyles.section}>
-        <h2 className={siteStyles.sectionTitle}>Dual install paths</h2>
+        <h2 className={siteStyles.sectionTitle}>Three install paths</h2>
         <p className={siteStyles.body}>
-          Every published primitive should work both as an npm dependency and as a registry
-          payload. Prefer packages for apps that track updates; use the registry when a project
-          needs source copied in.
+          Every published primitive is generated from the same canonical source and can be used
+          as an npm dependency, a source-level registry install, or a standalone file copy.
+          Choose packages for shared updates, the registry for source ownership with automatic
+          dependency wiring, or a standalone copy for a one-file paste into a React app.
         </p>
         <ul className={siteStyles.list}>
           <li className={siteStyles.listItem}>
@@ -87,6 +88,23 @@ import { CyberpunkTile } from "@steez-ui/ui";`}
               Legacy Boston / motion demo blocks live under{" "}
               <code className={siteStyles.inlineCode}>/r/*.json</code> only — do not mix them with
               package primitives.
+            </p>
+          </li>
+          <li className={siteStyles.listItem}>
+            <span className={siteStyles.mono}>standalone copy (/copy/steez)</span>
+            <p className={siteStyles.listMeta}>
+              Open a component&apos;s generated <code className={siteStyles.inlineCode}>.tsx</code>
+              file, copy the entire file, and paste it into your project. CSS, local helpers,
+              icons, and theme fallbacks are embedded; no Steez packages are needed.
+            </p>
+            <div className={siteStyles.codeBlock}>
+              <code>
+                https://steez-ui-6v5.pages.dev/copy/steez/cyberpunk-tile.tsx
+              </code>
+            </div>
+            <p className={siteStyles.listMeta} style={{ marginTop: "0.75rem" }}>
+              Generated copies should be customized locally; edit the canonical package source
+              when publishing an update.
             </p>
           </li>
         </ul>

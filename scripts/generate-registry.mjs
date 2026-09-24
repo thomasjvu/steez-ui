@@ -8,6 +8,7 @@ import {
   makeRegistryContentPortable,
   toAbsoluteRegistryDependency,
 } from "./lib/registry-transform.mjs";
+import { generateStandaloneComponents } from "./generate-standalone.mjs";
 import { COMPONENT_MANIFEST } from "../lib/docs/component-manifest.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -261,3 +262,5 @@ await fs.writeFile(
   path.join(registryDir, "index.json"),
   `${JSON.stringify(indexItems, null, 2)}\n`,
 );
+
+await generateStandaloneComponents({ repoRoot });

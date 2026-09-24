@@ -23,6 +23,12 @@ export default function RegistryPage() {
           npm packages are needed. Customize those files locally, or use the npm packages
           when you want shared updates across projects.
         </p>
+        <p className={siteStyles.body}>
+          For a single manual paste, use the matching generated file under{" "}
+          <code className={siteStyles.inlineCode}>/copy/steez/*.tsx</code>. It embeds the
+          component&apos;s styles and local dependencies, so a React app can own the pasted file
+          without installing Steez packages.
+        </p>
         <ul className={siteStyles.list}>
           {REGISTRY_ITEMS.map((item) => (
             <li key={item.href} className={siteStyles.listItem}>

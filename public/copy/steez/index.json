@@ -1,0 +1,784 @@
+[
+  {
+    "name": "ascii-ripple-text",
+    "title": "ASCII Ripple Text",
+    "path": "/copy/steez/ascii-ripple-text.tsx",
+    "exports": [
+      "AsciiRippleText"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/AsciiRippleText.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/AsciiRippleText.module.css"
+    ]
+  },
+  {
+    "name": "avatar-stage",
+    "title": "Avatar Stage",
+    "path": "/copy/steez/avatar-stage.tsx",
+    "exports": [
+      "AvatarStage"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/AvatarStage.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/AvatarStage.module.css"
+    ]
+  },
+  {
+    "name": "blink-text",
+    "title": "Blink Text",
+    "path": "/copy/steez/blink-text.tsx",
+    "exports": [
+      "BlinkText"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/BlinkText.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/BlinkText.module.css"
+    ]
+  },
+  {
+    "name": "button",
+    "title": "Button",
+    "path": "/copy/steez/button.tsx",
+    "exports": [
+      "Button"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/Button.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/styles/Buttons.module.css"
+    ]
+  },
+  {
+    "name": "copy-button",
+    "title": "Copy Button",
+    "path": "/copy/steez/copy-button.tsx",
+    "exports": [
+      "CopyButton"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/CopyButton.tsx",
+      "packages/icons/src/types.ts",
+      "packages/icons/src/IconProvider.tsx",
+      "packages/icons/src/icons.tsx",
+      "packages/icons/src/Icon.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/CopyButton.module.css"
+    ]
+  },
+  {
+    "name": "cyberpunk-input",
+    "title": "Cyberpunk Input",
+    "path": "/copy/steez/cyberpunk-input.tsx",
+    "exports": [
+      "CyberpunkInput"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/CyberpunkInput.tsx",
+      "packages/ui/src/hooks/useFieldDescription.ts",
+      "packages/ui/src/hooks/useStableId.ts"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/CyberpunkInput.module.css"
+    ]
+  },
+  {
+    "name": "cyberpunk-select",
+    "title": "Cyberpunk Select",
+    "path": "/copy/steez/cyberpunk-select.tsx",
+    "exports": [
+      "CyberpunkSelect"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/CyberpunkSelect.tsx",
+      "packages/ui/src/hooks/useFieldDescription.ts",
+      "packages/ui/src/hooks/useStableId.ts"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/CyberpunkSelect.module.css"
+    ]
+  },
+  {
+    "name": "cyberpunk-textarea",
+    "title": "Cyberpunk Textarea",
+    "path": "/copy/steez/cyberpunk-textarea.tsx",
+    "exports": [
+      "CyberpunkTextarea"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/CyberpunkTextarea.tsx",
+      "packages/ui/src/hooks/useFieldDescription.ts",
+      "packages/ui/src/hooks/useStableId.ts"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/CyberpunkTextarea.module.css"
+    ]
+  },
+  {
+    "name": "cyberpunk-checkbox",
+    "title": "Cyberpunk Checkbox",
+    "path": "/copy/steez/cyberpunk-checkbox.tsx",
+    "exports": [
+      "CyberpunkCheckbox"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/CyberpunkCheckbox.tsx",
+      "packages/ui/src/hooks/useStableId.ts"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/CyberpunkCheckbox.module.css"
+    ]
+  },
+  {
+    "name": "cyberpunk-radio",
+    "title": "Cyberpunk Radio",
+    "path": "/copy/steez/cyberpunk-radio.tsx",
+    "exports": [
+      "CyberpunkRadioGroup"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/CyberpunkRadio.tsx",
+      "packages/ui/src/hooks/useStableId.ts"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/CyberpunkRadio.module.css"
+    ]
+  },
+  {
+    "name": "cyberpunk-slider",
+    "title": "Cyberpunk Slider",
+    "path": "/copy/steez/cyberpunk-slider.tsx",
+    "exports": [
+      "CyberpunkSlider"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/CyberpunkSlider.tsx",
+      "packages/ui/src/hooks/useFieldDescription.ts",
+      "packages/ui/src/hooks/useStableId.ts"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/CyberpunkSlider.module.css"
+    ]
+  },
+  {
+    "name": "themed-card",
+    "title": "Themed Card",
+    "path": "/copy/steez/themed-card.tsx",
+    "exports": [
+      "ThemedCard"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/ThemedCard.tsx",
+      "packages/ui/src/components/CardFrame.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/CardFrame.module.css",
+      "packages/ui/src/components/ThemedCard.module.css"
+    ]
+  },
+  {
+    "name": "cyberpunk-tile",
+    "title": "Cyberpunk Tile",
+    "path": "/copy/steez/cyberpunk-tile.tsx",
+    "exports": [
+      "CyberpunkTile",
+      "CyberTile"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/CyberpunkTile.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/CyberpunkTile.module.css"
+    ]
+  },
+  {
+    "name": "fui-button-tile",
+    "title": "FUI Button Tile",
+    "path": "/copy/steez/fui-button-tile.tsx",
+    "exports": [
+      "FUIButtonTile"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/FUIButtonTile.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/FUIButtonTile.module.css"
+    ]
+  },
+  {
+    "name": "accordion-feature-card",
+    "title": "Accordion Feature Card",
+    "path": "/copy/steez/accordion-feature-card.tsx",
+    "exports": [
+      "AccordionFeatureCard"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/AccordionFeatureCard.tsx",
+      "packages/ui/src/hooks/useStableId.ts"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/AccordionFeatureCard.module.css"
+    ]
+  },
+  {
+    "name": "corner-bracket-card",
+    "title": "Corner Bracket Card",
+    "path": "/copy/steez/corner-bracket-card.tsx",
+    "exports": [
+      "CornerBracketCard"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/CornerBracketCard.tsx",
+      "packages/ui/src/components/CardFrame.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/CardFrame.module.css",
+      "packages/ui/src/components/CornerBracketCard.module.css"
+    ]
+  },
+  {
+    "name": "dotted-halo-card",
+    "title": "Dotted Halo Card",
+    "path": "/copy/steez/dotted-halo-card.tsx",
+    "exports": [
+      "DottedHaloCard"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/DottedHaloCard.tsx",
+      "packages/ui/src/components/CardFrame.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/CardFrame.module.css",
+      "packages/ui/src/components/DottedHaloCard.module.css"
+    ]
+  },
+  {
+    "name": "segmented-control",
+    "title": "Segmented Control",
+    "path": "/copy/steez/segmented-control.tsx",
+    "exports": [
+      "SegmentedControl"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/SegmentedControl.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/SegmentedControl.module.css"
+    ]
+  },
+  {
+    "name": "tabbed-panel",
+    "title": "Tabbed Panel",
+    "path": "/copy/steez/tabbed-panel.tsx",
+    "exports": [
+      "TabbedPanel"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/TabbedPanel.tsx",
+      "packages/ui/src/hooks/useRovingTabs.ts",
+      "packages/ui/src/hooks/useStableId.ts",
+      "packages/ui/src/components/TabList.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/TabList.module.css",
+      "packages/ui/src/components/TabbedPanel.module.css"
+    ]
+  },
+  {
+    "name": "page-header",
+    "title": "Page Header",
+    "path": "/copy/steez/page-header.tsx",
+    "exports": [
+      "PageHeader"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/PageHeader.tsx",
+      "packages/icons/src/types.ts",
+      "packages/icons/src/IconProvider.tsx",
+      "packages/icons/src/icons.tsx",
+      "packages/icons/src/Icon.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/PageHeader.module.css"
+    ]
+  },
+  {
+    "name": "page-template",
+    "title": "Page Template",
+    "path": "/copy/steez/page-template.tsx",
+    "exports": [
+      "PageTemplate"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/PageTemplate.tsx",
+      "packages/ui/src/hooks/useRovingTabs.ts",
+      "packages/ui/src/hooks/useStableId.ts",
+      "packages/ui/src/components/PageHeader.tsx",
+      "packages/icons/src/types.ts",
+      "packages/icons/src/IconProvider.tsx",
+      "packages/icons/src/icons.tsx",
+      "packages/icons/src/Icon.tsx",
+      "packages/ui/src/components/TabList.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/PageHeader.module.css",
+      "packages/ui/src/components/PageTemplate.module.css",
+      "packages/ui/src/components/TabList.module.css"
+    ]
+  },
+  {
+    "name": "notched-viewport-frame",
+    "title": "Notched Viewport Frame",
+    "path": "/copy/steez/notched-viewport-frame.tsx",
+    "exports": [
+      "NotchedViewportFrame"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/NotchedViewportFrame.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/NotchedViewportFrame.module.css"
+    ]
+  },
+  {
+    "name": "radial-menu-overlay",
+    "title": "Radial Menu Overlay",
+    "path": "/copy/steez/radial-menu-overlay.tsx",
+    "exports": [
+      "RadialMenuOverlay"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/RadialMenuOverlay.tsx",
+      "packages/icons/src/types.ts",
+      "packages/icons/src/IconProvider.tsx",
+      "packages/icons/src/icons.tsx",
+      "packages/icons/src/Icon.tsx",
+      "packages/ui/src/components/NotchedViewportFrame.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/NotchedViewportFrame.module.css",
+      "packages/ui/src/components/RadialMenuOverlay.module.css"
+    ]
+  },
+  {
+    "name": "theme-toggle",
+    "title": "Theme Toggle",
+    "path": "/copy/steez/theme-toggle.tsx",
+    "exports": [
+      "ThemeToggle"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/ThemeToggle.tsx",
+      "packages/icons/src/types.ts",
+      "packages/icons/src/IconProvider.tsx",
+      "packages/icons/src/icons.tsx",
+      "packages/icons/src/Icon.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/ThemeToggle.module.css"
+    ]
+  },
+  {
+    "name": "loading-screen",
+    "title": "Loading Screen",
+    "path": "/copy/steez/loading-screen.tsx",
+    "exports": [
+      "LoadingScreen",
+      "useLoadingProgress"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/LoadingScreen.tsx",
+      "packages/icons/src/types.ts",
+      "packages/icons/src/IconProvider.tsx",
+      "packages/icons/src/icons.tsx",
+      "packages/icons/src/Icon.tsx",
+      "packages/ui/src/components/LoadingProgressBar.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/LoadingProgressBar.module.css",
+      "packages/ui/src/components/LoadingScreen.module.css"
+    ]
+  },
+  {
+    "name": "loading-overlay-crystalline",
+    "title": "Loading Overlay Crystalline",
+    "path": "/copy/steez/loading-overlay-crystalline.tsx",
+    "exports": [
+      "LoadingOverlayCrystalline"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/LoadingOverlayCrystalline.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/LoadingOverlayCrystalline.module.css"
+    ]
+  },
+  {
+    "name": "loading-progress-bar",
+    "title": "Loading Progress Bar",
+    "path": "/copy/steez/loading-progress-bar.tsx",
+    "exports": [
+      "LoadingProgressBar"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/LoadingProgressBar.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/LoadingProgressBar.module.css"
+    ]
+  },
+  {
+    "name": "heartbeat-pulse",
+    "title": "Heartbeat Pulse",
+    "path": "/copy/steez/heartbeat-pulse.tsx",
+    "exports": [
+      "HeartbeatPulse"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/HeartbeatPulse.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/HeartbeatPulse.module.css"
+    ]
+  },
+  {
+    "name": "hexagon-grid",
+    "title": "Hexagon Grid",
+    "path": "/copy/steez/hexagon-grid.tsx",
+    "exports": [
+      "HexagonGrid"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/HexagonGrid.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/HexagonGrid.module.css"
+    ]
+  },
+  {
+    "name": "overlay-button",
+    "title": "Overlay Button",
+    "path": "/copy/steez/overlay-button.tsx",
+    "exports": [
+      "OverlayButton"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/OverlayButton.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/OverlayButton.module.css"
+    ]
+  },
+  {
+    "name": "pixel-tooltip",
+    "title": "Pixel Tooltip",
+    "path": "/copy/steez/pixel-tooltip.tsx",
+    "exports": [
+      "PixelTooltip"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/PixelTooltip.tsx",
+      "packages/ui/src/hooks/useStableId.ts"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/PixelTooltip.module.css"
+    ]
+  },
+  {
+    "name": "quick-info-card",
+    "title": "Quick Info Card",
+    "path": "/copy/steez/quick-info-card.tsx",
+    "exports": [
+      "QuickInfoCard"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/QuickInfoCard.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/QuickInfoCard.module.css"
+    ]
+  },
+  {
+    "name": "widget-card",
+    "title": "Widget Card",
+    "path": "/copy/steez/widget-card.tsx",
+    "exports": [
+      "WidgetCard"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/WidgetCard.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/WidgetCard.module.css"
+    ]
+  },
+  {
+    "name": "marquee-strip",
+    "title": "Marquee Strip",
+    "path": "/copy/steez/marquee-strip.tsx",
+    "exports": [
+      "MarqueeStrip"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/MarqueeStrip.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/MarqueeStrip.module.css"
+    ]
+  },
+  {
+    "name": "section",
+    "title": "Section",
+    "path": "/copy/steez/section.tsx",
+    "exports": [
+      "Section"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/Section.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/Section.module.css"
+    ]
+  },
+  {
+    "name": "section-header",
+    "title": "Section Header",
+    "path": "/copy/steez/section-header.tsx",
+    "exports": [
+      "SectionHeader"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/SectionHeader.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/SectionHeader.module.css"
+    ]
+  },
+  {
+    "name": "stat-card",
+    "title": "Stat Card",
+    "path": "/copy/steez/stat-card.tsx",
+    "exports": [
+      "StatCard"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/StatCard.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/StatCard.module.css"
+    ]
+  },
+  {
+    "name": "status-message",
+    "title": "Status Message",
+    "path": "/copy/steez/status-message.tsx",
+    "exports": [
+      "StatusMessage"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/StatusMessage.tsx",
+      "packages/icons/src/types.ts",
+      "packages/icons/src/IconProvider.tsx",
+      "packages/icons/src/icons.tsx",
+      "packages/icons/src/Icon.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/StatusMessage.module.css"
+    ]
+  },
+  {
+    "name": "stroked-text",
+    "title": "Stroked Text",
+    "path": "/copy/steez/stroked-text.tsx",
+    "exports": [
+      "StrokedText"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/StrokedText.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/StrokedText.module.css"
+    ]
+  },
+  {
+    "name": "runtime-orbit-diagram",
+    "title": "Runtime Orbit Diagram",
+    "path": "/copy/steez/runtime-orbit-diagram.tsx",
+    "exports": [
+      "RuntimeOrbitDiagram"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/RuntimeOrbitDiagram.tsx",
+      "packages/icons/src/types.ts"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/RuntimeOrbitDiagram.module.css"
+    ]
+  },
+  {
+    "name": "error-message",
+    "title": "Error Message",
+    "path": "/copy/steez/error-message.tsx",
+    "exports": [
+      "ErrorMessage"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/ErrorMessage.tsx",
+      "packages/icons/src/types.ts",
+      "packages/icons/src/IconProvider.tsx",
+      "packages/icons/src/icons.tsx",
+      "packages/icons/src/Icon.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/styles/Buttons.module.css",
+      "packages/ui/src/components/ErrorMessage.module.css"
+    ]
+  },
+  {
+    "name": "boiling-lines",
+    "title": "Boiling Lines",
+    "path": "/copy/steez/boiling-lines.tsx",
+    "exports": [
+      "BoilingLines"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/BoilingLines.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/BoilingLines.module.css"
+    ]
+  }
+]

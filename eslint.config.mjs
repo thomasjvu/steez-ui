@@ -19,6 +19,7 @@ const eslintConfig = [
       "**/out/**",
       "**/build/**",
       "**/.pages-dist/**",
+      "public/copy/steez/**",
       "next-env.d.ts",
     ],
   },

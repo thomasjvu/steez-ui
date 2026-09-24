@@ -6,26 +6,23 @@ Pair with `@steez-ui/theme` (tokens) and `@steez-ui/icons` (icon surface).
 
 > **Not** `@steez-ui/react` — that package is legacy (Tailwind/CVA portable bundle). Prefer this package for all new work. See the [root README](../../README.md) and [AGENTS.md](../../AGENTS.md).
 
+## Standalone copy
+
+Each public component also has a generated single-file copy at
+`/copy/steez/<slug>.tsx` on the docs site. Copy the entire file into a React
+project when you want to own the source without installing Steez packages. The
+copy embeds CSS modules, local helpers, and required Steez icons, and provides
+fallbacks for the theme variables.
+
+These files are generated from `packages/ui/src`; do not edit a generated copy as
+the canonical implementation. Run `pnpm registry:generate` after changing a
+component.
+
 ## Install
 
 ```bash
 pnpm add @steez-ui/theme @steez-ui/icons @steez-ui/ui
 ```
-
-### Optional peer: `three` (SignalTrailBackdrop only)
-
-`three` is an **optional peer dependency**. Install it only if you use `SignalTrailBackdrop` (WebGL):
-
-```bash
-pnpm add three
-```
-
-```tsx
-// Subpath only — keeps WebGL/three out of the main package surface
-import { SignalTrailBackdrop } from "@steez-ui/ui/signal-trail-backdrop";
-```
-
-Apps that never import the backdrop do not need `three`.
 
 ### Heavy canvas: HexagonGrid (subpath only)
 
@@ -33,7 +30,7 @@ Apps that never import the backdrop do not need `three`.
 import { HexagonGrid } from "@steez-ui/ui/hexagon-grid";
 ```
 
-`HexagonGrid` is not re-exported from the main `@steez-ui/ui` barrel (same pattern as SignalTrailBackdrop).
+`HexagonGrid` is not re-exported from the main `@steez-ui/ui` barrel.
 
 ## Usage
 
@@ -99,8 +96,8 @@ import {
 } from "@steez-ui/ui/blocks";
 ```
 
-`HexagonGrid` and `SignalTrailBackdrop` remain subpath-only because they bring canvas or
-WebGL work into the consuming bundle. Every export has a matching reference page at
+`HexagonGrid` remains subpath-only because it brings canvas work into the consuming
+bundle. Every export has a matching reference page at
 `/components/[slug]` in the documentation site.
 
 The card and tile exports are intentionally related, not interchangeable aliases: use
