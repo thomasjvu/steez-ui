@@ -2,16 +2,17 @@
 
 import Link from "next/link";
 import { CopyButton, CyberpunkTile } from "@steez-ui/ui";
+import { ComponentPreview } from "./component-preview";
 import styles from "./site-layout.module.css";
 
 export function HomePageContent() {
   const packageCmd = "pnpm add @steez-ui/theme @steez-ui/icons @steez-ui/ui";
 
   const componentCards = [
-    { index: "01", label: "Button", art: "buttonArt", href: "/components/button" },
-    { index: "02", label: "Input", art: "inputArt", href: "/components/cyberpunk-input" },
-    { index: "03", label: "Toggle", art: "toggleArt", href: "/components/theme-toggle" },
-    { index: "04", label: "Tabs", art: "tabsArt", href: "/components/tabbed-panel" },
+    { index: "01", label: "Button", preview: "button", href: "/components/button" },
+    { index: "02", label: "Input", preview: "cyberpunk-input", href: "/components/cyberpunk-input" },
+    { index: "03", label: "Toggle", preview: "theme-toggle", href: "/components/theme-toggle" },
+    { index: "04", label: "Tabs", preview: "tabbed-panel", href: "/components/tabbed-panel" },
   ] as const;
 
   return (
@@ -118,28 +119,17 @@ export function HomePageContent() {
         </div>
         <div className={styles.componentRail}>
           {componentCards.map((card) => (
-            <Link key={card.label} href={card.href} className={styles.componentCard}>
-              <div className={styles.componentArt} aria-hidden="true">
-                <div className={`${styles.artSurface} ${styles[card.art]}`}>
-                  {card.art === "buttonArt" ? <span>Button&nbsp; →</span> : null}
-                  {card.art === "inputArt" ? <span>Type something…</span> : null}
-                  {card.art === "toggleArt" ? <span className={styles.toggleKnob} /> : null}
-                  {card.art === "tabsArt" ? (
-                    <>
-                      <span className={styles.tabActive}>Overview</span>
-                      <span>API</span>
-                      <span>Examples</span>
-                    </>
-                  ) : null}
-                </div>
+            <article key={card.label} className={styles.componentCard}>
+              <div className={styles.componentArt}>
+                <ComponentPreview slug={card.preview} />
               </div>
-              <div className={styles.componentCardMeta}>
+              <Link href={card.href} className={styles.componentCardMeta}>
                 <span>
                   {card.index}&nbsp;&nbsp; {card.label}
                 </span>
                 <span aria-hidden="true">↗</span>
-              </div>
-            </Link>
+              </Link>
+            </article>
           ))}
         </div>
       </section>

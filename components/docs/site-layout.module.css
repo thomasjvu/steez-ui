@@ -808,6 +808,8 @@
   --tile-border: rgba(218, 221, 226, 0.28);
   --tile-surface: linear-gradient(145deg, rgba(21, 23, 28, 0.82), rgba(12, 13, 17, 0.82));
   position: relative;
+  display: flex;
+  flex-direction: column;
   min-width: 0;
   padding: 1rem;
   border: 0;
@@ -848,107 +850,41 @@
   transform: translateY(-4px);
 }
 
+.componentCard:focus-within {
+  --tile-border: color-mix(in srgb, var(--home-accent) 65%, transparent);
+}
+
 .componentArt {
   display: grid;
-  min-height: 150px;
+  flex: 1 0 auto;
+  min-height: 176px;
+  padding: 0.85rem;
+  box-sizing: border-box;
   place-items: center;
   border-bottom: 1px solid rgba(218, 221, 226, 0.12);
 }
 
-.artSurface {
-  display: flex;
-  width: 84%;
-  min-height: 3.2rem;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(218, 221, 226, 0.32);
-  color: #bfc2ca;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-}
-
-.buttonArt {
-  --art-border: var(--home-accent);
-  --art-surface: transparent;
-  position: relative;
-  border: 0;
-  background: transparent;
-  color: var(--home-accent);
-  clip-path: polygon(0 0, calc(100% - 0.75rem) 0, 100% 0.75rem, 100% 100%, 0 100%);
-  isolation: isolate;
-}
-
-.buttonArt::before,
-.buttonArt::after {
-  position: absolute;
-  content: "";
-  pointer-events: none;
-}
-
-.buttonArt::before {
-  z-index: -2;
-  inset: 0;
-  background: var(--art-border);
-}
-
-.buttonArt::after {
-  z-index: -1;
-  inset: 1px;
-  clip-path: polygon(0 0, calc(100% - 0.75rem - 1px) 0, calc(100% - 1px) calc(0.75rem + 1px), calc(100% - 1px) calc(100% - 1px), 0 calc(100% - 1px));
-  background: var(--art-surface);
-}
-
-.inputArt {
-  justify-content: space-between;
-  padding: 0 1rem;
-  color: #70737c;
-  border-radius: 0.2rem;
-}
-
-.inputArt::after {
-  width: 0.8rem;
-  height: 0.8rem;
-  content: "⌕";
-  color: #9b9ea8;
-  font-size: 1rem;
-}
-
-.toggleArt {
-  width: 5rem;
-  min-height: 2.2rem;
-  justify-content: end;
-  padding: 0.2rem;
-  border-color: var(--home-accent);
-  border-radius: 999px;
-}
-
-.toggleKnob {
-  display: block;
-  width: 1.7rem;
-  height: 1.7rem;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #a8abb8, #4a4b57 70%);
-  box-shadow: 0 0 1.2rem rgba(184, 255, 61, 0.35);
-}
-
-.tabsArt {
-  gap: 1rem;
-  justify-content: space-around;
-  border-color: rgba(218, 221, 226, 0.2);
-  font-size: 0.62rem;
-}
-
-.tabActive {
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--home-accent);
-  color: var(--home-ink);
+.componentArt > * {
+  width: 100%;
+  min-width: 0;
 }
 
 .componentCardMeta {
   display: flex;
+  gap: 1rem;
   justify-content: space-between;
   padding-top: 1rem;
   color: #898c96;
+  text-decoration: none;
+}
+
+.componentCardMeta:focus-visible {
+  outline: 2px solid var(--home-accent);
+  outline-offset: 4px;
+}
+
+.componentCardMeta:hover {
+  color: var(--home-accent);
 }
 
 .componentCardMeta span:last-child {
@@ -1153,7 +1089,7 @@
   }
 
   .componentArt {
-    min-height: 120px;
+    min-height: 160px;
   }
 
   .homeIndex {
@@ -1186,6 +1122,6 @@
   }
 
   .componentArt {
-    min-height: 140px;
+    min-height: 160px;
   }
 }
