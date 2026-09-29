@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { CopyButton, CyberpunkTile } from "@steez-ui/ui";
-import { ComponentPreview } from "./component-preview";
+import { HomeComponentPreview } from "./home-component-preview";
 import styles from "./site-layout.module.css";
 
 export function HomePageContent() {
@@ -121,7 +121,7 @@ export function HomePageContent() {
           {componentCards.map((card) => (
             <article key={card.label} className={styles.componentCard}>
               <div className={styles.componentArt}>
-                <ComponentPreview slug={card.preview} />
+                <HomeComponentPreview preview={card.preview} />
               </div>
               <Link href={card.href} className={styles.componentCardMeta}>
                 <span>

@@ -869,6 +869,46 @@
   min-width: 0;
 }
 
+.homeButtonPreview,
+.homeTogglePreview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.homeButtonPreview {
+  min-height: 5rem;
+}
+
+.homeInputPreview {
+  --input-font-size: 0.875rem;
+  --input-padding-top: 0.625rem;
+  --input-padding-bot: 0.625rem;
+}
+
+.homeTogglePreview {
+  min-height: 5rem;
+  color: #a5a6ad;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.homeTabsPreview {
+  gap: 0.65rem;
+}
+
+.homeTabsPreviewList {
+  gap: 0.35rem;
+}
+
+.homeTabsPreviewPanel {
+  min-height: 2.75rem;
+  padding: 0.65rem;
+  font-size: 0.75rem;
+}
+
 .componentCardMeta {
   display: flex;
   gap: 1rem;
