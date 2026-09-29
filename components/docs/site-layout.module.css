@@ -552,23 +552,6 @@
   align-items: center;
 }
 
-.stageProgress {
-  display: flex;
-  gap: 0.55rem;
-  align-items: center;
-}
-
-.stageProgress i {
-  display: block;
-  width: 2.15rem;
-  height: 2px;
-  background: #333741;
-}
-
-.stageProgress i:first-child {
-  background: var(--home-accent);
-}
-
 .stageArt {
   position: absolute;
   inset: 4.5rem 2rem 3.4rem;
@@ -608,58 +591,42 @@
   right: 8%;
   bottom: 13%;
   left: 16%;
-  display: flex;
-  flex-direction: column;
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  filter: drop-shadow(0 1.75rem 3rem rgba(0, 0, 0, 0.35));
+}
+
+.featuredTile {
+  --tile-edges: 32px;
+  --tile-padding: 2rem;
+  --tile-border-color: rgba(218, 221, 226, 0.42);
+  --color-bg-tile: linear-gradient(145deg, rgba(19, 21, 28, 0.98), rgba(8, 9, 12, 0.96));
+  --color-bg-tile-hover: linear-gradient(145deg, rgba(27, 29, 37, 0.98), rgba(11, 12, 16, 0.96));
+  height: 100%;
+}
+
+.featuredCardContent {
   justify-content: space-between;
-  padding: 2rem;
-  --card-border: rgba(218, 221, 226, 0.42);
-  border: 0;
-  background: transparent;
-  clip-path: polygon(0 0, calc(100% - 2rem) 0, 100% 2rem, 100% 100%, 2rem 100%, 0 calc(100% - 2rem));
-  box-shadow: 0 1.75rem 3rem rgba(0, 0, 0, 0.35);
-  isolation: isolate;
 }
 
-.featuredCard::before,
-.featuredCard::after {
-  position: absolute;
-  content: "";
-  pointer-events: none;
+.featuredCard:focus-visible {
+  outline: 2px solid var(--home-accent);
+  outline-offset: 5px;
 }
 
-.featuredCard::before {
-  z-index: -2;
-  inset: 0;
-  background: var(--card-border);
+.featuredCard:focus-visible .featuredTile {
+  --tile-border-color: var(--home-accent);
 }
 
-.featuredCard::after {
-  z-index: -1;
-  inset: 1px;
-  clip-path: polygon(0 0, calc(100% - 2rem - 1px) 0, calc(100% - 1px) calc(2rem + 1px), calc(100% - 1px) calc(100% - 1px), calc(2rem + 1px) calc(100% - 1px), 0 calc(100% - 2rem - 1px));
-  background: linear-gradient(145deg, rgba(19, 21, 28, 0.94), rgba(8, 9, 12, 0.84));
+.featuredCard:focus-visible .featuredTile,
+.featuredCard:hover .featuredTile {
+  --tile-border-color: rgba(184, 255, 61, 0.72);
 }
 
-.cardStatus {
-  display: flex;
-  gap: 0.55rem;
-  align-items: center;
-  color: #9a9da8;
-}
-
-.statusDot {
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  background: var(--home-accent);
-  box-shadow: 0 0 1.2rem rgba(184, 255, 61, 0.9);
-}
-
-.featuredCardRow {
-  display: flex;
-  gap: 1rem;
-  align-items: end;
-  justify-content: space-between;
+.featuredCard:hover .cardArrow {
+  border-color: var(--home-accent);
+  color: var(--home-accent);
 }
 
 .featuredCard h2 {
@@ -673,9 +640,31 @@
 .featuredCard p {
   max-width: 24ch;
   margin: 0;
-  color: #858791;
+  color: #a5a6ad;
   font-size: 0.85rem;
   line-height: 1.5;
+}
+
+.featuredCardRow {
+  display: flex;
+  gap: 1rem;
+  align-items: end;
+  justify-content: space-between;
+}
+
+.cardStatus {
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+  color: #c0c2ca;
+}
+
+.statusDot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--home-accent);
+  box-shadow: 0 0 1.2rem rgba(184, 255, 61, 0.9);
 }
 
 .cardArrow {
@@ -687,6 +676,7 @@
   border: 1px solid #676a75;
   color: var(--home-ink);
   font-size: 1.35rem;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
 }
 
 .stageSideNote {
@@ -1103,6 +1093,12 @@
     left: 1.25rem;
   }
 
+  .stageFooter {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    font-size: 0.58rem;
+  }
+
   .stageArt {
     inset: 4rem 0.8rem 3rem;
   }
@@ -1112,7 +1108,11 @@
     right: 5%;
     bottom: 13%;
     left: 9%;
-    padding: 1.2rem;
+  }
+
+  .featuredTile {
+    --tile-edges: 20px;
+    --tile-padding: 1.2rem;
   }
 
   .featuredCard h2 {

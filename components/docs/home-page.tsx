@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { CopyButton } from "@steez-ui/ui";
+import { CopyButton, CyberpunkTile } from "@steez-ui/ui";
 import styles from "./site-layout.module.css";
 
 export function HomePageContent() {
@@ -43,7 +43,7 @@ export function HomePageContent() {
           </div>
         </div>
 
-        <div className={styles.heroStage} role="img" aria-label="Featured Steez UI component preview">
+        <div className={styles.heroStage}>
           <div className={styles.stageGlow} aria-hidden="true" />
           <div className={styles.stageGrid} aria-hidden="true" />
           <div className={styles.stageFrame}>
@@ -51,31 +51,33 @@ export function HomePageContent() {
               <span>01 / component</span>
               <span>steez ui</span>
             </div>
-            <div className={styles.stageArt} aria-hidden="true">
+            <div className={styles.stageArt}>
               <div className={`${styles.stageShape} ${styles.stageShapeBack}`} />
               <div className={`${styles.stageShape} ${styles.stageShapeMid}`} />
               <div className={`${styles.stageShape} ${styles.stageShapeFront}`} />
-              <div className={styles.featuredCard}>
-                <div className={styles.cardStatus}>
-                  <span className={styles.statusDot} />
-                  Online
-                </div>
-                <div className={styles.featuredCardRow}>
-                  <div>
-                    <h2>Spectra Card</h2>
-                    <p>A flexible surface for modern interfaces.</p>
+              <Link href="/components/cyberpunk-tile" className={styles.featuredCard}>
+                <CyberpunkTile
+                  className={styles.featuredTile}
+                  contentClassName={styles.featuredCardContent}
+                  variant="big"
+                >
+                  <div className={styles.cardStatus}>
+                    <span className={styles.statusDot} />
+                    Component preview
                   </div>
-                  <span className={styles.cardArrow}>↗</span>
-                </div>
-              </div>
+                  <div className={styles.featuredCardRow}>
+                    <div>
+                      <h2>Cyberpunk Tile</h2>
+                      <p>A shipped surface primitive, composed with real library content.</p>
+                    </div>
+                    <span className={styles.cardArrow} aria-hidden="true">↗</span>
+                  </div>
+                </CyberpunkTile>
+              </Link>
             </div>
             <div className={styles.stageFooter}>
-              <span className={styles.stageProgress} aria-hidden="true">
-                <i />
-                <i />
-                <i />
-              </span>
-              <span>01 / 03</span>
+              <span>CSS Modules</span>
+              <span>Composable primitives</span>
             </div>
           </div>
           <div className={styles.stageSideNote}>
