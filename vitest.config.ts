@@ -29,6 +29,9 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "."),
+      "@steez-ui/icons": path.resolve(__dirname, "packages/icons/src/index.ts"),
+      "@steez-ui/theme": path.resolve(__dirname, "packages/theme/src/index.ts"),
+      "@steez-ui/ui": path.resolve(__dirname, "packages/ui/src/index.ts"),
     },
   },
 });
