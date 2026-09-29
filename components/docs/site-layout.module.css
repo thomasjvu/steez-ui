@@ -102,6 +102,13 @@
   line-height: 0.95;
 }
 
+@media (max-width: 640px) {
+  .pageTitle {
+    font-size: clamp(1.75rem, 8.5vw, 2.5rem);
+    overflow-wrap: anywhere;
+  }
+}
+
 .pageLead {
   margin: 0 0 4rem;
   max-width: 52ch;
@@ -1018,16 +1025,6 @@
 }
 
 @media (max-width: 640px) {
-  .header {
-    grid-template-columns: 1fr auto;
-  }
-
-  .nav {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    justify-self: start;
-  }
-
   .heroTitle {
     max-width: none;
   }
@@ -1067,8 +1064,19 @@
 }
 
 @media (max-width: 700px) {
+  .header {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: start;
+  }
+
   .headerActions {
-    display: none;
+    display: flex;
+    gap: 0.55rem;
   }
 
   .homeHero {
@@ -1078,7 +1086,7 @@
   }
 
   .homeTitle {
-    font-size: clamp(3.7rem, 17vw, 6rem);
+    font-size: clamp(2.35rem, 11.5vw, 4.75rem);
   }
 
   .heroStage {

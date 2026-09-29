@@ -25,7 +25,7 @@
     "test:standalone-smoke": "node scripts/standalone-copy-smoke.mjs",
     "registry:build": "shadcn build",
     "registry:generate": "node scripts/generate-registry.mjs",
-    "deploy:pages": "node scripts/deploy-pages.mjs"
+    "deploy:pages": "pnpm build && node scripts/deploy-pages.mjs"
   },
   "dependencies": {
     "@steez-ui/icons": "workspace:*",

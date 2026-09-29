@@ -81,7 +81,7 @@ pnpm typecheck:site       # site tsc --noEmit (source path maps; no dist require
 pnpm test                 # vitest run
 pnpm test:registry-smoke  # registry install smoke script
 pnpm registry:generate    # → public/r-steez (canonical)
-pnpm deploy:pages         # Cloudflare Pages (needs wrangler auth / CF token)
+pnpm deploy:pages         # builds and deploys Cloudflare Pages (needs wrangler auth / CF token)
 pnpm registry:build       # archival only — Boston /r demos (do not extend)
 ```
 
