@@ -5,8 +5,6 @@ import { spawnSync } from "child_process";
 import { fileURLToPath } from "url";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const rootPackagePath = path.join(repoRoot, "package.json");
-const rootPackage = JSON.parse(await fs.readFile(rootPackagePath, "utf8"));
 
 const args = new Set(process.argv.slice(2));
 const dryRun = args.has("--dry-run");

@@ -8,7 +8,12 @@ afterEach(cleanup);
 describe("BoilingLines", () => {
   it("keeps artwork accessible and filter IDs unique across instances", () => {
     const { container } = render(<>
-      <BoilingLines><img src="/a.svg" alt="Studio mark" /></BoilingLines>
+      <BoilingLines>
+        <svg role="img" aria-label="Studio mark" viewBox="0 0 24 24">
+          <title>Studio mark</title>
+          <circle cx="12" cy="12" r="8" />
+        </svg>
+      </BoilingLines>
       <BoilingLines><span>Second artwork</span></BoilingLines>
     </>);
     expect(screen.getByRole("img", { name: "Studio mark" })).toBeVisible();

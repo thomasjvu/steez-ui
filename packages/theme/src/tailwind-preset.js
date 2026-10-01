@@ -1,4 +1,4 @@
-export default {
+const preset = {
   theme: {
     extend: {
       colors: {
@@ -41,3 +41,4 @@ export default {
   },
 };
 
+export default preset;

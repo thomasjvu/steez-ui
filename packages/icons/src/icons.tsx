@@ -288,13 +288,13 @@ export const SunIcon = createIcon(({ width, height, color, className, style, ...
   </svg>
 ));
 
-export const MoonIcon = createIcon(({ width, height, color, className, style, ...props }, strokeWidth) => (
+export const MoonIcon = createIcon(({ width, height, color, className, style, ...props }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={width}
     height={height}
     viewBox="0 0 24 24"
-    fill="currentColor"
+    fill={color}
     stroke="none"
     className={className}
     style={style}
