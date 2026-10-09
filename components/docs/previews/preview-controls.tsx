@@ -3,6 +3,7 @@
 import React from "react";
 
 import {
+  CrystalButton,
   Button,
   CopyButton,
   FUIButtonTile,
@@ -20,6 +21,8 @@ import {
   SlidersIcon,
 } from "@steez-ui/icons";
 
+import { SITE_URL } from "@/lib/docs/site-data";
+
 import styles from "../component-docs.module.css";
 
 export function ButtonPreview() {
@@ -34,7 +37,7 @@ export function ButtonPreview() {
 
 export function CopyButtonPreview() {
   const registryOrigin =
-    typeof window === "undefined" ? "https://steez-ui-6v5.pages.dev" : window.location.origin;
+    typeof window === "undefined" ? SITE_URL : window.location.origin;
   const command = `pnpm dlx shadcn@latest add ${registryOrigin}/r-steez/button.json`;
 
   return (
@@ -72,16 +75,18 @@ export function FUIButtonTilePreview() {
 }
 
 export function PageHeaderPreview() {
+  const [viewerVisible, setViewerVisible] = React.useState(true);
+
   return (
     <PageHeader
       title="Providers"
-      description="Routing, failover, and API surfaces."
+      description="Configure API routing and fallback providers."
       brand={<span className={styles.previewBrand}>SU</span>}
       brandTitle="Steez UI"
       brandAriaLabel="Steez UI"
       extra={<Button variant="secondary">Publish</Button>}
-      onViewerToggle={() => undefined}
-      viewerVisible
+      onViewerToggle={() => setViewerVisible((visible) => !visible)}
+      viewerVisible={viewerVisible}
     />
   );
 }
@@ -138,5 +143,21 @@ export function SectionHeaderPreview() {
       description="Configure avatar rendering and expressions."
       actions={<Button variant="secondary">Save</Button>}
     />
+  );
+}
+
+export function CrystalButtonPreview() {
+  const [threads, setThreads] = React.useState(0);
+  const plus = <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>;
+  return (
+    <div className={styles.previewColumn}>
+      <div className={styles.previewRow}>
+        <CrystalButton href="/components" tone="loud">Open app <span aria-hidden="true">↗</span></CrystalButton>
+        <CrystalButton onClick={() => setThreads((count) => count + 1)}>New thread</CrystalButton>
+        <CrystalButton orientation="vertical" aria-label="New thread" onClick={() => setThreads((count) => count + 1)}>{plus}</CrystalButton>
+        <CrystalButton disabled>Unavailable</CrystalButton>
+      </div>
+      <p className={styles.previewNote} role="status">Threads created: {threads}</p>
+    </div>
   );
 }

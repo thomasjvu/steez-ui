@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SITE_URL } from "@/lib/docs/site-data";
 import { DocsSiteLayout } from "@/components/docs/site-layout";
 import siteStyles from "@/components/docs/site-layout.module.css";
 
@@ -7,7 +8,7 @@ export default function DocsPage() {
     <DocsSiteLayout
       currentNav="docs"
       title="Authoring model"
-      description="How to add a primitive and keep package, catalog, preview, and registry in lockstep."
+      description="Add a component, document it, and generate its install files."
     >
       <section className={siteStyles.section}>
         <h2 className={siteStyles.sectionTitle}>Source of truth</h2>
@@ -32,7 +33,7 @@ export default function DocsPage() {
           </li>
           <li className={siteStyles.listItem}>
             <span className={siteStyles.mono}>packages/icons</span>
-            <p className={siteStyles.listMeta}>Icon surface and provider used by shared primitives.</p>
+            <p className={siteStyles.listMeta}>Icons and shared size and stroke settings.</p>
           </li>
           <li className={siteStyles.listItem}>
             <span className={siteStyles.mono}>packages/react</span>
@@ -79,7 +80,7 @@ import { CyberpunkTile } from "@steez-ui/ui";`}
             </p>
             <div className={siteStyles.codeBlock}>
               <code>
-                pnpm dlx shadcn@latest add http://localhost:3000/r-steez/cyberpunk-tile.json
+                {`pnpm dlx shadcn@latest add ${SITE_URL}/r-steez/cyberpunk-tile.json`}
               </code>
             </div>
             <p className={siteStyles.listMeta} style={{ marginTop: "0.75rem" }}>
@@ -99,7 +100,7 @@ import { CyberpunkTile } from "@steez-ui/ui";`}
             </p>
             <div className={siteStyles.codeBlock}>
               <code>
-                https://steez-ui-6v5.pages.dev/copy/steez/cyberpunk-tile.tsx
+                {`${SITE_URL}/copy/steez/cyberpunk-tile.tsx`}
               </code>
             </div>
             <p className={siteStyles.listMeta} style={{ marginTop: "0.75rem" }}>
@@ -111,20 +112,18 @@ import { CyberpunkTile } from "@steez-ui/ui";`}
       </section>
 
       <section className={siteStyles.section}>
-        <h2 className={siteStyles.sectionTitle}>Intent presets</h2>
+        <h2 className={siteStyles.sectionTitle}>Component presets</h2>
         <p className={siteStyles.body}>
-          Start with a coherent family when a project needs more than one primitive:
+          Install a group of related components with a preset:{" "}
           <code className={siteStyles.inlineCode}>surfaces</code>,{" "}
           <code className={siteStyles.inlineCode}>motion</code>, or{" "}
-          <code className={siteStyles.inlineCode}>app-shell</code>. Individual item URLs remain{" "}
-          the smaller path when a project needs only one primitive.
+          <code className={siteStyles.inlineCode}>app-shell</code>. Use an individual item URL when you need one component.
         </p>
       </section>
       <section className={siteStyles.section}>
         <h2 className={siteStyles.sectionTitle}>Add a primitive (checklist)</h2>
         <p className={siteStyles.body}>
-          Keep these surfaces in lockstep. Skipping the catalog, preview, or generator is what
-          produces registry and docs drift.
+          Update the package, catalog, preview, and generated files together.
         </p>
         <ul className={siteStyles.list}>
           <li className={siteStyles.listItem}>
@@ -152,19 +151,13 @@ import { CyberpunkTile } from "@steez-ui/ui";`}
           <li className={siteStyles.listItem}>
             <span className={siteStyles.mono}>3. Catalog entry</span>
             <p className={siteStyles.listMeta}>
-              Add a <code className={siteStyles.inlineCode}>COMPONENT_DOCS</code> object in{" "}
-              <code className={siteStyles.inlineCode}>lib/docs/component-catalog.ts</code>. Required
-              fields: <code className={siteStyles.inlineCode}>slug</code>,{" "}
-              <code className={siteStyles.inlineCode}>title</code>,{" "}
-              <code className={siteStyles.inlineCode}>category</code>,{" "}
-              <code className={siteStyles.inlineCode}>summary</code>,{" "}
-              <code className={siteStyles.inlineCode}>description</code>,{" "}
-              <code className={siteStyles.inlineCode}>packageImport</code>,{" "}
-              <code className={siteStyles.inlineCode}>usage</code>,{" "}
-              <code className={siteStyles.inlineCode}>related</code>,{" "}
-              <code className={siteStyles.inlineCode}>tags</code>. The slug becomes the route{" "}
-              <code className={siteStyles.inlineCode}>/components/[slug]</code> and should match the
-              registry item name (kebab-case).
+              Add metadata to <code className={siteStyles.inlineCode}>COMPONENT_MANIFEST</code> in{" "}
+              <code className={siteStyles.inlineCode}>lib/docs/component-manifest.mjs</code>:
+              slug, title, description, category, package entrypoint and exports, registry files,
+              dependencies, and preview loader. The slug names the component route and registry item.
+              Add summary, usage, related components, and tags to{" "}
+              <code className={siteStyles.inlineCode}>COMPONENT_DOC_DETAILS</code> in{" "}
+              <code className={siteStyles.inlineCode}>lib/docs/component-catalog.ts</code>.
             </p>
           </li>
           <li className={siteStyles.listItem}>
@@ -174,26 +167,23 @@ import { CyberpunkTile } from "@steez-ui/ui";`}
               <code className={siteStyles.inlineCode}>components/docs/component-preview.tsx</code>{" "}
               (<code className={siteStyles.inlineCode}>PREVIEW_MAP</code>). Lightweight demos go in{" "}
               <code className={siteStyles.inlineCode}>components/docs/previews/preview-*.tsx</code>
-              ; keep lightweight demos in bounded category modules and give heavy WebGL/canvas demos a dedicated file under{" "}
+              ; give heavy WebGL/canvas demos a dedicated file under{" "}
               <code className={siteStyles.inlineCode}>components/docs/previews/</code> and a dynamic
               import so they stay code-split.
             </p>
           </li>
           <li className={siteStyles.listItem}>
-            <span className={siteStyles.mono}>5. Registry generator item</span>
+            <span className={siteStyles.mono}>5. Generate install files</span>
             <p className={siteStyles.listMeta}>
-              Append an entry to <code className={siteStyles.inlineCode}>itemDefinitions</code> in{" "}
-              <code className={siteStyles.inlineCode}>scripts/generate-registry.mjs</code> (source
-              paths under <code className={siteStyles.inlineCode}>packages/ui</code>,{" "}
-              <code className={siteStyles.inlineCode}>name</code> matching the catalog slug). Then
-              regenerate payloads into{" "}
-              <code className={siteStyles.inlineCode}>public/r-steez/</code>:
+              The generator reads component definitions from the manifest. Generate the registry
+              payloads in <code className={siteStyles.inlineCode}>public/r-steez/</code> and
+              standalone files in <code className={siteStyles.inlineCode}>public/copy/steez/</code>:
             </p>
             <div className={siteStyles.codeBlock}>
               <code>pnpm registry:generate</code>
             </div>
             <p className={siteStyles.listMeta} style={{ marginTop: "0.75rem" }}>
-              Optional smoke check that install manifests resolve:
+              Verify that generated install files resolve:
             </p>
             <div className={siteStyles.codeBlock}>
               <code>pnpm test:registry-smoke</code>
@@ -236,7 +226,7 @@ import { CyberpunkTile } from "@steez-ui/ui";`}
           <li className={siteStyles.listItem}>
             <span className={siteStyles.mono}>pnpm typecheck</span>
             <p className={siteStyles.listMeta}>
-              Builds packages, then runs TypeScript on the docs app (
+              Checks the canonical packages and docs app without building (
               <code className={siteStyles.inlineCode}>tsc -p tsconfig.json --noEmit</code>).
             </p>
           </li>
@@ -249,7 +239,7 @@ import { CyberpunkTile } from "@steez-ui/ui";`}
           <li className={siteStyles.listItem}>
             <span className={siteStyles.mono}>pnpm registry:generate</span>
             <p className={siteStyles.listMeta}>
-              Writes <code className={siteStyles.inlineCode}>public/r-steez/*.json</code> from{" "}
+              Writes registry JSON and standalone TSX files from{" "}
               <code className={siteStyles.inlineCode}>scripts/generate-registry.mjs</code>.
             </p>
           </li>
@@ -262,7 +252,7 @@ import { CyberpunkTile } from "@steez-ui/ui";`}
           </li>
           <li className={siteStyles.listItem}>
             <span className={siteStyles.mono}>pnpm lint</span>
-            <p className={siteStyles.listMeta}>Next.js ESLint for the docs site.</p>
+            <p className={siteStyles.listMeta}>Runs ESLint across the repository.</p>
           </li>
           <li className={siteStyles.listItem}>
             <span className={siteStyles.mono}>pnpm registry:build</span>
@@ -270,36 +260,6 @@ import { CyberpunkTile } from "@steez-ui/ui";`}
               Legacy Boston surface only (<code className={siteStyles.inlineCode}>shadcn build</code>{" "}
               → <code className={siteStyles.inlineCode}>public/r</code>). Not the package-primitive
               path.
-            </p>
-          </li>
-        </ul>
-      </section>
-
-      <section className={siteStyles.section}>
-        <h2 className={siteStyles.sectionTitle}>Lockstep surfaces</h2>
-        <p className={siteStyles.body}>
-          For each new slug, these four must agree on name and files:
-        </p>
-        <ul className={siteStyles.list}>
-          <li className={siteStyles.listItem}>
-            <span className={siteStyles.mono}>packages/ui/src/…</span>
-            <p className={siteStyles.listMeta}>Implementation + export from index.</p>
-          </li>
-          <li className={siteStyles.listItem}>
-            <span className={siteStyles.mono}>lib/docs/component-catalog.ts</span>
-            <p className={siteStyles.listMeta}>
-              Docs metadata driving <code className={siteStyles.inlineCode}>/components/[slug]</code>.
-            </p>
-          </li>
-          <li className={siteStyles.listItem}>
-            <span className={siteStyles.mono}>components/docs/component-preview.tsx</span>
-            <p className={siteStyles.listMeta}>Preview loader for that slug.</p>
-          </li>
-          <li className={siteStyles.listItem}>
-            <span className={siteStyles.mono}>scripts/generate-registry.mjs → public/r-steez</span>
-            <p className={siteStyles.listMeta}>
-              Generator definition and committed{" "}
-              <code className={siteStyles.inlineCode}>/r-steez/&lt;slug&gt;.json</code>.
             </p>
           </li>
         </ul>
@@ -314,11 +274,11 @@ import { CyberpunkTile } from "@steez-ui/ui";`}
           </li>
           <li className={siteStyles.listItem}>
             <Link href="/components/button">/components/[slug]</Link>
-            <p className={siteStyles.listMeta}>One component: preview, usage, dual install</p>
+            <p className={siteStyles.listMeta}>One component: preview, usage, and three install paths</p>
           </li>
           <li className={siteStyles.listItem}>
             <Link href="/packages">/packages</Link>
-            <p className={siteStyles.listMeta}>npm package surface</p>
+            <p className={siteStyles.listMeta}>Published npm packages</p>
           </li>
           <li className={siteStyles.listItem}>
             <Link href="/registry">/registry</Link>

@@ -1,0 +1,241 @@
+.root {
+  box-sizing: border-box;
+  container-type: inline-size;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 12rem;
+  aspect-ratio: 1.42 / 1;
+  overflow: hidden;
+  padding: clamp(1.25rem, 6cqw, 4rem);
+  background: #000;
+  color: #f7f7f7;
+  text-align: center;
+  isolation: isolate;
+}
+
+.word {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  font-size: clamp(3rem, 23cqw, 20rem);
+  font-style: italic;
+  font-weight: 900;
+  line-height: 0.86;
+  letter-spacing: -0.075em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.base {
+  display: block;
+  visibility: hidden;
+}
+
+.slice {
+  position: absolute;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+  transform: translate3d(0, 0, 0);
+  will-change: transform, filter;
+}
+
+.root[data-direction="horizontal"] .firstSlice {
+  clip-path: inset(0 0 50% 0);
+}
+
+.root[data-direction="horizontal"] .secondSlice {
+  clip-path: inset(50% 0 0 0);
+}
+
+.root[data-direction="vertical"] .firstSlice {
+  clip-path: inset(0 50% 0 0);
+}
+
+.root[data-direction="vertical"] .secondSlice {
+  clip-path: inset(0 0 0 50%);
+}
+
+.root[data-trigger="always"] .slice,
+.root[data-trigger="mount"] .slice {
+  animation-duration: var(--kinetic-swipe-duration, 2400ms);
+  animation-delay: var(--kinetic-swipe-delay, 0ms);
+  animation-timing-function: ease-in-out;
+}
+
+.root[data-trigger="always"] .slice {
+  animation-iteration-count: infinite;
+}
+
+.root[data-trigger="mount"] .slice {
+  animation-iteration-count: 1;
+  animation-fill-mode: both;
+}
+
+.root[data-trigger="hover"]:hover .slice,
+.root[data-trigger="hover"]:focus-within .slice {
+  animation-duration: var(--kinetic-swipe-duration, 2400ms);
+  animation-delay: var(--kinetic-swipe-delay, 0ms);
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.root[data-trigger="always"][data-direction="horizontal"] .firstSlice,
+.root[data-trigger="mount"][data-direction="horizontal"] .firstSlice {
+  animation-name: swipeHorizontalFirst;
+}
+
+.root[data-trigger="always"][data-direction="horizontal"] .secondSlice,
+.root[data-trigger="mount"][data-direction="horizontal"] .secondSlice {
+  animation-name: swipeHorizontalSecond;
+}
+
+.root[data-trigger="always"][data-direction="vertical"] .firstSlice,
+.root[data-trigger="mount"][data-direction="vertical"] .firstSlice {
+  animation-name: swipeVerticalFirst;
+}
+
+.root[data-trigger="always"][data-direction="vertical"] .secondSlice,
+.root[data-trigger="mount"][data-direction="vertical"] .secondSlice {
+  animation-name: swipeVerticalSecond;
+}
+
+.root[data-trigger="hover"][data-direction="horizontal"]:hover .firstSlice,
+.root[data-trigger="hover"][data-direction="horizontal"]:focus-within .firstSlice {
+  animation-name: swipeHorizontalFirst;
+}
+
+.root[data-trigger="hover"][data-direction="horizontal"]:hover .secondSlice,
+.root[data-trigger="hover"][data-direction="horizontal"]:focus-within .secondSlice {
+  animation-name: swipeHorizontalSecond;
+}
+
+.root[data-trigger="hover"][data-direction="vertical"]:hover .firstSlice,
+.root[data-trigger="hover"][data-direction="vertical"]:focus-within .firstSlice {
+  animation-name: swipeVerticalFirst;
+}
+
+.root[data-trigger="hover"][data-direction="vertical"]:hover .secondSlice,
+.root[data-trigger="hover"][data-direction="vertical"]:focus-within .secondSlice {
+  animation-name: swipeVerticalSecond;
+}
+
+@keyframes swipeHorizontalFirst {
+  0%,
+  67%,
+  100% {
+    filter: blur(0);
+    transform: translate3d(0, 0, 0) skewX(0deg);
+  }
+
+  71% {
+    filter: blur(0.012em);
+    transform: translate3d(-0.15em, -0.035em, 0) skewX(-10deg);
+  }
+
+  76% {
+    filter: blur(0.008em);
+    transform: translate3d(0.11em, 0, 0) skewX(6deg);
+  }
+
+  82% {
+    filter: blur(0);
+    transform: translate3d(0, 0, 0) skewX(0deg);
+  }
+}
+
+@keyframes swipeHorizontalSecond {
+  0%,
+  67%,
+  100% {
+    filter: blur(0);
+    transform: translate3d(0, 0, 0) skewX(0deg);
+  }
+
+  71% {
+    filter: blur(0.012em);
+    transform: translate3d(0.13em, 0.035em, 0) skewX(9deg);
+  }
+
+  76% {
+    filter: blur(0.008em);
+    transform: translate3d(-0.1em, 0, 0) skewX(-6deg);
+  }
+
+  82% {
+    filter: blur(0);
+    transform: translate3d(0, 0, 0) skewX(0deg);
+  }
+}
+
+@keyframes swipeVerticalFirst {
+  0%,
+  67%,
+  100% {
+    filter: blur(0);
+    transform: translate3d(0, 0, 0) skewY(0deg);
+  }
+
+  71% {
+    filter: blur(0.012em);
+    transform: translate3d(-0.035em, -0.15em, 0) skewY(-10deg);
+  }
+
+  76% {
+    filter: blur(0.008em);
+    transform: translate3d(0, 0.11em, 0) skewY(6deg);
+  }
+
+  82% {
+    filter: blur(0);
+    transform: translate3d(0, 0, 0) skewY(0deg);
+  }
+}
+
+@keyframes swipeVerticalSecond {
+  0%,
+  67%,
+  100% {
+    filter: blur(0);
+    transform: translate3d(0, 0, 0) skewY(0deg);
+  }
+
+  71% {
+    filter: blur(0.012em);
+    transform: translate3d(0.035em, 0.13em, 0) skewY(9deg);
+  }
+
+  76% {
+    filter: blur(0.008em);
+    transform: translate3d(0, -0.1em, 0) skewY(-6deg);
+  }
+
+  82% {
+    filter: blur(0);
+    transform: translate3d(0, 0, 0) skewY(0deg);
+  }
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root .slice {
+    animation: none !important;
+    filter: none;
+    transform: none;
+    will-change: auto;
+  }
+}

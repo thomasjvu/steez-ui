@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "kinetic-text-ring",
+  "type": "registry:component",
+  "title": "Kinetic Text Ring",
+  "description": "Repeated display type follows a rotating elliptical path using SVG and CSS.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/steez/KineticTextRing.tsx",
+      "type": "registry:file",
+      "target": "components/steez/KineticTextRing.tsx",
+      "content": "\"use client\";\n\nimport React from \"react\";\n\nimport styles from \"./KineticTextRing.module.css\";\n\nexport type KineticTextRingDirection = \"clockwise\" | \"counterclockwise\";\n\nexport interface KineticTextRingProps\n  extends Omit<React.HTMLAttributes<HTMLDivElement>, \"children\"> {\n  children: string;\n  durationMs?: number;\n  direction?: KineticTextRingDirection;\n  pauseOnHover?: boolean;\n}\n\nconst TARGET_GLYPH_COUNT = 60;\nconst MIN_REPEAT_COUNT = 3;\nconst MAX_REPEAT_COUNT = 16;\n\nexport function KineticTextRing({\n  children,\n  durationMs = 16000,\n  direction = \"clockwise\",\n  pauseOnHover = false,\n  className = \"\",\n  style,\n  \"aria-label\": ariaLabel,\n  ...props\n}: KineticTextRingProps) {\n  const label = String(children).trim();\n  const pathId = `kinetic-text-ring-${React.useId().replace(/:/g, \"\")}`;\n  const safeDuration = Number.isFinite(durationMs)\n    ? Math.min(Math.max(durationMs, 1000), 120000)\n    : 16000;\n  const visualLabel = label.toUpperCase();\n  const repeatedLabel = `${visualLabel}  •  `;\n  const repeatCount = Math.min(\n    MAX_REPEAT_COUNT,\n    Math.max(\n      MIN_REPEAT_COUNT,\n      Math.ceil(TARGET_GLYPH_COUNT / Math.max(repeatedLabel.length, 1)),\n    ),\n  );\n  const mergedStyle = {\n    ...style,\n    [\"--kinetic-text-ring-duration\" as string]: `${safeDuration}ms`,\n  } as React.CSSProperties;\n\n  return (\n    <div\n      className={`${styles.root} ${className}`.trim()}\n      data-direction={direction}\n      data-pause-on-hover={pauseOnHover ? \"true\" : \"false\"}\n      style={mergedStyle}\n      role=\"img\"\n      aria-label={ariaLabel ?? label}\n      {...props}\n    >\n      <svg\n        className={styles.scene}\n        viewBox=\"0 0 600 320\"\n        preserveAspectRatio=\"xMidYMid meet\"\n        aria-hidden=\"true\"\n        focusable=\"false\"\n      >\n        <defs>\n          <path\n            id={pathId}\n            d=\"M 300 42 C 450 42 566 93 566 160 C 566 227 450 278 300 278 C 150 278 34 227 34 160 C 34 93 150 42 300 42\"\n          />\n        </defs>\n        <g className={styles.ring}>\n          <use href={`#${pathId}`} className={styles.outline} />\n          <text\n            className={styles.label}\n            textLength=\"1280\"\n            lengthAdjust=\"spacing\"\n          >\n            <textPath href={`#${pathId}`}>\n              {repeatedLabel.repeat(repeatCount)}\n            </textPath>\n          </text>\n        </g>\n      </svg>\n    </div>\n  );\n}\n\nexport default KineticTextRing;\n",
+      "source": "packages/ui/src/components/KineticTextRing.tsx"
+    },
+    {
+      "path": "components/steez/KineticTextRing.module.css",
+      "type": "registry:file",
+      "target": "components/steez/KineticTextRing.module.css",
+      "content": ".root {\n  container-type: inline-size;\n  display: grid;\n  width: 100%;\n  min-height: 13rem;\n  aspect-ratio: 1.8 / 1;\n  overflow: hidden;\n  color: var(--text-primary, #171717);\n  perspective: 900px;\n}\n\n.scene {\n  display: block;\n  width: 100%;\n  height: 100%;\n  overflow: visible;\n}\n\n.ring {\n  transform-box: view-box;\n  transform-origin: center;\n  transform-style: preserve-3d;\n  animation: kineticTextRingSpin var(--kinetic-text-ring-duration, 16000ms)\n    linear infinite;\n}\n\n.root[data-direction=\"counterclockwise\"] .ring {\n  animation-direction: reverse;\n}\n\n.root[data-pause-on-hover=\"true\"]:hover .ring {\n  animation-play-state: paused;\n}\n\n.outline {\n  fill: none;\n  stroke: currentColor;\n  stroke-width: 1;\n  opacity: 0.13;\n}\n\n.label {\n  fill: currentColor;\n  font-family: Impact, Haettenschweiler, \"Arial Narrow Bold\", sans-serif;\n  font-size: clamp(1.4rem, 7cqw, 2.8rem);\n  font-weight: 900;\n  letter-spacing: 0.075em;\n}\n\n@keyframes kineticTextRingSpin {\n  from {\n    transform: rotateX(20deg) rotateZ(0deg);\n  }\n\n  to {\n    transform: rotateX(20deg) rotateZ(360deg);\n  }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .ring {\n    animation: none;\n    transform: none;\n  }\n}\n",
+      "source": "packages/ui/src/components/KineticTextRing.module.css"
+    }
+  ]
+}

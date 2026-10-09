@@ -3,6 +3,7 @@
 import React from "react";
 
 import {
+  IconStackSelect,
   CyberpunkCheckbox,
   CyberpunkInput,
   CyberpunkRadioGroup,
@@ -98,11 +99,20 @@ export function CyberpunkSliderPreview() {
   const [value, setValue] = React.useState(62);
 
   return (
-    <CyberpunkSlider
-      label="Reply energy"
-      value={value}
-      onChange={(event) => setValue(Number(event.target.value))}
-    />
+    <div className={styles.previewColumn} style={{ width: "100%", maxWidth: 360, alignItems: "stretch" }}>
+      <CyberpunkSlider
+        label="Default"
+        value={value}
+        onChange={(event) => setValue(Number(event.target.value))}
+      />
+      <CyberpunkSlider
+        label="Diamond"
+        variant="diamond"
+        value={value}
+        onChange={(event) => setValue(Number(event.target.value))}
+        helperText="Hold the square thumb to turn it into a diamond."
+      />
+    </div>
   );
 }
 
@@ -119,5 +129,26 @@ export function SegmentedControlPreview() {
       ]}
       label="Install path"
     />
+  );
+}
+
+export function IconStackSelectPreview() {
+  const [value, setValue] = React.useState("balanced");
+  const icons = [
+    { id: "circle", label: "Circle", icon: <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6" fill="#111" /></svg> },
+    { id: "square", label: "Square", icon: <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" fill="#111" /></svg> },
+    { id: "triangle", label: "Triangle", icon: <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 5 8 14H4Z" fill="#111" /></svg> },
+  ];
+  return (
+    <div className={styles.previewColumn} style={{ width: "100%", maxWidth: 360 }}>
+      <IconStackSelect label="Model" value={value} onValueChange={setValue}
+        options={[
+          { value: "fast", label: "Fast", icons: icons.slice(0, 2) },
+          { value: "balanced", label: "Balanced", icons },
+          { value: "quality", label: "Quality", icons: icons.slice(1) },
+          { value: "offline", label: "Offline (unavailable)", disabled: true },
+        ]} />
+      <p className={styles.previewNote}>All associated icons stay visible. Use arrow keys to browse and Enter to choose.</p>
+    </div>
   );
 }

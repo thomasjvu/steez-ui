@@ -1,0 +1,106 @@
+.root {
+  box-sizing: border-box;
+  container-type: inline-size;
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 14rem;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #1738ef;
+  color: #fff;
+  isolation: isolate;
+}
+
+.viewport {
+  position: absolute;
+  inset: -11% -17% -33%;
+  overflow: hidden;
+  perspective: 34rem;
+  perspective-origin: 50% 10%;
+}
+
+.plane {
+  position: absolute;
+  inset: 0;
+  transform: rotateX(48deg) scale(1.22);
+  transform-origin: 50% 4%;
+  transform-style: preserve-3d;
+}
+
+.track {
+  position: absolute;
+  inset: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  height: 200%;
+  animation-duration: var(--kinetic-text-ramp-duration, 9000ms);
+  animation-delay: var(--kinetic-text-ramp-delay, 0ms);
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+  will-change: transform;
+}
+
+.root[data-trigger="always"] .track,
+.root[data-trigger="mount"] .track {
+  animation-name: textRampScroll;
+}
+
+.root[data-trigger="always"] .track {
+  animation-iteration-count: infinite;
+}
+
+.root[data-trigger="mount"] .track {
+  animation-iteration-count: 1;
+}
+
+.root[data-trigger="hover"]:hover .track,
+.root[data-trigger="hover"]:focus-within .track {
+  animation-name: textRampScroll;
+  animation-iteration-count: infinite;
+}
+
+.loop {
+  display: grid;
+  flex: 0 0 50%;
+  grid-template-rows: repeat(var(--kinetic-text-ramp-rows, 8), minmax(0, 1fr));
+}
+
+.row {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  font-size: clamp(2.4rem, 14cqw, 10rem);
+  font-style: italic;
+  font-weight: 900;
+  line-height: 0.86;
+  letter-spacing: -0.065em;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-shadow:
+    0.035em 0.035em 0 #101116,
+    0.07em 0.07em 0 #101116,
+    0.105em 0.105em 0 #101116,
+    0.14em 0.14em 0 #101116,
+    0.175em 0.175em 0 #101116;
+}
+
+@keyframes textRampScroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, -50%, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none !important;
+    transform: none;
+    will-change: auto;
+  }
+}

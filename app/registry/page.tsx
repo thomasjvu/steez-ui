@@ -8,7 +8,7 @@ export default function RegistryPage() {
     <DocsSiteLayout
       currentNav="registry"
       title="Registry"
-      description="shadcn-compatible JSON payloads for source-level installs."
+      description="Install component source files with shadcn."
     >
       <section className={siteStyles.section}>
         <p className={siteStyles.body}>
@@ -40,7 +40,7 @@ export default function RegistryPage() {
           ))}
           <li className={siteStyles.listItem}>
             <Link href="/components">Browse components</Link>
-            <p className={siteStyles.listMeta}>Prefer the catalog over dumping every preview.</p>
+            <p className={siteStyles.listMeta}>Preview components and choose an install path.</p>
           </li>
         </ul>
       </section>

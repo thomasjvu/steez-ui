@@ -1,5 +1,5 @@
-import { cleanup, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it } from "vitest";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { CyberpunkSlider } from "./CyberpunkSlider";
 
@@ -88,5 +88,49 @@ describe("CyberpunkSlider aria-describedby", () => {
     expect(slider.getAttribute("aria-invalid")).toBe("true");
     expect(slider.getAttribute("aria-describedby")).toBe(error.id);
     expect(error.textContent).toBe("Volume must be within range.");
+  });
+});
+
+describe("CyberpunkSlider diamond and native values", () => {
+  it("updates an uncontrolled range, progress, visible value, and submitted value", () => {
+    render(<form data-testid="volume-form"><CyberpunkSlider variant="diamond" label="Volume" name="volume" defaultValue={25} min={0} max={100} step={5} /></form>);
+    const slider = screen.getByRole("slider", { name: "Volume" });
+    expect(slider).toHaveValue("25");
+    fireEvent.change(slider, { target: { value: "70" } });
+    expect(slider).toHaveValue("70");
+    expect(screen.getByText("70")).toBeInTheDocument();
+    expect(slider.parentElement?.style.getPropertyValue("--slider-percentage")).toBe("70");
+    expect(new FormData(screen.getByTestId("volume-form") as HTMLFormElement).get("volume")).toBe("70");
+  });
+
+  it("keeps controlled state with the caller and forwards change events", () => {
+    const change = vi.fn();
+    const { rerender } = render(<CyberpunkSlider variant="diamond" label="Volume" value={30} onChange={change} />);
+    fireEvent.change(screen.getByRole("slider"), { target: { value: "80" } });
+    expect(change).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole("slider")).toHaveValue("30");
+    expect(screen.getByText("30")).toBeInTheDocument();
+    rerender(<CyberpunkSlider variant="diamond" label="Volume" value={80} onChange={change} />);
+    expect(screen.getByRole("slider")).toHaveValue("80");
+    expect(screen.getByText("80")).toBeInTheDocument();
+  });
+
+  it("synchronizes uncontrolled progress and value after a native form reset", async () => {
+    render(<form data-testid="volume-form"><CyberpunkSlider variant="diamond" label="Volume" defaultValue={20} /></form>);
+    fireEvent.change(screen.getByRole("slider"), { target: { value: "90" } });
+    (screen.getByTestId("volume-form") as HTMLFormElement).reset();
+    await waitFor(() => expect(screen.getByText("20")).toBeInTheDocument());
+    expect(screen.getByRole("slider")).toHaveValue("20");
+    expect(screen.getByRole("slider").parentElement?.style.getPropertyValue("--slider-percentage")).toBe("20");
+  });
+
+  it("uses native range clamping for defaults and retains accessible errors and disabled state", () => {
+    render(<CyberpunkSlider variant="diamond" label="Volume" min={10} max={50} defaultValue={100} step={5} error="Check volume." disabled />);
+    const slider = screen.getByRole("slider", { name: "Volume" });
+    expect(slider).toHaveValue("50");
+    expect(screen.getByText("50")).toBeInTheDocument();
+    expect(slider).toBeDisabled();
+    expect(slider).toHaveAttribute("aria-invalid", "true");
+    expect(slider).toHaveAccessibleDescription("Check volume.");
   });
 });

@@ -1,0 +1,268 @@
+.root {
+  position: relative;
+  display: inline-block;
+  width: var(--quartz-width);
+  height: calc(var(--quartz-height) + var(--quartz-width) + var(--quartz-float-distance) * 2);
+  pointer-events: none;
+  flex-shrink: 0;
+}
+.root[data-visible="false"] { opacity: 0; }
+.offset { position: absolute; inset: 0; }
+.filters { position: absolute; width: 0; height: 0; overflow: hidden; }
+.quartz {
+  width: var(--quartz-width);
+  height: var(--quartz-height);
+  position: absolute;
+  top: calc(var(--quartz-width) / 2 + var(--quartz-float-distance));
+  left: 0;
+  filter: var(--quartz-distortion)
+          drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.5))
+          drop-shadow(0px 0px 20px color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 30%, transparent));
+  animation: float calc(var(--quartz-speed) * 2) ease-in-out 0s infinite,
+             hologram-flicker 4s ease-in-out infinite;
+  transform: rotate(-180deg);
+  opacity: 1;
+}
+
+@keyframes hologram-flicker {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.92;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: rotate(-180deg) translateY(0px);
+  }
+  50% {
+    transform: rotate(-180deg) translateY(calc(-1 * var(--quartz-float-distance)));
+  }
+}
+
+.left {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 60%, #000) 0%,
+    color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 75%, #000) 50%,
+    color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 60%, #000) 100%);
+  opacity: 0.85;
+}
+
+.center {
+  position: absolute;
+  height: 100%;
+  width: 50%;
+  top: 0;
+  left: 50%;
+  background: var(--quartz-color, var(--color-accent, #ee1401));
+  animation: middle-center var(--quartz-speed) linear 0s infinite;
+}
+
+@keyframes middle-center {
+  from {
+    background: linear-gradient(90deg,
+      var(--quartz-color, var(--color-accent, #ee1401)) 0%,
+      color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 85%, #fff) 50%,
+      var(--quartz-color, var(--color-accent, #ee1401)) 100%);
+    left: 50%;
+    width: 50%;
+    opacity: 0.95;
+  }
+  to {
+    background: linear-gradient(90deg,
+      color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 60%, #000) 0%,
+      color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 75%, #000) 50%,
+      color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 60%, #000) 100%);
+    left: 0;
+    width: 100%;
+    opacity: 0.85;
+  }
+}
+
+.right {
+  height: 100%;
+  width: 1px;
+  top: 0;
+  left: 100%;
+  position: absolute;
+  background: color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 70%, #fff);
+  animation: middle-right var(--quartz-speed) linear 0s infinite;
+}
+
+@keyframes middle-right {
+  from {
+    background: linear-gradient(180deg,
+      color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 90%, #fff) 0%,
+      color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 95%, #fff) 50%,
+      color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 90%, #fff) 100%);
+    left: 100%;
+    width: 0;
+    opacity: 1;
+  }
+  to {
+    background: linear-gradient(180deg,
+      var(--quartz-color, var(--color-accent, #ee1401)) 0%,
+      color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 85%, #fff) 50%,
+      var(--quartz-color, var(--color-accent, #ee1401)) 100%);
+    left: 50%;
+    width: 50%;
+    opacity: 0.95;
+  }
+}
+
+.upTriLeft {
+  position: absolute;
+  top: calc(var(--quartz-width) * -0.5);
+  left: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 calc(var(--quartz-width) * 0.25) calc(var(--quartz-width) * 0.5) calc(var(--quartz-width) * 0.5);
+  border-color: transparent transparent color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 70%, #000) transparent;
+  opacity: 0.8;
+}
+
+.upTriCenter {
+  position: absolute;
+  top: calc(var(--quartz-width) * -0.5);
+  left: calc(var(--quartz-width) * 0.5);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 calc(var(--quartz-width) * 0.5) calc(var(--quartz-width) * 0.5) 0;
+  border-color: transparent transparent color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 85%, #fff) transparent;
+  animation: top-center var(--quartz-speed) linear 0s infinite;
+  opacity: 0.9;
+}
+
+@keyframes top-center {
+  0% {
+    left: calc(var(--quartz-width) * 0.5);
+    border-width: 0 calc(var(--quartz-width) * 0.5) calc(var(--quartz-width) * 0.5) 0;
+    border-color: transparent transparent color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 85%, #fff) transparent;
+    opacity: 0.9;
+  }
+  100% {
+    left: 0;
+    border-width: 0 calc(var(--quartz-width) * 0.25) calc(var(--quartz-width) * 0.5) calc(var(--quartz-width) * 0.5);
+    border-color: transparent transparent color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 70%, #000) transparent;
+    opacity: 0.85;
+  }
+}
+
+.upTriRight {
+  position: absolute;
+  top: calc(var(--quartz-width) * -0.5);
+  left: calc(var(--quartz-width) * 0.8);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 0 calc(var(--quartz-width) * 0.6) 0;
+  border-color: transparent transparent color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 95%, #fff) transparent;
+  transform: rotate(-45deg);
+  animation: top-right var(--quartz-speed) linear 0s infinite;
+  opacity: 0.95;
+}
+
+@keyframes top-right {
+  from {
+    left: calc(var(--quartz-width) * 0.8);
+    border-width: 0 1px calc(var(--quartz-width) * 0.6) 0;
+    transform: rotate(-45deg);
+    border-color: transparent transparent color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 95%, #fff) transparent;
+    opacity: 0.95;
+  }
+  to {
+    left: calc(var(--quartz-width) * 0.5);
+    border-width: 0 calc(var(--quartz-width) * 0.5) calc(var(--quartz-width) * 0.53) 0;
+    transform: rotate(0deg);
+    border-color: transparent transparent color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 85%, #fff) transparent;
+    opacity: 0.9;
+  }
+}
+
+.downTriLeft {
+  position: absolute;
+  bottom: calc(var(--quartz-width) * -0.5);
+  left: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: calc(var(--quartz-width) * 0.5) calc(var(--quartz-width) * 0.25) 0 calc(var(--quartz-width) * 0.5);
+  border-color: color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 55%, #000) transparent transparent transparent;
+  opacity: 0.75;
+}
+
+.downTriCenter {
+  position: absolute;
+  bottom: calc(var(--quartz-width) * -0.5);
+  left: calc(var(--quartz-width) * 0.5);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: calc(var(--quartz-width) * 0.5) calc(var(--quartz-width) * 0.5) 0 0;
+  border-color: color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 75%, #000) transparent transparent transparent;
+  animation: bottom-center var(--quartz-speed) linear 0s infinite;
+  opacity: 0.8;
+}
+
+@keyframes bottom-center {
+  from {
+    left: calc(var(--quartz-width) * 0.5);
+    border-width: calc(var(--quartz-width) * 0.5) calc(var(--quartz-width) * 0.5) 0 0;
+    border-color: color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 75%, #000) transparent transparent transparent;
+    opacity: 0.8;
+  }
+  to {
+    left: 0;
+    border-width: calc(var(--quartz-width) * 0.5) calc(var(--quartz-width) * 0.25) 0 calc(var(--quartz-width) * 0.5);
+    border-color: color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 55%, #000) transparent transparent transparent;
+    opacity: 0.75;
+  }
+}
+
+.downTriRight {
+  position: absolute;
+  bottom: calc(var(--quartz-width) * -0.5);
+  left: calc(var(--quartz-width) * 0.8);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: calc(var(--quartz-width) * 0.6) calc(var(--quartz-width) * 0.01) 0 0;
+  border-color: color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 80%, #fff) transparent transparent transparent;
+  transform: rotate(-45deg);
+  animation: bottom-right var(--quartz-speed) linear 0s infinite;
+  opacity: 0.9;
+}
+
+@keyframes bottom-right {
+  from {
+    left: calc(var(--quartz-width) * 0.8);
+    border-width: calc(var(--quartz-width) * 0.6) 1px 0 0;
+    transform: rotate(45deg);
+    border-color: color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 80%, #fff) transparent transparent transparent;
+    opacity: 0.9;
+  }
+  to {
+    left: calc(var(--quartz-width) * 0.5);
+    border-width: calc(var(--quartz-width) * 0.53) calc(var(--quartz-width) * 0.5) 0 0;
+    transform: rotate(0deg);
+    border-color: color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 75%, #000) transparent transparent transparent;
+    opacity: 0.8;
+  }
+}
+
+.root[data-running="false"] .quartz,
+.root[data-running="false"] .quartz > div { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  .quartz, .quartz > div { animation: none; }
+  .offset { transform: none !important; }
+}

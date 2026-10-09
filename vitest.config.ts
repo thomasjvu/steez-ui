@@ -31,6 +31,7 @@ export default defineConfig({
       "@": path.resolve(__dirname, "."),
       "@steez-ui/icons": path.resolve(__dirname, "packages/icons/src/index.ts"),
       "@steez-ui/theme": path.resolve(__dirname, "packages/theme/src/index.ts"),
+      "@steez-ui/ui/blocks": path.resolve(__dirname, "packages/ui/src/blocks.ts"),
       "@steez-ui/ui": path.resolve(__dirname, "packages/ui/src/index.ts"),
     },
   },

@@ -1,6 +1,9 @@
 "use client";
 
+import { useState } from "react";
+
 import {
+  Button,
   ErrorMessage,
   HeartbeatPulse,
   LoadingProgressBar,
@@ -45,13 +48,26 @@ export function StatusMessagePreview() {
 }
 
 export function ErrorMessagePreview() {
+  const [retried, setRetried] = useState(false);
+
+  if (retried) {
+    return (
+      <div className={styles.previewColumn}>
+        <StatusMessage type="success" message="Build completed." />
+        <Button variant="secondary" onClick={() => setRetried(false)}>
+          Reset demo
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <ErrorMessage
       variant="inline"
       title="Build failed"
       message="Registry generation could not finish."
       details="The component catalog and payload manifest are out of sync."
-      onRetry={() => undefined}
+      onRetry={() => setRetried(true)}
     />
   );
 }

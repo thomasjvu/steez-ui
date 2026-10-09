@@ -3,7 +3,6 @@
 import dynamic from "next/dynamic";
 import type { ComponentType } from "react";
 
-import { COMPONENT_MANIFEST } from "../../lib/docs/component-manifest.mjs";
 import styles from "./component-docs.module.css";
 
 type PreviewModule = { default: ComponentType };
@@ -57,9 +56,19 @@ const PREVIEW_MAP: Record<string, ComponentType> = {
   "avatar-stage": makePreview(fromContent("AvatarStagePreview")),
   "character-afterimage": makePreview(fromContent("CharacterAfterimagePreview")),
   "blink-text": makePreview(fromContent("BlinkTextPreview")),
+  "kinetic-text-ramp": makePreview(fromContent("KineticTextRampPreview")),
+  "kinetic-text-ring": makePreview(fromContent("KineticTextRingPreview")),
+  "kinetic-text-globe": makePreview(fromContent("KineticTextGlobePreview")),
+  "kinetic-text-volume": makePreview(fromContent("KineticTextVolumePreview")),
+  "kinetic-swipe-text": makePreview(fromContent("KineticSwipeTextPreview")),
+  "kinetic-glyph": makePreview(fromContent("KineticGlyphPreview")),
+  "displacement-filter": makePreview(fromContent("DisplacementFilterPreview")),
+  "crystal-button": makePreview(fromControls("CrystalButtonPreview")),
+  "quartz-crystal": makePreview(() => import("./previews/quartz-crystal-preview")),
   button: makePreview(fromControls("ButtonPreview")),
   "copy-button": makePreview(fromControls("CopyButtonPreview")),
   "cyberpunk-input": makePreview(fromForms("CyberpunkInputPreview")),
+  "icon-stack-select": makePreview(fromForms("IconStackSelectPreview")),
   "cyberpunk-select": makePreview(fromForms("CyberpunkSelectPreview")),
   "cyberpunk-textarea": makePreview(fromForms("CyberpunkTextareaPreview")),
   "cyberpunk-checkbox": makePreview(fromForms("CyberpunkCheckboxPreview")),
@@ -99,9 +108,7 @@ const PREVIEW_MAP: Record<string, ComponentType> = {
 };
 
 /** Slugs with a preview module (for parity checks). */
-export const PREVIEW_SLUGS = COMPONENT_MANIFEST
-  .filter((component) => component.previewLoader)
-  .map((component) => component.slug);
+export const PREVIEW_SLUGS = Object.keys(PREVIEW_MAP);
 
 export function ComponentPreview({ slug }: { slug: string }) {
   const Preview = PREVIEW_MAP[slug];

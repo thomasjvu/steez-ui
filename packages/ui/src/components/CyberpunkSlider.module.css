@@ -172,3 +172,86 @@
     transition: none;
   }
 }
+
+/* Slim native track; retain the range input's keyboard and pointer behavior. */
+.diamond .track {
+  --thumb-size: 20px;
+  min-width: 0;
+  height: 44px;
+}
+
+.diamond .trackBase,
+.diamond .fill { display: none; }
+
+.diamond .slider {
+  height: 44px;
+  touch-action: pan-y;
+}
+
+.diamond .slider::-webkit-slider-runnable-track {
+  height: 5px;
+  border-radius: 999px;
+  background: linear-gradient(to right,
+    var(--diamond-slider-accent, var(--color-accent, #ee1401)) 0%,
+    var(--diamond-slider-accent, var(--color-accent, #ee1401)) calc(var(--slider-percentage, 0) * 1%),
+    var(--diamond-slider-track, var(--color-border, #2a2a2a)) calc(var(--slider-percentage, 0) * 1%),
+    var(--diamond-slider-track, var(--color-border, #2a2a2a)) 100%);
+}
+
+.diamond .slider::-moz-range-track {
+  height: 5px;
+  border-radius: 999px;
+  background: var(--diamond-slider-track, var(--color-border, #2a2a2a));
+}
+
+.diamond .slider::-moz-range-progress {
+  height: 5px;
+  border-radius: 999px;
+  background: var(--diamond-slider-accent, var(--color-accent, #ee1401));
+}
+
+.diamond .slider::-webkit-slider-thumb {
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  margin-top: -7.5px;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  background: var(--diamond-slider-accent, var(--color-accent, #ee1401));
+  box-shadow: none;
+  transform: rotate(0deg);
+  transition: transform 160ms ease;
+}
+
+.diamond .slider::-moz-range-thumb {
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  background: var(--diamond-slider-accent, var(--color-accent, #ee1401));
+  box-shadow: none;
+  transform: rotate(0deg);
+  transition: transform 160ms ease;
+}
+
+.diamond .slider:active:not(:disabled)::-webkit-slider-thumb { transform: rotate(45deg); }
+.diamond .slider:active:not(:disabled)::-moz-range-thumb { transform: rotate(45deg); }
+
+/* Focus belongs to the whole control; the thumb stays solid with no halo. */
+.diamond .slider:focus-visible {
+  outline: 2px solid var(--diamond-slider-accent, var(--color-accent, #ee1401));
+  outline-offset: 2px;
+  box-shadow: none;
+}
+.diamond .slider:focus-visible::-webkit-slider-thumb { box-shadow: none; }
+.diamond .slider:focus-visible::-moz-range-thumb { box-shadow: none; }
+.diamond .value { color: var(--diamond-slider-accent, var(--color-accent, #ee1401)); }
+.diamond.hasError { --diamond-slider-track: var(--danger, #ff5c5c); }
+
+@media (prefers-reduced-motion: reduce) {
+  .diamond .slider::-webkit-slider-thumb { transition: none; }
+  .diamond .slider::-moz-range-thumb { transition: none; }
+}

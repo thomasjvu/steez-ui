@@ -1,11 +1,23 @@
 import { COMPONENT_MANIFEST } from "./component-manifest.mjs";
 
-export type ComponentCategory =
-  | "actions"
-  | "forms"
-  | "surfaces"
-  | "layout"
-  | "feedback";
+export const COMPONENT_FILTERS = [
+  { value: "all", label: "All" },
+  { value: "actions", label: "Actions" },
+  { value: "forms", label: "Forms" },
+  { value: "surfaces", label: "Surfaces" },
+  { value: "filters", label: "Filters" },
+  { value: "layout", label: "Layout" },
+  { value: "feedback", label: "Feedback" },
+] as const;
+
+export type ComponentFilter = (typeof COMPONENT_FILTERS)[number]["value"];
+export type ComponentCategory = Exclude<ComponentFilter, "all">;
+
+export const COMPONENT_CATEGORY_LABELS = Object.fromEntries(
+  COMPONENT_FILTERS.filter((filter) => filter.value !== "all").map(
+    (filter) => [filter.value, filter.label],
+  ),
+) as Record<ComponentCategory, string>;
 
 export interface ComponentDoc {
   slug: string;
@@ -19,30 +31,49 @@ export interface ComponentDoc {
   tags: string[];
 }
 
-export const COMPONENT_CATEGORY_LABELS: Record<ComponentCategory, string> = {
-  actions: "Actions",
-  forms: "Forms",
-  surfaces: "Surfaces",
-  layout: "Layout",
-  feedback: "Feedback",
-};
-
-export const COMPONENT_FILTERS = [
-  { value: "all", label: "All" },
-  { value: "actions", label: "Actions" },
-  { value: "forms", label: "Forms" },
-  { value: "surfaces", label: "Surfaces" },
-  { value: "layout", label: "Layout" },
-  { value: "feedback", label: "Feedback" },
-] as const;
-
-export type ComponentFilter = (typeof COMPONENT_FILTERS)[number]["value"];
-
 type ComponentDocDetails = Pick<ComponentDoc, "summary" | "usage" | "related" | "tags"> & {
   slug: string;
 };
 
 const COMPONENT_DOC_DETAILS = [
+  {
+    slug: "crystal-button",
+    summary: "A six-point crystal action, horizontal with text or vertical with an icon.",
+    usage: `<CrystalButton href="/app" tone="loud">Open app</CrystalButton>
+<CrystalButton orientation="vertical" aria-label="New thread" onClick={createThread}>
+  <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth={2.5}>
+    <path d="M12 5v14M5 12h14" />
+  </svg>
+</CrystalButton>`,
+    related: ["button", "quartz-crystal", "cyberpunk-tile"],
+    tags: ["button", "link", "crystal"],
+  },
+  {
+    slug: "quartz-crystal",
+    summary: "A floating quartz with nine animated facets, local layout, and optional parallax.",
+    usage: `<QuartzCrystal color="#ee1401" width={120} height={240} durationMs={5000} parallax />`,
+    related: ["crystal-button", "boiling-lines", "hexagon-grid"],
+    tags: ["crystal", "decorative", "motion", "parallax"],
+  },
+  {
+    slug: "icon-stack-select",
+    summary: "Select an option while keeping its associated icons visible in the closed trigger.",
+    usage: `<IconStackSelect
+  label="Model"
+  value={model}
+  onValueChange={setModel}
+  options={[
+    { value: "fast", label: "Fast", icons: [
+      { id: "cloud", label: "Cloud provider", icon: <img src="/cloud.svg" alt="" /> },
+      { id: "local", label: "Local provider", icon: <img src="/local.svg" alt="" /> },
+    ] },
+    { value: "balanced", label: "Balanced" },
+    { value: "large", label: "Large (unavailable)", disabled: true },
+  ]}
+/>`,
+    related: ["cyberpunk-select", "segmented-control"],
+    tags: ["select", "icons", "keyboard", "popover"],
+  },
   {
     slug: "boiling-lines",
     summary: "Hand-drawn motion for artwork, SVG lines, and decorative borders.",
@@ -75,6 +106,73 @@ const COMPONENT_DOC_DETAILS = [
     usage: `<BlinkText trigger="hover">「 quick jump 」</BlinkText>`,
     related: ["stroked-text", "button"],
     tags: ["motion", "text"],
+  },
+  {
+    slug: "kinetic-swipe-text",
+    summary: "Bold display type that snaps through a quick horizontal or vertical split.",
+    usage: `<KineticSwipeText>SWIPE</KineticSwipeText>
+<KineticSwipeText direction="vertical">SWIPE</KineticSwipeText>`,
+    related: ["kinetic-glyph", "displacement-filter", "ascii-ripple-text", "stroked-text"],
+    tags: ["motion", "text", "headline"],
+  },
+  {
+    slug: "kinetic-glyph",
+    summary: "Nested contour animation for a letter, number, or icon with a soft displacement ripple.",
+    usage: `<KineticGlyph>D</KineticGlyph>
+<KineticGlyph label="Compass icon"><CompassIcon /></KineticGlyph>`,
+    related: ["displacement-filter", "kinetic-swipe-text", "stroked-text"],
+    tags: ["motion", "glyph", "type", "icon"],
+  },
+  {
+    slug: "displacement-filter",
+    summary: "Reusable animated SVG displacement that can wrap text, icons, or any component.",
+    usage: `<DisplacementFilter intensity="subtle">
+  <KineticGlyph>D</KineticGlyph>
+</DisplacementFilter>
+
+<DisplacementFilter scale={10} trigger="hover">
+  <Button>Distorted action</Button>
+</DisplacementFilter>`,
+    related: ["kinetic-glyph", "boiling-lines", "kinetic-swipe-text"],
+    tags: ["filter", "displacement", "motion", "composition"],
+  },
+  {
+    slug: "kinetic-text-ramp",
+    summary: "Oversized type scrolls across a receding perspective plane with a hard shadow edge.",
+    usage: `<KineticTextRamp>STEP IT UP</KineticTextRamp>
+<KineticTextRamp trigger="hover" rows={10}>MAKE SOME NOISE</KineticTextRamp>`,
+    related: ["kinetic-swipe-text", "ascii-ripple-text", "marquee-strip"],
+    tags: ["motion", "text", "perspective", "headline"],
+  },
+  {
+    slug: "kinetic-text-ring",
+    summary: "A looping, curved type ring built with SVG and CSS motion.",
+    usage: `<KineticTextRing>KINETIC</KineticTextRing>
+<KineticTextRing direction="counterclockwise" pauseOnHover>
+  TYPE IN MOTION
+</KineticTextRing>`,
+    related: ["kinetic-text-ramp", "kinetic-swipe-text", "marquee-strip"],
+    tags: ["motion", "text", "typography"],
+  },
+  {
+    slug: "kinetic-text-globe",
+    summary: "Bold display type wraps around a high contrast sphere that rotates in place.",
+    usage: `<KineticTextGlobe>HELLO</KineticTextGlobe>
+<KineticTextGlobe direction="counterclockwise" pauseOnHover durationMs={24000}>
+  KEEP MOVING
+</KineticTextGlobe>`,
+    related: ["kinetic-text-ring", "kinetic-text-ramp", "kinetic-glyph"],
+    tags: ["motion", "text", "typography", "sphere"],
+  },
+  {
+    slug: "kinetic-text-volume",
+    summary: "Repeated type ripples across the three faces of a perspective text volume.",
+    usage: `<KineticTextVolume>ESPACE</KineticTextVolume>
+<KineticTextVolume rows={12} amplitude={8} pauseOnHover>
+  KEEP MOVING
+</KineticTextVolume>`,
+    related: ["kinetic-text-globe", "kinetic-text-ramp", "kinetic-text-ring"],
+    tags: ["motion", "text", "perspective", "field"],
   },
   {
     slug: "button",
@@ -171,11 +269,12 @@ const COMPONENT_DOC_DETAILS = [
   },
   {
     slug: "cyberpunk-slider",
-    summary: "Range input with Steez progress styling and value display.",
+    summary: "Native range with value display and an optional square-to-diamond thumb.",
     usage: `<CyberpunkSlider
-  label="Reply energy"
-  value={energy}
-  onChange={(event) => setEnergy(Number(event.target.value))}
+  variant="diamond"
+  label="Volume"
+  value={volume}
+  onChange={(event) => setVolume(Number(event.target.value))}
 />`,
     related: ["cyberpunk-checkbox", "loading-progress-bar"],
     tags: ["range", "tuning"],

@@ -3,6 +3,7 @@
 import React from "react";
 
 import {
+  Button,
   NotchedViewportFrame,
   PageTemplate,
   Section,
@@ -28,7 +29,7 @@ export function TabbedPanelPreview() {
         {
           id: "usage",
           label: "Usage",
-          content: <div className={styles.previewText}>Import the primitive and compose it with your app shell.</div>,
+          content: <div className={styles.previewText}>Import the component and render it with your content.</div>,
         },
       ]}
     />
@@ -53,8 +54,12 @@ export function PageTemplatePreview() {
       onSubTabChange={setTab}
       extra={<ThemeToggle storageKey="steez-component-preview-theme" />}
     >
-      <ThemedCard title="Overview">
-        <p className={styles.previewText}>Compose app-specific screens on top of shared shell primitives.</p>
+      <ThemedCard title={tab === "tokens" ? "Tokens" : "Overview"}>
+        <p className={styles.previewText}>
+          {tab === "tokens"
+            ? "Import @steez-ui/theme/tokens.css once to share colors, spacing, and typography."
+            : "This card sits inside a page with a header, tabs, and a theme toggle."}
+        </p>
       </ThemedCard>
     </PageTemplate>
   );
@@ -67,8 +72,7 @@ export function NotchedViewportFramePreview() {
       <div className={styles.notchedFrameCard}>
         <div className={styles.previewHeading}>Viewport shell</div>
         <p className={styles.previewText}>
-          Use one continuous outline when the whole interface should feel
-          framed as a single surface.
+          A notched outline frames the viewport without covering its content.
         </p>
       </div>
     </div>
@@ -76,44 +80,49 @@ export function NotchedViewportFramePreview() {
 }
 
 export function RadialMenuOverlayPreview() {
+  const [open, setOpen] = React.useState(true);
+
   return (
     <div className={styles.radialMenuPreview}>
+      {!open && (
+        <Button onClick={() => setOpen(true)}>Open navigation</Button>
+      )}
       <RadialMenuOverlay
-        open
+        open={open}
         contained
-        title="Steer the runtime"
-        description="One radial control surface for launch pages and app shells."
+        title="Explore Steez UI"
+        description="Choose components, read the docs, or install the packages."
         brand={
           <span className={styles.previewRow}>
             <MenuIcon width={14} height={14} />
             Menu
           </span>
         }
-        onClose={() => undefined}
+        onClose={() => setOpen(false)}
         items={[
           {
-            id: "studio",
-            label: "Studio",
+            id: "components",
+            label: "Components",
             shortLabel: "01",
-            eyebrow: "Creative studio",
-            body: "Launch clips, key art, and site-ready media.",
-            href: "#studio",
+            eyebrow: "Browse",
+            body: "Preview components and copy usage examples.",
+            href: "/components",
           },
           {
-            id: "runtime",
-            label: "Runtime",
+            id: "docs",
+            label: "Docs",
             shortLabel: "02",
-            eyebrow: "One runtime",
-            body: "Five workspaces hold the system together.",
-            href: "#system",
+            eyebrow: "Contribute",
+            body: "Learn how to add and document a component.",
+            href: "/docs",
           },
           {
-            id: "launch",
-            label: "Launch",
+            id: "packages",
+            label: "Packages",
             shortLabel: "03",
             eyebrow: "Get started",
-            body: "Start with one install path and ship the wedge.",
-            href: "#cta",
+            body: "Install components, icons, and design tokens.",
+            href: "/packages",
           },
         ]}
       />
@@ -126,7 +135,7 @@ export function SectionPreview() {
     <Section title="Browse services">
       <ThemedCard title="Directory">
         <p className={styles.previewText}>
-          Group related surfaces without restyling spacing and heading treatment per page.
+          The section provides a heading and spacing around this card.
         </p>
       </ThemedCard>
     </Section>

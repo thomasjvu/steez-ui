@@ -8,7 +8,14 @@ import {
   CharacterAfterimage,
   CornerBracketCard,
   CyberpunkTile,
+  DisplacementFilter,
   DottedHaloCard,
+  KineticGlyph,
+  KineticTextRamp,
+  KineticTextRing,
+  KineticTextGlobe,
+  KineticTextVolume,
+  KineticSwipeText,
   StrokedText,
   ThemedCard,
 } from "@steez-ui/ui";
@@ -111,6 +118,109 @@ export function BlinkTextPreview() {
   );
 }
 
+export function KineticSwipeTextPreview() {
+  return (
+    <div
+      role="group"
+      aria-label="Horizontal and vertical kinetic swipe text variants"
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 14rem), 1fr))",
+        gap: "0.75rem",
+        width: "100%",
+      }}
+    >
+      <div>
+        <p className={styles.previewText}>Horizontal</p>
+        <KineticSwipeText>SWIPE</KineticSwipeText>
+      </div>
+      <div>
+        <p className={styles.previewText}>Vertical</p>
+        <KineticSwipeText direction="vertical">SWIPE</KineticSwipeText>
+      </div>
+    </div>
+  );
+}
+
+export function KineticGlyphPreview() {
+  return (
+    <div
+      role="group"
+      aria-label="Kinetic glyph letter, number, and icon examples"
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 10rem), 1fr))",
+        gap: "0.75rem",
+        width: "100%",
+      }}
+    >
+      <KineticGlyph>D</KineticGlyph>
+      <KineticGlyph>9</KineticGlyph>
+      <KineticGlyph label="Star icon">
+        <svg viewBox="0 0 100 100" role="presentation" aria-hidden="true">
+          <path d="m50 8 12.5 27.3 29.9 3.3-22.2 20.3 6.1 29.4L50 73.4 23.7 88.3l6.1-29.4L7.6 38.6l29.9-3.3L50 8Z" fill="none" stroke="currentColor" strokeWidth="4" strokeLinejoin="round" />
+        </svg>
+      </KineticGlyph>
+    </div>
+  );
+}
+
+export function DisplacementFilterPreview() {
+  return (
+    <DisplacementFilter className={styles.previewDisplacement} intensity="default">
+      <div style={{ display: "grid", gap: "0.8rem", justifyItems: "center", padding: "1.5rem" }}>
+        <span style={{ fontSize: "clamp(2rem, 8vw, 5rem)", fontWeight: 900, letterSpacing: "-0.08em", lineHeight: 0.9 }}>WARP FIELD</span>
+        <span className={styles.previewText}>Wrap any component or artwork.</span>
+      </div>
+    </DisplacementFilter>
+  );
+}
+
+export function KineticTextRampPreview() {
+  return (
+    <KineticTextRamp
+      aria-label="Kinetic perspective text ramp reading step it up"
+      style={{ width: "100%", maxWidth: "34rem" }}
+    >
+      STEP IT UP
+    </KineticTextRamp>
+  );
+}
+
+export function KineticTextRingPreview() {
+  return (
+    <div
+      style={{
+        width: "100%",
+        overflow: "hidden",
+        background: "#080808",
+        color: "#f7f7f7",
+      }}
+    >
+      <KineticTextRing>KINETIC</KineticTextRing>
+    </div>
+  );
+}
+
+export function KineticTextGlobePreview() {
+  return (
+    <div style={{ width: "100%", maxWidth: "25rem", background: "#050505" }}>
+      <KineticTextGlobe aria-label="Rotating globe of warped type">HELLO</KineticTextGlobe>
+    </div>
+  );
+}
+
+export function KineticTextVolumePreview() {
+  return (
+    <KineticTextVolume
+      aria-label="A rippling perspective cube of repeated ESPACE lettering"
+      style={{ width: "100%", maxWidth: "27rem" }}
+    >
+      ESPACE
+    </KineticTextVolume>
+  );
+}
+
 export function BoilingLinesPreview() {
   return <div style={{ display: "flex", flexWrap: "wrap", gap: "2rem" }}>
     {(["subtle", "default", "intense"] as const).map((intensity) => (
@@ -140,7 +250,7 @@ export function CyberpunkTilePreview() {
       <CyberpunkTile>
         <div className={styles.previewHeading}>Site runtime</div>
         <p className={styles.previewText}>
-          Pages, media, and publishing flows in one flat surface.
+          Manage pages, media, and publishing from this panel.
         </p>
       </CyberpunkTile>
       <CyberpunkTile variant="small" center>
@@ -161,16 +271,14 @@ export function CornerBracketCardPreview() {
 export function DottedHaloCardPreview() {
   return (
     <div className={styles.dottedHaloPreviewGrid}>
-      <DottedHaloCard title="My Card">
+      <DottedHaloCard title="Design tokens">
         <p className={styles.previewText}>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repellendus
-          vero blanditiis amet.
+          Share colors, spacing, and typography across your components.
         </p>
       </DottedHaloCard>
-      <DottedHaloCard title="My Second Card">
+      <DottedHaloCard title="Scoped styles">
         <p className={styles.previewText}>
-          Quaerat magni unde ducimus voluptates, sed pariatur perspiciatis
-          perferendis.
+          CSS Modules keep component styles local to each file.
         </p>
       </DottedHaloCard>
     </div>

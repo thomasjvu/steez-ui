@@ -7,7 +7,7 @@ export default function PackagesPage() {
     <DocsSiteLayout
       currentNav="packages"
       title="Packages"
-      description="Published npm packages that mirror this workspace."
+      description="Install components, icons, and design tokens from npm."
     >
       <ul className={siteStyles.list}>
         {PACKAGE_ITEMS.map((item) => (

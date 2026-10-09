@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "crystal-button",
+  "type": "registry:component",
+  "title": "Crystal Button",
+  "description": "Six-point crystal button or link, with a horizontal CTA shape and a narrow vertical icon-only variation.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json"
+  ],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/steez/CrystalButton.tsx",
+      "type": "registry:file",
+      "target": "components/steez/CrystalButton.tsx",
+      "content": "\"use client\";\n\nimport React from \"react\";\n\nimport styles from \"./CrystalButton.module.css\";\n\ntype CrystalButtonAppearance = {\n  children: React.ReactNode;\n  orientation?: \"horizontal\" | \"vertical\";\n  tone?: \"solid\" | \"loud\";\n  disabled?: boolean;\n};\n\nexport type CrystalButtonProps = CrystalButtonAppearance & (\n  | (React.ButtonHTMLAttributes<HTMLButtonElement> & { href?: never })\n  | (React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string })\n);\n\n/** Six-point crystal action. Supply an accessible name for icon-only content. */\nexport function CrystalButton({\n  children, orientation = \"horizontal\", tone = \"solid\", disabled = false,\n  className = \"\", ...props\n}: CrystalButtonProps) {\n  const classes = `${styles.root} ${orientation === \"vertical\" ? styles.vertical : \"\"} ${tone === \"loud\" ? styles.loud : \"\"} ${className}`.trim();\n  const content = <><span className={styles.shape} aria-hidden=\"true\" /><span className={styles.content}>{children}</span></>;\n\n  if (props.href !== undefined) {\n    const { href, onClick, ...linkProps } = props;\n    return (\n      <a {...linkProps} href={disabled ? undefined : href} className={classes}\n        role={disabled ? \"link\" : linkProps.role}\n        aria-disabled={disabled || undefined} tabIndex={disabled ? -1 : linkProps.tabIndex}\n        onClick={(event) => {\n          if (disabled) { event.preventDefault(); return; }\n          onClick?.(event);\n        }}>\n        {content}\n      </a>\n    );\n  }\n\n  const { type = \"button\", ...buttonProps } = props;\n  return <button {...buttonProps} type={type} className={classes} disabled={disabled}>{content}</button>;\n}\n",
+      "source": "packages/ui/src/components/CrystalButton.tsx"
+    },
+    {
+      "path": "components/steez/CrystalButton.module.css",
+      "type": "registry:file",
+      "target": "components/steez/CrystalButton.module.css",
+      "content": ".root {\n  position: relative;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  box-sizing: border-box;\n  min-height: 44px;\n  padding: .72rem 1.45rem;\n  border: 0;\n  border-radius: 0;\n  background: transparent;\n  color: var(--crystal-button-text, var(--color-text-on-accent, #050505));\n  font: 700 .82rem/1.4 var(--font-sans, sans-serif);\n  letter-spacing: .16em;\n  text-transform: uppercase;\n  text-decoration: none;\n  cursor: pointer;\n  isolation: isolate;\n  transition: transform 200ms ease;\n}\n.shape {\n  position: absolute;\n  inset: 0;\n  z-index: -1;\n  background: var(--crystal-button-color, var(--color-accent, #ee1401));\n  clip-path: polygon(var(--crystal-button-cut, .95rem) 0%, calc(100% - var(--crystal-button-cut, .95rem)) 0%, 100% 50%, calc(100% - var(--crystal-button-cut, .95rem)) 100%, var(--crystal-button-cut, .95rem) 100%, 0% 50%);\n  box-shadow: 0 10px 24px rgb(0 0 0 / .18);\n}\n.content { display: inline-flex; position: relative; align-items: center; justify-content: center; gap: .55rem; }\n.root:hover:not(:disabled):not([aria-disabled=\"true\"]) { transform: scale(1.01); }\n.root:focus-visible { outline: 2px solid var(--crystal-button-focus, var(--color-border-focus, #5a6268)); outline-offset: 4px; }\n.root:disabled,\n.root[aria-disabled=\"true\"] { opacity: .5; cursor: not-allowed; }\n.loud .shape { background: color-mix(in srgb, var(--crystal-button-color, var(--color-accent, #ee1401)) 82%, #fff 18%); }\n.loud:hover:not(:disabled):not([aria-disabled=\"true\"]) .shape,\n.loud:focus-visible .shape { background: color-mix(in srgb, var(--crystal-button-color, var(--color-accent, #ee1401)) 88%, #fff 12%); }\n.vertical { width: 2.5rem; height: 6rem; min-height: 6rem; padding: 0; flex-shrink: 0; }\n.vertical .shape {\n  inset: auto;\n  left: 50%;\n  top: 50%;\n  width: 6rem;\n  height: 2.5rem;\n  margin-left: -3rem;\n  margin-top: -1.25rem;\n  transform: rotate(90deg);\n  clip-path: polygon(20px 0%, calc(100% - 20px) 0%, 100% 50%, calc(100% - 20px) 100%, 20px 100%, 0% 50%);\n}\n.vertical .content > svg { width: 20px; height: 20px; }\n.vertical:hover:not(:disabled):not([aria-disabled=\"true\"]) { transform: scale(1.03); }\n@media (prefers-reduced-motion: reduce) {\n  .root { transition: none; }\n  .root:hover:not(:disabled):not([aria-disabled=\"true\"]) { transform: none; }\n}\n",
+      "source": "packages/ui/src/components/CrystalButton.module.css"
+    }
+  ]
+}

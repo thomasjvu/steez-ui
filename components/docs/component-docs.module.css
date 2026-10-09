@@ -322,6 +322,12 @@
   line-height: 1.5;
 }
 
+.previewDisplacement {
+  border: 1px solid #222;
+  background: #f7f7f5;
+  color: #101010;
+}
+
 .previewHeading {
   font-weight: 600;
   color: #fff;

@@ -1,5 +1,56 @@
 [
   {
+    "name": "quartz-crystal",
+    "title": "Quartz Crystal",
+    "path": "/copy/steez/quartz-crystal.tsx",
+    "exports": [
+      "QuartzCrystal"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/QuartzCrystal.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/QuartzCrystal.module.css"
+    ]
+  },
+  {
+    "name": "crystal-button",
+    "title": "Crystal Button",
+    "path": "/copy/steez/crystal-button.tsx",
+    "exports": [
+      "CrystalButton"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/CrystalButton.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/CrystalButton.module.css"
+    ]
+  },
+  {
+    "name": "icon-stack-select",
+    "title": "Icon Stack Select",
+    "path": "/copy/steez/icon-stack-select.tsx",
+    "exports": [
+      "IconStackSelect"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/IconStackSelect.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/IconStackSelect.module.css"
+    ]
+  },
+  {
     "name": "ascii-ripple-text",
     "title": "ASCII Ripple Text",
     "path": "/copy/steez/ascii-ripple-text.tsx",
@@ -796,6 +847,127 @@
     ],
     "styleFiles": [
       "packages/ui/src/components/BoilingLines.module.css"
+    ]
+  },
+  {
+    "name": "kinetic-swipe-text",
+    "title": "Kinetic Swipe Text",
+    "path": "/copy/steez/kinetic-swipe-text.tsx",
+    "exports": [
+      "KineticSwipeText"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/KineticSwipeText.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/KineticSwipeText.module.css"
+    ]
+  },
+  {
+    "name": "displacement-filter",
+    "title": "Displacement Filter",
+    "path": "/copy/steez/displacement-filter.tsx",
+    "exports": [
+      "DisplacementFilter"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/DisplacementFilter.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/DisplacementFilter.module.css"
+    ]
+  },
+  {
+    "name": "kinetic-glyph",
+    "title": "Kinetic Glyph",
+    "path": "/copy/steez/kinetic-glyph.tsx",
+    "exports": [
+      "KineticGlyph"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/KineticGlyph.tsx",
+      "packages/ui/src/components/DisplacementFilter.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/DisplacementFilter.module.css",
+      "packages/ui/src/components/KineticGlyph.module.css"
+    ]
+  },
+  {
+    "name": "kinetic-text-ramp",
+    "title": "Kinetic Text Ramp",
+    "path": "/copy/steez/kinetic-text-ramp.tsx",
+    "exports": [
+      "KineticTextRamp"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/KineticTextRamp.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/KineticTextRamp.module.css"
+    ]
+  },
+  {
+    "name": "kinetic-text-ring",
+    "title": "Kinetic Text Ring",
+    "path": "/copy/steez/kinetic-text-ring.tsx",
+    "exports": [
+      "KineticTextRing"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/KineticTextRing.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/KineticTextRing.module.css"
+    ]
+  },
+  {
+    "name": "kinetic-text-globe",
+    "title": "Kinetic Text Globe",
+    "path": "/copy/steez/kinetic-text-globe.tsx",
+    "exports": [
+      "KineticTextGlobe"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/KineticTextGlobe.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/KineticTextGlobe.module.css"
+    ]
+  },
+  {
+    "name": "kinetic-text-volume",
+    "title": "Kinetic Text Volume",
+    "path": "/copy/steez/kinetic-text-volume.tsx",
+    "exports": [
+      "KineticTextVolume"
+    ],
+    "dependencies": [
+      "react"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/KineticTextVolume.tsx"
+    ],
+    "styleFiles": [
+      "packages/ui/src/components/KineticTextVolume.module.css"
     ]
   }
 ]

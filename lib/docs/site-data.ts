@@ -11,36 +11,21 @@ export const SITE_NAV = [
   { key: "registry", label: "Registry", href: "/registry" },
 ] as const;
 
-export const VALUE_TILES = [
-  {
-    title: "One source tree",
-    body: "Author tokens, icons, and primitives once in the workspace packages.",
-  },
-  {
-    title: "Three install paths",
-    body: "Use npm packages for shared updates, registry items for source installs, or standalone files for one-paste ownership.",
-  },
-  {
-    title: "Flat system",
-    body: "Steez stays minimal: CSS modules, token aliases, and low-ceremony primitives.",
-  },
-] as const;
-
 export const PACKAGE_ITEMS = [
   {
     title: "@steez-ui/theme",
     href: NPM_THEME_URL,
-    body: "Shared design tokens, alias compatibility, and the Tailwind compatibility preset.",
+    body: "Design tokens, compatibility aliases, and a Tailwind preset.",
   },
   {
     title: "@steez-ui/icons",
     href: NPM_ICONS_URL,
-    body: "Icon exports and the provider layer used by the shared primitives.",
+    body: "Icons and a provider for shared size and stroke settings.",
   },
   {
     title: "@steez-ui/ui",
     href: NPM_UI_URL,
-    body: "React primitives authored in `.tsx` and `.module.css`, then published and generated.",
+    body: "React components with CSS Modules, available as packages, registry installs, and standalone files.",
   },
 ] as const;
 

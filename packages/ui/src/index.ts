@@ -1,5 +1,10 @@
 export { BoilingLines, type BoilingLinesProps } from "./components/BoilingLines.tsx";
 export {
+  DisplacementFilter,
+  type DisplacementFilterProps,
+  type DisplacementFilterTrigger,
+} from "./components/DisplacementFilter.tsx";
+export {
   AsciiRippleText,
   type AsciiRippleTextProps,
 } from "./components/AsciiRippleText.tsx";
@@ -67,6 +72,37 @@ export {
 } from "./components/LoadingScreen.tsx";
 export { MarqueeStrip, type MarqueeStripProps } from "./components/MarqueeStrip.tsx";
 export {
+  KineticSwipeText,
+  type KineticSwipeTextDirection,
+  type KineticSwipeTextProps,
+  type KineticSwipeTextTrigger,
+} from "./components/KineticSwipeText.tsx";
+export {
+  KineticGlyph,
+  type KineticGlyphProps,
+  type KineticGlyphTrigger,
+} from "./components/KineticGlyph.tsx";
+export {
+  KineticTextRamp,
+  type KineticTextRampProps,
+  type KineticTextRampTrigger,
+} from "./components/KineticTextRamp.tsx";
+export {
+  KineticTextRing,
+  type KineticTextRingDirection,
+  type KineticTextRingProps,
+} from "./components/KineticTextRing.tsx";
+export {
+  KineticTextGlobe,
+  type KineticTextGlobeDirection,
+  type KineticTextGlobeProps,
+} from "./components/KineticTextGlobe.tsx";
+export {
+  KineticTextVolume,
+  type KineticTextVolumeDirection,
+  type KineticTextVolumeProps,
+} from "./components/KineticTextVolume.tsx";
+export {
   NotchedViewportFrame,
   type NotchedViewportFrameProps,
 } from "./components/NotchedViewportFrame.tsx";
@@ -96,3 +132,8 @@ export { StrokedText, type StrokedTextProps } from "./components/StrokedText.tsx
 export { TabbedPanel, type TabbedPanelProps, type TabbedPanelTab } from "./components/TabbedPanel.tsx";
 export { ThemedCard, type ThemedCardProps } from "./components/ThemedCard.tsx";
 export { ThemeToggle, type ThemeToggleProps } from "./components/ThemeToggle.tsx";
+
+export { IconStackSelect, type IconStackSelectProps, type IconStackSelectOption, type IconStackSelectIcon } from "./components/IconStackSelect.tsx";
+
+export { CrystalButton, type CrystalButtonProps } from "./components/CrystalButton.tsx";
+export { QuartzCrystal, type QuartzCrystalProps } from "./components/QuartzCrystal.tsx";

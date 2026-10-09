@@ -1,0 +1,55 @@
+.root {
+  position: relative;
+}
+
+.filters {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.content {
+  width: 100%;
+  animation: displace var(--displacement-duration, 2700ms) steps(1, end) infinite;
+}
+
+.content[data-paused] {
+  animation-play-state: paused !important;
+}
+
+.root[data-trigger="hover"] .content {
+  animation: none;
+}
+
+.root[data-trigger="hover"]:hover .content,
+.root[data-trigger="hover"]:focus-within .content {
+  animation: displace var(--displacement-duration, 2700ms) steps(1, end) infinite;
+}
+
+.root[data-trigger="static"] .content {
+  animation: none;
+  filter: var(--displacement-frame-0);
+}
+
+@keyframes displace {
+  0%,
+  100% {
+    filter: var(--displacement-frame-0);
+  }
+
+  33.333% {
+    filter: var(--displacement-frame-1);
+  }
+
+  66.666% {
+    filter: var(--displacement-frame-2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .content {
+    animation: none !important;
+    filter: none !important;
+  }
+}

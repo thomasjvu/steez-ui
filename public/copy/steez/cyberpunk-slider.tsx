@@ -25,6 +25,7 @@ const __styles_steez_cyberpunk_slider_0: Record<string, string> = {
   "helperText": "steez-cyberpunk-slider-0-helperText",
   "hasError": "steez-cyberpunk-slider-0-hasError",
   "errorText": "steez-cyberpunk-slider-0-errorText",
+  "diamond": "steez-cyberpunk-slider-0-diamond",
 };
 
 const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/CyberpunkSlider.module.css */
@@ -202,6 +203,89 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/Cyberpu
     transition: none;
   }
 }
+
+/* Slim native track; retain the range input's keyboard and pointer behavior. */
+.steez-cyberpunk-slider-0-diamond .steez-cyberpunk-slider-0-track {
+  --thumb-size: 20px;
+  min-width: 0;
+  height: 44px;
+}
+
+.steez-cyberpunk-slider-0-diamond .steez-cyberpunk-slider-0-trackBase,
+.steez-cyberpunk-slider-0-diamond .steez-cyberpunk-slider-0-fill { display: none; }
+
+.steez-cyberpunk-slider-0-diamond .steez-cyberpunk-slider-0-slider {
+  height: 44px;
+  touch-action: pan-y;
+}
+
+.steez-cyberpunk-slider-0-diamond .steez-cyberpunk-slider-0-slider::-webkit-slider-runnable-track {
+  height: 5px;
+  border-radius: 999px;
+  background: linear-gradient(to right,
+    var(--diamond-slider-accent, var(--color-accent, #ee1401)) 0%,
+    var(--diamond-slider-accent, var(--color-accent, #ee1401)) calc(var(--slider-percentage, 0) * 1%),
+    var(--diamond-slider-track, var(--color-border, #2a2a2a)) calc(var(--slider-percentage, 0) * 1%),
+    var(--diamond-slider-track, var(--color-border, #2a2a2a)) 100%);
+}
+
+.steez-cyberpunk-slider-0-diamond .steez-cyberpunk-slider-0-slider::-moz-range-track {
+  height: 5px;
+  border-radius: 999px;
+  background: var(--diamond-slider-track, var(--color-border, #2a2a2a));
+}
+
+.steez-cyberpunk-slider-0-diamond .steez-cyberpunk-slider-0-slider::-moz-range-progress {
+  height: 5px;
+  border-radius: 999px;
+  background: var(--diamond-slider-accent, var(--color-accent, #ee1401));
+}
+
+.steez-cyberpunk-slider-0-diamond .steez-cyberpunk-slider-0-slider::-webkit-slider-thumb {
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  margin-top: -7.5px;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  background: var(--diamond-slider-accent, var(--color-accent, #ee1401));
+  box-shadow: none;
+  transform: rotate(0deg);
+  transition: transform 160ms ease;
+}
+
+.steez-cyberpunk-slider-0-diamond .steez-cyberpunk-slider-0-slider::-moz-range-thumb {
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  background: var(--diamond-slider-accent, var(--color-accent, #ee1401));
+  box-shadow: none;
+  transform: rotate(0deg);
+  transition: transform 160ms ease;
+}
+
+.steez-cyberpunk-slider-0-diamond .steez-cyberpunk-slider-0-slider:active:not(:disabled)::-webkit-slider-thumb { transform: rotate(45deg); }
+.steez-cyberpunk-slider-0-diamond .steez-cyberpunk-slider-0-slider:active:not(:disabled)::-moz-range-thumb { transform: rotate(45deg); }
+
+/* Focus belongs to the whole control; the thumb stays solid with no halo. */
+.steez-cyberpunk-slider-0-diamond .steez-cyberpunk-slider-0-slider:focus-visible {
+  outline: 2px solid var(--diamond-slider-accent, var(--color-accent, #ee1401));
+  outline-offset: 2px;
+  box-shadow: none;
+}
+.steez-cyberpunk-slider-0-diamond .steez-cyberpunk-slider-0-slider:focus-visible::-webkit-slider-thumb { box-shadow: none; }
+.steez-cyberpunk-slider-0-diamond .steez-cyberpunk-slider-0-slider:focus-visible::-moz-range-thumb { box-shadow: none; }
+.steez-cyberpunk-slider-0-diamond .steez-cyberpunk-slider-0-value { color: var(--diamond-slider-accent, var(--color-accent, #ee1401)); }
+.steez-cyberpunk-slider-0-diamond.hasError { --diamond-slider-track: var(--danger, #ff5c5c); }
+
+@media (prefers-reduced-motion: reduce) {
+  .steez-cyberpunk-slider-0-diamond .steez-cyberpunk-slider-0-slider::-webkit-slider-thumb { transition: none; }
+  .steez-cyberpunk-slider-0-diamond .steez-cyberpunk-slider-0-slider::-moz-range-thumb { transition: none; }
+}
 `;
 const __steezStandaloneStyleKey = "cyberpunk-slider";
 
@@ -264,6 +348,8 @@ export function useFieldDescription({
 export interface CyberpunkSliderProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "helperText"> {
   label?: string;
+  /** Diamond uses a slim track and a square thumb that rotates while held. */
+  variant?: "default" | "diamond";
   min?: number;
   max?: number;
   step?: number;
@@ -287,13 +373,16 @@ export function sliderPercentage(
 
 export function CyberpunkSlider({
   label,
+  variant = "default",
   className = "",
   id,
   min = 0,
   max = 100,
   step = 1,
   showValue = true,
-  value = 0,
+  value,
+  defaultValue,
+  onChange,
   helperText,
   error,
   "aria-describedby": ariaDescribedBy,
@@ -301,7 +390,24 @@ export function CyberpunkSlider({
   ...props
 }: CyberpunkSliderProps) {
   const inputId = useStableId("slider", id);
-  const percentage = sliderPercentage(value as number | string, min, max);
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  const [internalValue, setInternalValue] = React.useState<number | string>(
+    (defaultValue as number | string | undefined) ?? min,
+  );
+  const currentValue = (value as number | string | undefined) ?? internalValue;
+  const percentage = sliderPercentage(currentValue, min, max);
+
+  React.useLayoutEffect(() => {
+    const input = inputRef.current;
+    if (!input || value !== undefined) return;
+    const sync = () => setInternalValue(input.value);
+    sync();
+    // Form reset restores the DOM value after the reset event has been dispatched.
+    const reset = () => queueMicrotask(sync);
+    const form = input.form;
+    form?.addEventListener("reset", reset);
+    return () => form?.removeEventListener("reset", reset);
+  }, [value, defaultValue, min, max, step, props.form]);
   const { errorId, hasError, helperId, describedBy } = useFieldDescription({
     prefix: "slider",
     helperText,
@@ -310,7 +416,7 @@ export function CyberpunkSlider({
   });
 
   return (
-    <div className={`${__styles_steez_cyberpunk_slider_0.wrapper} ${hasError ? __styles_steez_cyberpunk_slider_0.hasError : ""} ${className}`.trim()}>
+    <div className={`${__styles_steez_cyberpunk_slider_0.wrapper} ${variant === "diamond" ? __styles_steez_cyberpunk_slider_0.diamond : ""} ${hasError ? __styles_steez_cyberpunk_slider_0.hasError : ""} ${className}`.trim()}>
       {label ? (
         <label htmlFor={inputId} className={__styles_steez_cyberpunk_slider_0.label}>
           {label}
@@ -328,19 +434,25 @@ export function CyberpunkSlider({
           <div className={__styles_steez_cyberpunk_slider_0.trackBase} aria-hidden="true" />
           <div className={__styles_steez_cyberpunk_slider_0.fill} aria-hidden="true" />
           <input
+            ref={inputRef}
             id={inputId}
             type="range"
             min={min}
             max={max}
             step={step}
             value={value}
+            defaultValue={value === undefined ? defaultValue ?? min : undefined}
             className={__styles_steez_cyberpunk_slider_0.slider}
             {...props}
+            onChange={(event) => {
+              if (value === undefined) setInternalValue(event.currentTarget.value);
+              onChange?.(event);
+            }}
             aria-invalid={ariaInvalid ?? (hasError ? true : undefined)}
             aria-describedby={describedBy}
           />
         </div>
-        {showValue ? <span className={__styles_steez_cyberpunk_slider_0.value}>{value}</span> : null}
+        {showValue ? <span className={__styles_steez_cyberpunk_slider_0.value}>{currentValue}</span> : null}
       </div>
       {helperText ? (
         <div id={helperId} className={__styles_steez_cyberpunk_slider_0.helperText}>

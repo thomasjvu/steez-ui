@@ -9,6 +9,8 @@ import styles from "./CyberpunkSlider.module.css";
 export interface CyberpunkSliderProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "helperText"> {
   label?: string;
+  /** Diamond uses a slim track and a square thumb that rotates while held. */
+  variant?: "default" | "diamond";
   min?: number;
   max?: number;
   step?: number;
@@ -32,13 +34,16 @@ export function sliderPercentage(
 
 export function CyberpunkSlider({
   label,
+  variant = "default",
   className = "",
   id,
   min = 0,
   max = 100,
   step = 1,
   showValue = true,
-  value = 0,
+  value,
+  defaultValue,
+  onChange,
   helperText,
   error,
   "aria-describedby": ariaDescribedBy,
@@ -46,7 +51,24 @@ export function CyberpunkSlider({
   ...props
 }: CyberpunkSliderProps) {
   const inputId = useStableId("slider", id);
-  const percentage = sliderPercentage(value as number | string, min, max);
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  const [internalValue, setInternalValue] = React.useState<number | string>(
+    (defaultValue as number | string | undefined) ?? min,
+  );
+  const currentValue = (value as number | string | undefined) ?? internalValue;
+  const percentage = sliderPercentage(currentValue, min, max);
+
+  React.useLayoutEffect(() => {
+    const input = inputRef.current;
+    if (!input || value !== undefined) return;
+    const sync = () => setInternalValue(input.value);
+    sync();
+    // Form reset restores the DOM value after the reset event has been dispatched.
+    const reset = () => queueMicrotask(sync);
+    const form = input.form;
+    form?.addEventListener("reset", reset);
+    return () => form?.removeEventListener("reset", reset);
+  }, [value, defaultValue, min, max, step, props.form]);
   const { errorId, hasError, helperId, describedBy } = useFieldDescription({
     prefix: "slider",
     helperText,
@@ -55,7 +77,7 @@ export function CyberpunkSlider({
   });
 
   return (
-    <div className={`${styles.wrapper} ${hasError ? styles.hasError : ""} ${className}`.trim()}>
+    <div className={`${styles.wrapper} ${variant === "diamond" ? styles.diamond : ""} ${hasError ? styles.hasError : ""} ${className}`.trim()}>
       {label ? (
         <label htmlFor={inputId} className={styles.label}>
           {label}
@@ -73,19 +95,25 @@ export function CyberpunkSlider({
           <div className={styles.trackBase} aria-hidden="true" />
           <div className={styles.fill} aria-hidden="true" />
           <input
+            ref={inputRef}
             id={inputId}
             type="range"
             min={min}
             max={max}
             step={step}
             value={value}
+            defaultValue={value === undefined ? defaultValue ?? min : undefined}
             className={styles.slider}
             {...props}
+            onChange={(event) => {
+              if (value === undefined) setInternalValue(event.currentTarget.value);
+              onChange?.(event);
+            }}
             aria-invalid={ariaInvalid ?? (hasError ? true : undefined)}
             aria-describedby={describedBy}
           />
         </div>
-        {showValue ? <span className={styles.value}>{value}</span> : null}
+        {showValue ? <span className={styles.value}>{currentValue}</span> : null}
       </div>
       {helperText ? (
         <div id={helperId} className={styles.helperText}>

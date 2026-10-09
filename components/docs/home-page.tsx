@@ -22,10 +22,10 @@ export function HomePageContent() {
           <h1 className={styles.homeTitle}>
             Build
             <br />
-            <span>with signal.</span>
+            <span>with Steez.</span>
           </h1>
           <p className={styles.homeLead}>
-            Primitives, tokens, and motion for interfaces with intent.
+            React components, design tokens, and motion. Install a package or copy the source.
           </p>
           <div className={styles.homeActions}>
             <Link href="/components" className={styles.accentButton}>
@@ -39,8 +39,8 @@ export function HomePageContent() {
             <span className={styles.crossMark} aria-hidden="true">
               +
             </span>
-            <span>Beautiful components.</span>
-            <span>Higher intent.</span>
+            <span>CSS Modules.</span>
+            <span>Shared tokens.</span>
           </div>
         </div>
 
@@ -69,7 +69,7 @@ export function HomePageContent() {
                   <div className={styles.featuredCardRow}>
                     <div>
                       <h2>Cyberpunk Tile</h2>
-                      <p>A shipped surface primitive, composed with real library content.</p>
+                      <p>Cut corners, layered borders, and room for your content.</p>
                     </div>
                     <span className={styles.cardArrow} aria-hidden="true">↗</span>
                   </div>
@@ -85,11 +85,11 @@ export function HomePageContent() {
             <span className={styles.crossMark} aria-hidden="true">
               +
             </span>
-            <span>Interfaces</span>
-            <span>that compound</span>
+            <span>Package.</span>
+            <span>Registry. Copy.</span>
           </div>
           <div className={styles.stageCaption}>
-            {"// less noise"}&nbsp;&nbsp; more building
+            Cyberpunk Tile / live preview
           </div>
         </div>
       </section>
@@ -97,7 +97,7 @@ export function HomePageContent() {
       <section className={styles.installRow} id="install">
         <div className={styles.installLabel}>
           <span className={styles.installTitle}>Install</span>
-          <span>One command to get started.</span>
+          <span>Install the three packages.</span>
         </div>
         <div className={styles.commandBar}>
           <code>{packageCmd}</code>
@@ -147,7 +147,7 @@ export function HomePageContent() {
             <span>03</span> Registry <b aria-hidden="true">↗</b>
           </Link>
         </div>
-        <div className={styles.indexNote}>Built by a brighter internet <span>•</span></div>
+        <div className={styles.indexNote}>Open source on GitHub <span>•</span></div>
       </section>
     </div>
   );

@@ -1,0 +1,109 @@
+.effect {
+  width: 100%;
+}
+
+.root {
+  box-sizing: border-box;
+  container-type: inline-size;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 12rem;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--kinetic-glyph-background, #f7f7f5);
+  color: var(--kinetic-glyph-color, #101010);
+  isolation: isolate;
+}
+
+.filters {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.contour {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  color: currentColor;
+  filter: var(--glyph-outline);
+  transform: scale(var(--glyph-scale));
+  transform-origin: center;
+  animation: glyphRipple var(--kinetic-glyph-duration, 4800ms) ease-in-out infinite;
+  animation-delay: var(--glyph-delay, 0ms);
+  will-change: transform;
+}
+
+.artwork {
+  display: grid;
+  place-items: center;
+  max-width: 94%;
+  max-height: 94%;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  font-size: clamp(4rem, 76cqw, 34rem);
+  font-weight: 900;
+  line-height: 0.78;
+  letter-spacing: -0.065em;
+  white-space: nowrap;
+}
+
+.artwork :global(svg) {
+  display: block;
+  width: min(72cqw, 28rem);
+  height: min(72cqw, 28rem);
+  overflow: visible;
+}
+
+.root[data-motion="static"] .contour {
+  animation: none;
+}
+
+.root[data-motion="hover"] .contour {
+  animation: none;
+}
+
+.root[data-motion="hover"]:hover .contour,
+.root[data-motion="hover"]:focus-within .contour {
+  animation: glyphRipple var(--kinetic-glyph-duration, 4800ms) ease-in-out infinite;
+  animation-delay: var(--glyph-delay, 0ms);
+}
+
+@keyframes glyphRipple {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(var(--glyph-scale));
+  }
+
+  24% {
+    transform: translate3d(1px, -1px, 0) scale(calc(var(--glyph-scale) + 0.008));
+  }
+
+  52% {
+    transform: translate3d(-1px, 1px, 0) scale(var(--glyph-scale));
+  }
+
+  76% {
+    transform: translate3d(1px, 0, 0) scale(calc(var(--glyph-scale) - 0.008));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root .contour {
+    animation: none !important;
+    filter: none;
+    transform: scale(var(--glyph-scale));
+    will-change: auto;
+  }
+}

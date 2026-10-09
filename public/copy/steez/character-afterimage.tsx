@@ -375,6 +375,8 @@ export function CharacterAfterimage({
         ? Array.from({ length: TRAIL_COUNT }, (_, index) => index).map((index) => (
             <img
               {...decorativeImageProps}
+              alt=""
+              aria-hidden="true"
               key={`trail-${index}`}
               className={__styles_steez_character_afterimage_0.trail}
               style={{
@@ -390,6 +392,8 @@ export function CharacterAfterimage({
         return (
           <img
             {...decorativeImageProps}
+            alt=""
+            aria-hidden="true"
             key={`ghost-${ghostIndex}`}
             className={__styles_steez_character_afterimage_0.ghost}
             style={{

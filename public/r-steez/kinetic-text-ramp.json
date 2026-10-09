@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "kinetic-text-ramp",
+  "type": "registry:component",
+  "title": "Kinetic Text Ramp",
+  "description": "Oversized repeated type moves across a receding perspective plane with a hard extruded edge.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/steez/KineticTextRamp.tsx",
+      "type": "registry:file",
+      "target": "components/steez/KineticTextRamp.tsx",
+      "content": "\"use client\";\n\nimport React from \"react\";\n\nimport styles from \"./KineticTextRamp.module.css\";\n\nexport type KineticTextRampTrigger = \"always\" | \"hover\" | \"mount\";\n\nexport interface KineticTextRampProps\n  extends Omit<React.HTMLAttributes<HTMLDivElement>, \"children\"> {\n  children: string;\n  trigger?: KineticTextRampTrigger;\n  rows?: number;\n  durationMs?: number;\n  delayMs?: number;\n}\n\nexport function KineticTextRamp({\n  children,\n  trigger = \"always\",\n  rows = 8,\n  durationMs = 9000,\n  delayMs = 0,\n  className = \"\",\n  style,\n  ...props\n}: KineticTextRampProps) {\n  const safeRows = Number.isFinite(rows)\n    ? Math.min(14, Math.max(4, Math.floor(rows)))\n    : 8;\n  const safeDuration = Number.isFinite(durationMs)\n    ? Math.max(durationMs, 1)\n    : 9000;\n  const safeDelay = Number.isFinite(delayMs) ? delayMs : 0;\n  const mergedStyle = {\n    ...style,\n    [\"--kinetic-text-ramp-rows\" as string]: safeRows,\n    [\"--kinetic-text-ramp-duration\" as string]: `${safeDuration}ms`,\n    [\"--kinetic-text-ramp-delay\" as string]: `${safeDelay}ms`,\n  } as React.CSSProperties;\n\n  return (\n    <div\n      {...props}\n      className={`${styles.root} ${className}`.trim()}\n      data-trigger={trigger}\n      role=\"img\"\n      aria-label={props[\"aria-label\"] ?? children}\n      style={mergedStyle}\n    >\n      <div className={styles.viewport} aria-hidden=\"true\">\n        <div className={styles.plane}>\n          <div className={styles.track}>\n            {[0, 1].map((loop) => (\n              <div className={styles.loop} key={loop}>\n                {Array.from({ length: safeRows }, (_, index) => (\n                  <span className={styles.row} key={index}>\n                    {children}\n                  </span>\n                ))}\n              </div>\n            ))}\n          </div>\n        </div>\n      </div>\n    </div>\n  );\n}\n",
+      "source": "packages/ui/src/components/KineticTextRamp.tsx"
+    },
+    {
+      "path": "components/steez/KineticTextRamp.module.css",
+      "type": "registry:file",
+      "target": "components/steez/KineticTextRamp.module.css",
+      "content": ".root {\n  box-sizing: border-box;\n  container-type: inline-size;\n  position: relative;\n  display: block;\n  width: 100%;\n  min-height: 14rem;\n  aspect-ratio: 4 / 3;\n  overflow: hidden;\n  background: #1738ef;\n  color: #fff;\n  isolation: isolate;\n}\n\n.viewport {\n  position: absolute;\n  inset: -11% -17% -33%;\n  overflow: hidden;\n  perspective: 34rem;\n  perspective-origin: 50% 10%;\n}\n\n.plane {\n  position: absolute;\n  inset: 0;\n  transform: rotateX(48deg) scale(1.22);\n  transform-origin: 50% 4%;\n  transform-style: preserve-3d;\n}\n\n.track {\n  position: absolute;\n  inset: 0 0 auto;\n  display: flex;\n  flex-direction: column;\n  height: 200%;\n  animation-duration: var(--kinetic-text-ramp-duration, 9000ms);\n  animation-delay: var(--kinetic-text-ramp-delay, 0ms);\n  animation-timing-function: linear;\n  animation-fill-mode: both;\n  will-change: transform;\n}\n\n.root[data-trigger=\"always\"] .track,\n.root[data-trigger=\"mount\"] .track {\n  animation-name: textRampScroll;\n}\n\n.root[data-trigger=\"always\"] .track {\n  animation-iteration-count: infinite;\n}\n\n.root[data-trigger=\"mount\"] .track {\n  animation-iteration-count: 1;\n}\n\n.root[data-trigger=\"hover\"]:hover .track,\n.root[data-trigger=\"hover\"]:focus-within .track {\n  animation-name: textRampScroll;\n  animation-iteration-count: infinite;\n}\n\n.loop {\n  display: grid;\n  flex: 0 0 50%;\n  grid-template-rows: repeat(var(--kinetic-text-ramp-rows, 8), minmax(0, 1fr));\n}\n\n.row {\n  display: grid;\n  place-items: center;\n  overflow: hidden;\n  font-family: Impact, Haettenschweiler, \"Arial Narrow Bold\", sans-serif;\n  font-size: clamp(2.4rem, 14cqw, 10rem);\n  font-style: italic;\n  font-weight: 900;\n  line-height: 0.86;\n  letter-spacing: -0.065em;\n  text-align: center;\n  text-transform: uppercase;\n  white-space: nowrap;\n  text-shadow:\n    0.035em 0.035em 0 #101116,\n    0.07em 0.07em 0 #101116,\n    0.105em 0.105em 0 #101116,\n    0.14em 0.14em 0 #101116,\n    0.175em 0.175em 0 #101116;\n}\n\n@keyframes textRampScroll {\n  from {\n    transform: translate3d(0, 0, 0);\n  }\n\n  to {\n    transform: translate3d(0, -50%, 0);\n  }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .track {\n    animation: none !important;\n    transform: none;\n    will-change: auto;\n  }\n}\n",
+      "source": "packages/ui/src/components/KineticTextRamp.module.css"
+    }
+  ]
+}

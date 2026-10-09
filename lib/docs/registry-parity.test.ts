@@ -102,11 +102,7 @@ describe("registry parity", () => {
   it("keeps manifest slugs aligned with catalog, package exports, previews, and registry components", () => {
     const manifestSlugs = new Set(COMPONENT_MANIFEST.map((component) => component.slug));
     const catalogSlugs = new Set(COMPONENT_DOCS.map((doc) => doc.slug));
-    const previewSlugs = new Set(
-      COMPONENT_MANIFEST
-        .filter((component) => component.previewLoader)
-        .map((component) => component.slug),
-    );
+    const previewSlugs = new Set(PREVIEW_SLUGS);
     const registrySlugs = new Set(
       fs
         .readdirSync(registryDir)

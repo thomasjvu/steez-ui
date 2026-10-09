@@ -6,10 +6,18 @@
   "description": "Small, composable text and surface motion treatments with reduced-motion support.",
   "dependencies": [],
   "registryDependencies": [
+    "https://steez-ui-6v5.pages.dev/r-steez/quartz-crystal.json",
     "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json",
     "https://steez-ui-6v5.pages.dev/r-steez/boiling-lines.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/displacement-filter.json",
     "https://steez-ui-6v5.pages.dev/r-steez/ascii-ripple-text.json",
     "https://steez-ui-6v5.pages.dev/r-steez/blink-text.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/kinetic-glyph.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/kinetic-swipe-text.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/kinetic-text-ramp.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/kinetic-text-ring.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/kinetic-text-globe.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/kinetic-text-volume.json",
     "https://steez-ui-6v5.pages.dev/r-steez/stroked-text.json",
     "https://steez-ui-6v5.pages.dev/r-steez/heartbeat-pulse.json",
     "https://steez-ui-6v5.pages.dev/r-steez/marquee-strip.json"

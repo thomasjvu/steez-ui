@@ -1,13 +1,13 @@
 # Steez UI
 
-Source of truth for **@steez-ui** packages (consolidated from the original monorepo) plus a documentation-style discovery site.
+React components, design tokens, and icons, with a docs site for previews and installation.
 
 ## Start a project
 
 Use the npm packages when projects should receive shared updates. Use the registry
 when a project should own and customize the source. Use standalone copies when a
 component should be pasted into an app with no Steez package or registry setup.
-Choose one approach per component. Every surface is generated from
+Choose one approach per component. Registry and standalone files are generated from
 `packages/ui/src`; do not maintain a second implementation.
 
 ```bash
@@ -62,7 +62,7 @@ belong in the docs, not in new copies of the primitive.
 
 The canonical surface families are **actions**, **forms**, **surfaces**, **layout**,
 **motion/text**, and **feedback/loading**. The package README lists the public exports
-in each family. A new component should add a genuinely new behavior or interaction;
+in each family. A new component should add a new behavior or interaction;
 visual variations belong as props or a documented compatibility alias.
 
 `BoilingLines` accepts children, intensity, speedMs, scale, paused, and native div
@@ -81,7 +81,7 @@ preferences; position and size the wrapper from the consuming layout.
 | Package | Role |
 | --- | --- |
 | `@steez-ui/theme` | Design tokens + Tailwind preset |
-| `@steez-ui/icons` | Icon surface + provider |
+| `@steez-ui/icons` | Icons + size and stroke provider |
 | `@steez-ui/ui` | React primitives (TSX + CSS modules) — **source of truth** |
 
 **Deprecated (migrate away):**
@@ -101,7 +101,7 @@ This repository currently records no external consumer inventory or deadline, so
 Plan 045 remains blocked. See [`packages/react/README.md`](packages/react/README.md)
 for the export migration map and explicit legacy verification commands.
 
-## Discover site (not a component dump)
+## Docs site
 
 Open one primitive at a time:
 
@@ -111,13 +111,13 @@ Open one primitive at a time:
 | `/components` | Catalog index (filter by category) |
 | `/components/[slug]` | Single component: preview, usage, install |
 | `/docs` | Authoring model: add a primitive (package → catalog → preview → registry) |
-| `/packages` | npm package surface |
+| `/packages` | Published npm packages |
 | `/registry` | Registry endpoints |
 | `/r-steez/*.json` | Package registry payloads |
 | `/copy/steez/*.tsx` | Generated standalone files for manual copy/paste |
 | `/r/*.json` | Legacy Boston / motion blocks |
 
-Signature surfaces to inspect first:
+Components to try first:
 
 - [Cyberpunk Tile](/components/cyberpunk-tile) (`CyberTile` alias)
 - [Boiling Lines](/components/boiling-lines)
@@ -219,7 +219,7 @@ Standalone copies are served as plain TypeScript files. For example:
 4. Import it from that local path and render it.
 
 This path does not install `@steez-ui/theme`, `@steez-ui/icons`, or
-`@steez-ui/ui`. It is intended for one-off ownership and customization. Use the
+`@steez-ui/ui`. Customize the pasted file in your app. Use the
 package path for shared updates, or the registry path when you want source files
 and dependency wiring installed automatically.
 

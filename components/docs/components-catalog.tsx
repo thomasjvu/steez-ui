@@ -6,43 +6,33 @@ import {
   COMPONENT_CATEGORY_LABELS,
   COMPONENT_DOCS,
   COMPONENT_FILTERS,
-  type ComponentCategory,
   type ComponentFilter,
 } from "@/lib/docs/component-catalog";
 import styles from "./component-docs.module.css";
 import siteStyles from "./site-layout.module.css";
 
-const CATEGORY_ORDER: ComponentCategory[] = [
-  "actions",
-  "forms",
-  "surfaces",
-  "layout",
-  "feedback",
-];
-
 export function ComponentsCatalog() {
   const [filter, setFilter] = React.useState<ComponentFilter>("all");
 
   const groupedComponents = React.useMemo(() => {
-    return CATEGORY_ORDER.map((category) => ({
+    return COMPONENT_FILTERS.filter((item) => item.value !== "all").map(({ value: category }) => ({
       category,
       items: COMPONENT_DOCS.filter((component) =>
-        filter === "all" ? component.category === category : component.category === filter,
+        component.category === category && (filter === "all" || category === filter),
       ),
     })).filter((group) => group.items.length > 0);
   }, [filter]);
 
   return (
     <>
-      <div className={styles.filterBar} role="tablist" aria-label="Filter by category">
+      <div className={styles.filterBar} role="group" aria-label="Filter by category">
         {COMPONENT_FILTERS.map((item) => {
           const active = filter === item.value;
           return (
             <button
               key={item.value}
               type="button"
-              role="tab"
-              aria-selected={active}
+              aria-pressed={active}
               className={`${styles.filterChip} ${active ? styles.filterChipActive : ""}`}
               onClick={() => setFilter(item.value)}
             >

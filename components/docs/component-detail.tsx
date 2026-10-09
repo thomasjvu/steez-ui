@@ -8,27 +8,18 @@ import {
   getComponentDoc,
 } from "@/lib/docs/component-catalog";
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { COMPONENT_MANIFEST } from "@/lib/docs/component-manifest.mjs";
+import { SITE_URL } from "@/lib/docs/site-data";
 import styles from "./component-docs.module.css";
 import siteStyles from "./site-layout.module.css";
 
-interface RegistryFile {
-  path: string;
-  type: string;
-}
-
-interface RegistryManifest {
-  name: string;
-  title: string;
-  description: string;
-  dependencies: string[];
-  registryDependencies: string[];
-  files: RegistryFile[];
-}
-
 export function ComponentDetail({ slug }: { slug: string }) {
   const component = getComponentDoc(slug);
-  const [manifest, setManifest] = React.useState<RegistryManifest | null>(null);
-  const [standaloneSource, setStandaloneSource] = React.useState<string | null>(null);
+  const manifest = COMPONENT_MANIFEST.find((item) => item.slug === slug);
+  const [standalone, setStandalone] = React.useState<{
+    slug: string;
+    source: string | null;
+  } | null>(null);
   const [origin, setOrigin] = React.useState("");
 
   React.useEffect(() => {
@@ -37,46 +28,25 @@ export function ComponentDetail({ slug }: { slug: string }) {
 
   React.useEffect(() => {
     if (!component) return;
-    let cancelled = false;
-
-    async function loadManifest() {
-      try {
-        const response = await fetch(`/r-steez/${component!.slug}.json`);
-        if (!response.ok) throw new Error("missing");
-        const payload = (await response.json()) as RegistryManifest;
-        if (!cancelled) setManifest(payload);
-      } catch {
-        if (!cancelled) setManifest(null);
-      }
-    }
-
-    void loadManifest();
-    return () => {
-      cancelled = true;
-    };
-  }, [component]);
-
-  React.useEffect(() => {
-    if (!component) return;
-    setStandaloneSource(null);
-    let cancelled = false;
+    const controller = new AbortController();
 
     async function loadStandaloneSource() {
       try {
-        const response = await fetch(`/copy/steez/${component!.slug}.tsx`);
-        if (!response.ok) throw new Error("missing");
+        const response = await fetch(`/copy/steez/${slug}.tsx`, {
+          signal: controller.signal,
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const source = await response.text();
-        if (!cancelled) setStandaloneSource(source);
+        if (!source.trim()) throw new Error("Empty standalone file");
+        if (!controller.signal.aborted) setStandalone({ slug, source });
       } catch {
-        if (!cancelled) setStandaloneSource(null);
+        if (!controller.signal.aborted) setStandalone({ slug, source: null });
       }
     }
 
     void loadStandaloneSource();
-    return () => {
-      cancelled = true;
-    };
-  }, [component]);
+    return () => controller.abort();
+  }, [component, slug]);
 
   if (!component) {
     return (
@@ -89,12 +59,14 @@ export function ComponentDetail({ slug }: { slug: string }) {
     );
   }
 
-  const registryOrigin = origin || "http://localhost:3000";
+  const registryOrigin = origin || SITE_URL;
   const registryCommand = `pnpm dlx shadcn@latest add ${registryOrigin}/r-steez/${component.slug}.json`;
+  const standaloneResult = standalone?.slug === slug ? standalone : null;
+  const standaloneSource = standaloneResult?.source;
   const standalonePath = `/copy/steez/${component.slug}.tsx`;
-  const installedComponent = manifest?.files.find((file) => file.path.endsWith(".tsx"));
+  const installedComponent = manifest?.registryFiles.find((file) => file.source.endsWith(".tsx"));
   const registryImport = installedComponent
-    ? component.packageImport.replace(/"@steez-ui\/ui(?:\/[^"]+)?"/, `"<project-root>/${installedComponent.path.replace(/\.tsx$/, "")}"`)
+    ? component.packageImport.replace(/"@steez-ui\/ui(?:\/[^"]+)?"/, `"<project-root>/${installedComponent.target.replace(/\.tsx$/, "")}"`)
     : "";
   const packageInstallCommand = "pnpm add @steez-ui/theme @steez-ui/icons @steez-ui/ui";
   const relatedComponents = component.related
@@ -138,13 +110,13 @@ export function ComponentDetail({ slug }: { slug: string }) {
             <code className={styles.codeBlock}>{component.usage}</code>
           </div>
 
-          {manifest?.files?.length ? (
+          {manifest?.registryFiles.length ? (
             <div className={styles.block}>
               <h2 className={styles.blockTitle}>Files</h2>
               <div className={styles.fileList}>
-                {manifest.files.map((file) => (
-                  <div key={file.path} className={styles.fileItem}>
-                    <code className={styles.fileText}>{file.path}</code>
+                {manifest.registryFiles.map((file) => (
+                  <div key={file.target} className={styles.fileItem}>
+                    <code className={styles.fileText}>{file.target}</code>
                     <span className={styles.tag}>{file.type.replace("registry:", "")}</span>
                   </div>
                 ))}
@@ -186,7 +158,9 @@ export function ComponentDetail({ slug }: { slug: string }) {
               {standaloneSource ? (
                 <CopyButton value={standaloneSource} title="Copy standalone component" />
               ) : (
-                <span className={styles.metaText}>Loading…</span>
+                <span className={styles.metaText} role="status">
+                  {standaloneResult ? "Could not load source. Open the file below to try again." : "Loading…"}
+                </span>
               )}
             </div>
             <p className={styles.metaText}>
