@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "choice-label",
+  "type": "registry:lib",
+  "title": "choice-label",
+  "description": "Shared implementation dependency.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://steez-ui-6v5.pages.dev/r-steez/field-frame.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/choice-control-styles.json"
+  ],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/steez/ChoiceLabel.tsx",
+      "type": "registry:file",
+      "target": "components/steez/ChoiceLabel.tsx",
+      "content": "\"use client\";\nimport React from \"react\";\nimport { Field } from \"./Field\";\nimport styles from \"./ChoiceControl.module.css\";\n\ninterface ChoiceLabelProps {\n  id: string;\n  label?: string;\n  labelStyle?: \"plain\" | \"notch\";\n  className?: string;\n  children: React.ReactNode;\n}\n/** Inline choice label, with an optional notched outline from the shared field. */\nexport function ChoiceLabel({ id, label, labelStyle = \"plain\", className = \"\", children }: ChoiceLabelProps) {\n  if (labelStyle === \"notch\") return <Field id={id} label={label} labelStyle=\"notch\" className={className}>\n    {() => <div className={styles.framed}>{children}</div>}\n  </Field>;\n  return <label htmlFor={id} className={`${styles.wrapper} ${className}`.trim()}>\n    {children}{label ? <span className={styles.label}>{label}</span> : null}\n  </label>;\n}\n",
+      "source": "packages/ui/src/components/ChoiceLabel.tsx"
+    }
+  ]
+}

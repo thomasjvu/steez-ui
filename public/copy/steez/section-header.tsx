@@ -91,7 +91,7 @@ function __injectSteezStandaloneStyles() {
 
 __injectSteezStandaloneStyles();
 
-export interface SectionHeaderProps {
+export interface SectionHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   title: string;
   description?: string;
   actions?: React.ReactNode;
@@ -103,9 +103,10 @@ export function SectionHeader({
   description,
   actions,
   className = "",
+  ...props
 }: SectionHeaderProps) {
   return (
-    <div className={`${__styles_steez_section_header_0.sectionHeader} ${className}`.trim()}>
+    <div {...props} className={`${__styles_steez_section_header_0.sectionHeader} ${className}`.trim()}>
       <div className={__styles_steez_section_header_0.headerContent}>
         <div className={__styles_steez_section_header_0.textContent}>
           <h2 className={__styles_steez_section_header_0.title}>{title}</h2>

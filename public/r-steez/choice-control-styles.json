@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "choice-control-styles",
+  "type": "registry:lib",
+  "title": "choice-control-styles",
+  "description": "Shared implementation dependency.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/steez/ChoiceControl.module.css",
+      "type": "registry:file",
+      "target": "components/steez/ChoiceControl.module.css",
+      "content": ".wrapper {\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n  cursor: pointer;\n  user-select: none;\n}\n\n.control {\n  width: 28px;\n  height: 28px;\n  border: 2px solid var(--border);\n  border-radius: var(--choice-radius, 3px);\n  appearance: none;\n  outline: none;\n  margin: 0;\n  cursor: pointer;\n  position: relative;\n  background-color: var(--bg-primary);\n  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);\n}\n\n.control::before {\n  content: \"\";\n  width: 16px;\n  height: 16px;\n  background-color: var(--success);\n  border-radius: var(--choice-mark-radius, 0);\n  position: absolute;\n  top: 4px;\n  left: 4px;\n  display: block;\n  transform: scale(0);\n  transition: 120ms transform ease-in-out;\n}\n\n.control:checked::before {\n  transform: scale(1);\n}\n\n.control:hover:not(:disabled) {\n  border-color: var(--success);\n}\n\n.control:focus-visible {\n  box-shadow: 0 0 0 2px color-mix(in srgb, var(--success) 25%, transparent);\n}\n\n.control:disabled {\n  opacity: 0.5;\n  cursor: not-allowed;\n}\n\n.label {\n  font-family: var(--font-mono);\n  font-size: 0.875rem;\n  color: var(--text-primary);\n}\n\n\n.radio { --choice-radius: 50%; --choice-mark-radius: 50%; }\n.wrapper:has(input:disabled) { cursor: not-allowed; }\n@media (prefers-reduced-motion: reduce) {\n  .control, .control::before { transition: none; }\n}\n\n@media (forced-colors: active) {\n  .control { appearance: auto; }\n  .control::before { display: none; }\n}\n\n.framed { display: flex; align-items: center; min-height: 52px; padding: 12px; }\n",
+      "source": "packages/ui/src/components/ChoiceControl.module.css"
+    }
+  ]
+}

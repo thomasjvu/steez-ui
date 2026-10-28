@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "duotone-filter",
+  "type": "registry:component",
+  "title": "Duotone Filter",
+  "description": "Map luminance to a two-color palette while preserving transparency.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://steez-ui-6v5.pages.dev/r-steez/filter-frame.json"
+  ],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/steez/DuotoneFilter.tsx",
+      "type": "registry:file",
+      "target": "components/steez/DuotoneFilter.tsx",
+      "content": "\"use client\";\n\nimport React from \"react\";\nimport { FilterFrame, type ContentFilterProps } from \"./FilterFrame\";\n\nexport interface DuotoneFilterProps extends ContentFilterProps {\n  /** Six-digit hex colors for the darkest and lightest luminance values. */\n  shadowColor?: string;\n  highlightColor?: string;\n}\nconst strengths = { subtle: 0.35, default: 0.7, intense: 1 };\nfunction channels(color: string, fallback: string) {\n  const hex = /^#[\\da-f]{6}$/i.test(color) ? color : fallback;\n  return [1, 3, 5].map(index => parseInt(hex.slice(index, index + 2), 16) / 255);\n}\n\n/** Map luminance to a two-color palette while preserving source transparency. */\nexport function DuotoneFilter({\n  shadowColor = \"#222244\", highlightColor = \"#ffb87a\",\n  intensity = \"default\", trigger = \"static\", ...props\n}: DuotoneFilterProps) {\n  const shadows = channels(shadowColor, \"#222244\");\n  const highlights = channels(highlightColor, \"#ffb87a\");\n  return <FilterFrame {...props} trigger={trigger} renderFilter={frame => {\n    const strength = strengths[intensity] * [1, 0.85, 0.7][frame];\n    return <>\n      <feColorMatrix in=\"SourceGraphic\" type=\"saturate\" values=\"0\" result=\"luminance\" />\n      <feComponentTransfer in=\"luminance\" result=\"duotone\">\n        <feFuncR type=\"table\" tableValues={`${shadows[0]} ${highlights[0]}`} />\n        <feFuncG type=\"table\" tableValues={`${shadows[1]} ${highlights[1]}`} />\n        <feFuncB type=\"table\" tableValues={`${shadows[2]} ${highlights[2]}`} />\n      </feComponentTransfer>\n      <feComposite in=\"duotone\" in2=\"SourceGraphic\" operator=\"arithmetic\"\n        k1={0} k2={strength} k3={1 - strength} k4={0} />\n    </>;\n  }} />;\n}\n",
+      "source": "packages/ui/src/components/DuotoneFilter.tsx"
+    }
+  ]
+}

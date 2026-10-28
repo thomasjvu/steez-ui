@@ -55,6 +55,15 @@ const itemDefinitions = [
       { source: "packages/icons/src/types.ts", target: "lib/steez/icons/types.ts", type: "registry:file" },
     ],
   },
+  {
+    name: "field-frame", index: false, type: "registry:lib", title: "Field Frame",
+    description: "Shared field label, control frame, and validation descriptions.",
+    dependencies: [], registryDependencies: ["field-description", "theme-tokens"],
+    files: [
+      { source: "packages/ui/src/components/Field.tsx", target: "components/steez/Field.tsx", type: "registry:file" },
+      { source: "packages/ui/src/components/Field.module.css", target: "components/steez/Field.module.css", type: "registry:file" },
+    ],
+  },
   ...publicComponentDefinitions,
   {
     name: "foundation",
@@ -67,12 +76,12 @@ const itemDefinitions = [
       "icon-provider",
       "button",
       "copy-button",
-      "cyberpunk-input",
-      "cyberpunk-select",
-      "cyberpunk-textarea",
-      "cyberpunk-checkbox",
-      "cyberpunk-radio",
-      "cyberpunk-slider",
+      "input",
+      "select",
+      "textarea",
+      "checkbox",
+      "radio",
+      "slider",
     ],
     files: [],
   },
@@ -159,6 +168,14 @@ const itemDefinitions = [
 
 // Shared source has one owning item; consumers depend on it rather than copying it.
 for (const [name, source, target] of [
+  ["choice-label", "packages/ui/src/components/ChoiceLabel.tsx", "components/steez/ChoiceLabel.tsx"],
+  ["button-shape-styles", "packages/ui/src/components/ButtonShape.module.css", "components/steez/ButtonShape.module.css"],
+  ["choice-control-styles", "packages/ui/src/components/ChoiceControl.module.css", "components/steez/ChoiceControl.module.css"],
+  ["filter-frame", "packages/ui/src/components/FilterFrame.tsx", "components/steez/FilterFrame.tsx"],
+  ["filter-frame-styles", "packages/ui/src/components/FilterFrame.module.css", "components/steez/FilterFrame.module.css"],
+  ["motion-activity", "packages/ui/src/hooks/useMotionActivity.ts", "components/hooks/useMotionActivity.ts"],
+  ["numeric-bounds", "packages/ui/src/utils/numbers.ts", "components/utils/numbers.ts"],
+  ["value-tone", "packages/ui/src/styles/ValueTone.module.css", "components/styles/ValueTone.module.css"],
   ["stable-id", "packages/ui/src/hooks/useStableId.ts", "components/hooks/useStableId.ts"],
   ["field-description", "packages/ui/src/hooks/useFieldDescription.ts", "components/hooks/useFieldDescription.ts"],
   ["roving-tabs", "packages/ui/src/hooks/useRovingTabs.ts", "components/hooks/useRovingTabs.ts"],
@@ -270,5 +287,13 @@ await fs.writeFile(
   path.join(registryDir, "index.json"),
   `${JSON.stringify(indexItems, null, 2)}\n`,
 );
+
+// Generated payloads have no compatibility aliases; prune removed/renamed items.
+const expectedPayloads = new Set(["index.json", ...itemDefinitions.map(item => `${item.name}.json`)]);
+for (const file of await fs.readdir(registryDir)) {
+  if (file.endsWith(".json") && !expectedPayloads.has(file)) {
+    await fs.rm(path.join(registryDir, file));
+  }
+}
 
 await generateStandaloneComponents({ repoRoot });

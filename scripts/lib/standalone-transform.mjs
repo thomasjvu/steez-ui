@@ -181,10 +181,10 @@ export function collectPortableImports(source, { reactImports, externalImports }
 export function makeReactImportSource(reactImports) {
   const lines = ["import * as React from \"react\";"];
   if (reactImports.values.size > 0) {
-    lines.push(`import { ${[...reactImports.values].sort().join(", ")} } from \"react\";`);
+    lines.push(`import { ${[...reactImports.values].sort().join(", ")} } from "react";`);
   }
   if (reactImports.types.size > 0) {
-    lines.push(`import type { ${[...reactImports.types].sort().join(", ")} } from \"react\";`);
+    lines.push(`import type { ${[...reactImports.types].sort().join(", ")} } from "react";`);
   }
   return lines.join("\n");
 }

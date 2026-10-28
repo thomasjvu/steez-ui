@@ -22,6 +22,13 @@ const __styles_steez_button_0: Record<string, string> = {
   "large": "steez-button-0-large",
 };
 
+const __styles_steez_button_1: Record<string, string> = {
+  "root": "steez-button-1-root",
+  "shape": "steez-button-1-shape",
+  "content": "steez-button-1-content",
+  "vertical": "steez-button-1-vertical",
+};
+
 const __steezStandaloneStyles = String.raw`/* packages/ui/src/styles/Buttons.module.css */
 .steez-button-0-primary,
 .steez-button-0-secondary,
@@ -236,6 +243,68 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/styles/Buttons.mod
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+
+/* packages/ui/src/components/ButtonShape.module.css */
+.steez-button-1-root:is([data-shape="crystal"], [data-shape="cut"]) {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--crystal-button-text, var(--interactive-primary-fg, #010607));
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  isolation: isolate;
+  box-shadow: none;
+  filter: none;
+}
+.steez-button-1-shape {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--crystal-button-color, var(--interactive-primary-bg, #cbcbcc));
+  clip-path: polygon(var(--crystal-button-cut, .95rem) 0%, calc(100% - var(--crystal-button-cut, .95rem)) 0%, 100% 50%, calc(100% - var(--crystal-button-cut, .95rem)) 100%, var(--crystal-button-cut, .95rem) 100%, 0% 50%);
+  box-shadow: none;
+}
+.steez-button-1-content { display: inline-flex; position: relative; align-items: center; justify-content: center; gap: .55rem; }
+.steez-button-1-root:is([data-shape="crystal"], [data-shape="cut"]):hover,
+.steez-button-1-root:is([data-shape="crystal"], [data-shape="cut"]):active { background: transparent; border: 0; box-shadow: none; filter: none; transform: none; }
+.steez-button-1-root:focus-visible { outline: 2px solid var(--crystal-button-focus, var(--color-border-focus, #5a6268)); outline-offset: 4px; }
+.steez-button-1-root:disabled,
+.steez-button-1-root[aria-disabled="true"] { opacity: .5; cursor: not-allowed; }
+.steez-button-1-vertical { width: 2.5rem; height: 6rem; min-height: 6rem; padding: 0; flex-shrink: 0; }
+.steez-button-1-vertical .steez-button-1-shape {
+  inset: auto;
+  left: 50%;
+  top: 50%;
+  width: 6rem;
+  height: 2.5rem;
+  margin-left: -3rem;
+  margin-top: -1.25rem;
+  transform: rotate(90deg);
+  clip-path: polygon(20px 0%, calc(100% - 20px) 0%, 100% 50%, calc(100% - 20px) 100%, 20px 100%, 0% 50%);
+}
+.steez-button-1-vertical .steez-button-1-content > svg { width: 20px; height: 20px; }
+
+.steez-button-1-root[data-variant="secondary"] { color: var(--interactive-secondary-fg, #cbcbcc); }
+.steez-button-1-root[data-variant="secondary"] .steez-button-1-shape { background: var(--interactive-secondary-bg, #010607); }
+.steez-button-1-root[data-variant="danger"] { color: var(--danger, #ee1401); }
+.steez-button-1-root[data-variant="danger"] .steez-button-1-shape { background: var(--danger-bg, rgba(238, 20, 1, 0.15)); }
+
+.steez-button-1-root:is([data-shape="crystal"], [data-shape="cut"])::before, .steez-button-1-root:is([data-shape="crystal"], [data-shape="cut"])::after { content: none; }
+
+.steez-button-1-root[data-shape="cut"] .steez-button-1-shape {
+  clip-path: polygon(var(--cut-tl) 0, calc(100% - var(--cut-tr)) 0, 100% var(--cut-tr), 100% calc(100% - var(--cut-br)), calc(100% - var(--cut-br)) 100%, var(--cut-bl) 100%, 0 calc(100% - var(--cut-bl)), 0 var(--cut-tl));
+}
+.steez-button-1-root[data-shape="cut"][data-variant="secondary"] .steez-button-1-shape { background: var(--color-border-default, #2a2a2a); }
+.steez-button-1-root[data-shape="cut"][data-variant="secondary"] .steez-button-1-shape::after {
+  content: ""; position: absolute; inset: 1px; background: var(--interactive-secondary-bg, #010607); clip-path: inherit;
+}
 `;
 const __steezStandaloneStyleKey = "button";
 
@@ -252,40 +321,54 @@ function __injectSteezStandaloneStyles() {
 
 __injectSteezStandaloneStyles();
 
-type ButtonVariant =
-  | "primary"
-  | "secondary"
-  | "danger"
-  | "cyberpunk3"
-  | "cyberpunk6";
+type ButtonVariant = "primary" | "secondary" | "danger" | "cyberpunk3" | "cyberpunk6";
 type ButtonSize = "small" | "medium" | "large";
-
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export type IconActionProps =
+  | { iconOnly?: false }
+  | ({ iconOnly: true } & ({ "aria-label": string } | { "aria-labelledby": string }));
+type ButtonAppearance = {
   variant?: ButtonVariant;
   size?: ButtonSize;
+  shape?: "default" | "crystal" | "cut";
+  cutCorners?: readonly ("top-left" | "top-right" | "bottom-right" | "bottom-left")[];
+  cutSize?: string;
+  orientation?: "horizontal" | "vertical";
   children: React.ReactNode;
-}
+  disabled?: boolean;
+};
+export type ButtonProps = ButtonAppearance & IconActionProps & (
+  | (React.ButtonHTMLAttributes<HTMLButtonElement> & { href?: never })
+  | (React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string })
+);
 
+/** Native action or link; crystal is a shape of the same button. */
 export function Button({
-  variant = "primary",
-  size = "medium",
-  className = "",
-  children,
-  type = "button",
-  ...props
+  variant = "primary", size = "medium", shape = "default",
+  orientation = "horizontal", cutCorners = ["top-right", "bottom-left"], cutSize = "12px", style, className = "", children, iconOnly,
+  disabled = false, ...props
 }: ButtonProps) {
   const sizeClass = size === "small" ? __styles_steez_button_0.small : size === "large" ? __styles_steez_button_0.large : "";
-
-  return (
-    <button
-      type={type}
-      className={`${__styles_steez_button_0[variant]} ${sizeClass} ${className}`.trim()}
-      {...props}
-    >
-      {children}
-    </button>
-  );
+  const crystal = shape === "crystal";
+  const shaped = shape !== "default";
+  const corner = (name: typeof cutCorners[number]) => cutCorners.includes(name) ? `min(${cutSize}, 50%)` : "0px";
+  const shapeStyle = { "--cut-tl": corner("top-left"), "--cut-tr": corner("top-right"), "--cut-br": corner("bottom-right"), "--cut-bl": corner("bottom-left"), ...style } as React.CSSProperties;
+  const classes = `${__styles_steez_button_0[variant]} ${sizeClass} ${shaped ? __styles_steez_button_1.root : ""} ${crystal && orientation === "vertical" ? __styles_steez_button_1.vertical : ""} ${className}`.trim();
+  const content = shaped ? <>
+    <span className={__styles_steez_button_1.shape} aria-hidden="true" />
+    <span className={__styles_steez_button_1.content} aria-hidden={iconOnly || undefined}>{children}</span>
+  </> : iconOnly ? <span aria-hidden="true">{children}</span> : children;
+  const appearance = { className: classes, style: shapeStyle, "data-shape": shape, "data-variant": variant };
+  if (props.href !== undefined) {
+    const { href, onClick, ...linkProps } = props;
+    return <a {...linkProps} {...appearance} href={disabled ? undefined : href}
+      role={disabled ? "link" : linkProps.role}
+      aria-disabled={disabled || undefined} tabIndex={disabled ? -1 : linkProps.tabIndex}
+      onClick={event => {
+        if (disabled) { event.preventDefault(); return; }
+        onClick?.(event);
+      }}>{content}</a>;
+  }
+  const { type = "button", ...buttonProps } = props;
+  return <button {...buttonProps} {...appearance} type={type} disabled={disabled}>{content}</button>;
 }
-
 export default Button;

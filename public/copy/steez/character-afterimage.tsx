@@ -290,6 +290,24 @@ function __injectSteezStandaloneStyles() {
 
 __injectSteezStandaloneStyles();
 
+/** Clamp finite inputs; malformed values use the component's documented default. */
+export function clampFinite(
+  value: number,
+  min: number,
+  max: number,
+  fallback: number,
+) {
+  return Number.isFinite(value)
+    ? Math.min(max, Math.max(min, value))
+    : fallback;
+}
+
+/** Percentage shared by range inputs and progress displays. */
+export function progressPercentage(value: number, min = 0, max = 100) {
+  if (!Number.isFinite(min) || !Number.isFinite(max) || max <= min) return 0;
+  return clampFinite(((value - min) / (max - min)) * 100, 0, 100, 0);
+}
+
 const TRAIL_COUNT = 8;
 const GHOST_OPACITIES = [0.25, 0.35, 0.45];
 
@@ -344,12 +362,12 @@ export function CharacterAfterimage({
   pixelated = true,
   ...imageProps
 }: CharacterAfterimageProps) {
-  const visibleGhostCount = Math.max(0, Math.min(3, Math.floor(ghostCount)));
-  const safeGhostOffset = Math.max(0, ghostOffset);
+  const visibleGhostCount = Math.floor(clampFinite(ghostCount, 0, 3, 3));
+  const safeGhostOffset = clampFinite(ghostOffset, 0, 200, 4);
   const mergedStyle = {
     ...style,
-    ["--afterimage-cycle-duration" as string]: `${Math.max(1, cycleDurationMs)}ms`,
-    ["--afterimage-entrance-duration" as string]: `${Math.max(1, entranceDurationMs)}ms`,
+    ["--afterimage-cycle-duration" as string]: `${clampFinite(cycleDurationMs, 1, 120000, 3000)}ms`,
+    ["--afterimage-entrance-duration" as string]: `${clampFinite(entranceDurationMs, 1, 120000, 4000)}ms`,
   } as React.CSSProperties;
   const decorativeImageProps = {
     src,

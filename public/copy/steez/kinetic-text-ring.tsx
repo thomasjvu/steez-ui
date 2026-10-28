@@ -10,6 +10,7 @@
 "use client";
 
 import * as React from "react";
+import { useEffect, useRef, useState } from "react";
 
 const __styles_steez_kinetic_text_ring_0: Record<string, string> = {
   "root": "steez-kinetic-text-ring-0-root",
@@ -85,6 +86,8 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/Kinetic
     transform: none;
   }
 }
+
+.steez-kinetic-text-ring-0-root[data-running="false"], .steez-kinetic-text-ring-0-root[data-running="false"] * { animation-play-state: paused !important; }
 `;
 const __steezStandaloneStyleKey = "kinetic-text-ring";
 
@@ -101,12 +104,72 @@ function __injectSteezStandaloneStyles() {
 
 __injectSteezStandaloneStyles();
 
+/** Shared lifecycle for ambient motion: explicit pause, visibility, and reduced motion. */
+export function useMotionActivity<T extends HTMLElement = HTMLDivElement>(
+  paused = false,
+  visible = true,
+) {
+  const ref = useRef<T>(null);
+  const [inView, setInView] = useState(true);
+  const [pageVisible, setPageVisible] = useState(true);
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const media =
+      typeof window.matchMedia === "function"
+        ? window.matchMedia("(prefers-reduced-motion: reduce)")
+        : null;
+    const syncMotion = () => setReduced(media?.matches ?? false);
+    const syncVisibility = () =>
+      setPageVisible(document.visibilityState !== "hidden");
+    syncMotion();
+    syncVisibility();
+    media?.addEventListener("change", syncMotion);
+    document.addEventListener("visibilitychange", syncVisibility);
+    const observer =
+      typeof IntersectionObserver === "undefined"
+        ? null
+        : new IntersectionObserver(([entry]) => {
+            if (entry) setInView(entry.isIntersecting);
+          });
+    if (ref.current) observer?.observe(ref.current);
+    return () => {
+      media?.removeEventListener("change", syncMotion);
+      document.removeEventListener("visibilitychange", syncVisibility);
+      observer?.disconnect();
+    };
+  }, []);
+  return {
+    ref,
+    running: visible && !paused && inView && pageVisible && !reduced,
+  };
+}
+
+/** Clamp finite inputs; malformed values use the component's documented default. */
+export function clampFinite(
+  value: number,
+  min: number,
+  max: number,
+  fallback: number,
+) {
+  return Number.isFinite(value)
+    ? Math.min(max, Math.max(min, value))
+    : fallback;
+}
+
+/** Percentage shared by range inputs and progress displays. */
+export function progressPercentage(value: number, min = 0, max = 100) {
+  if (!Number.isFinite(min) || !Number.isFinite(max) || max <= min) return 0;
+  return clampFinite(((value - min) / (max - min)) * 100, 0, 100, 0);
+}
+
 export type KineticTextRingDirection = "clockwise" | "counterclockwise";
 
 export interface KineticTextRingProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
   children: string;
   durationMs?: number;
+  /** Freeze motion; offscreen, hidden tabs, and reduced motion also pause it. */
+  paused?: boolean;
   direction?: KineticTextRingDirection;
   pauseOnHover?: boolean;
 }
@@ -120,16 +183,16 @@ export function KineticTextRing({
   durationMs = 16000,
   direction = "clockwise",
   pauseOnHover = false,
+  paused = false,
   className = "",
   style,
   "aria-label": ariaLabel,
   ...props
 }: KineticTextRingProps) {
+  const { ref, running } = useMotionActivity(paused);
   const label = String(children).trim();
   const pathId = `kinetic-text-ring-${React.useId().replace(/:/g, "")}`;
-  const safeDuration = Number.isFinite(durationMs)
-    ? Math.min(Math.max(durationMs, 1000), 120000)
-    : 16000;
+  const safeDuration = clampFinite(durationMs, 1000, 120000, 16000);
   const visualLabel = label.toUpperCase();
   const repeatedLabel = `${visualLabel}  •  `;
   const repeatCount = Math.min(
@@ -146,6 +209,8 @@ export function KineticTextRing({
 
   return (
     <div
+      ref={ref}
+      data-running={running ? "true" : "false"}
       className={`${__styles_steez_kinetic_text_ring_0.root} ${className}`.trim()}
       data-direction={direction}
       data-pause-on-hover={pauseOnHover ? "true" : "false"}

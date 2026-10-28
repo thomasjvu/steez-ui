@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "motion-activity",
+  "type": "registry:lib",
+  "title": "motion-activity",
+  "description": "Shared implementation dependency.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/hooks/useMotionActivity.ts",
+      "type": "registry:file",
+      "target": "components/hooks/useMotionActivity.ts",
+      "content": "\"use client\";\n\nimport { useEffect, useRef, useState } from \"react\";\n\n/** Shared lifecycle for ambient motion: explicit pause, visibility, and reduced motion. */\nexport function useMotionActivity<T extends HTMLElement = HTMLDivElement>(\n  paused = false,\n  visible = true,\n) {\n  const ref = useRef<T>(null);\n  const [inView, setInView] = useState(true);\n  const [pageVisible, setPageVisible] = useState(true);\n  const [reduced, setReduced] = useState(false);\n  useEffect(() => {\n    const media =\n      typeof window.matchMedia === \"function\"\n        ? window.matchMedia(\"(prefers-reduced-motion: reduce)\")\n        : null;\n    const syncMotion = () => setReduced(media?.matches ?? false);\n    const syncVisibility = () =>\n      setPageVisible(document.visibilityState !== \"hidden\");\n    syncMotion();\n    syncVisibility();\n    media?.addEventListener(\"change\", syncMotion);\n    document.addEventListener(\"visibilitychange\", syncVisibility);\n    const observer =\n      typeof IntersectionObserver === \"undefined\"\n        ? null\n        : new IntersectionObserver(([entry]) => {\n            if (entry) setInView(entry.isIntersecting);\n          });\n    if (ref.current) observer?.observe(ref.current);\n    return () => {\n      media?.removeEventListener(\"change\", syncMotion);\n      document.removeEventListener(\"visibilitychange\", syncVisibility);\n      observer?.disconnect();\n    };\n  }, []);\n  return {\n    ref,\n    running: visible && !paused && inView && pageVisible && !reduced,\n  };\n}\n",
+      "source": "packages/ui/src/hooks/useMotionActivity.ts"
+    }
+  ]
+}

@@ -141,7 +141,7 @@ export function FUIButtonTile({
       {...props}
     >
       <div className={__styles_steez_fui_button_tile_0.content}>
-        {icon ? <span className={__styles_steez_fui_button_tile_0.icon}>{icon}</span> : null}
+        {icon ? <span className={__styles_steez_fui_button_tile_0.icon} aria-hidden="true">{icon}</span> : null}
         <strong className={__styles_steez_fui_button_tile_0.label}>{label}</strong>
       </div>
     </button>

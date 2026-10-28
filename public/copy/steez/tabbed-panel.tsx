@@ -10,7 +10,7 @@
 "use client";
 
 import * as React from "react";
-import { useCallback, useId, useRef } from "react";
+import { useCallback, useId, useRef, useState } from "react";
 import type { KeyboardEvent } from "react";
 
 const __styles_steez_tabbed_panel_0: Record<string, string> = {
@@ -204,6 +204,27 @@ export function useRovingTabs<T extends RovingTabItem>({
   return { handleKeyDown, setTabRef };
 }
 
+/** Selection fallback is derived without emitting changes during rendering or effects. */
+export function useTabSelection<T extends RovingTabItem>({
+  tabs, value, defaultValue, onValueChange,
+}: {
+  tabs: readonly T[];
+  value?: string;
+  defaultValue?: string;
+  onValueChange?: (id: string) => void;
+}) {
+  const [internalValue, setInternalValue] = useState(defaultValue);
+  const requested = value !== undefined ? value : internalValue;
+  const selected = tabs.find((tab) => tab.id === requested && !tab.disabled)
+    ?? tabs.find((tab) => !tab.disabled);
+  const select = useCallback((id: string) => {
+    if (id === selected?.id || !tabs.some((tab) => tab.id === id && !tab.disabled)) return;
+    if (value === undefined) setInternalValue(id);
+    onValueChange?.(id);
+  }, [onValueChange, selected?.id, tabs, value]);
+  return { selected, select };
+}
+
 export function useStableId(prefix: string, explicitId?: string): string {
   const reactId = useId().replace(/:/g, "");
   return explicitId || `${prefix}-${reactId}`;
@@ -258,8 +279,8 @@ export function TabList({
   renderPanel = true,
 }: TabListProps) {
   const resolvedActiveTabId =
-    activeTabId || tabs[0]?.id || "";
-  const activeTab = tabs.find((tab) => tab.id === resolvedActiveTabId);
+    activeTabId ?? tabs.find((tab) => !tab.disabled)?.id ?? "";
+  const activeTab = tabs.find((tab) => tab.id === resolvedActiveTabId && !tab.disabled);
   const activePanelId = activeTab ? getPanelDomId(activeTab.id) : undefined;
   const activeTabDomId = activeTab ? getTabDomId(activeTab.id) : undefined;
 
@@ -326,7 +347,6 @@ export interface TabbedPanelProps {
   activeTab?: string;
   defaultTab?: string;
   onTabChange?: (tabId: string) => void;
-  onChange?: (tabId: string) => void;
   label?: string;
   hint?: string;
   ariaLabel?: string;
@@ -340,7 +360,6 @@ export function TabbedPanel({
   activeTab,
   defaultTab,
   onTabChange,
-  onChange,
   label,
   hint,
   ariaLabel,
@@ -349,11 +368,9 @@ export function TabbedPanel({
   panelClassName = "",
 }: TabbedPanelProps) {
   const baseId = useStableId("tabbed-panel");
-  const isControlled = typeof activeTab === "string";
-  const initialTabId = defaultTab || activeTab || tabs[0]?.id || "";
-  const [internalTabId, setInternalTabId] = React.useState(initialTabId);
-  const currentTabId = isControlled ? activeTab || tabs[0]?.id || "" : internalTabId;
-  const currentTab = tabs.find((tab) => tab.id === currentTabId) ?? tabs[0];
+  const { selected: currentTab, select: handleSelect } = useTabSelection({
+    tabs, value: activeTab, defaultValue: defaultTab, onValueChange: onTabChange,
+  });
 
   const getTabDomId = React.useCallback(
     (tabId: string) => `${baseId}-tab-${tabId}`,
@@ -364,33 +381,6 @@ export function TabbedPanel({
     [baseId],
   );
 
-  React.useEffect(() => {
-    if (!tabs.length) {
-      return;
-    }
-
-    if (tabs.some((tab) => tab.id === currentTabId)) {
-      return;
-    }
-
-    const fallbackTabId = defaultTab || activeTab || tabs[0]?.id || "";
-    if (!isControlled) {
-      setInternalTabId(fallbackTabId);
-    }
-    onTabChange?.(fallbackTabId);
-    onChange?.(fallbackTabId);
-  }, [activeTab, currentTabId, defaultTab, isControlled, onChange, onTabChange, tabs]);
-
-  const handleSelect = React.useCallback(
-    (tabId: string) => {
-      if (!isControlled) {
-        setInternalTabId(tabId);
-      }
-      onTabChange?.(tabId);
-      onChange?.(tabId);
-    },
-    [isControlled, onChange, onTabChange],
-  );
   const { handleKeyDown: handleTabKeyDown, setTabRef } = useRovingTabs({
     tabs,
     onSelect: handleSelect,

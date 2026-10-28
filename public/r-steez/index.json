@@ -18,18 +18,6 @@
     "description": "Decorative nine-facet crystal with slow floating motion, rotating faces, optional bounded pointer parallax, and reduced-motion support."
   },
   {
-    "name": "crystal-button",
-    "type": "registry:component",
-    "title": "Crystal Button",
-    "description": "Six-point crystal button or link, with a horizontal CTA shape and a narrow vertical icon-only variation."
-  },
-  {
-    "name": "icon-stack-select",
-    "type": "registry:component",
-    "title": "Icon Stack Select",
-    "description": "Rounded select with overlapping option icons and a custom dark menu. Keyboard navigation skips disabled options; the popup uses the browser top layer to escape overflow clipping."
-  },
-  {
     "name": "ascii-ripple-text",
     "type": "registry:component",
     "title": "ASCII Ripple Text",
@@ -51,7 +39,7 @@
     "name": "button",
     "type": "registry:component",
     "title": "Button",
-    "description": "Core button primitive with standard and cyberpunk-styled variants."
+    "description": "Native button or link with shared variants and an optional crystal shape."
   },
   {
     "name": "character-afterimage",
@@ -66,39 +54,39 @@
     "description": "Clipboard button with built-in success feedback."
   },
   {
-    "name": "cyberpunk-input",
+    "name": "input",
     "type": "registry:component",
-    "title": "Cyberpunk Input",
+    "title": "Input",
     "description": "Monospace input with shared Steez form framing."
   },
   {
-    "name": "cyberpunk-select",
+    "name": "select",
     "type": "registry:component",
-    "title": "Cyberpunk Select",
-    "description": "Select primitive with the shared Steez framing and arrow treatment."
+    "title": "Select",
+    "description": "Native browser selection with optional cut label, icon stack, helper text, and validation."
   },
   {
-    "name": "cyberpunk-textarea",
+    "name": "textarea",
     "type": "registry:component",
-    "title": "Cyberpunk Textarea",
-    "description": "Textarea primitive with the shared Steez form framing."
+    "title": "Textarea",
+    "description": "Native multiline input with a plain or notched label."
   },
   {
-    "name": "cyberpunk-checkbox",
+    "name": "checkbox",
     "type": "registry:component",
-    "title": "Cyberpunk Checkbox",
+    "title": "Checkbox",
     "description": "Checkbox primitive for Steez forms."
   },
   {
-    "name": "cyberpunk-radio",
+    "name": "radio",
     "type": "registry:component",
-    "title": "Cyberpunk Radio",
+    "title": "Radio",
     "description": "Radio and radio group primitives."
   },
   {
-    "name": "cyberpunk-slider",
+    "name": "slider",
     "type": "registry:component",
-    "title": "Cyberpunk Slider",
+    "title": "Slider",
     "description": "Native range input with progress and value display. The diamond variant has a slim track and a solid square thumb that rotates while held; both variants retain native keyboard controls."
   },
   {
@@ -328,6 +316,48 @@
     "type": "registry:component",
     "title": "Kinetic Text Volume",
     "description": "Repeated type ripples across the three faces of a perspective text volume."
+  },
+  {
+    "name": "chromatic-aberration-filter",
+    "type": "registry:component",
+    "title": "Chromatic Aberration Filter",
+    "description": "Separate red and cyan channels around text, icons, images, or interactive content."
+  },
+  {
+    "name": "glow-filter",
+    "type": "registry:component",
+    "title": "Glow Filter",
+    "description": "Alpha-derived colored halo with a crisp content layer."
+  },
+  {
+    "name": "grain-filter",
+    "type": "registry:component",
+    "title": "Grain Filter",
+    "description": "Monochrome film grain clipped to the content alpha, with optional animated seeds."
+  },
+  {
+    "name": "duotone-filter",
+    "type": "registry:component",
+    "title": "Duotone Filter",
+    "description": "Map luminance to a two-color palette while preserving transparency."
+  },
+  {
+    "name": "posterize-filter",
+    "type": "registry:component",
+    "title": "Posterize Filter",
+    "description": "Reduce continuous colors to distinct stepped bands."
+  },
+  {
+    "name": "emboss-filter",
+    "type": "registry:component",
+    "title": "Emboss Filter",
+    "description": "Raise diagonal edges into a textured relief while preserving transparency."
+  },
+  {
+    "name": "icon-background",
+    "type": "registry:component",
+    "title": "Icon Background",
+    "description": "A decorative icon grid with optional pointer-facing magnetic rotation."
   },
   {
     "name": "foundation",

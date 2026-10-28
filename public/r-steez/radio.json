@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "radio",
+  "type": "registry:component",
+  "title": "Radio",
+  "description": "Radio and radio group primitives.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/stable-id.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/field-frame.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/choice-label.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/choice-control-styles.json"
+  ],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/steez/Radio.tsx",
+      "type": "registry:file",
+      "target": "components/steez/Radio.tsx",
+      "content": "\"use client\";\n\nimport React, { InputHTMLAttributes } from \"react\";\n\nimport { Field } from \"./Field\";\nimport { ChoiceLabel } from \"./ChoiceLabel\";\nimport { useStableId } from \"../hooks/useStableId\";\nimport choiceStyles from \"./ChoiceControl.module.css\";\nimport styles from \"./Radio.module.css\";\n\nexport interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, \"type\"> {\n  label?: string;\n  labelStyle?: \"plain\" | \"notch\";\n}\n\nexport function Radio({ label, labelStyle, className = \"\", id, ...props }: RadioProps) {\n  const inputId = useStableId(\"radio\", id);\n\n  return (\n    <ChoiceLabel id={inputId} label={label} labelStyle={labelStyle} className={className}>\n      <input id={inputId} className={`${choiceStyles.control} ${choiceStyles.radio}`} {...props} type=\"radio\" />\n    </ChoiceLabel>\n  );\n}\n\nexport interface RadioGroupProps extends Omit<React.HTMLAttributes<HTMLDivElement>, \"onChange\" | \"defaultValue\"> {\n  name: string;\n  options: { value: string; label: string; disabled?: boolean }[];\n  value?: string;\n  defaultValue?: string;\n  disabled?: boolean;\n  onValueChange?: (value: string) => void;\n  className?: string;\n  labelStyle?: \"plain\" | \"notch\";\n  /** Accessible name for the radiogroup (maps to aria-label). */\n  label?: string;\n}\n\nexport function RadioGroup({\n  name,\n  options,\n  value,\n  defaultValue,\n  disabled,\n  onValueChange,\n  className = \"\",\n  label,\n  labelStyle = \"plain\",\n  ...props\n}: RadioGroupProps) {\n  const groupId = useStableId(\"radio-group\");\n  const firstEnabled = Math.max(0, options.findIndex(option => !option.disabled));\n  const group = (\n    <div\n      {...props}\n      role=\"radiogroup\"\n      aria-label={props[\"aria-label\"] ?? label ?? undefined}\n      className={`${styles.radioGroup} ${labelStyle === \"notch\" ? styles.notchedGroup : className}`.trim()}\n    >\n      {options.map((option, index) => (\n        <Radio\n          key={option.value}\n          id={`${groupId}-${index}`}\n          name={name}\n          value={option.value}\n          label={option.label}\n          checked={value === undefined ? undefined : value === option.value}\n          defaultChecked={value === undefined ? defaultValue === option.value : undefined}\n          disabled={disabled || option.disabled}\n          onChange={(event) => {\n            onValueChange?.(event.target.value);\n                  }}\n        />\n      ))}\n    </div>\n  );\n  return labelStyle === \"notch\" ? <Field id={`${groupId}-${firstEnabled}`} label={label}\n    labelStyle=\"notch\" className={className}>{() => group}</Field> : group;\n}\n",
+      "source": "packages/ui/src/components/Radio.tsx"
+    },
+    {
+      "path": "components/steez/Radio.module.css",
+      "type": "registry:file",
+      "target": "components/steez/Radio.module.css",
+      "content": ".radioGroup {\n  display: flex;\n  flex-direction: column;\n  gap: 0.5rem;\n}\n\n.notchedGroup { padding: 12px; }\n",
+      "source": "packages/ui/src/components/Radio.module.css"
+    }
+  ]
+}

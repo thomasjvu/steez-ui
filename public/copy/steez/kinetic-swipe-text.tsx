@@ -10,6 +10,7 @@
 "use client";
 
 import * as React from "react";
+import { useEffect, useRef, useState } from "react";
 
 const __styles_steez_kinetic_swipe_text_0: Record<string, string> = {
   "root": "steez-kinetic-swipe-text-0-root",
@@ -263,6 +264,8 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/Kinetic
     will-change: auto;
   }
 }
+
+.steez-kinetic-swipe-text-0-root[data-running="false"], .steez-kinetic-swipe-text-0-root[data-running="false"] * { animation-play-state: paused !important; }
 `;
 const __steezStandaloneStyleKey = "kinetic-swipe-text";
 
@@ -279,6 +282,64 @@ function __injectSteezStandaloneStyles() {
 
 __injectSteezStandaloneStyles();
 
+/** Shared lifecycle for ambient motion: explicit pause, visibility, and reduced motion. */
+export function useMotionActivity<T extends HTMLElement = HTMLDivElement>(
+  paused = false,
+  visible = true,
+) {
+  const ref = useRef<T>(null);
+  const [inView, setInView] = useState(true);
+  const [pageVisible, setPageVisible] = useState(true);
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const media =
+      typeof window.matchMedia === "function"
+        ? window.matchMedia("(prefers-reduced-motion: reduce)")
+        : null;
+    const syncMotion = () => setReduced(media?.matches ?? false);
+    const syncVisibility = () =>
+      setPageVisible(document.visibilityState !== "hidden");
+    syncMotion();
+    syncVisibility();
+    media?.addEventListener("change", syncMotion);
+    document.addEventListener("visibilitychange", syncVisibility);
+    const observer =
+      typeof IntersectionObserver === "undefined"
+        ? null
+        : new IntersectionObserver(([entry]) => {
+            if (entry) setInView(entry.isIntersecting);
+          });
+    if (ref.current) observer?.observe(ref.current);
+    return () => {
+      media?.removeEventListener("change", syncMotion);
+      document.removeEventListener("visibilitychange", syncVisibility);
+      observer?.disconnect();
+    };
+  }, []);
+  return {
+    ref,
+    running: visible && !paused && inView && pageVisible && !reduced,
+  };
+}
+
+/** Clamp finite inputs; malformed values use the component's documented default. */
+export function clampFinite(
+  value: number,
+  min: number,
+  max: number,
+  fallback: number,
+) {
+  return Number.isFinite(value)
+    ? Math.min(max, Math.max(min, value))
+    : fallback;
+}
+
+/** Percentage shared by range inputs and progress displays. */
+export function progressPercentage(value: number, min = 0, max = 100) {
+  if (!Number.isFinite(min) || !Number.isFinite(max) || max <= min) return 0;
+  return clampFinite(((value - min) / (max - min)) * 100, 0, 100, 0);
+}
+
 export type KineticSwipeTextTrigger = "always" | "hover" | "mount";
 export type KineticSwipeTextDirection = "horizontal" | "vertical";
 
@@ -288,6 +349,8 @@ export interface KineticSwipeTextProps
   direction?: KineticSwipeTextDirection;
   trigger?: KineticSwipeTextTrigger;
   durationMs?: number;
+  /** Freeze motion; offscreen, hidden tabs, and reduced motion also pause it. */
+  paused?: boolean;
   delayMs?: number;
 }
 
@@ -297,14 +360,14 @@ export function KineticSwipeText({
   trigger = "always",
   durationMs = 2400,
   delayMs = 0,
+  paused = false,
   className = "",
   style,
   ...props
 }: KineticSwipeTextProps) {
-  const safeDuration = Number.isFinite(durationMs)
-    ? Math.max(durationMs, 1)
-    : 2400;
-  const safeDelay = Number.isFinite(delayMs) ? delayMs : 0;
+  const { ref, running } = useMotionActivity(paused);
+  const safeDuration = clampFinite(durationMs, 1, 120000, 2400);
+  const safeDelay = clampFinite(delayMs, -120000, 120000, 0);
   const mergedStyle = {
     ...style,
     ["--kinetic-swipe-duration" as string]: `${safeDuration}ms`,
@@ -313,6 +376,8 @@ export function KineticSwipeText({
 
   return (
     <div
+      ref={ref}
+      data-running={running ? "true" : "false"}
       className={`${__styles_steez_kinetic_swipe_text_0.root} ${className}`.trim()}
       data-direction={direction}
       data-trigger={trigger}
@@ -322,8 +387,12 @@ export function KineticSwipeText({
       <span className={__styles_steez_kinetic_swipe_text_0.srOnly}>{children}</span>
       <span className={__styles_steez_kinetic_swipe_text_0.word} aria-hidden="true">
         <span className={__styles_steez_kinetic_swipe_text_0.base}>{children}</span>
-        <span className={`${__styles_steez_kinetic_swipe_text_0.slice} ${__styles_steez_kinetic_swipe_text_0.firstSlice}`}>{children}</span>
-        <span className={`${__styles_steez_kinetic_swipe_text_0.slice} ${__styles_steez_kinetic_swipe_text_0.secondSlice}`}>{children}</span>
+        <span className={`${__styles_steez_kinetic_swipe_text_0.slice} ${__styles_steez_kinetic_swipe_text_0.firstSlice}`}>
+          {children}
+        </span>
+        <span className={`${__styles_steez_kinetic_swipe_text_0.slice} ${__styles_steez_kinetic_swipe_text_0.secondSlice}`}>
+          {children}
+        </span>
       </span>
     </div>
   );

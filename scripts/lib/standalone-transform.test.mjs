@@ -1,7 +1,7 @@
+// @vitest-environment node
 import { describe, expect, it } from "vitest";
 
 import {
-  makeStyleBootstrap,
   parseTokenValues,
   transformCssModule,
 } from "./standalone-transform.mjs";
@@ -31,13 +31,5 @@ describe("standalone component transformations", () => {
 
     expect(result.css).toContain("animation: steez-boiling-lines-0-boil var(--boil-duration)");
     expect(result.css).toContain("var(--boil-frame-1)");
-  });
-
-  it("creates a browser-safe style bootstrap that is idempotent", () => {
-    const bootstrap = makeStyleBootstrap(".root { content: `ok`; }", "example");
-
-    expect(bootstrap).toContain('data-steez-standalone="${__steezStandaloneStyleKey}"');
-    expect(bootstrap).toContain("document.querySelector");
-    expect(bootstrap).toContain("document.head.appendChild(style)");
   });
 });

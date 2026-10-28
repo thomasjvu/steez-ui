@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "filter-frame",
+  "type": "registry:lib",
+  "title": "filter-frame",
+  "description": "Shared implementation dependency.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://steez-ui-6v5.pages.dev/r-steez/motion-activity.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/numeric-bounds.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/filter-frame-styles.json"
+  ],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/steez/FilterFrame.tsx",
+      "type": "registry:file",
+      "target": "components/steez/FilterFrame.tsx",
+      "content": "\"use client\";\n\nimport React, { useId } from \"react\";\nimport { useMotionActivity } from \"../hooks/useMotionActivity\";\nimport { clampFinite } from \"../utils/numbers\";\nimport styles from \"./FilterFrame.module.css\";\n\nexport type FilterTrigger = \"always\" | \"hover\" | \"static\";\nexport interface ContentFilterProps extends React.HTMLAttributes<HTMLDivElement> {\n  children: React.ReactNode;\n  trigger?: FilterTrigger;\n  /** Milliseconds per frame; bounded to 16–40,000ms. */\n  speedMs?: number;\n  intensity?: \"subtle\" | \"default\" | \"intense\";\n  paused?: boolean;\n}\ninterface FilterFrameProps extends Omit<ContentFilterProps, \"intensity\"> {\n  renderFilter: (frame: number) => React.ReactNode;\n  /** Decorative color effects can remain static under reduced motion. */\n  reducedMotion?: \"static\" | \"none\";\n}\n\n/** One DOM, id, trigger, and motion contract for content filters. */\nexport function FilterFrame({\n  children, renderFilter, trigger = \"static\", speedMs = 900,\n  paused = false, reducedMotion = \"static\", className = \"\", style,\n  ...props\n}: FilterFrameProps) {\n  const id = `steez-filter-${useId().replace(/[^a-zA-Z0-9_-]/g, \"\")}`;\n  const { ref, running } = useMotionActivity(paused);\n  const effectStyle = {\n    ...style,\n    \"--filter-duration\": `${clampFinite(speedMs, 16, 40000, 900) * 3}ms`,\n    ...Object.fromEntries([0, 1, 2].map(frame => [\n      `--filter-frame-${frame}`, `url(#${id}-${frame})`,\n    ])),\n  } as React.CSSProperties;\n  return <div {...props} ref={ref} className={`${styles.root} ${className}`.trim()}\n    style={effectStyle} data-trigger={trigger} data-running={running}\n    data-reduced-motion={reducedMotion}>\n    <svg className={styles.filters} aria-hidden=\"true\" focusable=\"false\">\n      <defs>{[0, 1, 2].map(frame => <filter key={frame} id={`${id}-${frame}`}\n        x=\"-30%\" y=\"-30%\" width=\"160%\" height=\"160%\" colorInterpolationFilters=\"sRGB\">\n        {renderFilter(frame)}\n      </filter>)}</defs>\n    </svg>\n    <div className={styles.content}>{children}</div>\n  </div>;\n}\n",
+      "source": "packages/ui/src/components/FilterFrame.tsx"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "icon-background",
+  "type": "registry:component",
+  "title": "Icon Background",
+  "description": "A decorative icon grid with optional pointer-facing magnetic rotation.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://steez-ui-6v5.pages.dev/r-steez/motion-activity.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/numeric-bounds.json"
+  ],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/steez/IconBackground.tsx",
+      "type": "registry:file",
+      "target": "components/steez/IconBackground.tsx",
+      "content": "\"use client\";\n\nimport React from \"react\";\nimport { useMotionActivity } from \"../hooks/useMotionActivity\";\nimport { clampFinite } from \"../utils/numbers\";\nimport styles from \"./IconBackground.module.css\";\n\nexport interface IconBackgroundProps extends Omit<React.HTMLAttributes<HTMLDivElement>, \"children\" | \"color\" | \"role\" | \"aria-hidden\" | \"tabIndex\"> {\n  /** Decorative artwork repeated in each cell. Defaults to a solid square. */\n  icon?: React.ReactNode;\n  variant?: \"static\" | \"magnetic\";\n  columns?: number;\n  rows?: number;\n  size?: number;\n  gap?: number;\n  color?: string;\n  paused?: boolean;\n}\n\n/** Decorative icon grid; magnetic cells point toward the viewport pointer. */\nexport function IconBackground({\n  icon, variant = \"static\", columns = 9, rows = 7, size = 40, gap = 24,\n  color, paused = false, className = \"\", style, ...props\n}: IconBackgroundProps) {\n  const columnCount = Math.round(clampFinite(columns, 1, 24, 9));\n  const rowCount = Math.round(clampFinite(rows, 1, 24, 7));\n  const iconSize = clampFinite(size, 4, 200, 40);\n  const spacing = clampFinite(gap, 0, 100, 24);\n  const { ref, running } = useMotionActivity(paused);\n\n  React.useEffect(() => {\n    const root = ref.current;\n    if (!root || variant !== \"magnetic\" || !running) return;\n    const cells = Array.from(root.querySelectorAll<HTMLElement>(`[data-icon-cell]`));\n    const icons = cells.map(cell => cell.firstElementChild as HTMLElement);\n    const rotations = cells.map(() => 0);\n    let frame: number | null = null;\n    let pointer = { x: 0, y: 0 };\n    function move(event: PointerEvent) {\n      if (event.pointerType === \"touch\") return;\n      pointer = { x: event.clientX, y: event.clientY };\n      if (frame !== null) return;\n      frame = requestAnimationFrame(() => {\n        frame = null;\n        // Read unrotated cell geometry before writing transforms; scroll stays accurate.\n        const angles = cells.map(cell => {\n          const rect = cell.getBoundingClientRect();\n          return Math.atan2(pointer.y - rect.top - rect.height / 2,\n            pointer.x - rect.left - rect.width / 2) * 180 / Math.PI;\n        });\n        icons.forEach((element, index) => {\n          const previous = rotations[index];\n          const delta = ((angles[index] - previous) % 360 + 540) % 360 - 180;\n          rotations[index] = previous + delta;\n          element.style.transform = `rotate(${rotations[index]}deg)`;\n        });\n      });\n    }\n    window.addEventListener(\"pointermove\", move, { passive: true });\n    return () => {\n      window.removeEventListener(\"pointermove\", move);\n      if (frame !== null) cancelAnimationFrame(frame);\n      icons.forEach(element => { element.style.transform = \"\"; });\n    };\n  }, [variant, running, columnCount, rowCount, icon, ref]);\n\n  return (\n    <div {...props} ref={ref} aria-hidden=\"true\" data-variant={variant}\n      data-running={variant === \"magnetic\" && running ? \"true\" : \"false\"}\n      className={`${styles.root} ${className}`.trim()}\n      style={{\n        \"--icon-columns\": columnCount, \"--icon-size\": `${iconSize}px`,\n        \"--icon-gap\": `${spacing}px`, ...(color ? { color } : {}), ...style,\n      } as React.CSSProperties}>\n      {Array.from({ length: columnCount * rowCount }, (_, index) => (\n        <span className={styles.cell} data-icon-cell key={index}>\n          <span className={styles.icon}>{icon ?? <span className={styles.square} />}</span>\n        </span>\n      ))}\n    </div>\n  );\n}\n",
+      "source": "packages/ui/src/components/IconBackground.tsx"
+    },
+    {
+      "path": "components/steez/IconBackground.module.css",
+      "type": "registry:file",
+      "target": "components/steez/IconBackground.module.css",
+      "content": ".root[data-variant] {\n  display: grid;\n  grid-template-columns: repeat(var(--icon-columns, 9), minmax(0, 1fr));\n  gap: min(var(--icon-gap, 24px), 3vw);\n  width: 100%;\n  max-width: calc(var(--icon-columns, 9) * var(--icon-size, 40px) + (var(--icon-columns, 9) - 1) * var(--icon-gap, 24px));\n  color: var(--color-accent, #fece00);\n  pointer-events: none;\n  user-select: none;\n}\n.cell { container-type: inline-size; display: grid; place-items: center; aspect-ratio: 1; min-width: 0; }\n.icon { display: grid; place-items: center; width: 100%; height: 100%; font-size: min(var(--icon-size, 40px), 100cqw); line-height: 1; transform-origin: center; }\n.icon > svg, .icon > img { width: 100%; height: 100%; object-fit: contain; }\n.square { width: 100%; height: 100%; background: currentColor; }\n@media (prefers-reduced-motion: reduce) { .icon { transform: none !important; } }\n",
+      "source": "packages/ui/src/components/IconBackground.module.css"
+    }
+  ]
+}

@@ -75,7 +75,7 @@ function __injectSteezStandaloneStyles() {
 
 __injectSteezStandaloneStyles();
 
-export interface LoadingOverlayCrystallineProps {
+export interface LoadingOverlayCrystallineProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
   message: string;
   subtext?: string;
   icon?: React.ReactNode;
@@ -87,11 +87,13 @@ export function LoadingOverlayCrystalline({
   subtext,
   icon,
   showEffect = false,
+  className = "",
+  ...props
 }: LoadingOverlayCrystallineProps) {
   return (
-    <div className={`${__styles_steez_loading_overlay_crystalline_0.root} ${showEffect ? "" : __styles_steez_loading_overlay_crystalline_0.noEffect}`.trim()}>
+    <div {...props} role={props.role ?? "status"} aria-live={props["aria-live"] ?? "polite"} className={`${__styles_steez_loading_overlay_crystalline_0.root} ${showEffect ? "" : __styles_steez_loading_overlay_crystalline_0.noEffect} ${className}`.trim()}>
       <div className={__styles_steez_loading_overlay_crystalline_0.card}>
-        {icon ? <span className={__styles_steez_loading_overlay_crystalline_0.icon}>{icon}</span> : null}
+        {icon ? <span className={__styles_steez_loading_overlay_crystalline_0.icon} aria-hidden="true">{icon}</span> : null}
         <div>
           <div>{message}</div>
           {subtext ? <div className={__styles_steez_loading_overlay_crystalline_0.subtext}>{subtext}</div> : null}

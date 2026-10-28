@@ -13,6 +13,8 @@ import * as React from "react";
 
 const __styles_steez_corner_bracket_card_0: Record<string, string> = {
   "body": "steez-corner-bracket-card-0-body",
+  "header": "steez-corner-bracket-card-0-header",
+  "actions": "steez-corner-bracket-card-0-actions",
 };
 
 const __styles_steez_corner_bracket_card_1: Record<string, string> = {
@@ -31,6 +33,11 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/CardFra
   min-width: 0;
 }
 
+.steez-corner-bracket-card-0-header { margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.steez-corner-bracket-card-0-actions { display: flex; align-items: center; gap: 0.5rem; margin-inline-start: auto; }
+
+.steez-corner-bracket-card-0-header > :first-child { margin-block: 0; }
+
 
 /* packages/ui/src/components/CornerBracketCard.module.css */
 .steez-corner-bracket-card-1-card {
@@ -47,7 +54,7 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/CardFra
 .steez-corner-bracket-card-1-title {
   margin-bottom: 0.75rem;
   color: var(--text-primary, #cbcbcc);
-  font-family: var(--font-primary, "Zed Sans", "Inter", "Segoe UI", system-ui, -apple-system, sans-serif);
+  font-family: var(--font-mono, "Maple Mono", "SF Mono", "Cascadia Code", "Fira Code", Monaco, monospace);
   font-size: 1rem;
   font-weight: 600;
 }
@@ -158,12 +165,17 @@ function __injectSteezStandaloneStyles() {
 
 __injectSteezStandaloneStyles();
 
-export interface CardFrameProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
+export interface CardCompositionProps {
   title?: React.ReactNode;
   titleAs?: "div" | "h3";
   titleClassName?: string;
   bodyClassName?: string;
+  actions?: React.ReactNode;
+  headerClassName?: string;
+}
+
+export interface CardFrameProps extends CardCompositionProps,
+  Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   decoration?: React.ReactNode;
 }
 
@@ -178,29 +190,40 @@ export function CardFrame({
   titleClassName = "",
   bodyClassName = "",
   decoration,
+  actions,
+  headerClassName = "",
   className = "",
   children,
   ...props
 }: CardFrameProps) {
   const Title = titleAs;
 
+  const heading = title !== undefined && title !== null
+    ? <Title className={titleClassName.trim()}>{title}</Title> : null;
+
   return (
     <div className={className.trim()} {...props}>
       {decoration}
-      {title ? <Title className={titleClassName.trim()}>{title}</Title> : null}
+      {actions !== undefined && actions !== null ? (
+        <div className={`${__styles_steez_corner_bracket_card_0.header} ${headerClassName}`.trim()}>
+          {heading}
+          <div className={__styles_steez_corner_bracket_card_0.actions}>{actions}</div>
+        </div>
+      ) : heading}
       <div className={`${__styles_steez_corner_bracket_card_0.body} ${bodyClassName}`.trim()}>{children}</div>
     </div>
   );
 }
 
 export interface CornerBracketCardProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
-  title?: React.ReactNode;
+  extends CardCompositionProps, Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   variant?: "default" | "featured";
 }
 
 export function CornerBracketCard({
   title,
+  titleAs,
+  titleClassName = "",
   variant = "default",
   className = "",
   children,
@@ -210,7 +233,8 @@ export function CornerBracketCard({
     <CardFrame
       className={`${__styles_steez_corner_bracket_card_1.card} ${variant === "featured" ? __styles_steez_corner_bracket_card_1.featured : ""} ${className}`}
       title={title}
-      titleClassName={__styles_steez_corner_bracket_card_1.title}
+      titleAs={titleAs}
+      titleClassName={`${__styles_steez_corner_bracket_card_1.title} ${titleClassName}`.trim()}
       decoration={
         <>
           <span className={`${__styles_steez_corner_bracket_card_1.corner} ${__styles_steez_corner_bracket_card_1.cornerTopLeft}`} aria-hidden="true" />

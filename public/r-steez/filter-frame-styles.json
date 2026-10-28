@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "filter-frame-styles",
+  "type": "registry:lib",
+  "title": "filter-frame-styles",
+  "description": "Shared implementation dependency.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/steez/FilterFrame.module.css",
+      "type": "registry:file",
+      "target": "components/steez/FilterFrame.module.css",
+      "content": ".root { position: relative; }\n.filters { position: absolute; width: 0; height: 0; pointer-events: none; }\n.content { width: 100%; filter: var(--filter-frame-0); }\n.root[data-trigger=\"always\"] > .content,\n.root[data-trigger=\"hover\"]:hover > .content,\n.root[data-trigger=\"hover\"]:focus-within > .content {\n  animation: filter-frames var(--filter-duration, 2700ms) steps(1, end) infinite;\n}\n.root[data-trigger=\"hover\"] > .content { filter: none; }\n.root[data-running=\"false\"] > .content { animation-play-state: paused !important; }\n@keyframes filter-frames {\n  0%, 100% { filter: var(--filter-frame-0); }\n  33.333% { filter: var(--filter-frame-1); }\n  66.666% { filter: var(--filter-frame-2); }\n}\n@media (prefers-reduced-motion: reduce) {\n  .root > .content { animation: none !important; filter: var(--filter-frame-0); }\n  .root[data-trigger=\"hover\"] > .content { filter: none; }\n  .root[data-reduced-motion=\"none\"] > .content { filter: none !important; }\n}\n",
+      "source": "packages/ui/src/components/FilterFrame.module.css"
+    }
+  ]
+}

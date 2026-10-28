@@ -10,7 +10,7 @@
 "use client";
 
 import * as React from "react";
-import { useId } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
 const __styles_steez_boiling_lines_0: Record<string, string> = {
   "root": "steez-boiling-lines-0-root",
@@ -47,7 +47,48 @@ function __injectSteezStandaloneStyles() {
 
 __injectSteezStandaloneStyles();
 
-export interface BoilingLinesProps extends React.HTMLAttributes<HTMLDivElement> {
+/** Shared lifecycle for ambient motion: explicit pause, visibility, and reduced motion. */
+export function useMotionActivity<T extends HTMLElement = HTMLDivElement>(
+  paused = false,
+  visible = true,
+) {
+  const ref = useRef<T>(null);
+  const [inView, setInView] = useState(true);
+  const [pageVisible, setPageVisible] = useState(true);
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const media =
+      typeof window.matchMedia === "function"
+        ? window.matchMedia("(prefers-reduced-motion: reduce)")
+        : null;
+    const syncMotion = () => setReduced(media?.matches ?? false);
+    const syncVisibility = () =>
+      setPageVisible(document.visibilityState !== "hidden");
+    syncMotion();
+    syncVisibility();
+    media?.addEventListener("change", syncMotion);
+    document.addEventListener("visibilitychange", syncVisibility);
+    const observer =
+      typeof IntersectionObserver === "undefined"
+        ? null
+        : new IntersectionObserver(([entry]) => {
+            if (entry) setInView(entry.isIntersecting);
+          });
+    if (ref.current) observer?.observe(ref.current);
+    return () => {
+      media?.removeEventListener("change", syncMotion);
+      document.removeEventListener("visibilitychange", syncVisibility);
+      observer?.disconnect();
+    };
+  }, []);
+  return {
+    ref,
+    running: visible && !paused && inView && pageVisible && !reduced,
+  };
+}
+
+export interface BoilingLinesProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   /** Presets share one implementation; use scale to fine-tune displacement. */
   intensity?: "subtle" | "default" | "intense";
@@ -62,30 +103,67 @@ const seeds = [1, 25, 45];
 
 /** Wrap artwork, an SVG, or a decorative border. Keep long text outside the effect. */
 export function BoilingLines({
-  children, intensity = "default", speedMs = 100, scale, paused = false,
-  className = "", style, ...props
+  children,
+  intensity = "default",
+  speedMs = 100,
+  scale,
+  paused = false,
+  className = "",
+  style,
+  ...props
 }: BoilingLinesProps) {
+  const { ref, running } = useMotionActivity(paused);
   const id = `steez-boil-${useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
   const displacement = scale ?? scales[intensity];
   const effectStyle = {
     ...style,
     "--boil-duration": `${(Number.isFinite(speedMs) ? Math.max(16, speedMs) : 100) * 3}ms`,
-    ...Object.fromEntries(seeds.map((_, i) => [`--boil-frame-${i}`, `url(#${id}-${i})`])),
+    ...Object.fromEntries(
+      seeds.map((_, i) => [`--boil-frame-${i}`, `url(#${id}-${i})`]),
+    ),
   } as React.CSSProperties;
 
   return (
-    <div {...props} className={`${__styles_steez_boiling_lines_0.root} ${className}`.trim()} style={effectStyle}>
+    <div
+      {...props}
+      ref={ref}
+      className={`${__styles_steez_boiling_lines_0.root} ${className}`.trim()}
+      style={effectStyle}
+    >
       <svg className={__styles_steez_boiling_lines_0.filters} aria-hidden="true" focusable="false">
         <defs>
           {seeds.map((seed, i) => (
-            <filter key={seed} id={`${id}-${i}`} x="-20%" y="-20%" width="140%" height="140%">
-              <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves={2} seed={seed} result="warp" />
-              <feDisplacementMap in="SourceGraphic" in2="warp" scale={Number.isFinite(displacement) ? Math.max(0, displacement) : 4} xChannelSelector="R" yChannelSelector="G" />
+            <filter
+              key={seed}
+              id={`${id}-${i}`}
+              x="-20%"
+              y="-20%"
+              width="140%"
+              height="140%"
+            >
+              <feTurbulence
+                type="fractalNoise"
+                baseFrequency="0.015"
+                numOctaves={2}
+                seed={seed}
+                result="warp"
+              />
+              <feDisplacementMap
+                in="SourceGraphic"
+                in2="warp"
+                scale={
+                  Number.isFinite(displacement) ? Math.max(0, displacement) : 4
+                }
+                xChannelSelector="R"
+                yChannelSelector="G"
+              />
             </filter>
           ))}
         </defs>
       </svg>
-      <div className={__styles_steez_boiling_lines_0.content} data-paused={paused || undefined}>{children}</div>
+      <div className={__styles_steez_boiling_lines_0.content} data-paused={!running || undefined}>
+        {children}
+      </div>
     </div>
   );
 }

@@ -13,6 +13,8 @@ import * as React from "react";
 
 const __styles_steez_dotted_halo_card_0: Record<string, string> = {
   "body": "steez-dotted-halo-card-0-body",
+  "header": "steez-dotted-halo-card-0-header",
+  "actions": "steez-dotted-halo-card-0-actions",
 };
 
 const __styles_steez_dotted_halo_card_1: Record<string, string> = {
@@ -25,6 +27,11 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/CardFra
 .steez-dotted-halo-card-0-body {
   min-width: 0;
 }
+
+.steez-dotted-halo-card-0-header { margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.steez-dotted-halo-card-0-actions { display: flex; align-items: center; gap: 0.5rem; margin-inline-start: auto; }
+
+.steez-dotted-halo-card-0-header > :first-child { margin-block: 0; }
 
 
 /* packages/ui/src/components/DottedHaloCard.module.css */
@@ -87,12 +94,17 @@ function __injectSteezStandaloneStyles() {
 
 __injectSteezStandaloneStyles();
 
-export interface CardFrameProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
+export interface CardCompositionProps {
   title?: React.ReactNode;
   titleAs?: "div" | "h3";
   titleClassName?: string;
   bodyClassName?: string;
+  actions?: React.ReactNode;
+  headerClassName?: string;
+}
+
+export interface CardFrameProps extends CardCompositionProps,
+  Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   decoration?: React.ReactNode;
 }
 
@@ -107,25 +119,33 @@ export function CardFrame({
   titleClassName = "",
   bodyClassName = "",
   decoration,
+  actions,
+  headerClassName = "",
   className = "",
   children,
   ...props
 }: CardFrameProps) {
   const Title = titleAs;
 
+  const heading = title !== undefined && title !== null
+    ? <Title className={titleClassName.trim()}>{title}</Title> : null;
+
   return (
     <div className={className.trim()} {...props}>
       {decoration}
-      {title ? <Title className={titleClassName.trim()}>{title}</Title> : null}
+      {actions !== undefined && actions !== null ? (
+        <div className={`${__styles_steez_dotted_halo_card_0.header} ${headerClassName}`.trim()}>
+          {heading}
+          <div className={__styles_steez_dotted_halo_card_0.actions}>{actions}</div>
+        </div>
+      ) : heading}
       <div className={`${__styles_steez_dotted_halo_card_0.body} ${bodyClassName}`.trim()}>{children}</div>
     </div>
   );
 }
 
 export interface DottedHaloCardProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
-  title?: React.ReactNode;
-  bodyClassName?: string;
+  extends CardCompositionProps, Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   patternInset?: string;
   patternSize?: string;
   patternDotSize?: string;
@@ -133,6 +153,8 @@ export interface DottedHaloCardProps
 
 export function DottedHaloCard({
   title,
+  titleAs,
+  titleClassName = "",
   children,
   className = "",
   bodyClassName = "",
@@ -146,8 +168,8 @@ export function DottedHaloCard({
     <CardFrame
       className={`${__styles_steez_dotted_halo_card_1.root} ${className}`.trim()}
       title={title}
-      titleAs="h3"
-      titleClassName={__styles_steez_dotted_halo_card_1.title}
+      titleAs={titleAs ?? "h3"}
+      titleClassName={`${__styles_steez_dotted_halo_card_1.title} ${titleClassName}`.trim()}
       bodyClassName={`${__styles_steez_dotted_halo_card_1.body} ${bodyClassName}`.trim()}
       style={
         {

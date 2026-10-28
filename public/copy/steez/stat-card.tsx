@@ -12,27 +12,36 @@
 import * as React from "react";
 
 const __styles_steez_stat_card_0: Record<string, string> = {
-  "root": "steez-stat-card-0-root",
-  "interactive": "steez-stat-card-0-interactive",
-  "label": "steez-stat-card-0-label",
-  "value": "steez-stat-card-0-value",
-  "valueSuccess": "steez-stat-card-0-valueSuccess",
-  "valueDanger": "steez-stat-card-0-valueDanger",
-  "valueWarning": "steez-stat-card-0-valueWarning",
-  "subvalue": "steez-stat-card-0-subvalue",
+  "success": "steez-stat-card-0-success",
+  "warning": "steez-stat-card-0-warning",
+  "danger": "steez-stat-card-0-danger",
 };
 
-const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/StatCard.module.css */
-.steez-stat-card-0-root {
+const __styles_steez_stat_card_1: Record<string, string> = {
+  "root": "steez-stat-card-1-root",
+  "interactive": "steez-stat-card-1-interactive",
+  "label": "steez-stat-card-1-label",
+  "value": "steez-stat-card-1-value",
+  "subvalue": "steez-stat-card-1-subvalue",
+};
+
+const __steezStandaloneStyles = String.raw`/* packages/ui/src/styles/ValueTone.module.css */
+.steez-stat-card-0-success { color: var(--color-status-success, #00ff88); }
+.steez-stat-card-0-warning { color: var(--color-status-warning, #ff9800); }
+.steez-stat-card-0-danger { color: var(--color-status-error, #ee1401); }
+
+
+/* packages/ui/src/components/StatCard.module.css */
+.steez-stat-card-1-root {
   cursor: default;
   transition: color 220ms ease;
 }
 
-.steez-stat-card-0-interactive {
+.steez-stat-card-1-interactive {
   cursor: pointer;
 }
 
-.steez-stat-card-0-label {
+.steez-stat-card-1-label {
   margin-bottom: 0.25rem;
   color: var(--text-secondary, #999999);
   font-size: 0.6875rem;
@@ -41,25 +50,13 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/StatCar
   text-transform: uppercase;
 }
 
-.steez-stat-card-0-value {
+.steez-stat-card-1-value {
   color: var(--text-primary, #cbcbcc);
   font-size: 1.5rem;
   font-weight: 600;
 }
 
-.steez-stat-card-0-valueSuccess {
-  color: var(--color-success, #10b981);
-}
-
-.steez-stat-card-0-valueDanger {
-  color: var(--color-error, #ef4444);
-}
-
-.steez-stat-card-0-valueWarning {
-  color: var(--color-warning, #f59e0b);
-}
-
-.steez-stat-card-0-subvalue {
+.steez-stat-card-1-subvalue {
   margin-top: 0.125rem;
   color: var(--text-secondary, #999999);
   font-size: 0.75rem;
@@ -102,11 +99,11 @@ export function StatCard({
 }: StatCardProps) {
   const valueToneClass =
     color === "success"
-      ? __styles_steez_stat_card_0.valueSuccess
+      ? __styles_steez_stat_card_0.success
       : color === "danger"
-        ? __styles_steez_stat_card_0.valueDanger
+        ? __styles_steez_stat_card_0.danger
         : color === "warning"
-          ? __styles_steez_stat_card_0.valueWarning
+          ? __styles_steez_stat_card_0.warning
           : "";
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     onKeyDownProp?.(event);
@@ -127,15 +124,15 @@ export function StatCard({
   return (
     <div
       {...props}
-      className={`${__styles_steez_stat_card_0.root} ${onClick ? __styles_steez_stat_card_0.interactive : ""} ${className}`.trim()}
-      role={onClick ? roleProp ?? "button" : roleProp}
-      tabIndex={onClick ? tabIndexProp ?? 0 : tabIndexProp}
+      className={`${__styles_steez_stat_card_1.root} ${onClick ? __styles_steez_stat_card_1.interactive : ""} ${className}`.trim()}
+      role={onClick ? (roleProp ?? "button") : roleProp}
+      tabIndex={onClick ? (tabIndexProp ?? 0) : tabIndexProp}
       onClick={onClick}
       onKeyDown={handleKeyDown}
     >
-      <div className={__styles_steez_stat_card_0.label}>{label}</div>
-      <div className={`${__styles_steez_stat_card_0.value} ${valueToneClass}`.trim()}>{value}</div>
-      {subvalue ? <div className={__styles_steez_stat_card_0.subvalue}>{subvalue}</div> : null}
+      <div className={__styles_steez_stat_card_1.label}>{label}</div>
+      <div className={`${__styles_steez_stat_card_1.value} ${valueToneClass}`.trim()}>{value}</div>
+      {subvalue ? <div className={__styles_steez_stat_card_1.subvalue}>{subvalue}</div> : null}
     </div>
   );
 }

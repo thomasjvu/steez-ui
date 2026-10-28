@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "emboss-filter",
+  "type": "registry:component",
+  "title": "Emboss Filter",
+  "description": "Raise diagonal edges into a textured relief while preserving transparency.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://steez-ui-6v5.pages.dev/r-steez/numeric-bounds.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/filter-frame.json"
+  ],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/steez/EmbossFilter.tsx",
+      "type": "registry:file",
+      "target": "components/steez/EmbossFilter.tsx",
+      "content": "\"use client\";\n\nimport React from \"react\";\nimport { clampFinite } from \"../utils/numbers\";\nimport { FilterFrame, type ContentFilterProps } from \"./FilterFrame\";\n\nexport interface EmbossFilterProps extends ContentFilterProps {\n  /** Edge relief strength, from 0 to 4. */\n  strength?: number;\n}\nconst strengths = { subtle: 0.5, default: 1, intense: 2 };\n\n/** Diagonal edge relief with preserved transparency and neutral raised surfaces. */\nexport function EmbossFilter({\n  strength, intensity = \"default\", trigger = \"static\", ...props\n}: EmbossFilterProps) {\n  const amount = clampFinite(strength ?? strengths[intensity], 0, 4, strengths.default);\n  return <FilterFrame {...props} trigger={trigger} renderFilter={frame => {\n    const value = amount * [1, 0.75, 1.25][frame];\n    return <feConvolveMatrix in=\"SourceGraphic\" order=\"3\" divisor={1}\n      kernelMatrix={`${-2 * value} ${-value} 0 ${-value} 1 ${value} 0 ${value} ${2 * value}`}\n      bias={0.5 * value} preserveAlpha edgeMode=\"duplicate\" />;\n  }} />;\n}\n",
+      "source": "packages/ui/src/components/EmbossFilter.tsx"
+    }
+  ]
+}

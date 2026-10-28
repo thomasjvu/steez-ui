@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "grain-filter",
+  "type": "registry:component",
+  "title": "Grain Filter",
+  "description": "Monochrome film grain clipped to the content alpha, with optional animated seeds.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://steez-ui-6v5.pages.dev/r-steez/numeric-bounds.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/filter-frame.json"
+  ],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/steez/GrainFilter.tsx",
+      "type": "registry:file",
+      "target": "components/steez/GrainFilter.tsx",
+      "content": "\"use client\";\n\nimport React from \"react\";\nimport { clampFinite } from \"../utils/numbers\";\nimport { FilterFrame, type ContentFilterProps } from \"./FilterFrame\";\n\nexport interface GrainFilterProps extends ContentFilterProps {\n  /** Noise contribution, from 0 to 1. */\n  amount?: number;\n  /** Noise frequency; higher values produce finer grain. */\n  frequency?: number;\n}\nconst amounts = { subtle: 0.12, default: 0.25, intense: 0.5 };\n\n/** Monochrome film grain clipped to the content's alpha, preserving empty space. */\nexport function GrainFilter({\n  amount, frequency = 0.65, intensity = \"default\", trigger = \"static\", ...props\n}: GrainFilterProps) {\n  const strength = clampFinite(amount ?? amounts[intensity], 0, 1, amounts.default);\n  const density = clampFinite(frequency, 0.05, 1, 0.65);\n  return <FilterFrame {...props} trigger={trigger} renderFilter={frame => <>\n    <feTurbulence type=\"fractalNoise\" baseFrequency={density} numOctaves={3}\n      seed={[3, 17, 41][frame]} stitchTiles=\"stitch\" result=\"noise\" />\n    <feColorMatrix in=\"noise\" type=\"saturate\" values=\"0\" result=\"mono\" />\n    <feComponentTransfer in=\"mono\" result=\"faded\">\n      <feFuncA type=\"table\" tableValues={`0 ${strength}`} />\n    </feComponentTransfer>\n    <feComposite in=\"faded\" in2=\"SourceGraphic\" operator=\"in\" result=\"grain\" />\n    <feBlend in=\"SourceGraphic\" in2=\"grain\" mode=\"soft-light\" />\n  </>} />;\n}\n",
+      "source": "packages/ui/src/components/GrainFilter.tsx"
+    }
+  ]
+}

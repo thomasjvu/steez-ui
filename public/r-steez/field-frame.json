@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "field-frame",
+  "type": "registry:lib",
+  "title": "Field Frame",
+  "description": "Shared field label, control frame, and validation descriptions.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://steez-ui-6v5.pages.dev/r-steez/field-description.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json"
+  ],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/steez/Field.tsx",
+      "type": "registry:file",
+      "target": "components/steez/Field.tsx",
+      "content": "\"use client\";\n\nimport React from \"react\";\nimport { useFieldDescription } from \"../hooks/useFieldDescription\";\nimport styles from \"./Field.module.css\";\n\nexport interface FieldProps {\n  id: string;\n  label?: string;\n  labelStyle?: \"plain\" | \"notch\";\n  helperText?: string;\n  error?: string;\n  describedBy?: string;\n  invalid?: React.AriaAttributes[\"aria-invalid\"];\n  className?: string;\n  style?: React.CSSProperties;\n  children: (attributes: {\n    \"aria-describedby\": string | undefined;\n    \"aria-invalid\": React.AriaAttributes[\"aria-invalid\"];\n  }) => React.ReactNode;\n}\n\n/** Shared label, control frame, and descriptions for text fields and selects. */\nexport function Field({\n  id,\n  label,\n  labelStyle = \"plain\",\n  helperText,\n  error,\n  describedBy,\n  invalid,\n  className = \"\",\n  style,\n  children,\n}: FieldProps) {\n  const description = useFieldDescription({\n    prefix: id,\n    helperText,\n    error,\n    describedBy,\n  });\n  return (\n    <div\n      className={`${styles.field} ${className}`.trim()}\n      style={style}\n      data-label-style={labelStyle}\n      data-error={description.hasError || invalid === true || invalid === \"true\" || undefined}\n    >\n      {label && labelStyle === \"plain\" && (\n        <label htmlFor={id} className={styles.label}>\n          {label}\n        </label>\n      )}\n      <div className={styles.control}>\n        {label && labelStyle === \"notch\" && (\n          <label htmlFor={id} className={`${styles.label} ${styles.notchLabel}`}>\n            {label}\n          </label>\n        )}\n        {children({\n          \"aria-describedby\": description.describedBy,\n          \"aria-invalid\": invalid ?? (description.hasError ? true : undefined),\n        })}\n      </div>\n      {helperText && (\n        <div id={description.helperId} className={styles.helper}>\n          {helperText}\n        </div>\n      )}\n      {description.hasError && (\n        <div id={description.errorId} className={styles.error} role=\"alert\">\n          {error}\n        </div>\n      )}\n    </div>\n  );\n}\n",
+      "source": "packages/ui/src/components/Field.tsx"
+    },
+    {
+      "path": "components/steez/Field.module.css",
+      "type": "registry:file",
+      "target": "components/steez/Field.module.css",
+      "content": ".field {\n  width: var(--field-width, 240px);\n  max-width: 100%;\n  font-size: var(--field-font-size, 1rem);\n  margin-bottom: 1rem;\n}\n.label {\n  display: block;\n  font: 500 var(--label-font-size, 0.85rem) / 1.2 var(--font-mono);\n  color: var(--text-secondary);\n  margin-bottom: 0.5rem;\n}\n.control {\n  position: relative;\n  border: 1px solid var(--color-border-default);\n  background: var(--field-background, var(--color-bg-tile));\n  border-radius: var(--field-radius, 6px);\n}\n.control:hover {\n  border-color: var(--color-border-hover);\n}\n.control:focus-within {\n  border-color: var(--focus-border-color, var(--color-accent-primary));\n  outline: 1px solid var(--focus-border-color, var(--color-accent-primary));\n  outline-offset: 1px;\n}\n.field:focus-within .label {\n  color: var(--focus-border-color, var(--color-accent-primary));\n}\n.field[data-label-style=\"notch\"] {\n  padding-top: 0.6rem;\n}\n.notchLabel {\n  position: absolute;\n  top: 0;\n  left: var(--label-offset-left, 12px);\n  transform: translateY(-50%);\n  background: var(--field-background, var(--color-bg-tile));\n  padding: var(--label-padding, 1px 8px);\n  margin: 0;\n  max-width: calc(100% - 24px);\n  z-index: 1;\n}\n.control:has(input:disabled, select:disabled, textarea:disabled) {\n  opacity: 0.6;\n}\n.control:has([readonly]) {\n  background: var(--color-bg-secondary);\n}\n.field[data-error] .control {\n  border-color: var(--danger, #ff5c5c);\n}\n.field[data-error] .label,\n.error {\n  color: var(--danger, #ff5c5c);\n}\n.helper,\n.error {\n  margin-top: 0.4rem;\n  font: 0.75rem/1.4 var(--font-mono);\n}\n.helper {\n  color: var(--text-secondary);\n}\n\n.field[data-error] .control:focus-within { outline-color: var(--danger, #ff5c5c); }\n",
+      "source": "packages/ui/src/components/Field.module.css"
+    }
+  ]
+}

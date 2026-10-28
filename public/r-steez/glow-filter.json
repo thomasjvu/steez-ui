@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "glow-filter",
+  "type": "registry:component",
+  "title": "Glow Filter",
+  "description": "Alpha-derived colored halo with a crisp content layer.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://steez-ui-6v5.pages.dev/r-steez/numeric-bounds.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/filter-frame.json"
+  ],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/steez/GlowFilter.tsx",
+      "type": "registry:file",
+      "target": "components/steez/GlowFilter.tsx",
+      "content": "\"use client\";\n\nimport React from \"react\";\nimport { clampFinite } from \"../utils/numbers\";\nimport { FilterFrame, type ContentFilterProps } from \"./FilterFrame\";\n\nexport interface GlowFilterProps extends ContentFilterProps {\n  /** Halo blur radius in CSS pixels. */\n  radius?: number;\n  color?: string;\n  opacity?: number;\n}\nconst radii = { subtle: 2, default: 5, intense: 10 };\n\n/** Colored halo derived from the content's alpha, with a crisp source layer. */\nexport function GlowFilter({\n  radius, color = \"currentColor\", opacity = 0.65,\n  intensity = \"default\", trigger = \"static\", ...props\n}: GlowFilterProps) {\n  const blur = clampFinite(radius ?? radii[intensity], 0, 24, radii.default);\n  const strength = clampFinite(opacity, 0, 1, 0.65);\n  return <FilterFrame {...props} trigger={trigger} renderFilter={frame => <>\n    <feGaussianBlur in=\"SourceAlpha\" stdDeviation={blur * [1, 0.7, 1.2][frame]} result=\"blur\" />\n    <feFlood floodColor={color} floodOpacity={strength} result=\"color\" />\n    <feComposite in=\"color\" in2=\"blur\" operator=\"in\" result=\"halo\" />\n    <feMerge><feMergeNode in=\"halo\" /><feMergeNode in=\"SourceGraphic\" /></feMerge>\n  </>} />;\n}\n",
+      "source": "packages/ui/src/components/GlowFilter.tsx"
+    }
+  ]
+}

@@ -10,6 +10,7 @@
 "use client";
 
 import * as React from "react";
+import { useEffect, useRef, useState } from "react";
 
 const __styles_steez_kinetic_text_ramp_0: Record<string, string> = {
   "root": "steez-kinetic-text-ramp-0-root",
@@ -127,6 +128,8 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/Kinetic
     will-change: auto;
   }
 }
+
+.steez-kinetic-text-ramp-0-root[data-running="false"], .steez-kinetic-text-ramp-0-root[data-running="false"] * { animation-play-state: paused !important; }
 `;
 const __steezStandaloneStyleKey = "kinetic-text-ramp";
 
@@ -143,6 +146,64 @@ function __injectSteezStandaloneStyles() {
 
 __injectSteezStandaloneStyles();
 
+/** Shared lifecycle for ambient motion: explicit pause, visibility, and reduced motion. */
+export function useMotionActivity<T extends HTMLElement = HTMLDivElement>(
+  paused = false,
+  visible = true,
+) {
+  const ref = useRef<T>(null);
+  const [inView, setInView] = useState(true);
+  const [pageVisible, setPageVisible] = useState(true);
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const media =
+      typeof window.matchMedia === "function"
+        ? window.matchMedia("(prefers-reduced-motion: reduce)")
+        : null;
+    const syncMotion = () => setReduced(media?.matches ?? false);
+    const syncVisibility = () =>
+      setPageVisible(document.visibilityState !== "hidden");
+    syncMotion();
+    syncVisibility();
+    media?.addEventListener("change", syncMotion);
+    document.addEventListener("visibilitychange", syncVisibility);
+    const observer =
+      typeof IntersectionObserver === "undefined"
+        ? null
+        : new IntersectionObserver(([entry]) => {
+            if (entry) setInView(entry.isIntersecting);
+          });
+    if (ref.current) observer?.observe(ref.current);
+    return () => {
+      media?.removeEventListener("change", syncMotion);
+      document.removeEventListener("visibilitychange", syncVisibility);
+      observer?.disconnect();
+    };
+  }, []);
+  return {
+    ref,
+    running: visible && !paused && inView && pageVisible && !reduced,
+  };
+}
+
+/** Clamp finite inputs; malformed values use the component's documented default. */
+export function clampFinite(
+  value: number,
+  min: number,
+  max: number,
+  fallback: number,
+) {
+  return Number.isFinite(value)
+    ? Math.min(max, Math.max(min, value))
+    : fallback;
+}
+
+/** Percentage shared by range inputs and progress displays. */
+export function progressPercentage(value: number, min = 0, max = 100) {
+  if (!Number.isFinite(min) || !Number.isFinite(max) || max <= min) return 0;
+  return clampFinite(((value - min) / (max - min)) * 100, 0, 100, 0);
+}
+
 export type KineticTextRampTrigger = "always" | "hover" | "mount";
 
 export interface KineticTextRampProps
@@ -151,6 +212,8 @@ export interface KineticTextRampProps
   trigger?: KineticTextRampTrigger;
   rows?: number;
   durationMs?: number;
+  /** Freeze motion; offscreen, hidden tabs, and reduced motion also pause it. */
+  paused?: boolean;
   delayMs?: number;
 }
 
@@ -160,17 +223,15 @@ export function KineticTextRamp({
   rows = 8,
   durationMs = 9000,
   delayMs = 0,
+  paused = false,
   className = "",
   style,
   ...props
 }: KineticTextRampProps) {
-  const safeRows = Number.isFinite(rows)
-    ? Math.min(14, Math.max(4, Math.floor(rows)))
-    : 8;
-  const safeDuration = Number.isFinite(durationMs)
-    ? Math.max(durationMs, 1)
-    : 9000;
-  const safeDelay = Number.isFinite(delayMs) ? delayMs : 0;
+  const { ref, running } = useMotionActivity(paused);
+  const safeRows = Math.floor(clampFinite(rows, 4, 14, 8));
+  const safeDuration = clampFinite(durationMs, 1, 120000, 9000);
+  const safeDelay = clampFinite(delayMs, -120000, 120000, 0);
   const mergedStyle = {
     ...style,
     ["--kinetic-text-ramp-rows" as string]: safeRows,
@@ -180,6 +241,8 @@ export function KineticTextRamp({
 
   return (
     <div
+      ref={ref}
+      data-running={running ? "true" : "false"}
       {...props}
       className={`${__styles_steez_kinetic_text_ramp_0.root} ${className}`.trim()}
       data-trigger={trigger}

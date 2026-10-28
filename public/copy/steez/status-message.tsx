@@ -20,13 +20,11 @@ const __styles_steez_status_message_0: Record<string, string> = {
   "success": "steez-status-message-0-success",
   "error": "steez-status-message-0-error",
   "info": "steez-status-message-0-info",
+  "toast": "steez-status-message-0-toast",
 };
 
 const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/StatusMessage.module.css */
 .steez-status-message-0-message {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -36,8 +34,6 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/StatusM
   border-radius: 6px;
   box-shadow: 0 4px 12px rgba(1, 6, 7, 0.15);
   font-size: 0.9rem;
-  animation: steez-status-message-0-slideIn 0.3s ease-out;
-  z-index: 1000;
 }
 
 @keyframes steez-status-message-0-slideIn {
@@ -83,6 +79,9 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/StatusM
   color: var(--info, #4a9eff);
 }
 
+
+.steez-status-message-0-toast { position: fixed; bottom: 2rem; right: 2rem; z-index: 1000; max-width: calc(100vw - 4rem); animation: steez-status-message-0-slideIn .3s ease-out; }
+@media (prefers-reduced-motion: reduce) { .steez-status-message-0-toast { animation: none; } }
 `;
 const __steezStandaloneStyleKey = "status-message";
 
@@ -767,19 +766,31 @@ export function Icon({ icon, ...props }: IconProps) {
   return <Component {...props} />;
 }
 
-export interface StatusMessageProps {
+export interface StatusMessageProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   message: string;
   type: "success" | "error" | "info";
+  /** Inline by default; toast positioning is explicitly opt-in. */
+  placement?: "inline" | "toast";
 }
 
-export function StatusMessage({ message, type }: StatusMessageProps) {
+export function StatusMessage({
+  message,
+  type,
+  placement = "inline",
+  className = "",
+  ...props
+}: StatusMessageProps) {
   return (
     <div
-      className={`${__styles_steez_status_message_0.message} ${__styles_steez_status_message_0[type]}`.trim()}
-      role={type === "error" ? "alert" : "status"}
-      aria-live={type === "error" ? "assertive" : "polite"}
+      className={`${__styles_steez_status_message_0.message} ${__styles_steez_status_message_0[type]} ${placement === "toast" ? __styles_steez_status_message_0.toast : ""} ${className}`.trim()}
+      {...props}
+      role={props.role ?? (type === "error" ? "alert" : "status")}
+      aria-live={
+        props["aria-live"] ?? (type === "error" ? "assertive" : "polite")
+      }
     >
-      <span className={__styles_steez_status_message_0.icon}>
+      <span className={__styles_steez_status_message_0.icon} aria-hidden="true">
         {type === "success" ? <CheckIcon width={16} height={16} /> : null}
         {type === "error" ? <ErrorIcon width={16} height={16} /> : null}
         {type === "info" ? <InfoIcon width={16} height={16} /> : null}

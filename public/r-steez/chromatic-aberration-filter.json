@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chromatic-aberration-filter",
+  "type": "registry:component",
+  "title": "Chromatic Aberration Filter",
+  "description": "Separate red and cyan channels around text, icons, images, or interactive content.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://steez-ui-6v5.pages.dev/r-steez/numeric-bounds.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/filter-frame.json"
+  ],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/steez/ChromaticAberrationFilter.tsx",
+      "type": "registry:file",
+      "target": "components/steez/ChromaticAberrationFilter.tsx",
+      "content": "\"use client\";\n\nimport React from \"react\";\nimport { clampFinite } from \"../utils/numbers\";\nimport { FilterFrame, type ContentFilterProps } from \"./FilterFrame\";\n\nexport interface ChromaticAberrationFilterProps extends ContentFilterProps {\n  /** Color-channel separation in CSS pixels. */\n  offset?: number;\n  axis?: \"horizontal\" | \"vertical\";\n}\nconst offsets = { subtle: 1, default: 3, intense: 6 };\n\n/** Separate red and cyan channels without duplicating interactive content. */\nexport function ChromaticAberrationFilter({\n  offset, axis = \"horizontal\", intensity = \"default\", trigger = \"static\", ...props\n}: ChromaticAberrationFilterProps) {\n  const amount = clampFinite(offset ?? offsets[intensity], 0, 24, offsets.default);\n  return <FilterFrame {...props} trigger={trigger} renderFilter={frame => {\n    const shift = amount * [1, -0.65, 0.4][frame];\n    const dx = axis === \"horizontal\" ? shift : 0;\n    const dy = axis === \"vertical\" ? shift : 0;\n    return <>\n      <feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0\" result=\"red\" />\n      <feOffset in=\"red\" dx={dx} dy={dy} result=\"red-shift\" />\n      <feColorMatrix in=\"SourceGraphic\" type=\"matrix\" values=\"0 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0\" result=\"cyan\" />\n      <feOffset in=\"cyan\" dx={-dx} dy={-dy} result=\"cyan-shift\" />\n      <feBlend in=\"red-shift\" in2=\"cyan-shift\" mode=\"screen\" />\n    </>;\n  }} />;\n}\n",
+      "source": "packages/ui/src/components/ChromaticAberrationFilter.tsx"
+    }
+  ]
+}

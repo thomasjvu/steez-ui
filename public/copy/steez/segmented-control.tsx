@@ -10,6 +10,8 @@
 "use client";
 
 import * as React from "react";
+import { useCallback, useRef, useState } from "react";
+import type { KeyboardEvent } from "react";
 
 const __styles_steez_segmented_control_0: Record<string, string> = {
   "wrapper": "steez-segmented-control-0-wrapper",
@@ -90,15 +92,119 @@ function __injectSteezStandaloneStyles() {
 
 __injectSteezStandaloneStyles();
 
+export interface RovingTabItem {
+  id: string;
+  disabled?: boolean;
+}
+
+export interface UseRovingTabsOptions<T extends RovingTabItem> {
+  tabs: readonly T[];
+  onSelect: (tabId: string) => void;
+}
+
+/**
+ * Provides the shared keyboard and focus behavior for tab lists that use a
+ * roving tab index. Disabled tabs are omitted from keyboard navigation.
+ */
+export function useRovingTabs<T extends RovingTabItem>({
+  tabs,
+  onSelect,
+}: UseRovingTabsOptions<T>) {
+  const tabRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
+
+  const focusTab = useCallback((tabId: string) => {
+    tabRefs.current.get(tabId)?.focus();
+  }, []);
+
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLButtonElement>, tabId: string) => {
+      const enabledTabs = tabs.filter((tab) => !tab.disabled);
+      const currentIndex = enabledTabs.findIndex((tab) => tab.id === tabId);
+
+      if (currentIndex === -1 || enabledTabs.length === 0) {
+        return;
+      }
+
+      let nextIndex: number | undefined;
+
+      switch (event.key) {
+        case "ArrowRight":
+        case "ArrowDown":
+          nextIndex = (currentIndex + 1) % enabledTabs.length;
+          break;
+        case "ArrowLeft":
+        case "ArrowUp":
+          nextIndex =
+            (currentIndex - 1 + enabledTabs.length) % enabledTabs.length;
+          break;
+        case "Home":
+          nextIndex = 0;
+          break;
+        case "End":
+          nextIndex = enabledTabs.length - 1;
+          break;
+        default:
+          return;
+      }
+
+      const nextTab = enabledTabs[nextIndex];
+      if (!nextTab) {
+        return;
+      }
+
+      event.preventDefault();
+      onSelect(nextTab.id);
+      queueMicrotask(() => focusTab(nextTab.id));
+    },
+    [focusTab, onSelect, tabs],
+  );
+
+  const setTabRef = useCallback(
+    (tabId: string, element: HTMLButtonElement | null) => {
+      if (element) {
+        tabRefs.current.set(tabId, element);
+      } else {
+        tabRefs.current.delete(tabId);
+      }
+    },
+    [],
+  );
+
+  return { handleKeyDown, setTabRef };
+}
+
+/** Selection fallback is derived without emitting changes during rendering or effects. */
+export function useTabSelection<T extends RovingTabItem>({
+  tabs, value, defaultValue, onValueChange,
+}: {
+  tabs: readonly T[];
+  value?: string;
+  defaultValue?: string;
+  onValueChange?: (id: string) => void;
+}) {
+  const [internalValue, setInternalValue] = useState(defaultValue);
+  const requested = value !== undefined ? value : internalValue;
+  const selected = tabs.find((tab) => tab.id === requested && !tab.disabled)
+    ?? tabs.find((tab) => !tab.disabled);
+  const select = useCallback((id: string) => {
+    if (id === selected?.id || !tabs.some((tab) => tab.id === id && !tab.disabled)) return;
+    if (value === undefined) setInternalValue(id);
+    onValueChange?.(id);
+  }, [onValueChange, selected?.id, tabs, value]);
+  return { selected, select };
+}
+
 export interface SegmentedControlOption {
   value: string;
   label: string;
+  disabled?: boolean;
 }
 
 export interface SegmentedControlProps {
-  value: string;
+  value?: string;
+  defaultValue?: string;
   options: SegmentedControlOption[];
-  onChange: (value: string) => void;
+  onValueChange?: (value: string) => void;
   label?: string;
   hint?: string;
   ariaLabel?: string;
@@ -108,67 +214,20 @@ export interface SegmentedControlProps {
 
 export function SegmentedControl({
   value,
+  defaultValue,
   options,
-  onChange,
+  onValueChange,
   label,
   hint,
   ariaLabel,
   className = "",
   compact = false,
 }: SegmentedControlProps) {
-  const optionRefs = React.useRef<Map<string, HTMLButtonElement>>(new Map());
-
-  const setOptionRef = React.useCallback((optionValue: string, node: HTMLButtonElement | null) => {
-    if (node) {
-      optionRefs.current.set(optionValue, node);
-    } else {
-      optionRefs.current.delete(optionValue);
-    }
-  }, []);
-
-  const focusOption = React.useCallback((optionValue: string) => {
-    optionRefs.current.get(optionValue)?.focus();
-  }, []);
-
-  const handleOptionKeyDown = React.useCallback(
-    (event: React.KeyboardEvent<HTMLButtonElement>, optionValue: string) => {
-      if (!options.length) {
-        return;
-      }
-
-      const currentIndex = options.findIndex((option) => option.value === optionValue);
-      if (currentIndex === -1) {
-        return;
-      }
-
-      let nextIndex: number | null = null;
-
-      switch (event.key) {
-        case "ArrowRight":
-        case "ArrowDown":
-          nextIndex = (currentIndex + 1) % options.length;
-          break;
-        case "ArrowLeft":
-        case "ArrowUp":
-          nextIndex = (currentIndex - 1 + options.length) % options.length;
-          break;
-        case "Home":
-          nextIndex = 0;
-          break;
-        case "End":
-          nextIndex = options.length - 1;
-          break;
-        default:
-          return;
-      }
-
-      event.preventDefault();
-      const nextValue = options[nextIndex]!.value;
-      onChange(nextValue);
-      queueMicrotask(() => focusOption(nextValue));
-    },
-    [focusOption, onChange, options],
-  );
+  const items = options.map(option => ({ ...option, id: option.value }));
+  const { selected, select } = useTabSelection({
+    tabs: items, value, defaultValue, onValueChange: onValueChange,
+  });
+  const { setTabRef, handleKeyDown } = useRovingTabs({ tabs: items, onSelect: select });
 
   return (
     <div className={`${__styles_steez_segmented_control_0.wrapper} ${className}`.trim()}>
@@ -179,18 +238,19 @@ export function SegmentedControl({
         aria-label={ariaLabel || label}
       >
         {options.map((option) => {
-          const isActive = option.value === value;
+          const isActive = option.value === selected?.id;
           return (
             <button
               key={option.value}
-              ref={(node) => setOptionRef(option.value, node)}
+              ref={(node) => setTabRef(option.value, node)}
               type="button"
+              disabled={option.disabled}
               role="radio"
               aria-checked={isActive}
               tabIndex={isActive ? 0 : -1}
               className={`${__styles_steez_segmented_control_0.option} ${isActive ? __styles_steez_segmented_control_0.optionActive : ""} ${compact ? __styles_steez_segmented_control_0.optionCompact : ""}`.trim()}
-              onClick={() => onChange(option.value)}
-              onKeyDown={(event) => handleOptionKeyDown(event, option.value)}
+              onClick={() => select(option.value)}
+              onKeyDown={(event) => handleKeyDown(event, option.value)}
             >
               {option.label}
             </button>

@@ -15,14 +15,14 @@
       "path": "components/steez/ThemedCard.tsx",
       "type": "registry:file",
       "target": "components/steez/ThemedCard.tsx",
-      "content": "\"use client\";\n\nimport React from \"react\";\n\nimport { CardFrame } from \"./CardFrame\";\nimport styles from \"./ThemedCard.module.css\";\n\nexport interface ThemedCardProps\n  extends Omit<React.HTMLAttributes<HTMLDivElement>, \"title\"> {\n  title?: React.ReactNode;\n  variant?: \"default\" | \"featured\";\n}\n\nexport function ThemedCard({\n  title,\n  variant = \"default\",\n  className = \"\",\n  children,\n  ...props\n}: ThemedCardProps) {\n  return (\n    <CardFrame\n      className={`${styles.card} ${variant === \"featured\" ? styles.featured : \"\"} ${className}`}\n      title={title}\n      titleClassName={styles.title}\n      {...props}\n    >\n      {children}\n    </CardFrame>\n  );\n}\n",
+      "content": "\"use client\";\n\nimport React from \"react\";\n\nimport { CardFrame, type CardCompositionProps } from \"./CardFrame\";\nimport styles from \"./ThemedCard.module.css\";\n\nexport interface ThemedCardProps\n  extends CardCompositionProps, Omit<React.HTMLAttributes<HTMLDivElement>, \"title\"> {\n  variant?: \"default\" | \"featured\";\n}\n\nexport function ThemedCard({\n  title,\n  titleAs,\n  titleClassName = \"\",\n  variant = \"default\",\n  className = \"\",\n  children,\n  ...props\n}: ThemedCardProps) {\n  return (\n    <CardFrame\n      className={`${styles.card} ${variant === \"featured\" ? styles.featured : \"\"} ${className}`}\n      title={title}\n      titleAs={titleAs}\n      titleClassName={`${styles.title} ${titleClassName}`.trim()}\n      {...props}\n    >\n      {children}\n    </CardFrame>\n  );\n}\n",
       "source": "packages/ui/src/components/ThemedCard.tsx"
     },
     {
       "path": "components/steez/ThemedCard.module.css",
       "type": "registry:file",
       "target": "components/steez/ThemedCard.module.css",
-      "content": ".card {\n  position: relative;\n  border: 1px solid var(--border-color);\n  background: color-mix(in srgb, var(--bg-secondary) 88%, transparent);\n  border-radius: 14px;\n  padding: 1rem;\n  box-shadow: var(--shadow-sm);\n}\n\n.featured {\n  border-color: var(--accent-primary);\n  box-shadow: var(--shadow-md);\n}\n\n.title {\n  margin-bottom: 0.75rem;\n  color: var(--text-primary);\n  font-family: var(--font-primary);\n  font-size: 1rem;\n  font-weight: 600;\n}\n\n",
+      "content": ".card {\n  position: relative;\n  border: 1px solid var(--border-color);\n  background: color-mix(in srgb, var(--bg-secondary) 88%, transparent);\n  border-radius: 14px;\n  padding: 1rem;\n  box-shadow: var(--shadow-sm);\n}\n\n.featured {\n  border-color: var(--accent-primary);\n  box-shadow: var(--shadow-md);\n}\n\n.title {\n  margin-bottom: 0.75rem;\n  color: var(--text-primary);\n  font-family: var(--font-mono);\n  font-size: 1rem;\n  font-weight: 600;\n}\n\n",
       "source": "packages/ui/src/components/ThemedCard.module.css"
     }
   ]

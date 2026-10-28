@@ -10,7 +10,7 @@
 "use client";
 
 import * as React from "react";
-import { createContext, useCallback, useContext, useId, useRef } from "react";
+import { createContext, useCallback, useContext, useId, useRef, useState } from "react";
 import type { CSSProperties, KeyboardEvent, ReactNode, SVGProps } from "react";
 
 const __styles_steez_page_template_0: Record<string, string> = {
@@ -64,10 +64,11 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/PageHea
   background: transparent;
   padding: 0;
   margin: 0;
-  cursor: pointer;
   display: inline-flex;
   align-items: center;
 }
+
+button.brandButton { cursor: pointer; }
 
 .steez-page-template-0-brandButton:focus-visible {
   outline: 2px solid var(--color-border-hover, #3a3a3a);
@@ -327,6 +328,27 @@ export function useRovingTabs<T extends RovingTabItem>({
   );
 
   return { handleKeyDown, setTabRef };
+}
+
+/** Selection fallback is derived without emitting changes during rendering or effects. */
+export function useTabSelection<T extends RovingTabItem>({
+  tabs, value, defaultValue, onValueChange,
+}: {
+  tabs: readonly T[];
+  value?: string;
+  defaultValue?: string;
+  onValueChange?: (id: string) => void;
+}) {
+  const [internalValue, setInternalValue] = useState(defaultValue);
+  const requested = value !== undefined ? value : internalValue;
+  const selected = tabs.find((tab) => tab.id === requested && !tab.disabled)
+    ?? tabs.find((tab) => !tab.disabled);
+  const select = useCallback((id: string) => {
+    if (id === selected?.id || !tabs.some((tab) => tab.id === id && !tab.disabled)) return;
+    if (value === undefined) setInternalValue(id);
+    onValueChange?.(id);
+  }, [onValueChange, selected?.id, tabs, value]);
+  return { selected, select };
 }
 
 export function useStableId(prefix: string, explicitId?: string): string {
@@ -1002,7 +1024,7 @@ export function Icon({ icon, ...props }: IconProps) {
   return <Component {...props} />;
 }
 
-export interface PageHeaderProps {
+export interface PageHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   title: string;
   description?: string;
   icon?: SteezIconName;
@@ -1036,28 +1058,30 @@ export function PageHeader({
   viewerVisible,
   viewerShowLabel = "Show viewer",
   viewerHideLabel = "Hide viewer",
+  ...props
 }: PageHeaderProps) {
+  const Brand = onBrandClick ? "button" : "span";
   const viewerLabel = viewerVisible ? viewerHideLabel : viewerShowLabel;
 
   return (
-    <div className={`${__styles_steez_page_template_0.header} ${className}`.trim()}>
+    <div {...props} className={`${__styles_steez_page_template_0.header} ${className}`.trim()}>
       <div className={__styles_steez_page_template_0.headerRow}>
         <div className={__styles_steez_page_template_0.brandCluster}>
-          {brand || onBrandClick ? (
-            <button
-              type="button"
+          {brand !== undefined && brand !== null || onBrandClick ? (
+            <Brand
+              type={onBrandClick ? "button" : undefined}
               className={__styles_steez_page_template_0.brandButton}
               onClick={onBrandClick}
               title={brandTitle}
-              aria-label={brandAriaLabel}
+              aria-label={onBrandClick ? brandAriaLabel ?? brandTitle ?? title : undefined}
             >
-              <span className={__styles_steez_page_template_0.brandVisual}>{brand ?? title.slice(0, 1)}</span>
-            </button>
+              <span className={__styles_steez_page_template_0.brandVisual} aria-hidden={onBrandClick ? true : undefined}>{brand ?? title.slice(0, 1)}</span>
+            </Brand>
           ) : null}
           <div className={__styles_steez_page_template_0.headerContent}>
             <h2>
               {icon ? (
-                <span className={__styles_steez_page_template_0.titleIcon}>
+                <span className={__styles_steez_page_template_0.titleIcon} aria-hidden="true">
                   <Icon icon={icon} width={18} height={18} />
                 </span>
               ) : null}
@@ -1070,12 +1094,12 @@ export function PageHeader({
           {extra}
           {onBack ? (
             <button type="button" className={__styles_steez_page_template_0.iconButton} onClick={onBack} aria-label="Go back">
-              <Icon icon="chevronLeft" width={18} height={18} />
+              <Icon icon="chevronLeft" width={18} height={18} aria-hidden="true" />
             </button>
           ) : null}
           {onSettings ? (
             <button type="button" className={__styles_steez_page_template_0.iconButton} onClick={onSettings} aria-label="Open settings">
-              <SlidersIcon width={18} height={18} />
+              <SlidersIcon width={18} height={18} aria-hidden="true" />
             </button>
           ) : null}
           {onViewerToggle ? (
@@ -1085,8 +1109,9 @@ export function PageHeader({
               onClick={onViewerToggle}
               aria-label={viewerLabel}
               title={viewerLabel}
+              aria-pressed={Boolean(viewerVisible)}
             >
-              <EyeIcon width={18} height={18} />
+              <EyeIcon width={18} height={18} aria-hidden="true" />
             </button>
           ) : null}
         </div>
@@ -1144,8 +1169,8 @@ export function TabList({
   renderPanel = true,
 }: TabListProps) {
   const resolvedActiveTabId =
-    activeTabId || tabs[0]?.id || "";
-  const activeTab = tabs.find((tab) => tab.id === resolvedActiveTabId);
+    activeTabId ?? tabs.find((tab) => !tab.disabled)?.id ?? "";
+  const activeTab = tabs.find((tab) => tab.id === resolvedActiveTabId && !tab.disabled);
   const activePanelId = activeTab ? getPanelDomId(activeTab.id) : undefined;
   const activeTabDomId = activeTab ? getTabDomId(activeTab.id) : undefined;
 
@@ -1223,6 +1248,7 @@ export interface PageTemplateProps
   className?: string;
   subTabs?: SubTab[];
   activeSubTab?: string;
+  defaultSubTab?: string;
   onSubTabChange?: (tabId: string) => void;
   children?: React.ReactNode;
   loading?: boolean;
@@ -1241,6 +1267,7 @@ export function PageTemplate({
   icon,
   subTabs,
   activeSubTab,
+  defaultSubTab,
   onSubTabChange,
   onBack,
   onSettings,
@@ -1270,15 +1297,10 @@ export function PageTemplate({
     [baseId],
   );
 
-  const resolvedActiveTabId =
-    subTabs?.some((tab) => tab.id === activeSubTab) ? activeSubTab : subTabs?.[0]?.id;
-
-  const handleSelect = React.useCallback(
-    (tabId: string) => {
-      onSubTabChange?.(tabId);
-    },
-    [onSubTabChange],
-  );
+  const { selected, select: handleSelect } = useTabSelection({
+    tabs: subTabs ?? [], value: activeSubTab, defaultValue: defaultSubTab,
+    onValueChange: onSubTabChange,
+  });
   const { handleKeyDown: handleTabKeyDown, setTabRef } = useRovingTabs({
     tabs: subTabs ?? [],
     onSelect: handleSelect,
@@ -1312,7 +1334,7 @@ export function PageTemplate({
       {hasSubTabs ? (
         <TabList
           tabs={subTabs!}
-          activeTabId={resolvedActiveTabId}
+          activeTabId={selected?.id}
           getTabDomId={getTabDomId}
           getPanelDomId={getPanelDomId}
           setTabRef={setTabRef}

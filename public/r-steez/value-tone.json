@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "value-tone",
+  "type": "registry:lib",
+  "title": "value-tone",
+  "description": "Shared implementation dependency.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/styles/ValueTone.module.css",
+      "type": "registry:file",
+      "target": "components/styles/ValueTone.module.css",
+      "content": ".success { color: var(--color-status-success); }\n.warning { color: var(--color-status-warning); }\n.danger { color: var(--color-status-error); }\n",
+      "source": "packages/ui/src/styles/ValueTone.module.css"
+    }
+  ]
+}

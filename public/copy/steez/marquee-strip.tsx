@@ -10,6 +10,7 @@
 "use client";
 
 import * as React from "react";
+import { useEffect, useRef, useState } from "react";
 
 const __styles_steez_marquee_strip_0: Record<string, string> = {
   "root": "steez-marquee-strip-0-root",
@@ -55,6 +56,8 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/Marquee
     animation: none;
   }
 }
+
+.steez-marquee-strip-0-root[data-running="false"] .steez-marquee-strip-0-track { animation-play-state: paused; }
 `;
 const __steezStandaloneStyleKey = "marquee-strip";
 
@@ -71,11 +74,72 @@ function __injectSteezStandaloneStyles() {
 
 __injectSteezStandaloneStyles();
 
-export interface MarqueeStripProps<T> extends React.HTMLAttributes<HTMLDivElement> {
+/** Shared lifecycle for ambient motion: explicit pause, visibility, and reduced motion. */
+export function useMotionActivity<T extends HTMLElement = HTMLDivElement>(
+  paused = false,
+  visible = true,
+) {
+  const ref = useRef<T>(null);
+  const [inView, setInView] = useState(true);
+  const [pageVisible, setPageVisible] = useState(true);
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const media =
+      typeof window.matchMedia === "function"
+        ? window.matchMedia("(prefers-reduced-motion: reduce)")
+        : null;
+    const syncMotion = () => setReduced(media?.matches ?? false);
+    const syncVisibility = () =>
+      setPageVisible(document.visibilityState !== "hidden");
+    syncMotion();
+    syncVisibility();
+    media?.addEventListener("change", syncMotion);
+    document.addEventListener("visibilitychange", syncVisibility);
+    const observer =
+      typeof IntersectionObserver === "undefined"
+        ? null
+        : new IntersectionObserver(([entry]) => {
+            if (entry) setInView(entry.isIntersecting);
+          });
+    if (ref.current) observer?.observe(ref.current);
+    return () => {
+      media?.removeEventListener("change", syncMotion);
+      document.removeEventListener("visibilitychange", syncVisibility);
+      observer?.disconnect();
+    };
+  }, []);
+  return {
+    ref,
+    running: visible && !paused && inView && pageVisible && !reduced,
+  };
+}
+
+/** Clamp finite inputs; malformed values use the component's documented default. */
+export function clampFinite(
+  value: number,
+  min: number,
+  max: number,
+  fallback: number,
+) {
+  return Number.isFinite(value)
+    ? Math.min(max, Math.max(min, value))
+    : fallback;
+}
+
+/** Percentage shared by range inputs and progress displays. */
+export function progressPercentage(value: number, min = 0, max = 100) {
+  if (!Number.isFinite(min) || !Number.isFinite(max) || max <= min) return 0;
+  return clampFinite(((value - min) / (max - min)) * 100, 0, 100, 0);
+}
+
+export interface MarqueeStripProps<T>
+  extends React.HTMLAttributes<HTMLDivElement> {
   items: readonly T[];
   renderItem: (item: T, index: number) => React.ReactNode;
   ariaLabel?: string;
-  durationSeconds?: number;
+  /** Timing in milliseconds, consistent with other motion components. */
+  durationMs?: number;
+  paused?: boolean;
   gap?: number | string;
   pauseOnHover?: boolean;
   trackClassName?: string;
@@ -86,7 +150,8 @@ export function MarqueeStrip<T>({
   items,
   renderItem,
   ariaLabel,
-  durationSeconds = 24,
+  durationMs = 24000,
+  paused = false,
   gap = "0.7rem",
   pauseOnHover = false,
   className = "",
@@ -95,16 +160,18 @@ export function MarqueeStrip<T>({
   style,
   ...props
 }: MarqueeStripProps<T>) {
+  const { ref, running } = useMotionActivity(paused);
   const doubledItems = [...items, ...items];
   const mergedStyle = {
     ...style,
-    ["--marquee-duration" as string]: `${durationSeconds}s`,
-    ["--marquee-gap" as string]:
-      typeof gap === "number" ? `${gap}px` : gap,
+    ["--marquee-duration" as string]: `${clampFinite(durationMs, 1000, 120000, 24000)}ms`,
+    ["--marquee-gap" as string]: typeof gap === "number" ? `${gap}px` : gap,
   } as React.CSSProperties;
 
   return (
     <div
+      ref={ref}
+      data-running={running ? "true" : "false"}
       className={`${__styles_steez_marquee_strip_0.root} ${pauseOnHover ? __styles_steez_marquee_strip_0.pauseOnHover : ""} ${className}`.trim()}
       aria-label={ariaLabel}
       style={mergedStyle}
@@ -116,6 +183,7 @@ export function MarqueeStrip<T>({
             key={index}
             className={`${__styles_steez_marquee_strip_0.item} ${itemClassName}`.trim()}
             aria-hidden={index >= items.length}
+            inert={index >= items.length}
           >
             {renderItem(item, index % items.length)}
           </div>

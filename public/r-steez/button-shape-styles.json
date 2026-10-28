@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "button-shape-styles",
+  "type": "registry:lib",
+  "title": "button-shape-styles",
+  "description": "Shared implementation dependency.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/steez/ButtonShape.module.css",
+      "type": "registry:file",
+      "target": "components/steez/ButtonShape.module.css",
+      "content": ".root:is([data-shape=\"crystal\"], [data-shape=\"cut\"]) {\n  position: relative;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  box-sizing: border-box;\n  border: 0;\n  border-radius: 0;\n  background: transparent;\n  color: var(--crystal-button-text, var(--interactive-primary-fg));\n  text-transform: uppercase;\n  text-decoration: none;\n  cursor: pointer;\n  isolation: isolate;\n  box-shadow: none;\n  filter: none;\n}\n.shape {\n  position: absolute;\n  inset: 0;\n  z-index: -1;\n  background: var(--crystal-button-color, var(--interactive-primary-bg));\n  clip-path: polygon(var(--crystal-button-cut, .95rem) 0%, calc(100% - var(--crystal-button-cut, .95rem)) 0%, 100% 50%, calc(100% - var(--crystal-button-cut, .95rem)) 100%, var(--crystal-button-cut, .95rem) 100%, 0% 50%);\n  box-shadow: none;\n}\n.content { display: inline-flex; position: relative; align-items: center; justify-content: center; gap: .55rem; }\n.root:is([data-shape=\"crystal\"], [data-shape=\"cut\"]):hover,\n.root:is([data-shape=\"crystal\"], [data-shape=\"cut\"]):active { background: transparent; border: 0; box-shadow: none; filter: none; transform: none; }\n.root:focus-visible { outline: 2px solid var(--crystal-button-focus, var(--color-border-focus, #5a6268)); outline-offset: 4px; }\n.root:disabled,\n.root[aria-disabled=\"true\"] { opacity: .5; cursor: not-allowed; }\n.vertical { width: 2.5rem; height: 6rem; min-height: 6rem; padding: 0; flex-shrink: 0; }\n.vertical .shape {\n  inset: auto;\n  left: 50%;\n  top: 50%;\n  width: 6rem;\n  height: 2.5rem;\n  margin-left: -3rem;\n  margin-top: -1.25rem;\n  transform: rotate(90deg);\n  clip-path: polygon(20px 0%, calc(100% - 20px) 0%, 100% 50%, calc(100% - 20px) 100%, 20px 100%, 0% 50%);\n}\n.vertical .content > svg { width: 20px; height: 20px; }\n\n.root[data-variant=\"secondary\"] { color: var(--interactive-secondary-fg); }\n.root[data-variant=\"secondary\"] .shape { background: var(--interactive-secondary-bg); }\n.root[data-variant=\"danger\"] { color: var(--danger); }\n.root[data-variant=\"danger\"] .shape { background: var(--danger-bg); }\n\n.root:is([data-shape=\"crystal\"], [data-shape=\"cut\"])::before, .root:is([data-shape=\"crystal\"], [data-shape=\"cut\"])::after { content: none; }\n\n.root[data-shape=\"cut\"] .shape {\n  clip-path: polygon(var(--cut-tl) 0, calc(100% - var(--cut-tr)) 0, 100% var(--cut-tr), 100% calc(100% - var(--cut-br)), calc(100% - var(--cut-br)) 100%, var(--cut-bl) 100%, 0 calc(100% - var(--cut-bl)), 0 var(--cut-tl));\n}\n.root[data-shape=\"cut\"][data-variant=\"secondary\"] .shape { background: var(--color-border-default); }\n.root[data-shape=\"cut\"][data-variant=\"secondary\"] .shape::after {\n  content: \"\"; position: absolute; inset: 1px; background: var(--interactive-secondary-bg); clip-path: inherit;\n}\n",
+      "source": "packages/ui/src/components/ButtonShape.module.css"
+    }
+  ]
+}

@@ -71,7 +71,7 @@ export function Section({
 }: SectionProps) {
   return (
     <section className={`${__styles_steez_section_0.section} ${className}`.trim()} {...props}>
-      {title ? (
+      {title !== undefined && title !== null ? (
         <h3 className={`${__styles_steez_section_0.title} ${titleClassName}`.trim()}>{title}</h3>
       ) : null}
       <div className={`${__styles_steez_section_0.content} ${contentClassName}`.trim()}>

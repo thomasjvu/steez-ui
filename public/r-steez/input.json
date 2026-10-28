@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "input",
+  "type": "registry:component",
+  "title": "Input",
+  "description": "Monospace input with shared Steez form framing.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/field-frame.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/stable-id.json"
+  ],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/steez/Input.tsx",
+      "type": "registry:file",
+      "target": "components/steez/Input.tsx",
+      "content": "\"use client\";\n\nimport React, { InputHTMLAttributes, ReactNode } from \"react\";\n\nimport { Field } from \"./Field\";\nimport { useStableId } from \"../hooks/useStableId\";\nimport styles from \"./Input.module.css\";\n\nexport interface InputProps\n  extends Omit<InputHTMLAttributes<HTMLInputElement>, \"helperText\"> {\n  label?: string;\n  labelStyle?: \"plain\" | \"notch\";\n  variant?: \"default\" | \"long\" | \"full\";\n  helperText?: string;\n  /** Field-level error message; sets aria-invalid and joins aria-describedby. */\n  error?: string;\n  icon?: ReactNode;\n}\n\nexport function Input({\n  label,\n  labelStyle = \"plain\",\n  variant = \"default\",\n  className = \"\",\n  id,\n  disabled,\n  readOnly,\n  helperText,\n  error,\n  icon,\n  \"aria-describedby\": ariaDescribedBy,\n  \"aria-invalid\": ariaInvalid,\n  ...props\n}: InputProps) {\n  const inputId = useStableId(\"input\", id);\n\n  return (\n    <Field\n      id={inputId}\n      label={label}\n      labelStyle={labelStyle}\n      helperText={helperText}\n      error={error}\n      describedBy={ariaDescribedBy}\n      invalid={ariaInvalid}\n      className={className}\n      style={\n        {\n          \"--field-width\":\n            variant === \"full\"\n              ? \"100%\"\n              : variant === \"long\"\n                ? \"360px\"\n                : \"240px\",\n        } as React.CSSProperties\n      }\n    >\n      {(attributes) => (\n        <>\n          <div className={icon ? styles.withIcon : undefined}>\n            {icon ? <div className={styles.icon}>{icon}</div> : null}\n            <input\n              id={inputId}\n              className={styles.input}\n              disabled={disabled}\n              readOnly={readOnly}\n              {...props}\n              {...attributes}\n            />\n          </div>\n        </>\n      )}\n    </Field>\n  );\n}\n",
+      "source": "packages/ui/src/components/Input.tsx"
+    },
+    {
+      "path": "components/steez/Input.module.css",
+      "type": "registry:file",
+      "target": "components/steez/Input.module.css",
+      "content": ".input {\n  display: block;\n  width: 100%;\n  min-height: 44px;\n  box-sizing: border-box;\n  border: 0;\n  outline: none;\n  background: transparent;\n  color: var(--text-primary);\n  font: 1rem/1.4 var(--font-mono);\n  padding: 12px;\n}\n.input:disabled {\n  cursor: not-allowed;\n}\n.icon {\n  position: absolute;\n  right: 12px;\n  top: 50%;\n  transform: translateY(-50%);\n  display: flex;\n  color: var(--text-secondary);\n  pointer-events: none;\n}\n.withIcon .input {\n  padding-right: 44px;\n}\n",
+      "source": "packages/ui/src/components/Input.module.css"
+    }
+  ]
+}

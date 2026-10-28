@@ -25,13 +25,20 @@ const __styles_steez_error_message_0: Record<string, string> = {
 };
 
 const __styles_steez_error_message_1: Record<string, string> = {
-  "card": "steez-error-message-1-card",
-  "inline": "steez-error-message-1-inline",
-  "fullScreen": "steez-error-message-1-fullScreen",
-  "header": "steez-error-message-1-header",
-  "message": "steez-error-message-1-message",
-  "details": "steez-error-message-1-details",
-  "actions": "steez-error-message-1-actions",
+  "root": "steez-error-message-1-root",
+  "shape": "steez-error-message-1-shape",
+  "content": "steez-error-message-1-content",
+  "vertical": "steez-error-message-1-vertical",
+};
+
+const __styles_steez_error_message_2: Record<string, string> = {
+  "card": "steez-error-message-2-card",
+  "inline": "steez-error-message-2-inline",
+  "fullScreen": "steez-error-message-2-fullScreen",
+  "header": "steez-error-message-2-header",
+  "message": "steez-error-message-2-message",
+  "details": "steez-error-message-2-details",
+  "actions": "steez-error-message-2-actions",
 };
 
 const __steezStandaloneStyles = String.raw`/* packages/ui/src/styles/Buttons.module.css */
@@ -250,8 +257,70 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/styles/Buttons.mod
 }
 
 
+/* packages/ui/src/components/ButtonShape.module.css */
+.steez-error-message-1-root:is([data-shape="crystal"], [data-shape="cut"]) {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--crystal-button-text, var(--interactive-primary-fg, #010607));
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  isolation: isolate;
+  box-shadow: none;
+  filter: none;
+}
+.steez-error-message-1-shape {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--crystal-button-color, var(--interactive-primary-bg, #cbcbcc));
+  clip-path: polygon(var(--crystal-button-cut, .95rem) 0%, calc(100% - var(--crystal-button-cut, .95rem)) 0%, 100% 50%, calc(100% - var(--crystal-button-cut, .95rem)) 100%, var(--crystal-button-cut, .95rem) 100%, 0% 50%);
+  box-shadow: none;
+}
+.steez-error-message-1-content { display: inline-flex; position: relative; align-items: center; justify-content: center; gap: .55rem; }
+.steez-error-message-1-root:is([data-shape="crystal"], [data-shape="cut"]):hover,
+.steez-error-message-1-root:is([data-shape="crystal"], [data-shape="cut"]):active { background: transparent; border: 0; box-shadow: none; filter: none; transform: none; }
+.steez-error-message-1-root:focus-visible { outline: 2px solid var(--crystal-button-focus, var(--color-border-focus, #5a6268)); outline-offset: 4px; }
+.steez-error-message-1-root:disabled,
+.steez-error-message-1-root[aria-disabled="true"] { opacity: .5; cursor: not-allowed; }
+.steez-error-message-1-vertical { width: 2.5rem; height: 6rem; min-height: 6rem; padding: 0; flex-shrink: 0; }
+.steez-error-message-1-vertical .steez-error-message-1-shape {
+  inset: auto;
+  left: 50%;
+  top: 50%;
+  width: 6rem;
+  height: 2.5rem;
+  margin-left: -3rem;
+  margin-top: -1.25rem;
+  transform: rotate(90deg);
+  clip-path: polygon(20px 0%, calc(100% - 20px) 0%, 100% 50%, calc(100% - 20px) 100%, 20px 100%, 0% 50%);
+}
+.steez-error-message-1-vertical .steez-error-message-1-content > svg { width: 20px; height: 20px; }
+
+.steez-error-message-1-root[data-variant="secondary"] { color: var(--interactive-secondary-fg, #cbcbcc); }
+.steez-error-message-1-root[data-variant="secondary"] .steez-error-message-1-shape { background: var(--interactive-secondary-bg, #010607); }
+.steez-error-message-1-root[data-variant="danger"] { color: var(--danger, #ee1401); }
+.steez-error-message-1-root[data-variant="danger"] .steez-error-message-1-shape { background: var(--danger-bg, rgba(238, 20, 1, 0.15)); }
+
+.steez-error-message-1-root:is([data-shape="crystal"], [data-shape="cut"])::before, .steez-error-message-1-root:is([data-shape="crystal"], [data-shape="cut"])::after { content: none; }
+
+.steez-error-message-1-root[data-shape="cut"] .steez-error-message-1-shape {
+  clip-path: polygon(var(--cut-tl) 0, calc(100% - var(--cut-tr)) 0, 100% var(--cut-tr), 100% calc(100% - var(--cut-br)), calc(100% - var(--cut-br)) 100%, var(--cut-bl) 100%, 0 calc(100% - var(--cut-bl)), 0 var(--cut-tl));
+}
+.steez-error-message-1-root[data-shape="cut"][data-variant="secondary"] .steez-error-message-1-shape { background: var(--color-border-default, #2a2a2a); }
+.steez-error-message-1-root[data-shape="cut"][data-variant="secondary"] .steez-error-message-1-shape::after {
+  content: ""; position: absolute; inset: 1px; background: var(--interactive-secondary-bg, #010607); clip-path: inherit;
+}
+
+
 /* packages/ui/src/components/ErrorMessage.module.css */
-.steez-error-message-1-card {
+.steez-error-message-2-card {
   background: color-mix(in srgb, var(--bg-secondary, #0a0a0a) 90%, transparent);
   border: 1px solid var(--danger, #ee1401);
   border-radius: var(--radius-md, 8px);
@@ -259,7 +328,7 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/styles/Buttons.mod
   margin: 1rem 0;
 }
 
-.steez-error-message-1-inline {
+.steez-error-message-2-inline {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -269,7 +338,7 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/styles/Buttons.mod
   margin: 0.5rem 0;
 }
 
-.steez-error-message-1-fullScreen {
+.steez-error-message-2-fullScreen {
   position: fixed;
   inset: 0;
   display: flex;
@@ -279,7 +348,7 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/styles/Buttons.mod
   z-index: 999;
 }
 
-.steez-error-message-1-header {
+.steez-error-message-2-header {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -287,18 +356,18 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/styles/Buttons.mod
   margin-bottom: 0.5rem;
 }
 
-.steez-error-message-1-header h3 {
+.steez-error-message-2-header h3 {
   margin: 0;
   font-size: 1.1rem;
 }
 
-.steez-error-message-1-message {
+.steez-error-message-2-message {
   color: var(--text-primary, #cbcbcc);
   margin: 0 0 1rem 0;
   line-height: 1.5;
 }
 
-.steez-error-message-1-details {
+.steez-error-message-2-details {
   margin: 1rem 0;
   padding: 0.5rem;
   background: var(--bg-primary, #010607);
@@ -306,13 +375,13 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/styles/Buttons.mod
   font-size: 0.85rem;
 }
 
-.steez-error-message-1-details summary {
+.steez-error-message-2-details summary {
   cursor: pointer;
   color: var(--text-secondary, #999999);
   margin-bottom: 0.5rem;
 }
 
-.steez-error-message-1-details pre {
+.steez-error-message-2-details pre {
   margin: 0;
   overflow-x: auto;
   white-space: pre-wrap;
@@ -320,7 +389,7 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/styles/Buttons.mod
   color: var(--text-secondary, #999999);
 }
 
-.steez-error-message-1-actions {
+.steez-error-message-2-actions {
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
@@ -1010,6 +1079,57 @@ export function Icon({ icon, ...props }: IconProps) {
   return <Component {...props} />;
 }
 
+type ButtonVariant = "primary" | "secondary" | "danger" | "cyberpunk3" | "cyberpunk6";
+type ButtonSize = "small" | "medium" | "large";
+export type IconActionProps =
+  | { iconOnly?: false }
+  | ({ iconOnly: true } & ({ "aria-label": string } | { "aria-labelledby": string }));
+type ButtonAppearance = {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  shape?: "default" | "crystal" | "cut";
+  cutCorners?: readonly ("top-left" | "top-right" | "bottom-right" | "bottom-left")[];
+  cutSize?: string;
+  orientation?: "horizontal" | "vertical";
+  children: React.ReactNode;
+  disabled?: boolean;
+};
+export type ButtonProps = ButtonAppearance & IconActionProps & (
+  | (React.ButtonHTMLAttributes<HTMLButtonElement> & { href?: never })
+  | (React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string })
+);
+
+/** Native action or link; crystal is a shape of the same button. */
+export function Button({
+  variant = "primary", size = "medium", shape = "default",
+  orientation = "horizontal", cutCorners = ["top-right", "bottom-left"], cutSize = "12px", style, className = "", children, iconOnly,
+  disabled = false, ...props
+}: ButtonProps) {
+  const sizeClass = size === "small" ? __styles_steez_error_message_0.small : size === "large" ? __styles_steez_error_message_0.large : "";
+  const crystal = shape === "crystal";
+  const shaped = shape !== "default";
+  const corner = (name: typeof cutCorners[number]) => cutCorners.includes(name) ? `min(${cutSize}, 50%)` : "0px";
+  const shapeStyle = { "--cut-tl": corner("top-left"), "--cut-tr": corner("top-right"), "--cut-br": corner("bottom-right"), "--cut-bl": corner("bottom-left"), ...style } as React.CSSProperties;
+  const classes = `${__styles_steez_error_message_0[variant]} ${sizeClass} ${shaped ? __styles_steez_error_message_1.root : ""} ${crystal && orientation === "vertical" ? __styles_steez_error_message_1.vertical : ""} ${className}`.trim();
+  const content = shaped ? <>
+    <span className={__styles_steez_error_message_1.shape} aria-hidden="true" />
+    <span className={__styles_steez_error_message_1.content} aria-hidden={iconOnly || undefined}>{children}</span>
+  </> : iconOnly ? <span aria-hidden="true">{children}</span> : children;
+  const appearance = { className: classes, style: shapeStyle, "data-shape": shape, "data-variant": variant };
+  if (props.href !== undefined) {
+    const { href, onClick, ...linkProps } = props;
+    return <a {...linkProps} {...appearance} href={disabled ? undefined : href}
+      role={disabled ? "link" : linkProps.role}
+      aria-disabled={disabled || undefined} tabIndex={disabled ? -1 : linkProps.tabIndex}
+      onClick={event => {
+        if (disabled) { event.preventDefault(); return; }
+        onClick?.(event);
+      }}>{content}</a>;
+  }
+  const { type = "button", ...buttonProps } = props;
+  return <button {...buttonProps} {...appearance} type={type} disabled={disabled}>{content}</button>;
+}
+
 export interface ErrorMessageProps {
   title?: string;
   message: string;
@@ -1029,32 +1149,28 @@ export const ErrorMessage = React.memo(function ErrorMessage({
 }: ErrorMessageProps) {
   const content = (
     <>
-      <div className={__styles_steez_error_message_1.header}>
+      <div className={__styles_steez_error_message_2.header}>
         <WarningIcon width={24} height={24} />
         <h3>{title}</h3>
       </div>
-      <p className={__styles_steez_error_message_1.message}>{message}</p>
+      <p className={__styles_steez_error_message_2.message}>{message}</p>
       {details ? (
-        <details className={__styles_steez_error_message_1.details}>
+        <details className={__styles_steez_error_message_2.details}>
           <summary>Details</summary>
           <pre>{details}</pre>
         </details>
       ) : null}
       {onRetry || onDismiss ? (
-        <div className={__styles_steez_error_message_1.actions}>
+        <div className={__styles_steez_error_message_2.actions}>
           {onRetry ? (
-            <button type="button" onClick={onRetry} className={__styles_steez_error_message_0.secondary}>
-              <RefreshIcon width={16} height={16} />
-              {" "}
-              Try Again
-            </button>
+            <Button variant="secondary" onClick={onRetry}>
+              <RefreshIcon width={16} height={16} /> Try Again
+            </Button>
           ) : null}
           {onDismiss ? (
-            <button type="button" onClick={onDismiss} className={__styles_steez_error_message_0.secondary}>
-              <CloseIcon width={16} height={16} />
-              {" "}
-              Dismiss
-            </button>
+            <Button variant="secondary" onClick={onDismiss}>
+              <CloseIcon width={16} height={16} /> Dismiss
+            </Button>
           ) : null}
         </div>
       ) : null}
@@ -1063,22 +1179,22 @@ export const ErrorMessage = React.memo(function ErrorMessage({
 
   if (variant === "fullScreen") {
     return (
-      <div className={__styles_steez_error_message_1.fullScreen} role="alert" aria-live="assertive">
-        <div className={__styles_steez_error_message_1.card}>{content}</div>
+      <div className={__styles_steez_error_message_2.fullScreen} role="alert" aria-live="assertive">
+        <div className={__styles_steez_error_message_2.card}>{content}</div>
       </div>
     );
   }
 
   if (variant === "inline") {
     return (
-      <div className={__styles_steez_error_message_1.inline} role="alert" aria-live="assertive">
+      <div className={__styles_steez_error_message_2.inline} role="alert" aria-live="assertive">
         {content}
       </div>
     );
   }
 
   return (
-    <div className={__styles_steez_error_message_1.card} role="alert" aria-live="assertive">
+    <div className={__styles_steez_error_message_2.card} role="alert" aria-live="assertive">
       {content}
     </div>
   );

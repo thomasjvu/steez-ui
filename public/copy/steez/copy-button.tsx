@@ -10,7 +10,7 @@
 "use client";
 
 import * as React from "react";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import type { CSSProperties, SVGProps } from "react";
 
 const __styles_steez_copy_button_0: Record<string, string> = {
@@ -753,7 +753,25 @@ export function Icon({ icon, ...props }: IconProps) {
   return <Component {...props} />;
 }
 
-export interface CopyButtonProps {
+/** Clamp finite inputs; malformed values use the component's documented default. */
+export function clampFinite(
+  value: number,
+  min: number,
+  max: number,
+  fallback: number,
+) {
+  return Number.isFinite(value)
+    ? Math.min(max, Math.max(min, value))
+    : fallback;
+}
+
+/** Percentage shared by range inputs and progress displays. */
+export function progressPercentage(value: number, min = 0, max = 100) {
+  if (!Number.isFinite(min) || !Number.isFinite(max) || max <= min) return 0;
+  return clampFinite(((value - min) / (max - min)) * 100, 0, 100, 0);
+}
+
+export interface CopyButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "value" | "children"> {
   value: string;
   size?: number;
   className?: string;
@@ -771,27 +789,50 @@ export function CopyButton({
   title = "Copy to clipboard",
   feedbackDuration = 2000,
   onCopyError,
+  onClick,
+  disabled,
+  type = "button",
+  ...props
 }: CopyButtonProps) {
   const [feedback, setFeedback] = useState<CopyFeedback>("idle");
-
+  const [pending, setPending] = useState(false);
+  const pendingRef = useRef(false);
+  const mounted = useRef(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
-    if (feedback === "idle") {
-      return undefined;
-    }
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+      if (timer.current !== null) clearTimeout(timer.current);
+    };
+  }, []);
 
-    const timer = window.setTimeout(() => setFeedback("idle"), feedbackDuration);
-    return () => window.clearTimeout(timer);
-  }, [feedback, feedbackDuration]);
-
-  const handleCopy = async () => {
+  const handleCopy = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    onClick?.(event);
+    if (event.defaultPrevented || disabled || pendingRef.current) return;
+    pendingRef.current = true;
+    setPending(true);
+    if (timer.current !== null) clearTimeout(timer.current);
+    setFeedback("idle");
     try {
       await navigator.clipboard.writeText(value);
-      setFeedback("copied");
+      if (mounted.current) setFeedback("copied");
     } catch (error) {
-      setFeedback("error");
-      onCopyError?.(error);
+      if (mounted.current) {
+        setFeedback("error");
+        onCopyError?.(error);
+      }
+    } finally {
+      pendingRef.current = false;
+      if (mounted.current) {
+        setPending(false);
+        timer.current = setTimeout(() => setFeedback("idle"),
+          clampFinite(feedbackDuration, 0, 60000, 2000));
+      }
     }
   };
+  const iconSize = clampFinite(size, 1, 128, 16);
+  const idleLabel = title.trim() || "Copy to clipboard";
 
   const isCopied = feedback === "copied";
   const isError = feedback === "error";
@@ -799,18 +840,21 @@ export function CopyButton({
     ? "Copied to clipboard"
     : isError
       ? "Failed to copy"
-      : title;
-  const nativeTitle = isCopied ? "Copied!" : isError ? "Failed to copy" : title;
+      : idleLabel;
+  const nativeTitle = isCopied ? "Copied!" : isError ? "Failed to copy" : idleLabel;
 
   return (
     <button
-      type="button"
+      {...props}
+      type={type}
+      disabled={disabled || pending}
+      aria-busy={pending || undefined}
       className={`${__styles_steez_copy_button_0.copyButton} ${isCopied ? __styles_steez_copy_button_0.copied : ""} ${isError ? __styles_steez_copy_button_0.error : ""} ${className}`.trim()}
       onClick={handleCopy}
       title={nativeTitle}
-      aria-label={accessibleLabel}
+      aria-label={props["aria-label"] ?? accessibleLabel}
     >
-      {isCopied ? <CheckIcon width={size} height={size} /> : <CopyIcon width={size} height={size} />}
+      {isCopied ? <CheckIcon width={iconSize} height={iconSize} aria-hidden="true" /> : <CopyIcon width={iconSize} height={iconSize} aria-hidden="true" />}
       <span className={__styles_steez_copy_button_0.visuallyHidden} aria-live="polite">
         {isCopied ? "Copied to clipboard" : isError ? "Failed to copy" : ""}
       </span>

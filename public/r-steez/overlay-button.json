@@ -6,7 +6,8 @@
   "description": "Compact floating control button for viewer and media overlays.",
   "dependencies": [],
   "registryDependencies": [
-    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json"
+    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/button.json"
   ],
   "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
   "files": [
@@ -14,7 +15,7 @@
       "path": "components/steez/OverlayButton.tsx",
       "type": "registry:file",
       "target": "components/steez/OverlayButton.tsx",
-      "content": "\"use client\";\n\nimport React from \"react\";\n\nimport styles from \"./OverlayButton.module.css\";\n\nexport interface OverlayButtonProps\n  extends React.ButtonHTMLAttributes<HTMLButtonElement> {\n  active?: boolean;\n}\n\nexport function OverlayButton({\n  active,\n  className = \"\",\n  ...props\n}: OverlayButtonProps) {\n  const classes = `${styles.overlayBtn} ${\n    active ? styles.overlayBtnActive : \"\"\n  } ${className}`.trim();\n  return <button type=\"button\" className={classes} {...props} />;\n}\n\nexport default OverlayButton;\n",
+      "content": "\"use client\";\n\nimport React from \"react\";\n\nimport type { IconActionProps } from \"./Button\";\n\nimport styles from \"./OverlayButton.module.css\";\n\nexport type OverlayButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & IconActionProps & {\n  active?: boolean;\n};\n\nexport function OverlayButton({\n  active,\n  iconOnly,\n  children,\n  className = \"\",\n  ...props\n}: OverlayButtonProps) {\n  const classes = `${styles.overlayBtn} ${\n    active ? styles.overlayBtnActive : \"\"\n  } ${className}`.trim();\n  return <button type=\"button\" className={classes} {...props}>\n    {iconOnly ? <span aria-hidden=\"true\">{children}</span> : children}\n  </button>;\n}\n\nexport default OverlayButton;\n",
       "source": "packages/ui/src/components/OverlayButton.tsx"
     },
     {

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "posterize-filter",
+  "type": "registry:component",
+  "title": "Posterize Filter",
+  "description": "Reduce continuous colors to distinct stepped bands.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://steez-ui-6v5.pages.dev/r-steez/numeric-bounds.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/filter-frame.json"
+  ],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/steez/PosterizeFilter.tsx",
+      "type": "registry:file",
+      "target": "components/steez/PosterizeFilter.tsx",
+      "content": "\"use client\";\n\nimport React from \"react\";\nimport { clampFinite } from \"../utils/numbers\";\nimport { FilterFrame, type ContentFilterProps } from \"./FilterFrame\";\n\nexport interface PosterizeFilterProps extends ContentFilterProps {\n  /** Number of discrete shades per channel, between 2 and 16. */\n  levels?: number;\n}\nconst levelsByIntensity = { subtle: 8, default: 5, intense: 3 };\n\n/** Reduce continuous colors to stepped bands without changing source alpha. */\nexport function PosterizeFilter({\n  levels, intensity = \"default\", trigger = \"static\", ...props\n}: PosterizeFilterProps) {\n  const count = Math.round(clampFinite(levels ?? levelsByIntensity[intensity], 2, 16, levelsByIntensity.default));\n  return <FilterFrame {...props} trigger={trigger} renderFilter={frame => {\n    const frameCount = Math.max(2, count - frame);\n    const table = Array.from({ length: frameCount }, (_, index) => index / (frameCount - 1)).join(\" \");\n    return <feComponentTransfer in=\"SourceGraphic\">\n      <feFuncR type=\"discrete\" tableValues={table} />\n      <feFuncG type=\"discrete\" tableValues={table} />\n      <feFuncB type=\"discrete\" tableValues={table} />\n    </feComponentTransfer>;\n  }} />;\n}\n",
+      "source": "packages/ui/src/components/PosterizeFilter.tsx"
+    }
+  ]
+}

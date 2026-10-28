@@ -56,10 +56,15 @@ for (const file of generatedFiles) {
   }
 }
 
+const cacheDirectory = path.join(repoRoot, ".cache/typecheck");
+await fs.mkdir(cacheDirectory, { recursive: true });
 const tscPath = path.join(repoRoot, "node_modules/.bin/tsc");
 try {
   await execFileAsync(tscPath, [
     "--noEmit",
+    "--incremental",
+    "--tsBuildInfoFile",
+    path.join(cacheDirectory, "standalone.tsbuildinfo"),
     "--target",
     "ES2022",
     "--module",

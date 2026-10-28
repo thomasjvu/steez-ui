@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "textarea",
+  "type": "registry:component",
+  "title": "Textarea",
+  "description": "Native multiline input with a plain or notched label.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/field-frame.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/stable-id.json"
+  ],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/steez/Textarea.tsx",
+      "type": "registry:file",
+      "target": "components/steez/Textarea.tsx",
+      "content": "\"use client\";\n\nimport React, { TextareaHTMLAttributes } from \"react\";\n\nimport { Field } from \"./Field\";\nimport { useStableId } from \"../hooks/useStableId\";\nimport styles from \"./Textarea.module.css\";\n\nexport interface TextareaProps\n  extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, \"helperText\"> {\n  label?: string;\n  labelStyle?: \"plain\" | \"notch\";\n  variant?: \"default\" | \"full\";\n  helperText?: string;\n  error?: string;\n}\n\nexport function Textarea({\n  label,\n  labelStyle = \"plain\",\n  variant = \"default\",\n  className = \"\",\n  id,\n  helperText,\n  error,\n  \"aria-describedby\": ariaDescribedBy,\n  \"aria-invalid\": ariaInvalid,\n  ...props\n}: TextareaProps) {\n  const textareaId = useStableId(\"textarea\", id);\n\n  return (\n    <Field\n      id={textareaId}\n      label={label}\n      labelStyle={labelStyle}\n      helperText={helperText}\n      error={error}\n      describedBy={ariaDescribedBy}\n      invalid={ariaInvalid}\n      className={className}\n      style={\n        {\n          \"--field-width\": variant === \"full\" ? \"100%\" : \"400px\",\n        } as React.CSSProperties\n      }\n    >\n      {(attributes) => (\n        <>\n          <div>\n            <textarea\n              id={textareaId}\n              className={styles.textarea}\n              {...props}\n              {...attributes}\n            />\n          </div>\n        </>\n      )}\n    </Field>\n  );\n}\n",
+      "source": "packages/ui/src/components/Textarea.tsx"
+    },
+    {
+      "path": "components/steez/Textarea.module.css",
+      "type": "registry:file",
+      "target": "components/steez/Textarea.module.css",
+      "content": ".textarea {\n  display: block;\n  width: 100%;\n  min-height: 100px;\n  box-sizing: border-box;\n  border: 0;\n  outline: none;\n  background: transparent;\n  color: var(--text-primary);\n  font: 1rem/1.4 var(--font-mono);\n  padding: 12px;\n  resize: vertical;\n}\n.textarea:disabled {\n  cursor: not-allowed;\n}\n",
+      "source": "packages/ui/src/components/Textarea.module.css"
+    }
+  ]
+}

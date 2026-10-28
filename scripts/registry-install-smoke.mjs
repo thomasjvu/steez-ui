@@ -111,14 +111,29 @@ for (const { name } of index) {
   }
 }
 await fs.writeFile(path.join(sampleDir, "global.d.ts"), 'declare module "*.module.css" { const classes: Record<string, string>; export default classes; }\n');
-await fs.writeFile(path.join(sampleDir, "tsconfig.json"), JSON.stringify({
-  compilerOptions: { target: "ES2022", module: "ESNext", moduleResolution: "Bundler", jsx: "react-jsx", strict: true, esModuleInterop: true, skipLibCheck: true },
-  include: ["**/*.ts", "**/*.tsx"],
-}, null, 2));
-try {
-  await promisify(execFile)(path.join(repoRoot, "node_modules/.bin/tsc"), ["--noEmit", "-p", path.join(sampleDir, "tsconfig.json")], { cwd: repoRoot });
-} catch (error) {
-  console.error(error.stdout || error.message);
-  process.exit(1);
+// Compile small groups sequentially so copied sources do not accumulate in one heap.
+const cacheDirectory = path.join(repoRoot, ".cache/typecheck");
+await fs.mkdir(cacheDirectory, { recursive: true });
+for (let offset = 0; offset < index.length; offset += 8) {
+  const batch = offset / 8;
+  const config = path.join(sampleDir, `tsconfig-${batch}.json`);
+  await fs.writeFile(config, JSON.stringify({
+    compilerOptions: {
+      target: "ES2022", module: "ESNext", moduleResolution: "Bundler",
+      jsx: "react-jsx", strict: true, esModuleInterop: true, skipLibCheck: true,
+      incremental: true,
+      tsBuildInfoFile: path.join(cacheDirectory, `registry-${batch}.tsbuildinfo`),
+    },
+    include: ["global.d.ts", ...index.slice(offset, offset + 8).flatMap(({ name }) => [
+      `${name}/**/*.ts`, `${name}/**/*.tsx`,
+    ])],
+  }, null, 2));
+  try {
+    await promisify(execFile)(path.join(repoRoot, "node_modules/.bin/tsc"), ["--noEmit", "-p", config], { cwd: repoRoot });
+  } catch (error) {
+    console.error(error.stdout || error.message);
+    process.exit(1);
+  }
 }
+
 console.log(`Verified ${index.length} independent registry installs without workspace aliases.`);

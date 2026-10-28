@@ -12,7 +12,7 @@
       "path": "components/steez/CardFrame.module.css",
       "type": "registry:file",
       "target": "components/steez/CardFrame.module.css",
-      "content": ".body {\n  min-width: 0;\n}\n",
+      "content": ".body {\n  min-width: 0;\n}\n\n.header { margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }\n.actions { display: flex; align-items: center; gap: 0.5rem; margin-inline-start: auto; }\n\n.header > :first-child { margin-block: 0; }\n",
       "source": "packages/ui/src/components/CardFrame.module.css"
     }
   ]

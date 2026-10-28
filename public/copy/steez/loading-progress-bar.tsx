@@ -68,6 +68,11 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/Loading
     transition: none;
   }
 }
+
+.steez-loading-progress-bar-0-root[data-variant="hp"] { gap: 12px; color: var(--color-success, #4eae76); }
+.steez-loading-progress-bar-0-root[data-variant="hp"] .steez-loading-progress-bar-0-barGroup { width: auto; max-width: 100%; flex-wrap: nowrap; justify-content: flex-start; gap: 2px; }
+.steez-loading-progress-bar-0-root[data-variant="hp"] .steez-loading-progress-bar-0-bar { width: 6px; flex: 0 1 6px; min-width: 2px; height: 16px; border-radius: 0; transform: none; }
+.steez-loading-progress-bar-0-root[data-variant="hp"] .steez-loading-progress-bar-0-value { width: auto; margin: 0; white-space: nowrap; font-size: 14px; font-weight: 600; letter-spacing: 0; }
 `;
 const __steezStandaloneStyleKey = "loading-progress-bar";
 
@@ -84,29 +89,54 @@ function __injectSteezStandaloneStyles() {
 
 __injectSteezStandaloneStyles();
 
+/** Clamp finite inputs; malformed values use the component's documented default. */
+export function clampFinite(
+  value: number,
+  min: number,
+  max: number,
+  fallback: number,
+) {
+  return Number.isFinite(value)
+    ? Math.min(max, Math.max(min, value))
+    : fallback;
+}
+
+/** Percentage shared by range inputs and progress displays. */
+export function progressPercentage(value: number, min = 0, max = 100) {
+  if (!Number.isFinite(min) || !Number.isFinite(max) || max <= min) return 0;
+  return clampFinite(((value - min) / (max - min)) * 100, 0, 100, 0);
+}
+
 export const LOADING_PROGRESS_SEGMENT_COUNT = 20;
 
-const BAR_INDEXES = Array.from({ length: LOADING_PROGRESS_SEGMENT_COUNT }, (_, index) => index);
+const BAR_INDEXES = Array.from(
+  { length: LOADING_PROGRESS_SEGMENT_COUNT },
+  (_, index) => index,
+);
 
 export interface LoadingProgressBarProps {
   progress: number;
+  variant?: "default" | "hp";
   className?: string;
   valueLabel?: string;
 }
 
 export function LoadingProgressBar({
   progress,
+  variant = "default",
   className,
   valueLabel,
 }: LoadingProgressBarProps) {
-  const safeProgress = Number.isFinite(progress) ? progress : 0;
-  const clampedProgress = Math.max(0, Math.min(100, safeProgress));
-  const filledBars = Math.round((clampedProgress / 100) * LOADING_PROGRESS_SEGMENT_COUNT);
+  const clampedProgress = progressPercentage(progress);
+  const filledBars = Math.round(
+    (clampedProgress / 100) * LOADING_PROGRESS_SEGMENT_COUNT,
+  );
   const displayLabel = valueLabel ?? `${Math.round(clampedProgress)}%`;
 
   return (
     <div
       className={className ? `${__styles_steez_loading_progress_bar_0.root} ${className}` : __styles_steez_loading_progress_bar_0.root}
+      data-variant={variant}
       role="progressbar"
       aria-valuemin={0}
       aria-valuemax={100}

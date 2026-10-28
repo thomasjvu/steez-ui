@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "checkbox",
+  "type": "registry:component",
+  "title": "Checkbox",
+  "description": "Checkbox primitive for Steez forms.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/stable-id.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/choice-label.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/choice-control-styles.json"
+  ],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/steez/Checkbox.tsx",
+      "type": "registry:file",
+      "target": "components/steez/Checkbox.tsx",
+      "content": "\"use client\";\n\nimport React, { InputHTMLAttributes } from \"react\";\n\nimport { ChoiceLabel } from \"./ChoiceLabel\";\nimport { useStableId } from \"../hooks/useStableId\";\nimport styles from \"./ChoiceControl.module.css\";\n\nexport interface CheckboxProps\n  extends Omit<InputHTMLAttributes<HTMLInputElement>, \"type\"> {\n  label?: string;\n  labelStyle?: \"plain\" | \"notch\";\n  onCheckedChange?: (checked: boolean) => void;\n}\n\nexport function Checkbox({\n  label,\n  labelStyle,\n  className = \"\",\n  id,\n  onChange,\n  onCheckedChange,\n  ...props\n}: CheckboxProps) {\n  const inputId = useStableId(\"checkbox\", id);\n\n  return (\n    <ChoiceLabel id={inputId} label={label} labelStyle={labelStyle} className={className}>\n      <input\n        id={inputId}\n        className={styles.control}\n        onChange={(event) => {\n          onCheckedChange?.(event.target.checked);\n          onChange?.(event);\n        }}\n        {...props}\n        type=\"checkbox\"\n      />\n    </ChoiceLabel>\n  );\n}\n",
+      "source": "packages/ui/src/components/Checkbox.tsx"
+    }
+  ]
+}

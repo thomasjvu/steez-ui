@@ -9,12 +9,12 @@
     "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json",
     "https://steez-ui-6v5.pages.dev/r-steez/button.json",
     "https://steez-ui-6v5.pages.dev/r-steez/copy-button.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/cyberpunk-input.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/cyberpunk-select.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/cyberpunk-textarea.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/cyberpunk-checkbox.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/cyberpunk-radio.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/cyberpunk-slider.json"
+    "https://steez-ui-6v5.pages.dev/r-steez/input.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/select.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/textarea.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/checkbox.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/radio.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/slider.json"
   ],
   "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
   "files": []

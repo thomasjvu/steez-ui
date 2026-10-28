@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "numeric-bounds",
+  "type": "registry:lib",
+  "title": "numeric-bounds",
+  "description": "Shared implementation dependency.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/utils/numbers.ts",
+      "type": "registry:file",
+      "target": "components/utils/numbers.ts",
+      "content": "/** Clamp finite inputs; malformed values use the component's documented default. */\nexport function clampFinite(\n  value: number,\n  min: number,\n  max: number,\n  fallback: number,\n) {\n  return Number.isFinite(value)\n    ? Math.min(max, Math.max(min, value))\n    : fallback;\n}\n\n/** Percentage shared by range inputs and progress displays. */\nexport function progressPercentage(value: number, min = 0, max = 100) {\n  if (!Number.isFinite(min) || !Number.isFinite(max) || max <= min) return 0;\n  return clampFinite(((value - min) / (max - min)) * 100, 0, 100, 0);\n}\n",
+      "source": "packages/ui/src/utils/numbers.ts"
+    }
+  ]
+}
