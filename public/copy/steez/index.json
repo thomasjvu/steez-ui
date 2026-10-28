@@ -12,6 +12,7 @@
     "sourceFiles": [
       "packages/ui/src/components/QuartzCrystal.tsx",
       "packages/ui/src/hooks/useMotionActivity.ts",
+      "packages/ui/src/hooks/usePrefersReducedMotion.ts",
       "packages/ui/src/utils/numbers.ts"
     ],
     "styleFiles": [
@@ -29,7 +30,8 @@
       "react"
     ],
     "sourceFiles": [
-      "packages/ui/src/components/AsciiRippleText.tsx"
+      "packages/ui/src/components/AsciiRippleText.tsx",
+      "packages/ui/src/hooks/usePrefersReducedMotion.ts"
     ],
     "styleFiles": [
       "packages/ui/src/components/AsciiRippleText.module.css"
@@ -585,7 +587,8 @@
       "react"
     ],
     "sourceFiles": [
-      "packages/ui/src/components/HeartbeatPulse.tsx"
+      "packages/ui/src/components/HeartbeatPulse.tsx",
+      "packages/ui/src/hooks/usePrefersReducedMotion.ts"
     ],
     "styleFiles": [
       "packages/ui/src/components/HeartbeatPulse.module.css"
@@ -604,6 +607,7 @@
     "sourceFiles": [
       "packages/ui/src/components/HexagonGrid.tsx",
       "packages/ui/src/hooks/useMotionActivity.ts",
+      "packages/ui/src/hooks/usePrefersReducedMotion.ts",
       "packages/ui/src/components/HexagonGrid.model.ts",
       "packages/ui/src/components/HexagonGrid.paint.ts"
     ],
@@ -698,6 +702,7 @@
     "sourceFiles": [
       "packages/ui/src/components/MarqueeStrip.tsx",
       "packages/ui/src/hooks/useMotionActivity.ts",
+      "packages/ui/src/hooks/usePrefersReducedMotion.ts",
       "packages/ui/src/utils/numbers.ts"
     ],
     "styleFiles": [
@@ -848,7 +853,8 @@
     ],
     "sourceFiles": [
       "packages/ui/src/components/BoilingLines.tsx",
-      "packages/ui/src/hooks/useMotionActivity.ts"
+      "packages/ui/src/hooks/useMotionActivity.ts",
+      "packages/ui/src/hooks/usePrefersReducedMotion.ts"
     ],
     "styleFiles": [
       "packages/ui/src/components/BoilingLines.module.css"
@@ -867,6 +873,7 @@
     "sourceFiles": [
       "packages/ui/src/components/KineticSwipeText.tsx",
       "packages/ui/src/hooks/useMotionActivity.ts",
+      "packages/ui/src/hooks/usePrefersReducedMotion.ts",
       "packages/ui/src/utils/numbers.ts"
     ],
     "styleFiles": [
@@ -887,7 +894,8 @@
       "packages/ui/src/components/DisplacementFilter.tsx",
       "packages/ui/src/utils/numbers.ts",
       "packages/ui/src/components/FilterFrame.tsx",
-      "packages/ui/src/hooks/useMotionActivity.ts"
+      "packages/ui/src/hooks/useMotionActivity.ts",
+      "packages/ui/src/hooks/usePrefersReducedMotion.ts"
     ],
     "styleFiles": [
       "packages/ui/src/components/FilterFrame.module.css"
@@ -908,7 +916,8 @@
       "packages/ui/src/components/DisplacementFilter.tsx",
       "packages/ui/src/utils/numbers.ts",
       "packages/ui/src/components/FilterFrame.tsx",
-      "packages/ui/src/hooks/useMotionActivity.ts"
+      "packages/ui/src/hooks/useMotionActivity.ts",
+      "packages/ui/src/hooks/usePrefersReducedMotion.ts"
     ],
     "styleFiles": [
       "packages/ui/src/components/FilterFrame.module.css",
@@ -928,6 +937,7 @@
     "sourceFiles": [
       "packages/ui/src/components/KineticTextRamp.tsx",
       "packages/ui/src/hooks/useMotionActivity.ts",
+      "packages/ui/src/hooks/usePrefersReducedMotion.ts",
       "packages/ui/src/utils/numbers.ts"
     ],
     "styleFiles": [
@@ -947,6 +957,7 @@
     "sourceFiles": [
       "packages/ui/src/components/KineticTextRing.tsx",
       "packages/ui/src/hooks/useMotionActivity.ts",
+      "packages/ui/src/hooks/usePrefersReducedMotion.ts",
       "packages/ui/src/utils/numbers.ts"
     ],
     "styleFiles": [
@@ -966,6 +977,7 @@
     "sourceFiles": [
       "packages/ui/src/components/KineticTextGlobe.tsx",
       "packages/ui/src/hooks/useMotionActivity.ts",
+      "packages/ui/src/hooks/usePrefersReducedMotion.ts",
       "packages/ui/src/utils/numbers.ts"
     ],
     "styleFiles": [
@@ -985,6 +997,7 @@
     "sourceFiles": [
       "packages/ui/src/components/KineticTextVolume.tsx",
       "packages/ui/src/hooks/useMotionActivity.ts",
+      "packages/ui/src/hooks/usePrefersReducedMotion.ts",
       "packages/ui/src/utils/numbers.ts"
     ],
     "styleFiles": [
@@ -1005,7 +1018,8 @@
       "packages/ui/src/components/ChromaticAberrationFilter.tsx",
       "packages/ui/src/utils/numbers.ts",
       "packages/ui/src/components/FilterFrame.tsx",
-      "packages/ui/src/hooks/useMotionActivity.ts"
+      "packages/ui/src/hooks/useMotionActivity.ts",
+      "packages/ui/src/hooks/usePrefersReducedMotion.ts"
     ],
     "styleFiles": [
       "packages/ui/src/components/FilterFrame.module.css"
@@ -1025,7 +1039,8 @@
       "packages/ui/src/components/GlowFilter.tsx",
       "packages/ui/src/utils/numbers.ts",
       "packages/ui/src/components/FilterFrame.tsx",
-      "packages/ui/src/hooks/useMotionActivity.ts"
+      "packages/ui/src/hooks/useMotionActivity.ts",
+      "packages/ui/src/hooks/usePrefersReducedMotion.ts"
     ],
     "styleFiles": [
       "packages/ui/src/components/FilterFrame.module.css"
@@ -1045,7 +1060,8 @@
       "packages/ui/src/components/GrainFilter.tsx",
       "packages/ui/src/utils/numbers.ts",
       "packages/ui/src/components/FilterFrame.tsx",
-      "packages/ui/src/hooks/useMotionActivity.ts"
+      "packages/ui/src/hooks/useMotionActivity.ts",
+      "packages/ui/src/hooks/usePrefersReducedMotion.ts"
     ],
     "styleFiles": [
       "packages/ui/src/components/FilterFrame.module.css"
@@ -1065,6 +1081,7 @@
       "packages/ui/src/components/DuotoneFilter.tsx",
       "packages/ui/src/components/FilterFrame.tsx",
       "packages/ui/src/hooks/useMotionActivity.ts",
+      "packages/ui/src/hooks/usePrefersReducedMotion.ts",
       "packages/ui/src/utils/numbers.ts"
     ],
     "styleFiles": [
@@ -1085,7 +1102,8 @@
       "packages/ui/src/components/PosterizeFilter.tsx",
       "packages/ui/src/utils/numbers.ts",
       "packages/ui/src/components/FilterFrame.tsx",
-      "packages/ui/src/hooks/useMotionActivity.ts"
+      "packages/ui/src/hooks/useMotionActivity.ts",
+      "packages/ui/src/hooks/usePrefersReducedMotion.ts"
     ],
     "styleFiles": [
       "packages/ui/src/components/FilterFrame.module.css"
@@ -1105,7 +1123,8 @@
       "packages/ui/src/components/EmbossFilter.tsx",
       "packages/ui/src/utils/numbers.ts",
       "packages/ui/src/components/FilterFrame.tsx",
-      "packages/ui/src/hooks/useMotionActivity.ts"
+      "packages/ui/src/hooks/useMotionActivity.ts",
+      "packages/ui/src/hooks/usePrefersReducedMotion.ts"
     ],
     "styleFiles": [
       "packages/ui/src/components/FilterFrame.module.css"
@@ -1124,6 +1143,7 @@
     "sourceFiles": [
       "packages/ui/src/components/IconBackground.tsx",
       "packages/ui/src/hooks/useMotionActivity.ts",
+      "packages/ui/src/hooks/usePrefersReducedMotion.ts",
       "packages/ui/src/utils/numbers.ts"
     ],
     "styleFiles": [

@@ -6,6 +6,7 @@ import { describe, expect, it } from "vitest";
 import { PREVIEW_SLUGS } from "../../components/docs/component-preview";
 import { COMPONENT_DOCS } from "./component-catalog";
 import { COMPONENT_MANIFEST } from "./component-manifest.mjs";
+import { SHARED_REGISTRY_HELPERS } from "./registry-helpers.mjs";
 
 const registryDir = path.join(process.cwd(), "public/r-steez");
 const packageIndexPath = path.join(process.cwd(), "packages/ui/src/index.ts");
@@ -14,25 +15,15 @@ const packageSubpathPaths = [
   path.join(process.cwd(), "packages/ui/src/components/HexagonGrid.tsx"),
 ];
 
+/** Shared helper items, which must never be published as catalog components. */
+const INTERNAL_HELPER_REGISTRY_NAMES = [
+  "field-frame",
+  ...SHARED_REGISTRY_HELPERS.map(({ name }) => name),
+];
+
 /** Non-component registry items that are allowed without a catalog slug. */
 const NON_COMPONENT_REGISTRY_NAMES = new Set([
-  "choice-label",
-  "button-shape-styles",
-  "choice-control-styles",
-  "filter-frame",
-  "filter-frame-styles",
-  "field-frame",
-  "motion-activity",
-  "numeric-bounds",
-  "value-tone",
-  "stable-id",
-  "field-description",
-  "roving-tabs",
-  "button-styles",
-  "card-frame",
-  "card-frame-styles",
-  "tab-list",
-  "tab-list-styles",
+  ...INTERNAL_HELPER_REGISTRY_NAMES,
   "theme-tokens",
   "icon-provider",
   "foundation",
@@ -42,26 +33,6 @@ const NON_COMPONENT_REGISTRY_NAMES = new Set([
   "motion",
   "app-shell",
 ]);
-
-const INTERNAL_HELPER_REGISTRY_NAMES = [
-  "choice-label",
-  "button-shape-styles",
-  "choice-control-styles",
-  "filter-frame",
-  "filter-frame-styles",
-  "field-frame",
-  "motion-activity",
-  "numeric-bounds",
-  "value-tone",
-  "stable-id",
-  "field-description",
-  "roving-tabs",
-  "button-styles",
-  "card-frame",
-  "card-frame-styles",
-  "tab-list",
-  "tab-list-styles",
-];
 
 /**
  * Value exports from packages/ui that are not primary catalog components:

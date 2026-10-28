@@ -2,6 +2,7 @@
 
 import React from "react";
 
+import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
 import styles from "./AsciiRippleText.module.css";
 
 const WAVE_THRESHOLD = 3;
@@ -41,6 +42,7 @@ export function AsciiRippleText({
 }: AsciiRippleTextProps) {
   const visualRef = React.useRef<HTMLSpanElement | null>(null);
   const text = React.useMemo(() => String(children), [children]);
+  const reducedMotion = usePrefersReducedMotion();
 
   React.useEffect(() => {
     const element = visualRef.current;
@@ -56,10 +58,6 @@ export function AsciiRippleText({
       return undefined;
     }
 
-    const reducedMotion =
-      typeof window !== "undefined" &&
-      typeof window.matchMedia === "function" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reducedMotion) {
       return undefined;
     }
@@ -261,7 +259,7 @@ export function AsciiRippleText({
       originalChars = text.split("");
       waves = [];
     };
-  }, [characterSet, disabled, durationMs, preserveSpaces, spread, text]);
+  }, [characterSet, disabled, durationMs, preserveSpaces, reducedMotion, spread, text]);
 
   return (
     <span

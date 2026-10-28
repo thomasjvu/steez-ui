@@ -10,6 +10,7 @@ import {
 } from "./lib/registry-transform.mjs";
 import { generateStandaloneComponents } from "./generate-standalone.mjs";
 import { COMPONENT_MANIFEST } from "../lib/docs/component-manifest.mjs";
+import { SHARED_REGISTRY_HELPERS } from "../lib/docs/registry-helpers.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const registryDir = path.join(repoRoot, "public/r-steez");
@@ -166,25 +167,7 @@ const itemDefinitions = [
   },
 ];
 
-// Shared source has one owning item; consumers depend on it rather than copying it.
-for (const [name, source, target] of [
-  ["choice-label", "packages/ui/src/components/ChoiceLabel.tsx", "components/steez/ChoiceLabel.tsx"],
-  ["button-shape-styles", "packages/ui/src/components/ButtonShape.module.css", "components/steez/ButtonShape.module.css"],
-  ["choice-control-styles", "packages/ui/src/components/ChoiceControl.module.css", "components/steez/ChoiceControl.module.css"],
-  ["filter-frame", "packages/ui/src/components/FilterFrame.tsx", "components/steez/FilterFrame.tsx"],
-  ["filter-frame-styles", "packages/ui/src/components/FilterFrame.module.css", "components/steez/FilterFrame.module.css"],
-  ["motion-activity", "packages/ui/src/hooks/useMotionActivity.ts", "components/hooks/useMotionActivity.ts"],
-  ["numeric-bounds", "packages/ui/src/utils/numbers.ts", "components/utils/numbers.ts"],
-  ["value-tone", "packages/ui/src/styles/ValueTone.module.css", "components/styles/ValueTone.module.css"],
-  ["stable-id", "packages/ui/src/hooks/useStableId.ts", "components/hooks/useStableId.ts"],
-  ["field-description", "packages/ui/src/hooks/useFieldDescription.ts", "components/hooks/useFieldDescription.ts"],
-  ["roving-tabs", "packages/ui/src/hooks/useRovingTabs.ts", "components/hooks/useRovingTabs.ts"],
-  ["button-styles", "packages/ui/src/styles/Buttons.module.css", "components/styles/Buttons.module.css"],
-  ["card-frame", "packages/ui/src/components/CardFrame.tsx", "components/steez/CardFrame.tsx"],
-  ["card-frame-styles", "packages/ui/src/components/CardFrame.module.css", "components/steez/CardFrame.module.css"],
-  ["tab-list", "packages/ui/src/components/TabList.tsx", "components/steez/TabList.tsx"],
-  ["tab-list-styles", "packages/ui/src/components/TabList.module.css", "components/steez/TabList.module.css"],
-]) {
+for (const { name, source, target } of SHARED_REGISTRY_HELPERS) {
   for (const item of itemDefinitions) {
     if (item.files.some((file) => file.source === source)) {
       item.files = item.files.filter((file) => file.source !== source);

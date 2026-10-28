@@ -10,6 +10,7 @@
 "use client";
 
 import * as React from "react";
+import { useEffect, useState } from "react";
 
 const __styles_steez_heartbeat_pulse_0: Record<string, string> = {
   "pulseRoot": "steez-heartbeat-pulse-0-pulseRoot",
@@ -72,6 +73,22 @@ function __injectSteezStandaloneStyles() {
 
 __injectSteezStandaloneStyles();
 
+const QUERY = "(prefers-reduced-motion: reduce)";
+
+/** Live `prefers-reduced-motion` value; false where matchMedia is unavailable. */
+export function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    if (typeof window.matchMedia !== "function") return undefined;
+    const media = window.matchMedia(QUERY);
+    const sync = () => setReduced(media.matches);
+    sync();
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, []);
+  return reduced;
+}
+
 export interface HeartbeatPulseProps {
   intervalMinutes?: number;
   size?: number;
@@ -98,18 +115,7 @@ export function HeartbeatPulse({
       ? Math.max(1.9, Math.min(2.4, intervalMinutes / 15))
       : 1.2;
   const instanceId = React.useId().replace(/:/g, "-");
-  const [prefersReducedMotion, setPrefersReducedMotion] = React.useState(false);
-
-  React.useEffect(() => {
-    if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
-      return undefined;
-    }
-    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const sync = () => setPrefersReducedMotion(query.matches);
-    sync();
-    query.addEventListener("change", sync);
-    return () => query.removeEventListener("change", sync);
-  }, []);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   const motionActive = active && !prefersReducedMotion;
   const animationDuration = motionActive ? `${baseDuration}s` : "0s";

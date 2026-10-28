@@ -2,6 +2,7 @@
 
 import React from "react";
 
+import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
 import styles from "./HeartbeatPulse.module.css";
 
 export interface HeartbeatPulseProps {
@@ -30,18 +31,7 @@ export function HeartbeatPulse({
       ? Math.max(1.9, Math.min(2.4, intervalMinutes / 15))
       : 1.2;
   const instanceId = React.useId().replace(/:/g, "-");
-  const [prefersReducedMotion, setPrefersReducedMotion] = React.useState(false);
-
-  React.useEffect(() => {
-    if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
-      return undefined;
-    }
-    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const sync = () => setPrefersReducedMotion(query.matches);
-    sync();
-    query.addEventListener("change", sync);
-    return () => query.removeEventListener("change", sync);
-  }, []);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   const motionActive = active && !prefersReducedMotion;
   const animationDuration = motionActive ? `${baseDuration}s` : "0s";

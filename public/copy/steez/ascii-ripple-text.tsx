@@ -10,6 +10,7 @@
 "use client";
 
 import * as React from "react";
+import { useEffect, useState } from "react";
 
 const __styles_steez_ascii_ripple_text_0: Record<string, string> = {
   "root": "steez-ascii-ripple-text-0-root",
@@ -81,6 +82,22 @@ function __injectSteezStandaloneStyles() {
 
 __injectSteezStandaloneStyles();
 
+const QUERY = "(prefers-reduced-motion: reduce)";
+
+/** Live `prefers-reduced-motion` value; false where matchMedia is unavailable. */
+export function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    if (typeof window.matchMedia !== "function") return undefined;
+    const media = window.matchMedia(QUERY);
+    const sync = () => setReduced(media.matches);
+    sync();
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, []);
+  return reduced;
+}
+
 const WAVE_THRESHOLD = 3;
 const CHARACTER_MULTIPLIER = 3;
 const ANIMATION_STEP_MS = 40;
@@ -118,6 +135,7 @@ export function AsciiRippleText({
 }: AsciiRippleTextProps) {
   const visualRef = React.useRef<HTMLSpanElement | null>(null);
   const text = React.useMemo(() => String(children), [children]);
+  const reducedMotion = usePrefersReducedMotion();
 
   React.useEffect(() => {
     const element = visualRef.current;
@@ -133,10 +151,6 @@ export function AsciiRippleText({
       return undefined;
     }
 
-    const reducedMotion =
-      typeof window !== "undefined" &&
-      typeof window.matchMedia === "function" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reducedMotion) {
       return undefined;
     }
@@ -338,7 +352,7 @@ export function AsciiRippleText({
       originalChars = text.split("");
       waves = [];
     };
-  }, [characterSet, disabled, durationMs, preserveSpaces, spread, text]);
+  }, [characterSet, disabled, durationMs, preserveSpaces, reducedMotion, spread, text]);
 
   return (
     <span

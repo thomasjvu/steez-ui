@@ -73,6 +73,22 @@ export function progressPercentage(value: number, min = 0, max = 100) {
   return clampFinite(((value - min) / (max - min)) * 100, 0, 100, 0);
 }
 
+const QUERY = "(prefers-reduced-motion: reduce)";
+
+/** Live `prefers-reduced-motion` value; false where matchMedia is unavailable. */
+export function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    if (typeof window.matchMedia !== "function") return undefined;
+    const media = window.matchMedia(QUERY);
+    const sync = () => setReduced(media.matches);
+    sync();
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, []);
+  return reduced;
+}
+
 /** Shared lifecycle for ambient motion: explicit pause, visibility, and reduced motion. */
 export function useMotionActivity<T extends HTMLElement = HTMLDivElement>(
   paused = false,
@@ -81,18 +97,11 @@ export function useMotionActivity<T extends HTMLElement = HTMLDivElement>(
   const ref = useRef<T>(null);
   const [inView, setInView] = useState(true);
   const [pageVisible, setPageVisible] = useState(true);
-  const [reduced, setReduced] = useState(false);
+  const reduced = usePrefersReducedMotion();
   useEffect(() => {
-    const media =
-      typeof window.matchMedia === "function"
-        ? window.matchMedia("(prefers-reduced-motion: reduce)")
-        : null;
-    const syncMotion = () => setReduced(media?.matches ?? false);
     const syncVisibility = () =>
       setPageVisible(document.visibilityState !== "hidden");
-    syncMotion();
     syncVisibility();
-    media?.addEventListener("change", syncMotion);
     document.addEventListener("visibilitychange", syncVisibility);
     const observer =
       typeof IntersectionObserver === "undefined"
@@ -102,7 +111,6 @@ export function useMotionActivity<T extends HTMLElement = HTMLDivElement>(
           });
     if (ref.current) observer?.observe(ref.current);
     return () => {
-      media?.removeEventListener("change", syncMotion);
       document.removeEventListener("visibilitychange", syncVisibility);
       observer?.disconnect();
     };
