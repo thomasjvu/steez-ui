@@ -1,44 +1,33 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
+import js from "@eslint/js";
+import tseslint from "typescript-eslint";
+import hooks from "eslint-plugin-react-hooks";
+import globals from "globals";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-const eslintConfig = [
+export default tseslint.config(
   {
     ignores: [
-      "**/.next/**",
       "**/dist/**",
+      "**/.cache/**",
       "**/tmp/**",
       "**/coverage/**",
-      "**/out/**",
       "**/build/**",
       "**/.pages-dist/**",
+      "**/.site-ssr/**",
+      "**/.next/**",
+      "**/out/**",
       "public/copy/steez/**",
-      "next-env.d.ts",
+      "registry/boston/**",
     ],
   },
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
+  { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
   {
-    // These components are framework-agnostic package source and must keep
-    // native image elements; Next.js image optimization is consumer-specific.
-    // Boston is frozen archival shadcn demo code and is not part of the Next app.
-    files: [
-      "packages/ui/src/components/AccordionFeatureCard.tsx",
-      "packages/ui/src/components/CharacterAfterimage.tsx",
-      "packages/react/src/components/media.tsx",
-      "registry/boston/blocks/angled-corner-cards/angled-corner-cards.tsx",
-      "registry/boston/blocks/boiling-lines-effect/boiling-lines-effect.tsx",
-    ],
+    files: ["**/*.{ts,tsx,js,jsx,mjs}"],
+    plugins: { "react-hooks": hooks },
     rules: {
-      "@next/next/no-img-element": "off",
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
     },
   },
-];
-
-export default eslintConfig;
+);
