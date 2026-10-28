@@ -152,9 +152,10 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/Field.m
   height: var(--thumb-size);
   border-radius: calc(var(--thumb-size) / 2);
   background: var(--success, #00ff88);
-  /* Meet the thumb center at every value — no gap, no overshoot past the knob. */
+  /* End at the thumb's outer edge so the fill's rounded cap is the thumb
+     circle itself: one capsule at every value, no waist where they meet. */
   width: calc(
-    (var(--thumb-size) / 2) +
+    var(--thumb-size) +
       (100% - var(--thumb-size)) * var(--slider-percentage, 0) / 100
   );
   pointer-events: none;
@@ -182,15 +183,18 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/Field.m
 
 .steez-slider-1-slider::-webkit-slider-thumb {
   appearance: none;
+  /* Border-box keeps the native thumb exactly --thumb-size, so its center
+     matches the fill geometry; a border would add 4px and offset the knob. */
+  box-sizing: border-box;
   width: var(--thumb-size);
   height: var(--thumb-size);
   margin-top: 0;
   border-radius: 50%;
   background: var(--success, #00ff88);
   cursor: pointer;
-  border: 2px solid color-mix(in srgb, var(--success, #00ff88) 35%, transparent);
+  border: 0;
   box-shadow: 0 0 10px color-mix(in srgb, var(--success, #00ff88) 40%, transparent);
-  transition: box-shadow var(--transition-fast, 150ms ease), border-color var(--transition-fast, 150ms ease);
+  transition: box-shadow var(--transition-fast, 150ms ease);
 }
 
 .steez-slider-1-slider::-moz-range-track {
@@ -200,14 +204,15 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/Field.m
 }
 
 .steez-slider-1-slider::-moz-range-thumb {
+  box-sizing: border-box;
   width: var(--thumb-size);
   height: var(--thumb-size);
   border-radius: 50%;
   background: var(--success, #00ff88);
   cursor: pointer;
-  border: 2px solid color-mix(in srgb, var(--success, #00ff88) 35%, transparent);
+  border: 0;
   box-shadow: 0 0 10px color-mix(in srgb, var(--success, #00ff88) 40%, transparent);
-  transition: box-shadow var(--transition-fast, 150ms ease), border-color var(--transition-fast, 150ms ease);
+  transition: box-shadow var(--transition-fast, 150ms ease);
 }
 
 .steez-slider-1-track:hover .steez-slider-1-trackBase {

@@ -42,9 +42,10 @@
   height: var(--thumb-size);
   border-radius: calc(var(--thumb-size) / 2);
   background: var(--success);
-  /* Meet the thumb center at every value — no gap, no overshoot past the knob. */
+  /* End at the thumb's outer edge so the fill's rounded cap is the thumb
+     circle itself: one capsule at every value, no waist where they meet. */
   width: calc(
-    (var(--thumb-size) / 2) +
+    var(--thumb-size) +
       (100% - var(--thumb-size)) * var(--slider-percentage, 0) / 100
   );
   pointer-events: none;
@@ -72,15 +73,18 @@
 
 .slider::-webkit-slider-thumb {
   appearance: none;
+  /* Border-box keeps the native thumb exactly --thumb-size, so its center
+     matches the fill geometry; a border would add 4px and offset the knob. */
+  box-sizing: border-box;
   width: var(--thumb-size);
   height: var(--thumb-size);
   margin-top: 0;
   border-radius: 50%;
   background: var(--success);
   cursor: pointer;
-  border: 2px solid color-mix(in srgb, var(--success) 35%, transparent);
+  border: 0;
   box-shadow: 0 0 10px color-mix(in srgb, var(--success) 40%, transparent);
-  transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+  transition: box-shadow var(--transition-fast);
 }
 
 .slider::-moz-range-track {
@@ -90,14 +94,15 @@
 }
 
 .slider::-moz-range-thumb {
+  box-sizing: border-box;
   width: var(--thumb-size);
   height: var(--thumb-size);
   border-radius: 50%;
   background: var(--success);
   cursor: pointer;
-  border: 2px solid color-mix(in srgb, var(--success) 35%, transparent);
+  border: 0;
   box-shadow: 0 0 10px color-mix(in srgb, var(--success) 40%, transparent);
-  transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+  transition: box-shadow var(--transition-fast);
 }
 
 .track:hover .trackBase {
