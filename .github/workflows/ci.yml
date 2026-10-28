@@ -49,3 +49,6 @@ jobs:
 
       - name: Build
         run: pnpm build
+
+      - name: Static docs smoke
+        run: pnpm test:site-smoke

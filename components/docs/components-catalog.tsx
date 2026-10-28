@@ -1,67 +1,112 @@
-"use client";
-
-import Link from "next/link";
-import React from "react";
+import { useMemo, useState } from "react";
+import { Link } from "react-router";
 import {
   COMPONENT_CATEGORY_LABELS,
   COMPONENT_DOCS,
   COMPONENT_FILTERS,
+  type ComponentCategory,
   type ComponentFilter,
-} from "@/lib/docs/component-catalog";
-import styles from "./component-docs.module.css";
-import siteStyles from "./site-layout.module.css";
+} from "../../lib/docs/component-catalog";
 
 export function ComponentsCatalog() {
-  const [filter, setFilter] = React.useState<ComponentFilter>("all");
-
-  const groupedComponents = React.useMemo(() => {
-    return COMPONENT_FILTERS.filter((item) => item.value !== "all").map(({ value: category }) => ({
-      category,
-      items: COMPONENT_DOCS.filter((component) =>
-        component.category === category && (filter === "all" || category === filter),
-      ),
-    })).filter((group) => group.items.length > 0);
-  }, [filter]);
-
+  const [filter, setFilter] = useState<ComponentFilter>("all");
+  const [query, setQuery] = useState("");
+  const groups = useMemo(
+    () =>
+      COMPONENT_FILTERS.filter(({ value }) => value !== "all")
+        .map(({ value: category }) => ({
+          category,
+          items: COMPONENT_DOCS.filter(
+            (item) =>
+              item.category === category &&
+              (filter === "all" || category === filter) &&
+              `${item.title} ${item.slug} ${item.summary} ${item.tags.join(" ")}`
+                .toLowerCase()
+                .includes(query.toLowerCase().trim()),
+          ),
+        }))
+        .filter((group) => group.items.length > 0),
+    [filter, query],
+  );
+  const count = groups.reduce((total, group) => total + group.items.length, 0);
   return (
     <>
-      <div className={styles.filterBar} role="group" aria-label="Filter by category">
-        {COMPONENT_FILTERS.map((item) => {
-          const active = filter === item.value;
-          return (
+      <header className="page-header">
+        <p className="eyebrow">
+          The library · {COMPONENT_DOCS.length} components
+        </p>
+        <h1>Components</h1>
+        <p>
+          React primitives with a point of view. Preview a component, then bring
+          it into your project.
+        </p>
+      </header>
+      <div className="catalog-tools">
+        <div
+          className="filter-bar"
+          role="group"
+          aria-label="Filter by category"
+        >
+          {COMPONENT_FILTERS.map((item) => (
             <button
               key={item.value}
               type="button"
-              aria-pressed={active}
-              className={`${styles.filterChip} ${active ? styles.filterChipActive : ""}`}
+              aria-pressed={filter === item.value}
               onClick={() => setFilter(item.value)}
             >
               {item.label}
             </button>
-          );
-        })}
+          ))}
+        </div>
+        <input
+          className="catalog-search"
+          type="search"
+          aria-label="Search components"
+          placeholder="Search components…"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+        />
       </div>
-
-      {groupedComponents.map((group) => (
-        <section key={group.category} className={siteStyles.section}>
-          <h2 className={siteStyles.sectionTitle}>
-            {COMPONENT_CATEGORY_LABELS[group.category]}
+      <span className="sr-only" role="status">
+        {count} components
+      </span>
+      {groups.map((group) => (
+        <section key={group.category} className="catalog-group">
+          <h2>
+            {COMPONENT_CATEGORY_LABELS[group.category as ComponentCategory]}{" "}
+            <span aria-hidden="true">{group.items.length}</span>
           </h2>
-          <ul className={styles.catalogList}>
-            {group.items.map((component) => (
-              <li key={component.slug}>
-                <Link href={`/components/${component.slug}`} className={styles.catalogRow}>
-                  <div className={styles.catalogRowMain}>
-                    <span className={styles.catalogName}>{component.title}</span>
-                    <span className={styles.catalogSlug}>{component.slug}</span>
+          <ul className="catalog-list">
+            {group.items.map((item) => (
+              <li key={item.slug}>
+                <Link to={`/components/${item.slug}`}>
+                  <div className="catalog-name">
+                    {item.title}
+                    <span aria-hidden="true">↗</span>
                   </div>
-                  <p className={styles.catalogSummary}>{component.summary}</p>
+                  <p>{item.summary}</p>
                 </Link>
               </li>
             ))}
           </ul>
         </section>
       ))}
+      {count === 0 && (
+        <div className="page-header">
+          <h2>No matching components</h2>
+          <p>Try a different name or category.</p>
+          <button
+            type="button"
+            onClick={() => {
+              setQuery("");
+              setFilter("all");
+            }}
+            style={{ marginTop: 16 }}
+          >
+            Clear filters
+          </button>
+        </div>
+      )}
     </>
   );
 }

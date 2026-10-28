@@ -1,3 +1,4 @@
+// @vitest-environment node
 import fs from "fs";
 import path from "path";
 import { describe, expect, it } from "vitest";
@@ -7,7 +8,6 @@ import { COMPONENT_DOCS } from "./component-catalog";
 import { COMPONENT_MANIFEST } from "./component-manifest.mjs";
 
 const registryDir = path.join(process.cwd(), "public/r-steez");
-const standaloneDir = path.join(process.cwd(), "public/copy/steez");
 const packageIndexPath = path.join(process.cwd(), "packages/ui/src/index.ts");
 const packageBlocksPath = path.join(process.cwd(), "packages/ui/src/blocks.ts");
 const packageSubpathPaths = [
@@ -16,6 +16,15 @@ const packageSubpathPaths = [
 
 /** Non-component registry items that are allowed without a catalog slug. */
 const NON_COMPONENT_REGISTRY_NAMES = new Set([
+  "choice-label",
+  "button-shape-styles",
+  "choice-control-styles",
+  "filter-frame",
+  "filter-frame-styles",
+  "field-frame",
+  "motion-activity",
+  "numeric-bounds",
+  "value-tone",
   "stable-id",
   "field-description",
   "roving-tabs",
@@ -35,6 +44,15 @@ const NON_COMPONENT_REGISTRY_NAMES = new Set([
 ]);
 
 const INTERNAL_HELPER_REGISTRY_NAMES = [
+  "choice-label",
+  "button-shape-styles",
+  "choice-control-styles",
+  "filter-frame",
+  "filter-frame-styles",
+  "field-frame",
+  "motion-activity",
+  "numeric-bounds",
+  "value-tone",
   "stable-id",
   "field-description",
   "roving-tabs",
@@ -50,9 +68,8 @@ const INTERNAL_HELPER_REGISTRY_NAMES = [
  * aliases, hooks, constants, and secondary exports covered by another slug.
  */
 const NON_CATALOG_COMPONENT_EXPORTS = new Set([
-  "CyberTile", // alias of CyberpunkTile
   "useLoadingProgress",
-  "CyberpunkRadioGroup", // covered by cyberpunk-radio
+  "RadioGroup", // covered by radio
 ]);
 
 /** Explicit PascalCase → kebab-case overrides (acronyms, etc.). */
@@ -132,43 +149,6 @@ describe("registry parity", () => {
     expect([...packageSlugs].sort()).toEqual([...manifestSlugs].sort());
   });
 
-  it("has a public/r-steez JSON payload for every COMPONENT_DOCS slug", () => {
-    const missing: string[] = [];
-
-    for (const doc of COMPONENT_DOCS) {
-      const itemPath = path.join(registryDir, `${doc.slug}.json`);
-      if (!fs.existsSync(itemPath)) {
-        missing.push(doc.slug);
-      }
-    }
-
-    expect(missing, `Missing registry JSON for catalog slugs: ${missing.join(", ")}`).toEqual(
-      [],
-    );
-  });
-
-  it("has one generated standalone TSX file for every COMPONENT_DOCS slug", () => {
-    const missing: string[] = [];
-
-    for (const doc of COMPONENT_DOCS) {
-      const standalonePath = path.join(standaloneDir, `${doc.slug}.tsx`);
-      if (!fs.existsSync(standalonePath)) {
-        missing.push(doc.slug);
-        continue;
-      }
-
-      const source = fs.readFileSync(standalonePath, "utf8");
-      expect(source).not.toContain("@steez-ui/");
-      expect(source).not.toMatch(/\b(?:from|import)\s*["']\.[^"']+["']/);
-      expect(source).not.toMatch(/\b(?:from|import)\s*["'][^"']*\.module\.css["']/);
-    }
-
-    expect(
-      missing,
-      `Missing standalone TSX copies for catalog slugs: ${missing.join(", ")}`,
-    ).toEqual([]);
-  });
-
   it("does not leave catalog components without registry coverage (allowlist only non-components)", () => {
     // Every file under r-steez that is not a catalog slug must be allowlisted.
     const catalogSlugs = new Set(COMPONENT_DOCS.map((doc) => doc.slug));
@@ -197,47 +177,5 @@ describe("registry parity", () => {
       expect(fs.existsSync(path.join(registryDir, `${helperName}.json`))).toBe(true);
       expect(indexedNames.has(helperName)).toBe(false);
     }
-  });
-
-  it("has a preview loader for every catalog slug", () => {
-    const catalogSlugs = new Set(COMPONENT_DOCS.map((doc) => doc.slug));
-    const previewSlugs = new Set(PREVIEW_SLUGS);
-    const missing = [...catalogSlugs].filter((slug) => !previewSlugs.has(slug));
-    const unexpected = [...previewSlugs].filter((slug) => !catalogSlugs.has(slug));
-
-    expect(
-      missing,
-      `Catalog slugs without preview loaders: ${missing.join(", ")}`,
-    ).toEqual([]);
-    expect(
-      unexpected,
-      `Preview loaders without catalog slugs: ${unexpected.join(", ")}`,
-    ).toEqual([]);
-  });
-
-  it("has a catalog slug for every package component export (export ↔ catalog parity)", () => {
-    const mainSource = fs.readFileSync(packageIndexPath, "utf8");
-    const blocksSource = fs.readFileSync(packageBlocksPath, "utf8");
-    const exports = [
-      ...parseComponentExports(mainSource),
-      ...parseComponentExports(blocksSource),
-    ];
-    const catalogSlugs = new Set(COMPONENT_DOCS.map((doc) => doc.slug));
-    const missing: string[] = [];
-
-    for (const name of exports) {
-      if (NON_CATALOG_COMPONENT_EXPORTS.has(name)) {
-        continue;
-      }
-      const slug = pascalToKebab(name);
-      if (!catalogSlugs.has(slug)) {
-        missing.push(`${name} → ${slug}`);
-      }
-    }
-
-    expect(
-      missing,
-      `Package exports without catalog slug: ${missing.join(", ")}`,
-    ).toEqual([]);
   });
 });

@@ -3,23 +3,23 @@
 import React from "react";
 
 import {
-  IconStackSelect,
-  CyberpunkCheckbox,
-  CyberpunkInput,
-  CyberpunkRadioGroup,
-  CyberpunkSelect,
-  CyberpunkSlider,
-  CyberpunkTextarea,
+  Checkbox,
+  Input,
+  RadioGroup,
+  Select,
+  Slider,
+  Textarea,
   SegmentedControl,
 } from "@steez-ui/ui";
 
 import styles from "../component-docs.module.css";
 
-export function CyberpunkInputPreview() {
+export function InputPreview() {
   const [value, setValue] = React.useState("rally");
 
   return (
-    <CyberpunkInput
+    <Input
+      labelStyle="notch"
       label="Companion name"
       value={value}
       onChange={(event) => setValue(event.target.value)}
@@ -29,29 +29,46 @@ export function CyberpunkInputPreview() {
   );
 }
 
-export function CyberpunkSelectPreview() {
+export function SelectPreview() {
   const [value, setValue] = React.useState("balanced");
-
+  const options = [
+    { value: "fast", label: "Fast" },
+    { value: "balanced", label: "Balanced" },
+    { value: "quality", label: "Quality" },
+  ];
   return (
-    <CyberpunkSelect
-      label="Model tier"
-      value={value}
-      onChange={(event) => setValue(event.target.value)}
-      options={[
-        { value: "fast", label: "Fast" },
-        { value: "balanced", label: "Balanced" },
-        { value: "quality", label: "Quality" },
-      ]}
-      variant="full"
-    />
+    <div
+      className={styles.previewColumn}
+      style={{ width: "100%", maxWidth: 360 }}
+    >
+      <Select
+        label="Plain label"
+        value={value}
+        onValueChange={setValue}
+        options={options}
+        variant="full"
+      />
+      <Select
+        label="Cut label"
+        labelStyle="notch"
+        value={value}
+        onValueChange={setValue}
+        options={options}
+        variant="full"
+        helperText="The label cuts only the control border."
+      />
+    </div>
   );
 }
 
-export function CyberpunkTextareaPreview() {
-  const [value, setValue] = React.useState("You are a polished AI companion with a clear visual voice.");
+export function TextareaPreview() {
+  const [value, setValue] = React.useState(
+    "You are a polished AI companion with a clear visual voice.",
+  );
 
   return (
-    <CyberpunkTextarea
+    <Textarea
+      labelStyle="notch"
       label="System prompt"
       value={value}
       onChange={(event) => setValue(event.target.value)}
@@ -61,30 +78,32 @@ export function CyberpunkTextareaPreview() {
   );
 }
 
-export function CyberpunkCheckboxPreview() {
+export function CheckboxPreview() {
   const [checked, setChecked] = React.useState(true);
 
   return (
     <div className={styles.previewColumn}>
-      <CyberpunkCheckbox
+      <Checkbox
         label="Enable publishing queue"
         checked={checked}
-        onChange={setChecked}
+        onCheckedChange={setChecked}
       />
-      <div className={styles.previewNote}>Current value: {checked ? "enabled" : "disabled"}</div>
+      <div className={styles.previewNote}>
+        Current value: {checked ? "enabled" : "disabled"}
+      </div>
     </div>
   );
 }
 
-export function CyberpunkRadioPreview() {
+export function RadioPreview() {
   const [value, setValue] = React.useState("hosted");
 
   return (
     <div className={styles.previewColumn}>
-      <CyberpunkRadioGroup
+      <RadioGroup
         name="runtime-mode"
         value={value}
-        onChange={setValue}
+        onValueChange={setValue}
         options={[
           { value: "hosted", label: "Hosted" },
           { value: "self-hosted", label: "Self-hosted" },
@@ -95,18 +114,22 @@ export function CyberpunkRadioPreview() {
   );
 }
 
-export function CyberpunkSliderPreview() {
+export function SliderPreview() {
   const [value, setValue] = React.useState(62);
 
   return (
-    <div className={styles.previewColumn} style={{ width: "100%", maxWidth: 360, alignItems: "stretch" }}>
-      <CyberpunkSlider
+    <div
+      className={styles.previewColumn}
+      style={{ width: "100%", maxWidth: 360, alignItems: "stretch" }}
+    >
+      <Slider
         label="Default"
         value={value}
         onChange={(event) => setValue(Number(event.target.value))}
       />
-      <CyberpunkSlider
+      <Slider
         label="Diamond"
+        labelStyle="notch"
         variant="diamond"
         value={value}
         onChange={(event) => setValue(Number(event.target.value))}
@@ -122,33 +145,12 @@ export function SegmentedControlPreview() {
   return (
     <SegmentedControl
       value={value}
-      onChange={setValue}
+      onValueChange={setValue}
       options={[
         { value: "registry", label: "Registry" },
         { value: "packages", label: "Packages" },
       ]}
       label="Install path"
     />
-  );
-}
-
-export function IconStackSelectPreview() {
-  const [value, setValue] = React.useState("balanced");
-  const icons = [
-    { id: "circle", label: "Circle", icon: <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6" fill="#111" /></svg> },
-    { id: "square", label: "Square", icon: <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" fill="#111" /></svg> },
-    { id: "triangle", label: "Triangle", icon: <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 5 8 14H4Z" fill="#111" /></svg> },
-  ];
-  return (
-    <div className={styles.previewColumn} style={{ width: "100%", maxWidth: 360 }}>
-      <IconStackSelect label="Model" value={value} onValueChange={setValue}
-        options={[
-          { value: "fast", label: "Fast", icons: icons.slice(0, 2) },
-          { value: "balanced", label: "Balanced", icons },
-          { value: "quality", label: "Quality", icons: icons.slice(1) },
-          { value: "offline", label: "Offline (unavailable)", disabled: true },
-        ]} />
-      <p className={styles.previewNote}>All associated icons stay visible. Use arrow keys to browse and Enter to choose.</p>
-    </div>
   );
 }

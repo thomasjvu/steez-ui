@@ -111,7 +111,7 @@ export function MarqueeStripPreview() {
         { kind: "Theme", label: "Chronicle site kit" },
         { kind: "Workflow", label: "Launch approvals" },
       ]}
-      durationSeconds={12}
+      durationMs={12000}
       gap="0.55rem"
       className={styles.marqueeDemo}
       renderItem={(item) => (
@@ -133,7 +133,7 @@ export function WidgetCardPreview() {
         icon={<EyeIcon width={18} height={18} />}
         overlay={
           <div className={styles.widgetOverlay}>
-            <OverlayButton aria-label="Inspect">
+            <OverlayButton iconOnly aria-label="Inspect">
               <InfoIcon width={14} height={14} />
             </OverlayButton>
           </div>

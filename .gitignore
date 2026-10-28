@@ -13,7 +13,10 @@
 # testing
 /coverage
 
-# next.js
+# site build outputs
+/dist/
+/.site-ssr/
+# Stale outputs from the previous frontend
 /.next/
 /out/
 
@@ -38,7 +41,6 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
 
 # package build outputs
 packages/*/dist/
@@ -56,3 +58,6 @@ packages/*/*.tgz
 # scratch
 tmp/
 .pages-dist/
+
+# Local validation caches and check queue
+.cache/

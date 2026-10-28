@@ -3,7 +3,6 @@
 import React from "react";
 
 import {
-  CrystalButton,
   Button,
   CopyButton,
   FUIButtonTile,
@@ -31,6 +30,7 @@ export function ButtonPreview() {
       <Button>Deploy</Button>
       <Button variant="secondary">Preview</Button>
       <Button variant="danger">Remove</Button>
+      <CrystalShapes />
     </div>
   );
 }
@@ -112,7 +112,7 @@ export function OverlayButtonPreview() {
       >
         <EyeIcon width={16} height={16} />
       </OverlayButton>
-      <OverlayButton aria-label="Refresh">
+      <OverlayButton iconOnly aria-label="Refresh">
         <RefreshIcon width={16} height={16} />
       </OverlayButton>
     </div>
@@ -123,12 +123,12 @@ export function PixelTooltipPreview() {
   return (
     <div className={styles.previewRow}>
       <PixelTooltip content="Save configuration" position="top">
-        <OverlayButton aria-label="Save">
+        <OverlayButton iconOnly aria-label="Save">
           <CheckIcon width={16} height={16} />
         </OverlayButton>
       </PixelTooltip>
       <PixelTooltip content="Open viewer details" position="bottom">
-        <OverlayButton aria-label="Inspect">
+        <OverlayButton iconOnly aria-label="Inspect">
           <InfoIcon width={16} height={16} />
         </OverlayButton>
       </PixelTooltip>
@@ -146,16 +146,16 @@ export function SectionHeaderPreview() {
   );
 }
 
-export function CrystalButtonPreview() {
+function CrystalShapes() {
   const [threads, setThreads] = React.useState(0);
   const plus = <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>;
   return (
     <div className={styles.previewColumn}>
       <div className={styles.previewRow}>
-        <CrystalButton href="/components" tone="loud">Open app <span aria-hidden="true">↗</span></CrystalButton>
-        <CrystalButton onClick={() => setThreads((count) => count + 1)}>New thread</CrystalButton>
-        <CrystalButton orientation="vertical" aria-label="New thread" onClick={() => setThreads((count) => count + 1)}>{plus}</CrystalButton>
-        <CrystalButton disabled>Unavailable</CrystalButton>
+        <Button shape="crystal" href="/components">Open app <span aria-hidden="true">↗</span></Button>
+        <Button shape="crystal" onClick={() => setThreads((count) => count + 1)}>New thread</Button>
+        <Button shape="crystal" orientation="vertical" aria-label="New thread" onClick={() => setThreads((count) => count + 1)}>{plus}</Button>
+        <Button shape="crystal" disabled>Unavailable</Button>
       </div>
       <p className={styles.previewNote} role="status">Threads created: {threads}</p>
     </div>
