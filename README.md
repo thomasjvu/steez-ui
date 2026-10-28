@@ -2,6 +2,33 @@
 
 React components, design tokens, and icons, with a docs site for previews and installation.
 
+## Brand and display font
+
+The docs use the record-label wordmark in `public/brand/steezui-logo.svg`,
+using cleaned vector silhouettes from the approved logo image for its six distinct
+letters. **Steez Display** extends those shapes into Regular (400) and Bold (700) fonts: uppercase,
+lowercase, numbers, ASCII punctuation, and selected currency, typographic, and
+arrow symbols. It is available for logos and display text; the app uses Maple Mono
+Bold for headings and Maple Mono for body copy. The family is licensed under the
+SIL Open Font License 1.1.
+
+Open `/brand/specimen.html` on the docs dev server to try both weights and download
+`/brand/steez-display-family.zip`. Desktop TTFs, web WOFF2s, the CSS declarations,
+and license are in `public/brand/fonts/`. To use the family on the web:
+
+```css
+@import url("/brand/fonts/fonts.css");
+.headline { font-family: "Steez Display", sans-serif; font-weight: 700; }
+```
+
+The reproducible outline source is `scripts/build-steez-display.py`. Rebuild with:
+
+```bash
+python3 -m venv .cache/steez-font-venv
+.cache/steez-font-venv/bin/pip install -r scripts/steez-font-requirements.txt
+.cache/steez-font-venv/bin/python scripts/build-steez-display.py
+```
+
 ## Start a project
 
 Use the npm packages when projects should receive shared updates. Use the registry
@@ -45,7 +72,7 @@ where the host framework uses one.
 
 | Need | Start with | Guidance |
 | --- | --- | --- |
-| Signature cut-corner surface | `CyberpunkTile` | `CyberTile` is a compatibility alias, not another component. |
+| Signature cut-corner surface | `CyberpunkTile` | Use the surface directly. |
 | Interactive launcher | `FUIButtonTile` | Use a button for an action; tiles frame content. |
 | Quiet content surface | `ThemedCard` | Use `CornerBracketCard` or `DottedHaloCard` when that framing serves the design. |
 | Hand-drawn motion | `BoilingLines` | One component with `subtle`, `default`, and `intense` presets. |
@@ -63,7 +90,7 @@ belong in the docs, not in new copies of the primitive.
 The canonical surface families are **actions**, **forms**, **surfaces**, **layout**,
 **motion/text**, and **feedback/loading**. The package README lists the public exports
 in each family. A new component should add a new behavior or interaction;
-visual variations belong as props or a documented compatibility alias.
+visual variations belong as props.
 
 `BoilingLines` accepts children, intensity, speedMs, scale, paused, and native div
 attributes. It preserves artwork alt text and disables animation for reduced motion.
@@ -107,7 +134,7 @@ Open one primitive at a time:
 
 | Route | Purpose |
 | --- | --- |
-| `/` | Overview + install |
+| `/` | Component library |
 | `/components` | Catalog index (filter by category) |
 | `/components/[slug]` | Single component: preview, usage, install |
 | `/docs` | Authoring model: add a primitive (package → catalog → preview → registry) |
@@ -119,22 +146,30 @@ Open one primitive at a time:
 
 Components to try first:
 
-- [Cyberpunk Tile](/components/cyberpunk-tile) (`CyberTile` alias)
+- [Cyberpunk Tile](/components/cyberpunk-tile)
 - [Boiling Lines](/components/boiling-lines)
 - [Loading Progress Bar](/components/loading-progress-bar)
 - [FUI Button Tile](/components/fui-button-tile)
 
 ## Development
 
+The docs site uses Vite + React, with direct aliases to canonical package source.
+Component TSX and CSS edits refresh previews without rebuilding `dist`.
+Appearance follows the system by default; the sidebar provides light/dark overrides.
+
+
 ```bash
 pnpm install
-pnpm build:packages
 pnpm dev
 ```
 
 ```bash
-# build packages only
-pnpm build:packages
+# build docs + packages
+pnpm build
+# preview the production site
+pnpm start
+# deploy the verified Vite output to Cloudflare Pages
+pnpm deploy:pages
 ```
 
 ```bash
@@ -156,7 +191,7 @@ packages/
   ui/       # canonical primitives (source of truth)
   react/    # DEPRECATED portable package (sunset)
 
-app/        # Next docs + discover site
+src/        # Vite + React docs frontend
 public/r-steez/  # generated registry JSON for package primitives
 public/copy/steez/ # generated single-file standalone copies
 public/r/        # archival Boston motion / demo blocks (frozen)
@@ -170,39 +205,39 @@ Locally use your dev origin; production registry base is `SITE_URL` (`https://st
 **Foundation preset** (forms starter — inputs, select, checkbox, slider, button):
 
 ```bash
-pnpm dlx shadcn@latest add http://localhost:3000/r-steez/foundation.json
+pnpm dlx shadcn@latest add http://localhost:5173/r-steez/foundation.json
 ```
 
 **Optional product preset** (theme + cyberpunk-tile + fui-button-tile + loading-progress-bar):
 
 ```bash
-pnpm dlx shadcn@latest add http://localhost:3000/r-steez/phantasy-fui.json
+pnpm dlx shadcn@latest add http://localhost:5173/r-steez/phantasy-fui.json
 ```
 
 **Surface preset** (tiles, cards, and compact metrics):
 
 ```bash
-pnpm dlx shadcn@latest add http://localhost:3000/r-steez/surfaces.json
+pnpm dlx shadcn@latest add http://localhost:5173/r-steez/surfaces.json
 ```
 
 **Motion preset** (hand-drawn, text, marquee, and heartbeat treatments):
 
 ```bash
-pnpm dlx shadcn@latest add http://localhost:3000/r-steez/motion.json
+pnpm dlx shadcn@latest add http://localhost:5173/r-steez/motion.json
 ```
 
 **App shell preset** (navigation, layout, feedback, and loading primitives):
 
 ```bash
-pnpm dlx shadcn@latest add http://localhost:3000/r-steez/app-shell.json
+pnpm dlx shadcn@latest add http://localhost:5173/r-steez/app-shell.json
 ```
 
 Single primitives:
 
 ```bash
 # Local (pnpm dev)
-pnpm dlx shadcn@latest add http://localhost:3000/r-steez/cyberpunk-tile.json
-pnpm dlx shadcn@latest add http://localhost:3000/r-steez/loading-progress-bar.json
+pnpm dlx shadcn@latest add http://localhost:5173/r-steez/cyberpunk-tile.json
+pnpm dlx shadcn@latest add http://localhost:5173/r-steez/loading-progress-bar.json
 
 # Production
 pnpm dlx shadcn@latest add https://steez-ui-6v5.pages.dev/r-steez/cyberpunk-tile.json
@@ -226,3 +261,27 @@ and dependency wiring installed automatically.
 ## License
 
 MIT
+
+
+The site build prerenders the catalog, documentation, and every component route
+into `dist/`, with per-page metadata, a sitemap, and a 404 page. Browser previews
+load on demand after hydration. `pnpm build:site` builds only the frontend;
+`pnpm test:site-smoke` checks its generated routes and public install files.
+
+
+### Responsive local validation
+
+Use `pnpm check` for sequential typecheck, tests, and lint. Heavy one-shot checks
+and canonical compilers share a local queue and run at lower CPU priority on
+macOS/Linux. Starting two checks queues the second instead of running both at
+once. Vitest uses one worker by default; pure utility tests use Node rather than
+jsdom. Watch tests remain independent of the one-shot queue and use the same
+worker cap.
+
+Typecheck and lint caches live in ignored `.cache/`. Site typechecking includes
+canonical sources and tests; generated standalone copies are checked separately
+by `test:standalone-smoke`, and archival sources are outside the site gate.
+Registry smoke checks retain independent consumer folders and compile batches
+of eight sequentially to bound peak memory. Run those install checks when
+primitives or generators change, and before publishing. Avoid parallel validation
+or repeating full builds unless a change or failure calls for them.
