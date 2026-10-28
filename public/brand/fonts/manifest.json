@@ -1,0 +1,11 @@
+{
+  "family": "Steez Display",
+  "version": "1.100",
+  "weights": [
+    400,
+    700
+  ],
+  "characters": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~  £€¥©®°±×÷−–—‘’“”•…→←↑↓",
+  "unitsPerEm": 1000,
+  "design": "Cleaned outlines from the approved record-label logo for s, t, e, z, u, i; matching original extended alphabet."
+}
