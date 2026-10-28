@@ -1,4 +1,4 @@
-import { cleanup, render } from "@testing-library/react";
+import { act, cleanup, render } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { HexagonGrid } from "./HexagonGrid";
@@ -131,19 +131,23 @@ describe("HexagonGrid auto-trigger pause policy", () => {
 
     expect(vi.getTimerCount()).toBe(1);
 
-    intersectionCallback?.(
-      [{ isIntersecting: false } as IntersectionObserverEntry],
-      {} as IntersectionObserver,
-    );
+    act(() => {
+      intersectionCallback?.(
+        [{ isIntersecting: false } as IntersectionObserverEntry],
+        {} as IntersectionObserver,
+      );
+    });
     expect(vi.getTimerCount()).toBe(0);
 
     vi.advanceTimersByTime(100);
     expect(vi.getTimerCount()).toBe(0);
 
-    intersectionCallback?.(
-      [{ isIntersecting: true } as IntersectionObserverEntry],
-      {} as IntersectionObserver,
-    );
+    act(() => {
+      intersectionCallback?.(
+        [{ isIntersecting: true } as IntersectionObserverEntry],
+        {} as IntersectionObserver,
+      );
+    });
     expect(vi.getTimerCount()).toBe(1);
 
     vi.advanceTimersByTime(20);

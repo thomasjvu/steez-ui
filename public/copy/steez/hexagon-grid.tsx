@@ -10,6 +10,7 @@
 "use client";
 
 import * as React from "react";
+import { useEffect, useRef, useState } from "react";
 
 const __styles_steez_hexagon_grid_0: Record<string, string> = {
   "root": "steez-hexagon-grid-0-root",
@@ -47,41 +48,363 @@ function __injectSteezStandaloneStyles() {
 
 __injectSteezStandaloneStyles();
 
+/** Shared lifecycle for ambient motion: explicit pause, visibility, and reduced motion. */
+export function useMotionActivity<T extends HTMLElement = HTMLDivElement>(
+  paused = false,
+  visible = true,
+) {
+  const ref = useRef<T>(null);
+  const [inView, setInView] = useState(true);
+  const [pageVisible, setPageVisible] = useState(true);
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const media =
+      typeof window.matchMedia === "function"
+        ? window.matchMedia("(prefers-reduced-motion: reduce)")
+        : null;
+    const syncMotion = () => setReduced(media?.matches ?? false);
+    const syncVisibility = () =>
+      setPageVisible(document.visibilityState !== "hidden");
+    syncMotion();
+    syncVisibility();
+    media?.addEventListener("change", syncMotion);
+    document.addEventListener("visibilitychange", syncVisibility);
+    const observer =
+      typeof IntersectionObserver === "undefined"
+        ? null
+        : new IntersectionObserver(([entry]) => {
+            if (entry) setInView(entry.isIntersecting);
+          });
+    if (ref.current) observer?.observe(ref.current);
+    return () => {
+      media?.removeEventListener("change", syncMotion);
+      document.removeEventListener("visibilitychange", syncVisibility);
+      observer?.disconnect();
+    };
+  }, []);
+  return {
+    ref,
+    running: visible && !paused && inView && pageVisible && !reduced,
+  };
+}
+
+/** Pure state for HexagonGrid: layout, hit testing, and the ripple simulation. */
+
+export const HEX_RADIUS = 25;
+export const DEFAULT_CELL_BUDGET = 512;
+/** Frames a selection takes to fade in; it starts spreading when it finishes. */
+export const COUNT_MIN = 5;
+/** Frames a selection holds before it fades out. */
+export const COUNT_MAX = 50;
+export const LUMINANCE_MIN = 8;
+export const LUMINANCE_MAX = 50;
+
+/** Ripples only spread two rings out from their source. */
+const SPREAD_STEPS = 2;
+const HUE_MIN = 180;
+const HUE_MAX = 220;
+
+export type Random = () => number;
+
+export interface Selection {
+  count: number;
+  hue: number;
+}
+
+interface Spread {
+  directions: number[];
+  hue: number;
+  step: number;
+}
+
+export interface Hexagon {
+  x: number;
+  y: number;
+  selections: Selection[];
+  /** Six neighbors, clockwise from the right; null at the grid edge. */
+  neighbors: Array<Hexagon | null>;
+  spreads: Spread[];
+}
+
+export interface HexGrid {
+  cells: Hexagon[];
+  radius: number;
+}
+
+export function randomInt(random: Random, min: number, max: number) {
+  return Math.floor(random() * (max - min + 1)) + min;
+}
+
+const BASE_WIDTH = HEX_RADIUS * Math.cos(Math.PI / 6) * 2;
+const BASE_HEIGHT = HEX_RADIUS * (2 - Math.sin(Math.PI / 6));
+
+/** Columns and rows that cover the surface, shrunk to fit the cell budget. */
+export function gridSize(width: number, height: number, cellBudget: number) {
+  const wantX = Math.ceil(width / BASE_WIDTH) + 1;
+  const wantY = Math.ceil(height / BASE_HEIGHT) + 1;
+  const budget = Number.isFinite(cellBudget)
+    ? Math.max(1, Math.floor(cellBudget))
+    : DEFAULT_CELL_BUDGET;
+  if (wantX * wantY <= budget) {
+    return { countX: wantX, countY: wantY };
+  }
+  const countX = Math.min(
+    wantX,
+    budget,
+    Math.max(1, Math.floor(Math.sqrt((budget * wantX) / wantY))),
+  );
+  const countY = Math.min(wantY, Math.max(1, Math.floor(budget / countX)));
+  return { countX, countY };
+}
+
+/** Builds an offset-row hex grid centered on the surface, with one seeded ripple. */
+export function buildHexGrid(
+  width: number,
+  height: number,
+  cellBudget = DEFAULT_CELL_BUDGET,
+  random: Random = Math.random,
+): HexGrid {
+  const { countX, countY } = gridSize(width, height, cellBudget);
+  // Stretch cells when the budget leaves gaps, so the surface stays covered.
+  const scale = Math.max(1, width / (countX * BASE_WIDTH), height / (countY * BASE_HEIGHT));
+  const hexWidth = BASE_WIDTH * scale;
+  const hexHeight = BASE_HEIGHT * scale;
+  const offsetX = (width - countX * hexWidth) / 2;
+  const offsetY = (height - countY * hexHeight) / 2;
+
+  const cells: Hexagon[] = [];
+  for (let row = 0; row < countY; row += 1) {
+    for (let col = 0; col < countX; col += 1) {
+      cells.push({
+        x: offsetX + (col + 0.5) * hexWidth - (row % 2 === 1 ? 0 : hexWidth / 2),
+        y: offsetY + (row + 0.5) * hexHeight,
+        selections: [],
+        neighbors: [],
+        spreads: [],
+      });
+    }
+  }
+
+  const at = (col: number, row: number) =>
+    col >= 0 && col < countX && row >= 0 && row < countY
+      ? cells[row * countX + col]
+      : null;
+  cells.forEach((cell, index) => {
+    const col = index % countX;
+    const row = Math.floor(index / countX);
+    // Odd rows sit half a cell right, so their diagonal neighbors shift by one.
+    const shift = row % 2;
+    cell.neighbors = [
+      at(col + 1, row),
+      at(col + shift, row + 1),
+      at(col + shift - 1, row + 1),
+      at(col - 1, row),
+      at(col + shift - 1, row - 1),
+      at(col + shift, row - 1),
+    ];
+  });
+
+  const grid = { cells, radius: HEX_RADIUS * scale };
+  selectRandomHex(grid, random);
+  return grid;
+}
+
+/** The cell under a point, or undefined between cells and off the grid. */
+export function findHexAt({ cells, radius }: HexGrid, x: number, y: number) {
+  const halfWidth = radius * Math.cos(Math.PI / 6);
+  const slope = Math.tan(Math.PI / 3);
+  return cells.find((hex) => {
+    if (Math.abs(x - hex.x) > halfWidth || Math.abs(y - hex.y) > radius) {
+      return false;
+    }
+    if (y < hex.y) return Math.abs((x - hex.x) / (y - hex.y + radius)) <= slope;
+    if (y > hex.y) return Math.abs((x - hex.x) / (y - hex.y - radius)) <= slope;
+    return true;
+  });
+}
+
+export function selectHex(hex: Hexagon | undefined, random: Random = Math.random) {
+  hex?.selections.push({ count: 0, hue: randomInt(random, HUE_MIN, HUE_MAX) });
+}
+
+export function selectRandomHex(grid: HexGrid, random: Random = Math.random) {
+  if (grid.cells.length > 0) {
+    selectHex(grid.cells[randomInt(random, 0, grid.cells.length - 1)], random);
+  }
+}
+
+/** Fill lightness and opacity for a selection at a given age in frames. */
+export function selectionLook(count: number) {
+  const range = LUMINANCE_MAX - LUMINANCE_MIN;
+  if (count < COUNT_MIN) {
+    return {
+      lightness: LUMINANCE_MIN + range * Math.sin((Math.PI / 2) * (count / COUNT_MIN)) ** 3,
+      opacity: count / COUNT_MIN,
+    };
+  }
+  if (count < COUNT_MAX) {
+    const fade = (count - COUNT_MIN) / (COUNT_MAX - COUNT_MIN);
+    return {
+      lightness: LUMINANCE_MIN + range * Math.sin((Math.PI / 2) * (1 + fade)),
+      opacity: 1,
+    };
+  }
+  return { lightness: LUMINANCE_MAX, opacity: 1 };
+}
+
+/** Advances one frame: ages selections, then spreads newly lit cells outward. */
+export function stepHexGrid({ cells }: HexGrid, random: Random = Math.random) {
+  for (const hex of cells) {
+    for (const selection of hex.selections) selection.count += 1;
+    hex.selections = hex.selections.filter(
+      (selection) => selection.count <= COUNT_MAX + COUNT_MIN,
+    );
+  }
+
+  for (const hex of cells) {
+    for (const selection of hex.selections) {
+      if (selection.count === COUNT_MIN) {
+        hex.spreads.push({ directions: [randomInt(random, 0, 5)], hue: selection.hue, step: 0 });
+      }
+    }
+  }
+
+  for (const hex of cells) {
+    for (const spread of hex.spreads) {
+      const next: number[] = [];
+      for (const direction of spread.directions) {
+        const neighbor = hex.neighbors[direction];
+        if (!neighbor) continue;
+        neighbor.selections.push({ count: COUNT_MIN, hue: spread.hue });
+        // Fan out: keep heading the same way and branch 60° to either side.
+        next.push((direction + 4) % 6, direction, (direction + 2) % 6);
+      }
+      spread.directions = next;
+      spread.step += 1;
+    }
+    hex.spreads = hex.spreads.filter((spread) => spread.step < SPREAD_STEPS);
+  }
+}
+
+export type HexagonGridTone = "default" | "light" | "dark";
+
+export interface PaintOptions {
+  width: number;
+  height: number;
+  tone: HexagonGridTone;
+  backgroundOpacity: number;
+}
+
+/** Gap between cells, as a share of the cell radius. */
+const CELL_FILL = 0.98;
+/** Selections at this hue stay gray, even in the default tone. */
+const NEUTRAL_HUE = 210;
+
+const BASE_LOOK: Record<HexagonGridTone, { fill: number; stroke: number; opacity: number }> = {
+  default: { fill: LUMINANCE_MIN, stroke: LUMINANCE_MIN, opacity: 0.3 },
+  light: { fill: 88, stroke: 96, opacity: 0.92 },
+  dark: { fill: 10, stroke: 16, opacity: 0.92 },
+};
+
+interface CellPaint {
+  fill: number;
+  stroke: number;
+  hue: number;
+  opacity: number;
+}
+
+function paintCell(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  radius: number,
+  tone: HexagonGridTone,
+  { fill, stroke, hue, opacity }: CellPaint,
+) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.beginPath();
+  for (let index = 0; index < 6; index += 1) {
+    const angle = (Math.PI / 3) * index;
+    ctx[index === 0 ? "moveTo" : "lineTo"](radius * Math.sin(angle), -radius * Math.cos(angle));
+  }
+  ctx.closePath();
+
+  const accent = tone === "default" && hue > 0 && hue !== NEUTRAL_HUE;
+  const color = (lightness: number, alpha: number) =>
+    `hsla(${accent ? hue : 0}, ${accent ? 15 : 0}%, ${lightness}%, ${alpha})`;
+  ctx.fillStyle = color(fill, opacity * 0.25);
+  ctx.fill();
+  ctx.strokeStyle = color(stroke, opacity * 0.35);
+  ctx.stroke();
+  ctx.restore();
+}
+
+/** Draws the grid's current state; it never changes the grid. */
+export function paintHexGrid(
+  ctx: CanvasRenderingContext2D,
+  grid: HexGrid,
+  { width, height, tone, backgroundOpacity }: PaintOptions,
+) {
+  if (backgroundOpacity > 0) {
+    ctx.fillStyle = `rgba(0, 0, 0, ${backgroundOpacity})`;
+    ctx.fillRect(0, 0, width, height);
+  } else {
+    ctx.clearRect(0, 0, width, height);
+  }
+
+  const radius = grid.radius * CELL_FILL;
+  const base = BASE_LOOK[tone];
+  for (const hex of grid.cells) {
+    paintCell(ctx, hex.x, hex.y, radius, tone, { ...base, hue: 0 });
+    for (const selection of hex.selections) {
+      const { lightness, opacity } = selectionLook(selection.count);
+      paintCell(ctx, hex.x, hex.y, radius, tone, {
+        fill: lightness,
+        stroke: lightness,
+        hue: selection.hue,
+        opacity,
+      });
+    }
+  }
+}
+
 export interface HexagonGridProps {
   width?: number;
   height?: number;
   pointerReactive?: boolean;
   backgroundOpacity?: number;
-  tone?: "default" | "light" | "dark";
+  tone?: HexagonGridTone;
   autoTriggerBaseDelayMs?: number;
   autoTriggerJitterMs?: number;
   /** Maximum number of cells rendered for one grid. Defaults to 512. */
   cellBudget?: number;
 }
 
-const RADIUS = 25;
-const RATE = 0.98;
-const DEFAULT_CELL_BUDGET = 512;
-const COUNT_MIN = 5;
-const COUNT_MAX = 50;
-const LUMINANCE_MIN = 8;
-const LUMINANCE_MAX = 50;
+/** Minimum time between pointer-triggered ripples. */
+const POINTER_THROTTLE_MS = 90;
+const EMPTY_GRID: HexGrid = { cells: [], radius: 0 };
 
-interface HexagonData {
-  x: number;
-  y: number;
-  hue: number;
-  selections: Array<{ count: number; hue: number }>;
-  neighbors: Array<HexagonData | null>;
-  sourceIndices: Array<{ indices: number[]; hue: number; count: number }>;
-}
-
-function randomFloat() {
-  return Math.random();
-}
-
-function randomInt(min: number, max: number) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+/** Tracks the container's size, starting from the given fallback. */
+function useElementSize(
+  ref: React.RefObject<HTMLElement | null>,
+  initialWidth: number,
+  initialHeight: number,
+) {
+  const [size, setSize] = React.useState({ width: initialWidth, height: initialHeight });
+  React.useEffect(() => {
+    const element = ref.current;
+    if (!element || typeof ResizeObserver === "undefined") return undefined;
+    const observer = new ResizeObserver(([entry]) => {
+      const { width, height } = entry?.contentRect ?? { width: 0, height: 0 };
+      if (width > 0 && height > 0) {
+        setSize({ width: Math.floor(width), height: Math.floor(height) });
+      }
+    });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [ref]);
+  return size;
 }
 
 export function HexagonGrid({
@@ -94,527 +417,64 @@ export function HexagonGrid({
   autoTriggerJitterMs = 1000,
   cellBudget = DEFAULT_CELL_BUDGET,
 }: HexagonGridProps) {
-  const containerRef = React.useRef<HTMLDivElement>(null);
+  const { ref: containerRef, running } = useMotionActivity();
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
-  const hexagonsRef = React.useRef<HexagonData[]>([]);
-  const gridRadiusRef = React.useRef(RADIUS);
-  const animationRef = React.useRef<number>(0);
-  const lastPointerSelectionRef = React.useRef(0);
-  const autoTriggerTimeoutRef = React.useRef<number | null>(null);
-  const pausedRef = React.useRef(false);
-  const [dimensions, setDimensions] = React.useState({
-    width: initialWidth,
-    height: initialHeight,
-  });
+  const gridRef = React.useRef<HexGrid>(EMPTY_GRID);
+  const lastPointerRef = React.useRef(0);
+  const { width, height } = useElementSize(containerRef, initialWidth, initialHeight);
 
-  React.useEffect(() => {
-    const container = containerRef.current;
-    if (!container) {
-      return undefined;
+  const paint = React.useCallback(() => {
+    const ctx = canvasRef.current?.getContext("2d");
+    if (ctx && gridRef.current.cells.length > 0) {
+      paintHexGrid(ctx, gridRef.current, { width, height, tone, backgroundOpacity });
     }
+  }, [backgroundOpacity, height, tone, width]);
 
-    const resizeObserver =
-      typeof ResizeObserver === "undefined"
-        ? null
-        : new ResizeObserver((entries) => {
-            for (const entry of entries) {
-              const { width, height } = entry.contentRect;
-              if (width > 0 && height > 0) {
-                setDimensions({ width: Math.floor(width), height: Math.floor(height) });
-              }
-            }
-          });
-
-    if (resizeObserver) {
-      resizeObserver.observe(container);
-    }
-
-    return () => resizeObserver?.disconnect();
-  }, []);
-
-  const width = dimensions.width;
-  const height = dimensions.height;
-
-  const triggerHexSelection = React.useCallback((x: number, y: number) => {
-    const hexagons = hexagonsRef.current;
-    const radius = gridRadiusRef.current;
-    const hexWidth = radius * Math.cos(Math.PI / 6) * 2;
-
-    for (const hex of hexagons) {
-      if (
-        x < hex.x - hexWidth / 2 ||
-        x > hex.x + hexWidth / 2 ||
-        y < hex.y - radius ||
-        y > hex.y + radius ||
-        (y < hex.y &&
-          Math.abs((x - hex.x) / (y - hex.y + radius)) > Math.tan(Math.PI / 3)) ||
-        (y > hex.y &&
-          Math.abs((x - hex.x) / (y - hex.y - radius)) > Math.tan(Math.PI / 3))
-      ) {
-        continue;
-      }
-
-      hex.selections.push({ count: 0, hue: randomInt(180, 220) });
-      break;
-    }
-  }, []);
-
-  const init = React.useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) {
-      return;
-    }
-
-    const baseHexWidth = RADIUS * Math.cos(Math.PI / 6) * 2;
-    const baseHexHeight = RADIUS * (2 - Math.sin(Math.PI / 6));
-
-    const requestedCountX = Math.ceil(width / baseHexWidth) + 1;
-    const requestedCountY = Math.ceil(height / baseHexHeight) + 1;
-    const safeCellBudget = Number.isFinite(cellBudget)
-      ? Math.max(1, Math.floor(cellBudget))
-      : DEFAULT_CELL_BUDGET;
-    const requestedCellCount = requestedCountX * requestedCountY;
-    let countX = requestedCountX;
-    let countY = requestedCountY;
-
-    if (requestedCellCount > safeCellBudget) {
-      countX = Math.min(
-        requestedCountX,
-        safeCellBudget,
-        Math.max(
-          1,
-          Math.floor(
-            Math.sqrt((safeCellBudget * requestedCountX) / requestedCountY),
-          ),
-        ),
-      );
-      countY = Math.min(
-        requestedCountY,
-        Math.max(1, Math.floor(safeCellBudget / countX)),
-      );
-    }
-
-    const spacingScale = Math.max(
-      1,
-      width / (countX * baseHexWidth),
-      height / (countY * baseHexHeight),
-    );
-    const hexWidth = baseHexWidth * spacingScale;
-    const hexHeight = baseHexHeight * spacingScale;
-    gridRadiusRef.current = RADIUS * spacingScale;
-
-    const offsetX = -((countX * hexWidth - width) / 2);
-    const offsetY = -((countY * hexHeight - height) / 2);
-
-    const hexagons: HexagonData[] = [];
-
-    for (let gridY = 0; gridY < countY; gridY += 1) {
-      for (let gridX = 0; gridX < countX; gridX += 1) {
-        hexagons.push({
-          x:
-            offsetX +
-            (gridX + 0.5) * hexWidth -
-            (gridY % 2 === 1 ? 0 : hexWidth / 2),
-          y: offsetY + (gridY + 0.5) * hexHeight,
-          hue: 0,
-          selections: [],
-          neighbors: new Array(6).fill(null),
-          sourceIndices: [],
-        });
-      }
-    }
-
-    for (let gridY = 0; gridY < countY; gridY += 1) {
-      for (let gridX = 0; gridX < countX; gridX += 1) {
-        const hexagon = hexagons[gridY * countX + gridX];
-
-        if (gridX < countX - 1) {
-          hexagon.neighbors[0] = hexagons[gridY * countX + gridX + 1];
-        }
-        if ((gridX < countX - 1 || gridY % 2 === 0) && gridY < countY - 1) {
-          hexagon.neighbors[1] =
-            hexagons[(gridY + 1) * countX + gridX + (gridY % 2 === 1 ? 1 : 0)];
-        }
-        if ((gridX > 0 || gridY % 2 === 1) && gridY < countY - 1) {
-          hexagon.neighbors[2] =
-            hexagons[(gridY + 1) * countX + gridX + (gridY % 2 === 1 ? 0 : -1)];
-        }
-        if (gridX > 0) {
-          hexagon.neighbors[3] = hexagons[gridY * countX + gridX - 1];
-        }
-        if ((gridX > 0 || gridY % 2 === 1) && gridY > 0) {
-          hexagon.neighbors[4] =
-            hexagons[(gridY - 1) * countX + gridX + (gridY % 2 === 1 ? 0 : -1)];
-        }
-        if ((gridX < countX - 1 || gridY % 2 === 0) && gridY > 0) {
-          hexagon.neighbors[5] =
-            hexagons[(gridY - 1) * countX + gridX + (gridY % 2 === 1 ? 1 : 0)];
-        }
-      }
-    }
-
-    hexagons[randomInt(0, hexagons.length - 1)]?.selections.push({
-      count: 0,
-      hue: randomInt(180, 220),
-    });
-
-    hexagonsRef.current = hexagons;
-  }, [cellBudget, height, width]);
-
-  const drawHexagon = React.useCallback(
-    (
-      ctx: CanvasRenderingContext2D,
-      x: number,
-      y: number,
-      radius: number,
-      fillLightness: number,
-      strokeLightness: number,
-      hue: number,
-      opacity: number,
-    ) => {
-      ctx.save();
-      ctx.translate(x, y);
-      ctx.beginPath();
-
-      for (let index = 0; index < 6; index += 1) {
-        const vertexX = radius * Math.sin((Math.PI / 3) * index);
-        const vertexY = -radius * Math.cos((Math.PI / 3) * index);
-        ctx[index === 0 ? "moveTo" : "lineTo"](vertexX, vertexY);
-      }
-      ctx.closePath();
-
-      const isAccent = tone === "default" && hue > 0 && hue !== 210;
-      const actualHue = isAccent ? hue : 0;
-      const saturation = isAccent ? 15 : 0;
-
-      ctx.fillStyle = `hsla(${actualHue}, ${saturation}%, ${fillLightness}%, ${
-        opacity * 0.25
-      })`;
-      ctx.fill();
-      ctx.strokeStyle = `hsla(${actualHue}, ${saturation}%, ${strokeLightness}%, ${
-        opacity * 0.35
-      })`;
-      ctx.stroke();
-      ctx.restore();
-    },
-    [tone],
-  );
-
-  const render = React.useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) {
-      return;
-    }
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) {
-      return;
-    }
-
-    const hexagons = hexagonsRef.current;
-    if (hexagons.length === 0) {
-      return;
-    }
-
-    if (backgroundOpacity > 0) {
-      ctx.fillStyle = `rgba(0, 0, 0, ${backgroundOpacity})`;
-      ctx.fillRect(0, 0, width, height);
-    } else {
-      ctx.clearRect(0, 0, width, height);
-    }
-
-    const radius = gridRadiusRef.current * RATE;
-
-    for (const hex of hexagons) {
-      const baseFillLightness =
-        tone === "light" ? 88 : tone === "dark" ? 10 : LUMINANCE_MIN;
-      const baseStrokeLightness =
-        tone === "light" ? 96 : tone === "dark" ? 16 : LUMINANCE_MIN;
-      const baseOpacity = tone === "default" ? 0.3 : 0.92;
-
-      drawHexagon(
-        ctx,
-        hex.x,
-        hex.y,
-        radius,
-        baseFillLightness,
-        baseStrokeLightness,
-        0,
-        baseOpacity,
-      );
-
-      for (const selection of hex.selections) {
-        let fillLightness: number;
-        let opacity: number;
-
-        if (selection.count < COUNT_MIN) {
-          fillLightness =
-            LUMINANCE_MIN +
-            (LUMINANCE_MAX - LUMINANCE_MIN) *
-              Math.pow(
-                Math.sin((Math.PI / 2) * selection.count / COUNT_MIN),
-                3,
-              );
-          opacity = selection.count / COUNT_MIN;
-        } else if (selection.count < COUNT_MAX) {
-          fillLightness =
-            LUMINANCE_MIN +
-            (LUMINANCE_MAX - LUMINANCE_MIN) *
-              Math.sin(
-                (Math.PI / 2) *
-                  (1 + (selection.count - COUNT_MIN) / (COUNT_MAX - COUNT_MIN)),
-              );
-          opacity = 1;
-        } else {
-          fillLightness = LUMINANCE_MAX;
-          opacity = 1;
-        }
-
-        drawHexagon(
-          ctx,
-          hex.x,
-          hex.y,
-          radius,
-          fillLightness,
-          fillLightness,
-          selection.hue,
-          opacity,
-        );
-        selection.count += 1;
-      }
-
-      hex.selections = hex.selections.filter(
-        (selection) => selection.count <= COUNT_MAX + COUNT_MIN,
-      );
-    }
-
-    for (const hex of hexagons) {
-      if (hex.selections.length === 0) {
-        continue;
-      }
-
-      for (const selection of hex.selections) {
-        if (selection.count !== COUNT_MIN) {
-          continue;
-        }
-
-        hex.sourceIndices.push({
-          indices: [randomInt(0, 5)],
-          hue: selection.hue,
-          count: 0,
-        });
-      }
-    }
-
-    for (const hex of hexagons) {
-      if (hex.sourceIndices.length === 0) {
-        continue;
-      }
-
-      for (const sourceIndex of hex.sourceIndices) {
-        if (sourceIndex.count >= 2) {
-          continue;
-        }
-
-        const targetIndices: number[] = [];
-        const currentIndices = sourceIndex.indices;
-
-        for (const index of currentIndices) {
-          const neighbor = hex.neighbors[index];
-          if (!neighbor) {
-            continue;
-          }
-
-          neighbor.selections.push({
-            count: COUNT_MIN,
-            hue: sourceIndex.hue,
-          });
-          targetIndices.push((index + 4) % 6, index, (index + 2) % 6);
-        }
-
-        sourceIndex.indices = targetIndices;
-        sourceIndex.count += 1;
-      }
-
-      hex.sourceIndices = hex.sourceIndices.filter((sourceIndex) => sourceIndex.count < 2);
-    }
-
-    if (!pausedRef.current) {
-      animationRef.current = window.requestAnimationFrame(render);
-    }
-  }, [backgroundOpacity, drawHexagon, height, tone, width]);
-
+  // Rebuild on any surface change and always paint one frame, so paused and
+  // reduced-motion grids are still visible.
   React.useEffect(() => {
     const canvas = canvasRef.current;
-    const container = containerRef.current;
-    if (!canvas) {
-      return undefined;
-    }
-
+    if (!canvas) return;
     canvas.width = width;
     canvas.height = height;
-    init();
+    gridRef.current = buildHexGrid(width, height, cellBudget);
+    paint();
+  }, [cellBudget, height, paint, width]);
 
-    let isDocumentVisible =
-      typeof document !== "undefined" ? !document.hidden : true;
-    let isInViewport = true;
-    const reducedMotionQuery =
-      typeof window !== "undefined" && typeof window.matchMedia === "function"
-        ? window.matchMedia("(prefers-reduced-motion: reduce)")
-        : null;
-    let prefersReducedMotion = reducedMotionQuery?.matches ?? false;
-
-    const clearAutoTrigger = () => {
-      if (autoTriggerTimeoutRef.current !== null) {
-        window.clearTimeout(autoTriggerTimeoutRef.current);
-        autoTriggerTimeoutRef.current = null;
-      }
+  // Animate and auto-trigger ripples only while motion is allowed.
+  React.useEffect(() => {
+    if (!running) return undefined;
+    let frame = 0;
+    let timeout = 0;
+    const tick = () => {
+      paint();
+      stepHexGrid(gridRef.current);
+      frame = window.requestAnimationFrame(tick);
     };
-
-    const scheduleAutoTrigger = () => {
-      if (pausedRef.current || autoTriggerTimeoutRef.current !== null) {
-        return;
-      }
-
-      const autoTrigger = () => {
-        autoTriggerTimeoutRef.current = null;
-        if (pausedRef.current) {
-          return;
-        }
-
-        const activeHexagons = hexagonsRef.current;
-        if (activeHexagons.length > 0) {
-          const randomHex = activeHexagons[randomInt(0, activeHexagons.length - 1)];
-          randomHex?.selections.push({
-            count: 0,
-            hue: randomInt(180, 220),
-          });
-        }
-
-        scheduleAutoTrigger();
-      };
-
-      autoTriggerTimeoutRef.current = window.setTimeout(
-        autoTrigger,
-        autoTriggerBaseDelayMs + randomFloat() * autoTriggerJitterMs,
-      );
+    const schedule = () => {
+      timeout = window.setTimeout(() => {
+        selectRandomHex(gridRef.current);
+        schedule();
+      }, autoTriggerBaseDelayMs + Math.random() * autoTriggerJitterMs);
     };
-
-    const updatePaused = () => {
-      pausedRef.current =
-        prefersReducedMotion || !isDocumentVisible || !isInViewport;
-    };
-
-    const stopLoop = () => {
-      window.cancelAnimationFrame(animationRef.current);
-      animationRef.current = 0;
-    };
-
-    const stopActivity = () => {
-      stopLoop();
-      clearAutoTrigger();
-    };
-
-    const startLoop = () => {
-      updatePaused();
-      if (pausedRef.current) {
-        stopActivity();
-        return;
-      }
-      if (animationRef.current === 0) {
-        animationRef.current = window.requestAnimationFrame(render);
-      }
-      scheduleAutoTrigger();
-    };
-
-    updatePaused();
-    // Always paint at least one frame (static under reduced-motion).
-    render();
-    if (!pausedRef.current) {
-      scheduleAutoTrigger();
-    } else {
-      stopActivity();
-    }
-
-    const onVisibilityChange = () => {
-      isDocumentVisible = !document.hidden;
-      updatePaused();
-      if (pausedRef.current) {
-        stopActivity();
-      } else {
-        startLoop();
-      }
-    };
-
-    const onReducedMotionChange = (event: MediaQueryListEvent) => {
-      prefersReducedMotion = event.matches;
-      updatePaused();
-      if (pausedRef.current) {
-        stopActivity();
-        render();
-        stopLoop();
-      } else {
-        startLoop();
-      }
-    };
-
-    document.addEventListener("visibilitychange", onVisibilityChange);
-    reducedMotionQuery?.addEventListener("change", onReducedMotionChange);
-
-    let intersectionObserver: IntersectionObserver | null = null;
-    if (container && typeof IntersectionObserver !== "undefined") {
-      intersectionObserver = new IntersectionObserver(
-        ([entry]) => {
-          isInViewport = entry?.isIntersecting ?? true;
-          updatePaused();
-          if (pausedRef.current) {
-            stopActivity();
-          } else {
-            startLoop();
-          }
-        },
-        { threshold: 0 },
-      );
-      intersectionObserver.observe(container);
-    }
-
+    frame = window.requestAnimationFrame(tick);
+    schedule();
     return () => {
-      stopActivity();
-      document.removeEventListener("visibilitychange", onVisibilityChange);
-      reducedMotionQuery?.removeEventListener("change", onReducedMotionChange);
-      intersectionObserver?.disconnect();
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(timeout);
     };
-  }, [
-    autoTriggerBaseDelayMs,
-    autoTriggerJitterMs,
-    height,
-    init,
-    render,
-    width,
-  ]);
+  }, [autoTriggerBaseDelayMs, autoTriggerJitterMs, paint, running]);
 
-  const handlePointerMove = React.useCallback(
-    (event: React.MouseEvent<HTMLDivElement>) => {
-      if (!pointerReactive) {
-        return;
-      }
-
-      const now = performance.now();
-      if (now - lastPointerSelectionRef.current < 90) {
-        return;
-      }
-
-      const container = containerRef.current;
-      if (!container) {
-        return;
-      }
-
-      const rect = container.getBoundingClientRect();
-      triggerHexSelection(event.clientX - rect.left, event.clientY - rect.top);
-      lastPointerSelectionRef.current = now;
-    },
-    [pointerReactive, triggerHexSelection],
-  );
+  const handlePointerMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    const container = containerRef.current;
+    const now = performance.now();
+    if (!pointerReactive || !container || now - lastPointerRef.current < POINTER_THROTTLE_MS) {
+      return;
+    }
+    const rect = container.getBoundingClientRect();
+    selectHex(findHexAt(gridRef.current, event.clientX - rect.left, event.clientY - rect.top));
+    lastPointerRef.current = now;
+  };
 
   return (
     <div

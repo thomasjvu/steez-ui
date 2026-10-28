@@ -602,7 +602,10 @@
       "react"
     ],
     "sourceFiles": [
-      "packages/ui/src/components/HexagonGrid.tsx"
+      "packages/ui/src/components/HexagonGrid.tsx",
+      "packages/ui/src/hooks/useMotionActivity.ts",
+      "packages/ui/src/components/HexagonGrid.model.ts",
+      "packages/ui/src/components/HexagonGrid.paint.ts"
     ],
     "styleFiles": [
       "packages/ui/src/components/HexagonGrid.module.css"
