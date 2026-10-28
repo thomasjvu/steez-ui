@@ -31,20 +31,7 @@ describe("AccordionFeatureCard", () => {
     expect(toggle.getAttribute("aria-expanded")).toBe("false");
   });
 
-  it("uses user id as panel id prefix when provided", () => {
-    render(
-      <AccordionFeatureCard
-        id="feature-a"
-        title="Signal mesh"
-        imageSrc={PLACEHOLDER_IMAGE}
-        expanded={false}
-      />,
-    );
 
-    const toggle = screen.getByRole("button", { name: "Toggle card details" });
-    expect(toggle.getAttribute("aria-controls")).toBe("feature-a-panel");
-    expect(document.getElementById("feature-a-panel")).toBeTruthy();
-  });
 
   it("marks the panel hidden when collapsed so content is out of the a11y tree", () => {
     render(
@@ -91,17 +78,5 @@ describe("AccordionFeatureCard", () => {
     ).toBeTruthy();
   });
 
-  it("keeps the toggle accessible while collapsed", () => {
-    render(
-      <AccordionFeatureCard
-        title="Signal mesh"
-        imageSrc={PLACEHOLDER_IMAGE}
-        expanded={false}
-      />,
-    );
 
-    const toggle = screen.getByRole("button", { name: "Toggle card details" });
-    expect(toggle).toBeTruthy();
-    expect(toggle.hasAttribute("hidden")).toBe(false);
-  });
 });

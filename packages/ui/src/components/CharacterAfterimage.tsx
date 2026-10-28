@@ -2,6 +2,8 @@
 
 import React from "react";
 
+import { clampFinite } from "../utils/numbers.ts";
+
 import styles from "./CharacterAfterimage.module.css";
 
 const TRAIL_COUNT = 8;
@@ -58,12 +60,12 @@ export function CharacterAfterimage({
   pixelated = true,
   ...imageProps
 }: CharacterAfterimageProps) {
-  const visibleGhostCount = Math.max(0, Math.min(3, Math.floor(ghostCount)));
-  const safeGhostOffset = Math.max(0, ghostOffset);
+  const visibleGhostCount = Math.floor(clampFinite(ghostCount, 0, 3, 3));
+  const safeGhostOffset = clampFinite(ghostOffset, 0, 200, 4);
   const mergedStyle = {
     ...style,
-    ["--afterimage-cycle-duration" as string]: `${Math.max(1, cycleDurationMs)}ms`,
-    ["--afterimage-entrance-duration" as string]: `${Math.max(1, entranceDurationMs)}ms`,
+    ["--afterimage-cycle-duration" as string]: `${clampFinite(cycleDurationMs, 1, 120000, 3000)}ms`,
+    ["--afterimage-entrance-duration" as string]: `${clampFinite(entranceDurationMs, 1, 120000, 4000)}ms`,
   } as React.CSSProperties;
   const decorativeImageProps = {
     src,

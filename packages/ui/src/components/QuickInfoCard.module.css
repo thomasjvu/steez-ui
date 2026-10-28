@@ -77,18 +77,6 @@
   font-family: var(--font-mono);
 }
 
-.valueSuccess {
-  color: var(--color-success, #10b981);
-}
-
-.valueWarning {
-  color: var(--color-warning, #f59e0b);
-}
-
-.valueDanger {
-  color: var(--color-error, #ef4444);
-}
-
 .storageProgress {
   flex: 1;
   min-width: 200px;

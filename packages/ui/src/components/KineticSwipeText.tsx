@@ -2,6 +2,9 @@
 
 import React from "react";
 
+import { useMotionActivity } from "../hooks/useMotionActivity.ts";
+import { clampFinite } from "../utils/numbers.ts";
+
 import styles from "./KineticSwipeText.module.css";
 
 export type KineticSwipeTextTrigger = "always" | "hover" | "mount";
@@ -13,6 +16,8 @@ export interface KineticSwipeTextProps
   direction?: KineticSwipeTextDirection;
   trigger?: KineticSwipeTextTrigger;
   durationMs?: number;
+  /** Freeze motion; offscreen, hidden tabs, and reduced motion also pause it. */
+  paused?: boolean;
   delayMs?: number;
 }
 
@@ -22,14 +27,14 @@ export function KineticSwipeText({
   trigger = "always",
   durationMs = 2400,
   delayMs = 0,
+  paused = false,
   className = "",
   style,
   ...props
 }: KineticSwipeTextProps) {
-  const safeDuration = Number.isFinite(durationMs)
-    ? Math.max(durationMs, 1)
-    : 2400;
-  const safeDelay = Number.isFinite(delayMs) ? delayMs : 0;
+  const { ref, running } = useMotionActivity(paused);
+  const safeDuration = clampFinite(durationMs, 1, 120000, 2400);
+  const safeDelay = clampFinite(delayMs, -120000, 120000, 0);
   const mergedStyle = {
     ...style,
     ["--kinetic-swipe-duration" as string]: `${safeDuration}ms`,
@@ -38,6 +43,8 @@ export function KineticSwipeText({
 
   return (
     <div
+      ref={ref}
+      data-running={running ? "true" : "false"}
       className={`${styles.root} ${className}`.trim()}
       data-direction={direction}
       data-trigger={trigger}
@@ -47,8 +54,12 @@ export function KineticSwipeText({
       <span className={styles.srOnly}>{children}</span>
       <span className={styles.word} aria-hidden="true">
         <span className={styles.base}>{children}</span>
-        <span className={`${styles.slice} ${styles.firstSlice}`}>{children}</span>
-        <span className={`${styles.slice} ${styles.secondSlice}`}>{children}</span>
+        <span className={`${styles.slice} ${styles.firstSlice}`}>
+          {children}
+        </span>
+        <span className={`${styles.slice} ${styles.secondSlice}`}>
+          {children}
+        </span>
       </span>
     </div>
   );

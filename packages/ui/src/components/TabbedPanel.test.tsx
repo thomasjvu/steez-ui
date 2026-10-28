@@ -19,7 +19,7 @@ describe("TabbedPanel", () => {
     const user = userEvent.setup();
     const onChange = vi.fn();
 
-    render(<TabbedPanel tabs={tabs} defaultTab="overview" onChange={onChange} ariaLabel="Sections" />);
+    render(<TabbedPanel tabs={tabs} defaultTab="overview" onTabChange={onChange} ariaLabel="Sections" />);
 
     expect(screen.getByText("Overview body")).toBeTruthy();
     expect(screen.queryByText("Details body")).toBeNull();
@@ -62,7 +62,7 @@ describe("TabbedPanel", () => {
     const user = userEvent.setup();
     const onChange = vi.fn();
 
-    render(<TabbedPanel tabs={tabs} defaultTab="overview" onChange={onChange} ariaLabel="Sections" />);
+    render(<TabbedPanel tabs={tabs} defaultTab="overview" onTabChange={onChange} ariaLabel="Sections" />);
 
     const overview = screen.getByRole("tab", { name: "Overview" });
     overview.focus();
@@ -79,7 +79,7 @@ describe("TabbedPanel", () => {
     const user = userEvent.setup();
     const onChange = vi.fn();
 
-    render(<TabbedPanel tabs={tabs} defaultTab="details" onChange={onChange} ariaLabel="Sections" />);
+    render(<TabbedPanel tabs={tabs} defaultTab="details" onTabChange={onChange} ariaLabel="Sections" />);
 
     screen.getByRole("tab", { name: "Details" }).focus();
     await user.keyboard("{End}");
@@ -100,7 +100,7 @@ describe("TabbedPanel", () => {
       { id: "c", label: "C", content: "C body" },
     ];
 
-    render(<TabbedPanel tabs={mixedTabs} defaultTab="a" onChange={onChange} ariaLabel="Mixed" />);
+    render(<TabbedPanel tabs={mixedTabs} defaultTab="a" onTabChange={onChange} ariaLabel="Mixed" />);
 
     screen.getByRole("tab", { name: "A" }).focus();
     await user.keyboard("{ArrowRight}");
@@ -108,4 +108,39 @@ describe("TabbedPanel", () => {
     expect(onChange).toHaveBeenCalledWith("c");
     expect(screen.getByText("C body")).toBeTruthy();
   });
+});
+
+it("falls back to an enabled tab without callback loops when the selection disappears", () => {
+  const onChange = vi.fn();
+  const { rerender } = render(<TabbedPanel tabs={tabs} activeTab="history" onTabChange={onChange} />);
+  rerender(<TabbedPanel tabs={[{ ...tabs[0], disabled: true }, tabs[1]]} activeTab="history" onTabChange={onChange} />);
+  expect(screen.getByRole("tab", { name: "Details" })).toHaveAttribute("aria-selected", "true");
+  expect(onChange).not.toHaveBeenCalled();
+});
+
+it("notifies once for a user change and never for reselection", async () => {
+  const user = userEvent.setup();
+  const change = vi.fn();
+  render(<TabbedPanel tabs={tabs} onTabChange={change} />);
+  await user.click(screen.getByRole("tab", { name: "Overview" }));
+  expect(change).not.toHaveBeenCalled();
+  await user.click(screen.getByRole("tab", { name: "Details" }));
+  expect(change).toHaveBeenCalledTimes(1);
+});
+
+it("keeps controlled selection until the parent updates it", async () => {
+  const user = userEvent.setup();
+  const change = vi.fn();
+  render(<TabbedPanel tabs={tabs} activeTab="overview" onTabChange={change} />);
+  await user.click(screen.getByRole("tab", { name: "Details" }));
+  expect(change).toHaveBeenCalledWith("details");
+  expect(screen.getByText("Overview body")).toBeTruthy();
+});
+
+it("leaves no disabled tab selected or focusable when all tabs are disabled", () => {
+  render(<TabbedPanel tabs={tabs.map(tab => ({ ...tab, disabled: true }))} />);
+  for (const tab of screen.getAllByRole("tab")) {
+    expect(tab).toHaveAttribute("aria-selected", "false");
+    expect(tab.tabIndex).toBe(-1);
+  }
 });

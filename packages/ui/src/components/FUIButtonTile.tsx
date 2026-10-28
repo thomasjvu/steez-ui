@@ -26,7 +26,7 @@ export function FUIButtonTile({
       {...props}
     >
       <div className={styles.content}>
-        {icon ? <span className={styles.icon}>{icon}</span> : null}
+        {icon ? <span className={styles.icon} aria-hidden="true">{icon}</span> : null}
         <strong className={styles.label}>{label}</strong>
       </div>
     </button>

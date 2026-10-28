@@ -2,6 +2,9 @@
 
 import React, { useId } from "react";
 
+import { useMotionActivity } from "../hooks/useMotionActivity.ts";
+import { clampFinite } from "../utils/numbers.ts";
+
 import styles from "./KineticTextVolume.module.css";
 
 export type KineticTextVolumeDirection = "forward" | "reverse";
@@ -14,14 +17,12 @@ export interface KineticTextVolumeProps
   rows?: number;
   /** Duration of one wave cycle in milliseconds. */
   durationMs?: number;
+  /** Freeze motion; offscreen, hidden tabs, and reduced motion also pause it. */
+  paused?: boolean;
   /** Maximum vertical travel for each line, in SVG units. */
   amplitude?: number;
   direction?: KineticTextVolumeDirection;
   pauseOnHover?: boolean;
-}
-
-function clamp(value: number, min: number, max: number, fallback: number) {
-  return Number.isFinite(value) ? Math.min(max, Math.max(min, value)) : fallback;
 }
 
 /** Repeated type ripples across the three faces of a perspective text volume. */
@@ -32,22 +33,30 @@ export function KineticTextVolume({
   amplitude = 5,
   direction = "forward",
   pauseOnHover = false,
+  paused = false,
   className = "",
   style,
   "aria-label": ariaLabel,
   ...props
 }: KineticTextVolumeProps) {
+  const { ref, running } = useMotionActivity(paused);
   const id = `kinetic-text-volume-${useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
   const label = String(children).trim();
-  const safeRows = Math.round(clamp(rows, 5, 16, 9));
-  const safeDuration = clamp(durationMs, 1200, 60000, 7200);
-  const safeAmplitude = clamp(amplitude, 0, 16, 5);
+  const safeRows = Math.round(clampFinite(rows, 5, 16, 9));
+  const safeDuration = clampFinite(durationMs, 1200, 60000, 7200);
+  const safeAmplitude = clampFinite(amplitude, 0, 16, 5);
   const repeatedLabel = `${label.toUpperCase()}  ·  `;
   const lineText = repeatedLabel.repeat(
-    Math.max(3, Math.min(18, Math.ceil(70 / Math.max(repeatedLabel.length, 1)))),
+    Math.max(
+      3,
+      Math.min(18, Math.ceil(70 / Math.max(repeatedLabel.length, 1))),
+    ),
   );
   const lineRows = Array.from({ length: safeRows }, (_, index) => index);
-  const floorRows = Array.from({ length: Math.max(4, Math.round(safeRows * 0.65)) }, (_, index) => index);
+  const floorRows = Array.from(
+    { length: Math.max(4, Math.round(safeRows * 0.65)) },
+    (_, index) => index,
+  );
   const volumeStyle = {
     ...style,
     ["--kinetic-text-volume-duration" as string]: `${safeDuration}ms`,
@@ -56,6 +65,8 @@ export function KineticTextVolume({
 
   return (
     <div
+      ref={ref}
+      data-running={running ? "true" : "false"}
       {...props}
       className={`${styles.root} ${className}`.trim()}
       data-direction={direction}
@@ -146,12 +157,24 @@ export function KineticTextVolume({
           <path d="m210 174 68 32-68 33-68-33Z" />
           <path className={styles.apertureSide} d="m142 206 68 33v38l-68-35Z" />
           <path className={styles.apertureSide} d="m278 206-68 33v38l68-35Z" />
-          <path className={styles.apertureRim} d="m142 206 68-32 68 32-68 33Z" />
-          <path className={styles.apertureEdge} d="m142 206 68 33 68-33M210 239v38" />
+          <path
+            className={styles.apertureRim}
+            d="m142 206 68-32 68 32-68 33Z"
+          />
+          <path
+            className={styles.apertureEdge}
+            d="m142 206 68 33 68-33M210 239v38"
+          />
         </g>
 
-        <path className={styles.outline} d="M38 136 210 70l172 66v214l-172 66L38 350Z" />
-        <path className={styles.centerLine} d="m38 350 172-64 172 64M210 70v216" />
+        <path
+          className={styles.outline}
+          d="M38 136 210 70l172 66v214l-172 66L38 350Z"
+        />
+        <path
+          className={styles.centerLine}
+          d="m38 350 172-64 172 64M210 70v216"
+        />
       </svg>
     </div>
   );

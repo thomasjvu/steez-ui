@@ -46,3 +46,8 @@
     transition: none;
   }
 }
+
+.root[data-variant="hp"] { gap: 12px; color: var(--color-success, #4eae76); }
+.root[data-variant="hp"] .barGroup { width: auto; max-width: 100%; flex-wrap: nowrap; justify-content: flex-start; gap: 2px; }
+.root[data-variant="hp"] .bar { width: 6px; flex: 0 1 6px; min-width: 2px; height: 16px; border-radius: 0; transform: none; }
+.root[data-variant="hp"] .value { width: auto; margin: 0; white-space: nowrap; font-size: 14px; font-weight: 600; letter-spacing: 0; }

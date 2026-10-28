@@ -1,0 +1,16 @@
+.textarea {
+  display: block;
+  width: 100%;
+  min-height: 100px;
+  box-sizing: border-box;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--text-primary);
+  font: 1rem/1.4 var(--font-mono);
+  padding: 12px;
+  resize: vertical;
+}
+.textarea:disabled {
+  cursor: not-allowed;
+}

@@ -4,7 +4,7 @@ import React from "react";
 
 import styles from "./SectionHeader.module.css";
 
-export interface SectionHeaderProps {
+export interface SectionHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   title: string;
   description?: string;
   actions?: React.ReactNode;
@@ -16,9 +16,10 @@ export function SectionHeader({
   description,
   actions,
   className = "",
+  ...props
 }: SectionHeaderProps) {
   return (
-    <div className={`${styles.sectionHeader} ${className}`.trim()}>
+    <div {...props} className={`${styles.sectionHeader} ${className}`.trim()}>
       <div className={styles.headerContent}>
         <div className={styles.textContent}>
           <h2 className={styles.title}>{title}</h2>

@@ -104,3 +104,5 @@
     will-change: auto;
   }
 }
+
+.root[data-running="false"], .root[data-running="false"] * { animation-play-state: paused !important; }

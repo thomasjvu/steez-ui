@@ -2,17 +2,18 @@
 
 import React from "react";
 
-import { CardFrame } from "./CardFrame.tsx";
+import { CardFrame, type CardCompositionProps } from "./CardFrame.tsx";
 import styles from "./CornerBracketCard.module.css";
 
 export interface CornerBracketCardProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
-  title?: React.ReactNode;
+  extends CardCompositionProps, Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   variant?: "default" | "featured";
 }
 
 export function CornerBracketCard({
   title,
+  titleAs,
+  titleClassName = "",
   variant = "default",
   className = "",
   children,
@@ -22,7 +23,8 @@ export function CornerBracketCard({
     <CardFrame
       className={`${styles.card} ${variant === "featured" ? styles.featured : ""} ${className}`}
       title={title}
-      titleClassName={styles.title}
+      titleAs={titleAs}
+      titleClassName={`${styles.title} ${titleClassName}`.trim()}
       decoration={
         <>
           <span className={`${styles.corner} ${styles.cornerTopLeft}`} aria-hidden="true" />

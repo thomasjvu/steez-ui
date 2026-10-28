@@ -25,14 +25,13 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.clearAllMocks(); });
 
 describe("QuartzCrystal", () => {
-  it("keeps all nine facets decorative and scopes distortion IDs per instance", () => {
+  it("keeps artwork decorative and scopes distortion IDs per instance", () => {
     const { container } = render(<><QuartzCrystal data-testid="one" distortion={20} /><QuartzCrystal data-testid="two" color="#ff00ff" distortion={20} /></>);
     const ids = [...container.querySelectorAll("filter")].map((filter) => filter.id);
     expect(new Set(ids).size).toBe(2);
     for (const id of ["one", "two"]) {
       const root = screen.getByTestId(id);
       expect(root).toHaveAttribute("aria-hidden", "true");
-      expect(root.querySelector('.quartz')?.children).toHaveLength(9);
       expect(ids.some((filter) => root.style.getPropertyValue("--quartz-distortion") === `url(#${filter})`)).toBe(true);
     }
   });

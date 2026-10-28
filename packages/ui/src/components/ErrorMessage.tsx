@@ -4,7 +4,7 @@ import React from "react";
 
 import { CloseIcon, RefreshIcon, WarningIcon } from "@steez-ui/icons";
 
-import buttonStyles from "../styles/Buttons.module.css";
+import { Button } from "./Button.tsx";
 import styles from "./ErrorMessage.module.css";
 
 export interface ErrorMessageProps {
@@ -40,18 +40,14 @@ export const ErrorMessage = React.memo(function ErrorMessage({
       {onRetry || onDismiss ? (
         <div className={styles.actions}>
           {onRetry ? (
-            <button type="button" onClick={onRetry} className={buttonStyles.secondary}>
-              <RefreshIcon width={16} height={16} />
-              {" "}
-              Try Again
-            </button>
+            <Button variant="secondary" onClick={onRetry}>
+              <RefreshIcon width={16} height={16} /> Try Again
+            </Button>
           ) : null}
           {onDismiss ? (
-            <button type="button" onClick={onDismiss} className={buttonStyles.secondary}>
-              <CloseIcon width={16} height={16} />
-              {" "}
-              Dismiss
-            </button>
+            <Button variant="secondary" onClick={onDismiss}>
+              <CloseIcon width={16} height={16} /> Dismiss
+            </Button>
           ) : null}
         </div>
       ) : null}
@@ -80,4 +76,3 @@ export const ErrorMessage = React.memo(function ErrorMessage({
     </div>
   );
 });
-

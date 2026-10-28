@@ -20,10 +20,11 @@
   background: transparent;
   padding: 0;
   margin: 0;
-  cursor: pointer;
   display: inline-flex;
   align-items: center;
 }
+
+button.brandButton { cursor: pointer; }
 
 .brandButton:focus-visible {
   outline: 2px solid var(--color-border-hover);

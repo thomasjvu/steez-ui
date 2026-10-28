@@ -2,6 +2,9 @@
 
 import React from "react";
 
+import { useMotionActivity } from "../hooks/useMotionActivity.ts";
+import { clampFinite } from "../utils/numbers.ts";
+
 import styles from "./KineticTextRamp.module.css";
 
 export type KineticTextRampTrigger = "always" | "hover" | "mount";
@@ -12,6 +15,8 @@ export interface KineticTextRampProps
   trigger?: KineticTextRampTrigger;
   rows?: number;
   durationMs?: number;
+  /** Freeze motion; offscreen, hidden tabs, and reduced motion also pause it. */
+  paused?: boolean;
   delayMs?: number;
 }
 
@@ -21,17 +26,15 @@ export function KineticTextRamp({
   rows = 8,
   durationMs = 9000,
   delayMs = 0,
+  paused = false,
   className = "",
   style,
   ...props
 }: KineticTextRampProps) {
-  const safeRows = Number.isFinite(rows)
-    ? Math.min(14, Math.max(4, Math.floor(rows)))
-    : 8;
-  const safeDuration = Number.isFinite(durationMs)
-    ? Math.max(durationMs, 1)
-    : 9000;
-  const safeDelay = Number.isFinite(delayMs) ? delayMs : 0;
+  const { ref, running } = useMotionActivity(paused);
+  const safeRows = Math.floor(clampFinite(rows, 4, 14, 8));
+  const safeDuration = clampFinite(durationMs, 1, 120000, 9000);
+  const safeDelay = clampFinite(delayMs, -120000, 120000, 0);
   const mergedStyle = {
     ...style,
     ["--kinetic-text-ramp-rows" as string]: safeRows,
@@ -41,6 +44,8 @@ export function KineticTextRamp({
 
   return (
     <div
+      ref={ref}
+      data-running={running ? "true" : "false"}
       {...props}
       className={`${styles.root} ${className}`.trim()}
       data-trigger={trigger}

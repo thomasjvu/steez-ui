@@ -2,6 +2,7 @@
 
 import React from "react";
 
+import toneStyles from "../styles/ValueTone.module.css";
 import styles from "./StatCard.module.css";
 
 export interface StatCardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -26,11 +27,11 @@ export function StatCard({
 }: StatCardProps) {
   const valueToneClass =
     color === "success"
-      ? styles.valueSuccess
+      ? toneStyles.success
       : color === "danger"
-        ? styles.valueDanger
+        ? toneStyles.danger
         : color === "warning"
-          ? styles.valueWarning
+          ? toneStyles.warning
           : "";
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     onKeyDownProp?.(event);
@@ -52,8 +53,8 @@ export function StatCard({
     <div
       {...props}
       className={`${styles.root} ${onClick ? styles.interactive : ""} ${className}`.trim()}
-      role={onClick ? roleProp ?? "button" : roleProp}
-      tabIndex={onClick ? tabIndexProp ?? 0 : tabIndexProp}
+      role={onClick ? (roleProp ?? "button") : roleProp}
+      tabIndex={onClick ? (tabIndexProp ?? 0) : tabIndexProp}
       onClick={onClick}
       onKeyDown={handleKeyDown}
     >

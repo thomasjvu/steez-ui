@@ -172,3 +172,12 @@ describe("PageTemplate sub-tabs", () => {
     expect(screen.getByText("Body only")).toBeTruthy();
   });
 });
+
+it("switches uncontrolled sub-tabs and honors defaultSubTab", async () => {
+  const user = userEvent.setup();
+  render(<PageTemplate title="Inventory" subTabs={subTabs} defaultSubTab="details">Body</PageTemplate>);
+  expect(screen.getByRole("tab", { name: "Details" })).toHaveAttribute("aria-selected", "true");
+  await user.click(screen.getByRole("tab", { name: "History" }));
+  expect(screen.getByRole("tab", { name: "History" })).toHaveAttribute("aria-selected", "true");
+  expect(screen.getByRole("tabpanel")).toHaveAttribute("aria-labelledby", screen.getByRole("tab", { name: "History" }).id);
+});

@@ -7,7 +7,7 @@ import type { SteezIconName } from "@steez-ui/icons";
 
 import styles from "./PageHeader.module.css";
 
-export interface PageHeaderProps {
+export interface PageHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   title: string;
   description?: string;
   icon?: SteezIconName;
@@ -41,28 +41,30 @@ export function PageHeader({
   viewerVisible,
   viewerShowLabel = "Show viewer",
   viewerHideLabel = "Hide viewer",
+  ...props
 }: PageHeaderProps) {
+  const Brand = onBrandClick ? "button" : "span";
   const viewerLabel = viewerVisible ? viewerHideLabel : viewerShowLabel;
 
   return (
-    <div className={`${styles.header} ${className}`.trim()}>
+    <div {...props} className={`${styles.header} ${className}`.trim()}>
       <div className={styles.headerRow}>
         <div className={styles.brandCluster}>
-          {brand || onBrandClick ? (
-            <button
-              type="button"
+          {brand !== undefined && brand !== null || onBrandClick ? (
+            <Brand
+              type={onBrandClick ? "button" : undefined}
               className={styles.brandButton}
               onClick={onBrandClick}
               title={brandTitle}
-              aria-label={brandAriaLabel}
+              aria-label={onBrandClick ? brandAriaLabel ?? brandTitle ?? title : undefined}
             >
-              <span className={styles.brandVisual}>{brand ?? title.slice(0, 1)}</span>
-            </button>
+              <span className={styles.brandVisual} aria-hidden={onBrandClick ? true : undefined}>{brand ?? title.slice(0, 1)}</span>
+            </Brand>
           ) : null}
           <div className={styles.headerContent}>
             <h2>
               {icon ? (
-                <span className={styles.titleIcon}>
+                <span className={styles.titleIcon} aria-hidden="true">
                   <Icon icon={icon} width={18} height={18} />
                 </span>
               ) : null}
@@ -75,12 +77,12 @@ export function PageHeader({
           {extra}
           {onBack ? (
             <button type="button" className={styles.iconButton} onClick={onBack} aria-label="Go back">
-              <Icon icon="chevronLeft" width={18} height={18} />
+              <Icon icon="chevronLeft" width={18} height={18} aria-hidden="true" />
             </button>
           ) : null}
           {onSettings ? (
             <button type="button" className={styles.iconButton} onClick={onSettings} aria-label="Open settings">
-              <SlidersIcon width={18} height={18} />
+              <SlidersIcon width={18} height={18} aria-hidden="true" />
             </button>
           ) : null}
           {onViewerToggle ? (
@@ -90,8 +92,9 @@ export function PageHeader({
               onClick={onViewerToggle}
               aria-label={viewerLabel}
               title={viewerLabel}
+              aria-pressed={Boolean(viewerVisible)}
             >
-              <EyeIcon width={18} height={18} />
+              <EyeIcon width={18} height={18} aria-hidden="true" />
             </button>
           ) : null}
         </div>

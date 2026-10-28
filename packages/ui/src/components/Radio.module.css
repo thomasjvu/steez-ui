@@ -1,0 +1,7 @@
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.notchedGroup { padding: 12px; }

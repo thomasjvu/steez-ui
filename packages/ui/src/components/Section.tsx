@@ -21,7 +21,7 @@ export function Section({
 }: SectionProps) {
   return (
     <section className={`${styles.section} ${className}`.trim()} {...props}>
-      {title ? (
+      {title !== undefined && title !== null ? (
         <h3 className={`${styles.title} ${titleClassName}`.trim()}>{title}</h3>
       ) : null}
       <div className={`${styles.content} ${contentClassName}`.trim()}>

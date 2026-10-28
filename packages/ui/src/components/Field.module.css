@@ -1,0 +1,66 @@
+.field {
+  width: var(--field-width, 240px);
+  max-width: 100%;
+  font-size: var(--field-font-size, 1rem);
+  margin-bottom: 1rem;
+}
+.label {
+  display: block;
+  font: 500 var(--label-font-size, 0.85rem) / 1.2 var(--font-mono);
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+.control {
+  position: relative;
+  border: 1px solid var(--color-border-default);
+  background: var(--field-background, var(--color-bg-tile));
+  border-radius: var(--field-radius, 6px);
+}
+.control:hover {
+  border-color: var(--color-border-hover);
+}
+.control:focus-within {
+  border-color: var(--focus-border-color, var(--color-accent-primary));
+  outline: 1px solid var(--focus-border-color, var(--color-accent-primary));
+  outline-offset: 1px;
+}
+.field:focus-within .label {
+  color: var(--focus-border-color, var(--color-accent-primary));
+}
+.field[data-label-style="notch"] {
+  padding-top: 0.6rem;
+}
+.notchLabel {
+  position: absolute;
+  top: 0;
+  left: var(--label-offset-left, 12px);
+  transform: translateY(-50%);
+  background: var(--field-background, var(--color-bg-tile));
+  padding: var(--label-padding, 1px 8px);
+  margin: 0;
+  max-width: calc(100% - 24px);
+  z-index: 1;
+}
+.control:has(input:disabled, select:disabled, textarea:disabled) {
+  opacity: 0.6;
+}
+.control:has([readonly]) {
+  background: var(--color-bg-secondary);
+}
+.field[data-error] .control {
+  border-color: var(--danger, #ff5c5c);
+}
+.field[data-error] .label,
+.error {
+  color: var(--danger, #ff5c5c);
+}
+.helper,
+.error {
+  margin-top: 0.4rem;
+  font: 0.75rem/1.4 var(--font-mono);
+}
+.helper {
+  color: var(--text-secondary);
+}
+
+.field[data-error] .control:focus-within { outline-color: var(--danger, #ff5c5c); }

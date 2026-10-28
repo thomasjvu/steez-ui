@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { useRovingTabs } from "../hooks/useRovingTabs.ts";
+import { useRovingTabs, useTabSelection } from "../hooks/useRovingTabs.ts";
 import { useStableId } from "../hooks/useStableId.ts";
 import { PageHeader, type PageHeaderProps } from "./PageHeader.tsx";
 import styles from "./PageTemplate.module.css";
@@ -32,6 +32,7 @@ export interface PageTemplateProps
   className?: string;
   subTabs?: SubTab[];
   activeSubTab?: string;
+  defaultSubTab?: string;
   onSubTabChange?: (tabId: string) => void;
   children?: React.ReactNode;
   loading?: boolean;
@@ -50,6 +51,7 @@ export function PageTemplate({
   icon,
   subTabs,
   activeSubTab,
+  defaultSubTab,
   onSubTabChange,
   onBack,
   onSettings,
@@ -79,15 +81,10 @@ export function PageTemplate({
     [baseId],
   );
 
-  const resolvedActiveTabId =
-    subTabs?.some((tab) => tab.id === activeSubTab) ? activeSubTab : subTabs?.[0]?.id;
-
-  const handleSelect = React.useCallback(
-    (tabId: string) => {
-      onSubTabChange?.(tabId);
-    },
-    [onSubTabChange],
-  );
+  const { selected, select: handleSelect } = useTabSelection({
+    tabs: subTabs ?? [], value: activeSubTab, defaultValue: defaultSubTab,
+    onValueChange: onSubTabChange,
+  });
   const { handleKeyDown: handleTabKeyDown, setTabRef } = useRovingTabs({
     tabs: subTabs ?? [],
     onSelect: handleSelect,
@@ -121,7 +118,7 @@ export function PageTemplate({
       {hasSubTabs ? (
         <TabList
           tabs={subTabs!}
-          activeTabId={resolvedActiveTabId}
+          activeTabId={selected?.id}
           getTabDomId={getTabDomId}
           getPanelDomId={getPanelDomId}
           setTabRef={setTabRef}

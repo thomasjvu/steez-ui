@@ -1,0 +1,259 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.sliderContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.track {
+  --thumb-size: 28px;
+  position: relative;
+  flex: 1;
+  height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.trackBase {
+  position: absolute;
+  inset-inline: 0;
+  height: var(--thumb-size);
+  border: 2px solid var(--border);
+  border-radius: calc(var(--thumb-size) / 2);
+  background: var(--bg-primary);
+  pointer-events: none;
+  transition: border-color var(--transition-fast);
+}
+
+.fill {
+  position: absolute;
+  left: 0;
+  height: var(--thumb-size);
+  border-radius: calc(var(--thumb-size) / 2);
+  background: var(--success);
+  /* Meet the thumb center at every value — no gap, no overshoot past the knob. */
+  width: calc(
+    (var(--thumb-size) / 2) +
+      (100% - var(--thumb-size)) * var(--slider-percentage, 0) / 100
+  );
+  pointer-events: none;
+  transition: width var(--transition-fast);
+}
+
+.slider {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  appearance: none;
+  background: transparent;
+  outline: none;
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-runnable-track {
+  height: var(--thumb-size);
+  background: transparent;
+  border: none;
+}
+
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  width: var(--thumb-size);
+  height: var(--thumb-size);
+  margin-top: 0;
+  border-radius: 50%;
+  background: var(--success);
+  cursor: pointer;
+  border: 2px solid color-mix(in srgb, var(--success) 35%, transparent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--success) 40%, transparent);
+  transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+
+.slider::-moz-range-track {
+  height: var(--thumb-size);
+  background: transparent;
+  border: none;
+}
+
+.slider::-moz-range-thumb {
+  width: var(--thumb-size);
+  height: var(--thumb-size);
+  border-radius: 50%;
+  background: var(--success);
+  cursor: pointer;
+  border: 2px solid color-mix(in srgb, var(--success) 35%, transparent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--success) 40%, transparent);
+  transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+
+.track:hover .trackBase {
+  border-color: var(--success);
+}
+
+.slider:focus-visible {
+  box-shadow: none;
+}
+
+.slider:focus-visible::-webkit-slider-thumb {
+  box-shadow:
+    0 0 0 2px var(--bg-primary),
+    0 0 0 4px color-mix(in srgb, var(--success) 55%, transparent),
+    0 0 10px color-mix(in srgb, var(--success) 40%, transparent);
+}
+
+.slider:focus-visible::-moz-range-thumb {
+  box-shadow:
+    0 0 0 2px var(--bg-primary),
+    0 0 0 4px color-mix(in srgb, var(--success) 55%, transparent),
+    0 0 10px color-mix(in srgb, var(--success) 40%, transparent);
+}
+
+.slider:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.track:has(.slider:disabled) .fill,
+.track:has(.slider:disabled) .trackBase {
+  opacity: 0.5;
+}
+
+.value {
+  font-size: 0.875rem;
+  color: var(--success);
+  font-weight: 600;
+  min-width: 3rem;
+  text-align: center;
+  font-family: var(--font-mono);
+}
+
+.helperText {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+
+.hasError .label {
+  color: var(--danger, #ff5c5c);
+}
+
+.hasError .trackBase {
+  border-color: var(--danger, #ff5c5c);
+}
+
+.errorText {
+  margin-top: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--danger, #ff5c5c);
+  line-height: 1.3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fill,
+  .trackBase,
+  .slider::-webkit-slider-thumb,
+  .slider::-moz-range-thumb {
+    transition: none;
+  }
+}
+
+/* Slim native track; retain the range input's keyboard and pointer behavior. */
+.diamond .track {
+  --thumb-size: 20px;
+  min-width: 0;
+  height: 44px;
+}
+
+.diamond .trackBase,
+.diamond .fill { display: none; }
+
+.diamond .slider {
+  height: 44px;
+  touch-action: pan-y;
+}
+
+.diamond .slider::-webkit-slider-runnable-track {
+  height: 5px;
+  border-radius: 999px;
+  background: linear-gradient(to right,
+    var(--diamond-slider-accent, var(--color-accent, #ee1401)) 0%,
+    var(--diamond-slider-accent, var(--color-accent, #ee1401)) calc(var(--slider-percentage, 0) * 1%),
+    var(--diamond-slider-track, var(--color-border, #2a2a2a)) calc(var(--slider-percentage, 0) * 1%),
+    var(--diamond-slider-track, var(--color-border, #2a2a2a)) 100%);
+}
+
+.diamond .slider::-moz-range-track {
+  height: 5px;
+  border-radius: 999px;
+  background: var(--diamond-slider-track, var(--color-border, #2a2a2a));
+}
+
+.diamond .slider::-moz-range-progress {
+  height: 5px;
+  border-radius: 999px;
+  background: var(--diamond-slider-accent, var(--color-accent, #ee1401));
+}
+
+.diamond .slider::-webkit-slider-thumb {
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  margin-top: -7.5px;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  background: var(--diamond-slider-accent, var(--color-accent, #ee1401));
+  box-shadow: none;
+  transform: rotate(0deg);
+  transition: transform 160ms ease;
+}
+
+.diamond .slider::-moz-range-thumb {
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  background: var(--diamond-slider-accent, var(--color-accent, #ee1401));
+  box-shadow: none;
+  transform: rotate(0deg);
+  transition: transform 160ms ease;
+}
+
+.diamond .slider:active:not(:disabled)::-webkit-slider-thumb { transform: rotate(45deg); }
+.diamond .slider:active:not(:disabled)::-moz-range-thumb { transform: rotate(45deg); }
+
+/* Focus belongs to the whole control; the thumb stays solid with no halo. */
+.diamond .slider:focus-visible {
+  outline: 2px solid var(--diamond-slider-accent, var(--color-accent, #ee1401));
+  outline-offset: 2px;
+  box-shadow: none;
+}
+.diamond .slider:focus-visible::-webkit-slider-thumb { box-shadow: none; }
+.diamond .slider:focus-visible::-moz-range-thumb { box-shadow: none; }
+.diamond .value { color: var(--diamond-slider-accent, var(--color-accent, #ee1401)); }
+.diamond.hasError { --diamond-slider-track: var(--danger, #ff5c5c); }
+
+@media (prefers-reduced-motion: reduce) {
+  .diamond .slider::-webkit-slider-thumb { transition: none; }
+  .diamond .slider::-moz-range-thumb { transition: none; }
+}
+
+.notchedControl { padding: 12px; }

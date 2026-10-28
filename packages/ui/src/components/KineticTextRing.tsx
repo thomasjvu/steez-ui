@@ -2,6 +2,9 @@
 
 import React from "react";
 
+import { useMotionActivity } from "../hooks/useMotionActivity.ts";
+import { clampFinite } from "../utils/numbers.ts";
+
 import styles from "./KineticTextRing.module.css";
 
 export type KineticTextRingDirection = "clockwise" | "counterclockwise";
@@ -10,6 +13,8 @@ export interface KineticTextRingProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
   children: string;
   durationMs?: number;
+  /** Freeze motion; offscreen, hidden tabs, and reduced motion also pause it. */
+  paused?: boolean;
   direction?: KineticTextRingDirection;
   pauseOnHover?: boolean;
 }
@@ -23,16 +28,16 @@ export function KineticTextRing({
   durationMs = 16000,
   direction = "clockwise",
   pauseOnHover = false,
+  paused = false,
   className = "",
   style,
   "aria-label": ariaLabel,
   ...props
 }: KineticTextRingProps) {
+  const { ref, running } = useMotionActivity(paused);
   const label = String(children).trim();
   const pathId = `kinetic-text-ring-${React.useId().replace(/:/g, "")}`;
-  const safeDuration = Number.isFinite(durationMs)
-    ? Math.min(Math.max(durationMs, 1000), 120000)
-    : 16000;
+  const safeDuration = clampFinite(durationMs, 1000, 120000, 16000);
   const visualLabel = label.toUpperCase();
   const repeatedLabel = `${visualLabel}  •  `;
   const repeatCount = Math.min(
@@ -49,6 +54,8 @@ export function KineticTextRing({
 
   return (
     <div
+      ref={ref}
+      data-running={running ? "true" : "false"}
       className={`${styles.root} ${className}`.trim()}
       data-direction={direction}
       data-pause-on-hover={pauseOnHover ? "true" : "false"}

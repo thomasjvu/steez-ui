@@ -2,13 +2,11 @@
 
 import React from "react";
 
-import { CardFrame } from "./CardFrame.tsx";
+import { CardFrame, type CardCompositionProps } from "./CardFrame.tsx";
 import styles from "./DottedHaloCard.module.css";
 
 export interface DottedHaloCardProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
-  title?: React.ReactNode;
-  bodyClassName?: string;
+  extends CardCompositionProps, Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   patternInset?: string;
   patternSize?: string;
   patternDotSize?: string;
@@ -16,6 +14,8 @@ export interface DottedHaloCardProps
 
 export function DottedHaloCard({
   title,
+  titleAs,
+  titleClassName = "",
   children,
   className = "",
   bodyClassName = "",
@@ -29,8 +29,8 @@ export function DottedHaloCard({
     <CardFrame
       className={`${styles.root} ${className}`.trim()}
       title={title}
-      titleAs="h3"
-      titleClassName={styles.title}
+      titleAs={titleAs ?? "h3"}
+      titleClassName={`${styles.title} ${titleClassName}`.trim()}
       bodyClassName={`${styles.body} ${bodyClassName}`.trim()}
       style={
         {

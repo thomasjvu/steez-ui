@@ -2,6 +2,9 @@
 
 import React from "react";
 
+import { useMotionActivity } from "../hooks/useMotionActivity.ts";
+import { clampFinite } from "../utils/numbers.ts";
+
 import styles from "./KineticTextGlobe.module.css";
 
 export type KineticTextGlobeDirection = "clockwise" | "counterclockwise";
@@ -12,6 +15,8 @@ export interface KineticTextGlobeProps
   children: string;
   /** Milliseconds for one full rotation. */
   durationMs?: number;
+  /** Freeze motion; offscreen, hidden tabs, and reduced motion also pause it. */
+  paused?: boolean;
   direction?: KineticTextGlobeDirection;
   pauseOnHover?: boolean;
 }
@@ -36,16 +41,16 @@ export function KineticTextGlobe({
   durationMs = 18000,
   direction = "clockwise",
   pauseOnHover = false,
+  paused = false,
   className = "",
   style,
   "aria-label": ariaLabel,
   ...props
 }: KineticTextGlobeProps) {
+  const { ref, running } = useMotionActivity(paused);
   const id = `kinetic-text-globe-${safeId(React.useId())}`;
   const label = String(children).trim();
-  const safeDuration = Number.isFinite(durationMs)
-    ? Math.min(Math.max(durationMs, 1000), 120000)
-    : 18000;
+  const safeDuration = clampFinite(durationMs, 1000, 120000, 18000);
   const repeatedLabel = `${label.toUpperCase()}  •  `;
   const lineText = repeatedLabel.repeat(
     Math.max(3, Math.ceil(42 / Math.max(repeatedLabel.length, 1))),
@@ -57,6 +62,8 @@ export function KineticTextGlobe({
 
   return (
     <div
+      ref={ref}
+      data-running={running ? "true" : "false"}
       {...props}
       className={`${styles.root} ${className}`.trim()}
       data-direction={direction}
@@ -97,8 +104,20 @@ export function KineticTextGlobe({
                 </React.Fragment>
               );
             })}
-            <ellipse className={styles.meridian} cx="200" cy="200" rx="116" ry="166" />
-            <ellipse className={styles.meridian} cx="200" cy="200" rx="54" ry="166" />
+            <ellipse
+              className={styles.meridian}
+              cx="200"
+              cy="200"
+              rx="116"
+              ry="166"
+            />
+            <ellipse
+              className={styles.meridian}
+              cx="200"
+              cy="200"
+              rx="54"
+              ry="166"
+            />
             <circle cx="200" cy="200" r="166" fill={`url(#${id}-shade)`} />
           </g>
           <circle className={styles.edge} cx="200" cy="200" r="166" />

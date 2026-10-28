@@ -17,7 +17,7 @@ afterEach(() => {
 describe("SegmentedControl", () => {
   it("exposes radiogroup + radio roles instead of tablist", () => {
     render(
-      <SegmentedControl value="day" options={options} onChange={() => {}} ariaLabel="Range" />,
+      <SegmentedControl value="day" options={options} onValueChange={() => {}} ariaLabel="Range" />,
     );
 
     expect(screen.getByRole("radiogroup", { name: "Range" })).toBeTruthy();
@@ -28,7 +28,7 @@ describe("SegmentedControl", () => {
 
   it("marks the selected option with aria-checked and roving tabIndex", () => {
     render(
-      <SegmentedControl value="week" options={options} onChange={() => {}} ariaLabel="Range" />,
+      <SegmentedControl value="week" options={options} onValueChange={() => {}} ariaLabel="Range" />,
     );
 
     const day = screen.getByRole("radio", { name: "Day" });
@@ -48,7 +48,7 @@ describe("SegmentedControl", () => {
     const onChange = vi.fn();
 
     render(
-      <SegmentedControl value="day" options={options} onChange={onChange} ariaLabel="Range" />,
+      <SegmentedControl value="day" options={options} onValueChange={onChange} ariaLabel="Range" />,
     );
 
     await user.click(screen.getByRole("radio", { name: "Month" }));
@@ -60,7 +60,7 @@ describe("SegmentedControl", () => {
     const onChange = vi.fn();
 
     const { rerender } = render(
-      <SegmentedControl value="day" options={options} onChange={onChange} ariaLabel="Range" />,
+      <SegmentedControl value="day" options={options} onValueChange={onChange} ariaLabel="Range" />,
     );
 
     screen.getByRole("radio", { name: "Day" }).focus();
@@ -68,7 +68,7 @@ describe("SegmentedControl", () => {
     expect(onChange).toHaveBeenCalledWith("week");
 
     rerender(
-      <SegmentedControl value="week" options={options} onChange={onChange} ariaLabel="Range" />,
+      <SegmentedControl value="week" options={options} onValueChange={onChange} ariaLabel="Range" />,
     );
 
     screen.getByRole("radio", { name: "Week" }).focus();
@@ -81,7 +81,7 @@ describe("SegmentedControl", () => {
     const onChange = vi.fn();
 
     render(
-      <SegmentedControl value="week" options={options} onChange={onChange} ariaLabel="Range" />,
+      <SegmentedControl value="week" options={options} onValueChange={onChange} ariaLabel="Range" />,
     );
 
     screen.getByRole("radio", { name: "Week" }).focus();
@@ -91,4 +91,19 @@ describe("SegmentedControl", () => {
     await user.keyboard("{Home}");
     expect(onChange).toHaveBeenLastCalledWith("day");
   });
+});
+
+it("supports uncontrolled selection and skips disabled segments", async () => {
+  const user = userEvent.setup();
+  const change = vi.fn();
+  render(<SegmentedControl options={[
+    { value: "a", label: "A", disabled: true },
+    { value: "b", label: "B" }, { value: "c", label: "C" },
+  ]} defaultValue="a" onValueChange={change} />);
+  const first = screen.getByRole("radio", { name: "B" });
+  expect(first).toHaveAttribute("aria-checked", "true");
+  first.focus();
+  await user.keyboard("{ArrowLeft}");
+  expect(screen.getByRole("radio", { name: "C" })).toHaveAttribute("aria-checked", "true");
+  expect(change).toHaveBeenCalledWith("c");
 });

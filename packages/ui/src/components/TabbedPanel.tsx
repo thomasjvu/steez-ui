@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { useRovingTabs } from "../hooks/useRovingTabs.ts";
+import { useRovingTabs, useTabSelection } from "../hooks/useRovingTabs.ts";
 import { useStableId } from "../hooks/useStableId.ts";
 import { TabList } from "./TabList.tsx";
 import styles from "./TabbedPanel.module.css";
@@ -20,7 +20,6 @@ export interface TabbedPanelProps {
   activeTab?: string;
   defaultTab?: string;
   onTabChange?: (tabId: string) => void;
-  onChange?: (tabId: string) => void;
   label?: string;
   hint?: string;
   ariaLabel?: string;
@@ -34,7 +33,6 @@ export function TabbedPanel({
   activeTab,
   defaultTab,
   onTabChange,
-  onChange,
   label,
   hint,
   ariaLabel,
@@ -43,11 +41,9 @@ export function TabbedPanel({
   panelClassName = "",
 }: TabbedPanelProps) {
   const baseId = useStableId("tabbed-panel");
-  const isControlled = typeof activeTab === "string";
-  const initialTabId = defaultTab || activeTab || tabs[0]?.id || "";
-  const [internalTabId, setInternalTabId] = React.useState(initialTabId);
-  const currentTabId = isControlled ? activeTab || tabs[0]?.id || "" : internalTabId;
-  const currentTab = tabs.find((tab) => tab.id === currentTabId) ?? tabs[0];
+  const { selected: currentTab, select: handleSelect } = useTabSelection({
+    tabs, value: activeTab, defaultValue: defaultTab, onValueChange: onTabChange,
+  });
 
   const getTabDomId = React.useCallback(
     (tabId: string) => `${baseId}-tab-${tabId}`,
@@ -58,33 +54,6 @@ export function TabbedPanel({
     [baseId],
   );
 
-  React.useEffect(() => {
-    if (!tabs.length) {
-      return;
-    }
-
-    if (tabs.some((tab) => tab.id === currentTabId)) {
-      return;
-    }
-
-    const fallbackTabId = defaultTab || activeTab || tabs[0]?.id || "";
-    if (!isControlled) {
-      setInternalTabId(fallbackTabId);
-    }
-    onTabChange?.(fallbackTabId);
-    onChange?.(fallbackTabId);
-  }, [activeTab, currentTabId, defaultTab, isControlled, onChange, onTabChange, tabs]);
-
-  const handleSelect = React.useCallback(
-    (tabId: string) => {
-      if (!isControlled) {
-        setInternalTabId(tabId);
-      }
-      onTabChange?.(tabId);
-      onChange?.(tabId);
-    },
-    [isControlled, onChange, onTabChange],
-  );
   const { handleKeyDown: handleTabKeyDown, setTabRef } = useRovingTabs({
     tabs,
     onSelect: handleSelect,

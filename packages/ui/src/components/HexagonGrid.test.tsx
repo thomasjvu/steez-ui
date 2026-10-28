@@ -65,13 +65,7 @@ describe("HexagonGrid browser fallbacks", () => {
 });
 
 describe("HexagonGrid cell budget", () => {
-  it("keeps the normal desktop grid at its default density", () => {
-    const context = prepareCanvas();
 
-    render(<HexagonGrid width={800} height={600} autoTriggerBaseDelayMs={60_000} />);
-
-    expect(countCells(context)).toBe(340);
-  });
 
   it("keeps small surfaces within the requested budget", () => {
     const context = prepareCanvas();

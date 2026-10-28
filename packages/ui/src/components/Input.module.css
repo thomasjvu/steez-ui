@@ -1,0 +1,27 @@
+.input {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  box-sizing: border-box;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--text-primary);
+  font: 1rem/1.4 var(--font-mono);
+  padding: 12px;
+}
+.input:disabled {
+  cursor: not-allowed;
+}
+.icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+.withIcon .input {
+  padding-right: 44px;
+}

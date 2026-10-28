@@ -34,7 +34,7 @@
     "./styles/Buttons.module.css": "./dist/styles/Buttons.module.css"
   },
   "scripts": {
-    "build": "rm -rf dist && tsc -p ./tsconfig.json && node ../../scripts/copy-static-assets.mjs ."
+    "build": "rm -rf dist && node ../../scripts/run-check.mjs tsc -p ./tsconfig.json && node ../../scripts/copy-static-assets.mjs ."
   },
   "publishConfig": {
     "access": "public"

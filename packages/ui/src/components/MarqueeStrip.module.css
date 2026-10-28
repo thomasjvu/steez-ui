@@ -34,3 +34,5 @@
     animation: none;
   }
 }
+
+.root[data-running="false"] .track { animation-play-state: paused; }

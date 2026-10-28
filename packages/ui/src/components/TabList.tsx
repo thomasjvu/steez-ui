@@ -53,8 +53,8 @@ export function TabList({
   renderPanel = true,
 }: TabListProps) {
   const resolvedActiveTabId =
-    activeTabId || tabs[0]?.id || "";
-  const activeTab = tabs.find((tab) => tab.id === resolvedActiveTabId);
+    activeTabId ?? tabs.find((tab) => !tab.disabled)?.id ?? "";
+  const activeTab = tabs.find((tab) => tab.id === resolvedActiveTabId && !tab.disabled);
   const activePanelId = activeTab ? getPanelDomId(activeTab.id) : undefined;
   const activeTabDomId = activeTab ? getTabDomId(activeTab.id) : undefined;
 

@@ -1,0 +1,3 @@
+.success { color: var(--color-status-success); }
+.warning { color: var(--color-status-warning); }
+.danger { color: var(--color-status-error); }

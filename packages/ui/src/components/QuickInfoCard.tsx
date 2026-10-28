@@ -2,6 +2,8 @@
 
 import React from "react";
 
+import { clampFinite, progressPercentage } from "../utils/numbers.ts";
+import toneStyles from "../styles/ValueTone.module.css";
 import styles from "./QuickInfoCard.module.css";
 
 export interface QuickInfoItem {
@@ -17,20 +19,25 @@ export interface StorageProgress {
   limit: number;
 }
 
-export interface QuickInfoCardProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface QuickInfoCardProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   items: QuickInfoItem[];
   storageProgress?: StorageProgress;
   showCornerBrackets?: boolean;
 }
 
 function formatFileSize(bytes: number) {
+  bytes = clampFinite(bytes, 0, Number.MAX_SAFE_INTEGER, 0);
   if (bytes === 0) {
     return "0 Bytes";
   }
 
   const base = 1024;
   const sizes = ["Bytes", "KB", "MB", "GB"];
-  const unitIndex = Math.floor(Math.log(bytes) / Math.log(base));
+  const unitIndex = Math.min(
+    sizes.length - 1,
+    Math.max(0, Math.floor(Math.log(bytes) / Math.log(base))),
+  );
   return `${parseFloat((bytes / Math.pow(base, unitIndex)).toFixed(2))} ${
     sizes[unitIndex]
   }`;
@@ -44,7 +51,7 @@ export function QuickInfoCard({
   ...props
 }: QuickInfoCardProps) {
   const storageRatio = storageProgress
-    ? storageProgress.used / Math.max(storageProgress.limit, 1)
+    ? progressPercentage(storageProgress.used, 0, storageProgress.limit) / 100
     : 0;
   const storageToneClass =
     storageRatio > 0.9
@@ -56,11 +63,11 @@ export function QuickInfoCard({
   const getValueToneClass = (color?: QuickInfoItem["valueColor"]) => {
     switch (color) {
       case "success":
-        return styles.valueSuccess;
+        return toneStyles.success;
       case "warning":
-        return styles.valueWarning;
+        return toneStyles.warning;
       case "danger":
-        return styles.valueDanger;
+        return toneStyles.danger;
       default:
         return "";
     }
@@ -93,7 +100,14 @@ export function QuickInfoCard({
               {formatFileSize(storageProgress.limit)}
             </span>
           </div>
-          <div className={styles.storageProgressBar}>
+          <div
+            className={styles.storageProgressBar}
+            role="progressbar"
+            aria-label="Storage used"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={storageRatio * 100}
+          >
             <div
               className={`${styles.storageProgressFill} ${storageToneClass}`.trim()}
               style={

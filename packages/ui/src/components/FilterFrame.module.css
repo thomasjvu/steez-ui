@@ -1,0 +1,20 @@
+.root { position: relative; }
+.filters { position: absolute; width: 0; height: 0; pointer-events: none; }
+.content { width: 100%; filter: var(--filter-frame-0); }
+.root[data-trigger="always"] > .content,
+.root[data-trigger="hover"]:hover > .content,
+.root[data-trigger="hover"]:focus-within > .content {
+  animation: filter-frames var(--filter-duration, 2700ms) steps(1, end) infinite;
+}
+.root[data-trigger="hover"] > .content { filter: none; }
+.root[data-running="false"] > .content { animation-play-state: paused !important; }
+@keyframes filter-frames {
+  0%, 100% { filter: var(--filter-frame-0); }
+  33.333% { filter: var(--filter-frame-1); }
+  66.666% { filter: var(--filter-frame-2); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .root > .content { animation: none !important; filter: var(--filter-frame-0); }
+  .root[data-trigger="hover"] > .content { filter: none; }
+  .root[data-reduced-motion="none"] > .content { filter: none !important; }
+}

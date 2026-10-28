@@ -15,9 +15,7 @@
   position: absolute;
   top: calc(var(--quartz-width) / 2 + var(--quartz-float-distance));
   left: 0;
-  filter: var(--quartz-distortion)
-          drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.5))
-          drop-shadow(0px 0px 20px color-mix(in srgb, var(--quartz-color, var(--color-accent, #ee1401)) 30%, transparent));
+  filter: var(--quartz-distortion);
   animation: float calc(var(--quartz-speed) * 2) ease-in-out 0s infinite,
              hologram-flicker 4s ease-in-out infinite;
   transform: rotate(-180deg);

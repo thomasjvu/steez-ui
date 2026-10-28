@@ -1,0 +1,59 @@
+.root:is([data-shape="crystal"], [data-shape="cut"]) {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--crystal-button-text, var(--interactive-primary-fg));
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  isolation: isolate;
+  box-shadow: none;
+  filter: none;
+}
+.shape {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--crystal-button-color, var(--interactive-primary-bg));
+  clip-path: polygon(var(--crystal-button-cut, .95rem) 0%, calc(100% - var(--crystal-button-cut, .95rem)) 0%, 100% 50%, calc(100% - var(--crystal-button-cut, .95rem)) 100%, var(--crystal-button-cut, .95rem) 100%, 0% 50%);
+  box-shadow: none;
+}
+.content { display: inline-flex; position: relative; align-items: center; justify-content: center; gap: .55rem; }
+.root:is([data-shape="crystal"], [data-shape="cut"]):hover,
+.root:is([data-shape="crystal"], [data-shape="cut"]):active { background: transparent; border: 0; box-shadow: none; filter: none; transform: none; }
+.root:focus-visible { outline: 2px solid var(--crystal-button-focus, var(--color-border-focus, #5a6268)); outline-offset: 4px; }
+.root:disabled,
+.root[aria-disabled="true"] { opacity: .5; cursor: not-allowed; }
+.vertical { width: 2.5rem; height: 6rem; min-height: 6rem; padding: 0; flex-shrink: 0; }
+.vertical .shape {
+  inset: auto;
+  left: 50%;
+  top: 50%;
+  width: 6rem;
+  height: 2.5rem;
+  margin-left: -3rem;
+  margin-top: -1.25rem;
+  transform: rotate(90deg);
+  clip-path: polygon(20px 0%, calc(100% - 20px) 0%, 100% 50%, calc(100% - 20px) 100%, 20px 100%, 0% 50%);
+}
+.vertical .content > svg { width: 20px; height: 20px; }
+
+.root[data-variant="secondary"] { color: var(--interactive-secondary-fg); }
+.root[data-variant="secondary"] .shape { background: var(--interactive-secondary-bg); }
+.root[data-variant="danger"] { color: var(--danger); }
+.root[data-variant="danger"] .shape { background: var(--danger-bg); }
+
+.root:is([data-shape="crystal"], [data-shape="cut"])::before, .root:is([data-shape="crystal"], [data-shape="cut"])::after { content: none; }
+
+.root[data-shape="cut"] .shape {
+  clip-path: polygon(var(--cut-tl) 0, calc(100% - var(--cut-tr)) 0, 100% var(--cut-tr), 100% calc(100% - var(--cut-br)), calc(100% - var(--cut-br)) 100%, var(--cut-bl) 100%, 0 calc(100% - var(--cut-bl)), 0 var(--cut-tl));
+}
+.root[data-shape="cut"][data-variant="secondary"] .shape { background: var(--color-border-default); }
+.root[data-shape="cut"][data-variant="secondary"] .shape::after {
+  content: ""; position: absolute; inset: 1px; background: var(--interactive-secondary-bg); clip-path: inherit;
+}

@@ -1,4 +1,4 @@
-import { useCallback, useRef, type KeyboardEvent } from "react";
+import { useCallback, useRef, useState, type KeyboardEvent } from "react";
 
 export interface RovingTabItem {
   id: string;
@@ -79,4 +79,25 @@ export function useRovingTabs<T extends RovingTabItem>({
   );
 
   return { handleKeyDown, setTabRef };
+}
+
+/** Selection fallback is derived without emitting changes during rendering or effects. */
+export function useTabSelection<T extends RovingTabItem>({
+  tabs, value, defaultValue, onValueChange,
+}: {
+  tabs: readonly T[];
+  value?: string;
+  defaultValue?: string;
+  onValueChange?: (id: string) => void;
+}) {
+  const [internalValue, setInternalValue] = useState(defaultValue);
+  const requested = value !== undefined ? value : internalValue;
+  const selected = tabs.find((tab) => tab.id === requested && !tab.disabled)
+    ?? tabs.find((tab) => !tab.disabled);
+  const select = useCallback((id: string) => {
+    if (id === selected?.id || !tabs.some((tab) => tab.id === id && !tab.disabled)) return;
+    if (value === undefined) setInternalValue(id);
+    onValueChange?.(id);
+  }, [onValueChange, selected?.id, tabs, value]);
+  return { selected, select };
 }
