@@ -153,7 +153,6 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/Loading
   z-index: 1;
   will-change: transform;
   animation: steez-loading-screen-1-crossFall 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-  animation-delay: var(--cross-delay, 0ms);
 }
 
 .steez-loading-screen-1-crossSvg {
@@ -912,6 +911,43 @@ export function Icon({ icon, ...props }: IconProps) {
   return <Component {...props} />;
 }
 
+export interface ElementSize {
+  width: number;
+  height: number;
+}
+
+const NO_SIZE: ElementSize = { width: 0, height: 0 };
+
+/**
+ * Tracks an element's client size (content plus padding) with ResizeObserver.
+ * Keeps `fallback` until the element has a non-zero size, and keeps the last
+ * good size if it later collapses to zero.
+ */
+export function useElementSize(
+  ref: React.RefObject<HTMLElement | null>,
+  fallback: ElementSize = NO_SIZE,
+): ElementSize {
+  const [size, setSize] = React.useState(fallback);
+
+  React.useEffect(() => {
+    const element = ref.current;
+    if (!element || typeof ResizeObserver === "undefined") return undefined;
+
+    const observer = new ResizeObserver(() => {
+      const width = ref.current?.clientWidth ?? 0;
+      const height = ref.current?.clientHeight ?? 0;
+      if (width <= 0 || height <= 0) return;
+      setSize((current) =>
+        current.width === width && current.height === height ? current : { width, height },
+      );
+    });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [ref]);
+
+  return size;
+}
+
 /** Clamp finite inputs; malformed values use the component's documented default. */
 export function clampFinite(
   value: number,
@@ -983,6 +1019,131 @@ export function LoadingProgressBar({
   );
 }
 
+type AudioWindow = Window & { webkitAudioContext?: typeof AudioContext };
+
+function playBeep(ctx: AudioContext) {
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = "triangle";
+  osc.frequency.value = 523.25;
+  gain.gain.setValueAtTime(0.15, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start();
+  osc.stop(ctx.currentTime + 0.08);
+}
+
+/**
+ * When enabled, beeps each time `progress` (0–100) fills another progress-bar
+ * segment. Audio unlocks on the first pointer or key press, as browsers require.
+ */
+export function useProgressBeep(enabled: boolean, progress: number) {
+  const audioCtxRef = React.useRef<AudioContext | null>(null);
+  const audioEnabledRef = React.useRef(false);
+  const filledBarsRef = React.useRef(0);
+
+  React.useEffect(() => {
+    if (!enabled) return undefined;
+
+    const enableAudio = async () => {
+      const AudioContextClass =
+        window.AudioContext || (window as AudioWindow).webkitAudioContext;
+      if (!AudioContextClass) return;
+
+      try {
+        const ctx = audioCtxRef.current ?? new AudioContextClass();
+        audioCtxRef.current = ctx;
+        if (ctx.state === "suspended") {
+          await ctx.resume();
+        }
+        audioEnabledRef.current = ctx.state === "running";
+      } catch {
+        audioEnabledRef.current = false;
+      }
+    };
+
+    window.addEventListener("pointerdown", enableAudio, { once: true, passive: true });
+    window.addEventListener("keydown", enableAudio, { once: true });
+
+    return () => {
+      window.removeEventListener("pointerdown", enableAudio);
+      window.removeEventListener("keydown", enableAudio);
+      if (audioCtxRef.current) {
+        void audioCtxRef.current.close().catch(() => undefined);
+        audioCtxRef.current = null;
+      }
+      audioEnabledRef.current = false;
+    };
+  }, [enabled]);
+
+  React.useEffect(() => {
+    if (!enabled) return;
+
+    const filledBars = Math.round((progress / 100) * LOADING_PROGRESS_SEGMENT_COUNT);
+    if (filledBars > filledBarsRef.current) {
+      const ctx = audioCtxRef.current;
+      if (ctx && audioEnabledRef.current) playBeep(ctx);
+      filledBarsRef.current = filledBars;
+    }
+  }, [enabled, progress]);
+}
+
+export interface Cross {
+  id: number;
+  x: number;
+  rotation: number;
+  scale: number;
+  groundOffset: number;
+  opacity: number;
+}
+
+/** Crosses kept on screen; older ones are dropped as new ones fall. */
+export const MAX_CROSSES = 18;
+const MIN_SURFACE_WIDTH = 160;
+
+/** A cross with a random column, tilt, size, landing depth and opacity. */
+export function makeCross(id: number, surfaceWidth: number, random: () => number): Cross {
+  const width = Math.max(surfaceWidth, MIN_SURFACE_WIDTH);
+  return {
+    id,
+    rotation: (random() - 0.5) * 6,
+    x: random() * Math.max(width - 120, 24),
+    scale: 0.4 + random() * 0.4,
+    groundOffset: random() * 30,
+    opacity: 0.4 + random() * 0.3,
+  };
+}
+
+export function pushCross(crosses: readonly Cross[], next: Cross): Cross[] {
+  return [...crosses.slice(-(MAX_CROSSES - 1)), next];
+}
+
+/** Drops a new cross every 400–700ms across a surface `width` pixels wide. */
+export function useFallingCrosses(width: number): Cross[] {
+  const [crosses, setCrosses] = React.useState<Cross[]>([]);
+  const nextIdRef = React.useRef(0);
+
+  React.useEffect(() => {
+    if (typeof window === "undefined") return undefined;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+    const scheduleNextCross = () => {
+      timeoutId = setTimeout(() => {
+        nextIdRef.current += 1;
+        const cross = makeCross(nextIdRef.current, width, Math.random);
+        setCrosses((current) => pushCross(current, cross));
+        scheduleNextCross();
+      }, 400 + Math.random() * 300);
+    };
+
+    scheduleNextCross();
+    return () => clearTimeout(timeoutId);
+  }, [width]);
+
+  return crosses;
+}
+
 export interface LoadingScreenProps {
   progress: number;
   message?: string;
@@ -994,27 +1155,9 @@ export interface LoadingScreenProps {
   themeMode?: "auto" | "light" | "dark";
 }
 
-interface Cross {
-  id: number;
-  x: number;
-  rotation: number;
-  scale: number;
-  groundOffset: number;
-  delay: number;
-  opacity: number;
-}
-
-function randomFloat() {
-  return Math.random();
-}
-
 function resolveIsLightMode(themeMode: LoadingScreenProps["themeMode"]) {
-  if (themeMode === "light") {
-    return true;
-  }
-
-  if (themeMode === "dark") {
-    return false;
+  if (themeMode !== "auto") {
+    return themeMode === "light";
   }
 
   if (typeof window === "undefined") {
@@ -1033,6 +1176,26 @@ function resolveIsLightMode(themeMode: LoadingScreenProps["themeMode"]) {
   }
 }
 
+/** Cycles 0–3 trailing dots every 400ms. */
+function useEllipsis() {
+  const [count, setCount] = React.useState(0);
+  React.useEffect(() => {
+    const interval = setInterval(() => setCount((current) => (current + 1) % 4), 400);
+    return () => clearInterval(interval);
+  }, []);
+  return ".".repeat(count);
+}
+
+/** Follows `value` one short beat behind so the bar animates from its last value. */
+function useDeferredProgress(value: number) {
+  const [display, setDisplay] = React.useState(0);
+  React.useEffect(() => {
+    const timeout = setTimeout(() => setDisplay(value), 50);
+    return () => clearTimeout(timeout);
+  }, [value]);
+  return display;
+}
+
 export function LoadingScreen({
   progress,
   message,
@@ -1043,208 +1206,19 @@ export function LoadingScreen({
   fullscreen = true,
   themeMode = "auto",
 }: LoadingScreenProps) {
-  const [displayProgress, setDisplayProgress] = React.useState(0);
-  const [ellipsisCount, setEllipsisCount] = React.useState(0);
-  const [crosses, setCrosses] = React.useState<Cross[]>([]);
-  const [bounds, setBounds] = React.useState({ width: 0, height: 0 });
-  const prevFilledBars = React.useRef(0);
-  const crossIdRef = React.useRef(0);
-  const isLoadingRef = React.useRef(true);
-  const audioCtxRef = React.useRef<AudioContext | null>(null);
-  const audioEnabledRef = React.useRef(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const bounds = useElementSize(containerRef);
+  const hasWindow = typeof window !== "undefined";
+  const screenWidth = bounds.width || (hasWindow ? window.innerWidth : 0);
+  const screenHeight = bounds.height || (hasWindow ? window.innerHeight : 0);
 
-  const updateBounds = React.useCallback(() => {
-    const nextWidth =
-      containerRef.current?.clientWidth || window.innerWidth || 0;
-    const nextHeight =
-      containerRef.current?.clientHeight || window.innerHeight || 0;
+  const crosses = useFallingCrosses(screenWidth);
+  const displayProgress = useDeferredProgress(progress);
+  const ellipsis = useEllipsis();
+  useProgressBeep(audioFeedback, displayProgress);
 
-    setBounds((current) => {
-      if (current.width === nextWidth && current.height === nextHeight) {
-        return current;
-      }
-
-      return {
-        width: nextWidth,
-        height: nextHeight,
-      };
-    });
-  }, []);
-
-  const spawnCross = React.useCallback(() => {
-    if (!isLoadingRef.current || typeof window === "undefined") {
-      return;
-    }
-
-    const tilt = (randomFloat() - 0.5) * 6;
-    const availableWidth = Math.max(bounds.width || window.innerWidth, 160);
-    const nextCross: Cross = {
-      id: crossIdRef.current += 1,
-      x: randomFloat() * Math.max(availableWidth - 120, 24),
-      rotation: tilt,
-      scale: 0.4 + randomFloat() * 0.4,
-      groundOffset: randomFloat() * 30,
-      delay: 0,
-      opacity: 0.4 + randomFloat() * 0.3,
-    };
-    setCrosses((current) => [...current.slice(-17), nextCross]);
-  }, [bounds.width]);
-
-  React.useEffect(() => {
-    if (typeof window === "undefined") {
-      return undefined;
-    }
-
-    updateBounds();
-    window.addEventListener("resize", updateBounds);
-
-    const observer =
-      typeof ResizeObserver === "undefined" || !containerRef.current
-        ? null
-        : new ResizeObserver(() => {
-            updateBounds();
-          });
-
-    if (observer && containerRef.current) {
-      observer.observe(containerRef.current);
-    }
-
-    return () => {
-      window.removeEventListener("resize", updateBounds);
-      observer?.disconnect();
-    };
-  }, [updateBounds]);
-
-  React.useEffect(() => {
-    isLoadingRef.current = true;
-    let cancelled = false;
-    let timeoutId: ReturnType<typeof setTimeout> | undefined;
-
-    const scheduleNextCross = () => {
-      if (cancelled) {
-        return;
-      }
-
-      const delay = 400 + randomFloat() * 300;
-      timeoutId = setTimeout(() => {
-        if (cancelled) {
-          return;
-        }
-
-        spawnCross();
-        if (isLoadingRef.current) {
-          scheduleNextCross();
-        }
-      }, delay);
-    };
-
-    scheduleNextCross();
-    return () => {
-      cancelled = true;
-      if (timeoutId !== undefined) {
-        clearTimeout(timeoutId);
-      }
-      isLoadingRef.current = false;
-    };
-  }, [spawnCross]);
-
-  React.useEffect(() => {
-    if (!audioFeedback) {
-      return undefined;
-    }
-
-    const enableAudio = async () => {
-      const AudioContextClass =
-        window.AudioContext || (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-      if (!AudioContextClass) {
-        return;
-      }
-
-      try {
-        const ctx = audioCtxRef.current ?? new AudioContextClass();
-        audioCtxRef.current = ctx;
-        if (ctx.state === "suspended") {
-          await ctx.resume();
-        }
-        audioEnabledRef.current = ctx.state === "running";
-      } catch {
-        audioEnabledRef.current = false;
-      }
-    };
-
-    window.addEventListener("pointerdown", enableAudio, {
-      once: true,
-      passive: true,
-    });
-    window.addEventListener("keydown", enableAudio, { once: true });
-
-    return () => {
-      window.removeEventListener("pointerdown", enableAudio);
-      window.removeEventListener("keydown", enableAudio);
-      if (audioCtxRef.current) {
-        void audioCtxRef.current.close().catch(() => undefined);
-        audioCtxRef.current = null;
-      }
-      audioEnabledRef.current = false;
-    };
-  }, [audioFeedback]);
-
-  React.useEffect(() => {
-    if (!audioFeedback) {
-      return undefined;
-    }
-
-    const playBeep = () => {
-      const audioCtx = audioCtxRef.current;
-      if (!audioCtx || !audioEnabledRef.current) {
-        return;
-      }
-
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = "triangle";
-      osc.frequency.value = 523.25;
-      gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start();
-      osc.stop(audioCtx.currentTime + 0.08);
-    };
-
-    const filledBars = Math.round(
-      (displayProgress / 100) * LOADING_PROGRESS_SEGMENT_COUNT,
-    );
-    if (filledBars > prevFilledBars.current) {
-      playBeep();
-      prevFilledBars.current = filledBars;
-    }
-
-    return undefined;
-  }, [audioFeedback, displayProgress]);
-
-  React.useEffect(() => {
-    const ellipsisInterval = setInterval(() => {
-      setEllipsisCount((count) => (count + 1) % 4);
-    }, 400);
-    return () => clearInterval(ellipsisInterval);
-  }, []);
-
-  React.useEffect(() => {
-    const timeout = setTimeout(() => {
-      setDisplayProgress(progress);
-    }, 50);
-    return () => clearTimeout(timeout);
-  }, [progress]);
-
-  const ellipsis = ".".repeat(ellipsisCount);
   const cleanMessage = message ? message.replace(/\.+$/, "") : "";
   const isLightMode = resolveIsLightMode(themeMode);
-  const screenWidth =
-    bounds.width || (typeof window === "undefined" ? 0 : window.innerWidth);
-  const screenHeight =
-    bounds.height || (typeof window === "undefined" ? 0 : window.innerHeight);
 
   return (
     <div
@@ -1266,7 +1240,6 @@ export function LoadingScreen({
           style={
             {
               "--cross-left": `${cross.x}px`,
-              "--cross-delay": `${cross.delay}ms`,
               "--rotation": `${cross.rotation}deg`,
               "--ground": `${cross.groundOffset}%`,
               "--cross-scale": String(cross.scale),
@@ -1303,75 +1276,4 @@ export function LoadingScreen({
       </div>
     </div>
   );
-}
-
-export type LoadingStage = "init" | "auth" | "agent" | "config" | "ready";
-
-const STAGE_PROGRESS: Record<LoadingStage, number> = {
-  init: 0,
-  auth: 25,
-  agent: 50,
-  config: 75,
-  ready: 100,
-};
-
-const STAGE_MESSAGES: Record<LoadingStage, string> = {
-  init: "Initializing...",
-  auth: "Authenticating...",
-  agent: "Loading agent...",
-  config: "Loading configuration...",
-  ready: "Preparing interface...",
-};
-
-export function useLoadingProgress(
-  isLoading: boolean,
-  _phase?: string,
-  stage: LoadingStage = "init",
-) {
-  const [progress, setProgress] = React.useState(0);
-  const [currentMessage, setCurrentMessage] = React.useState("Initializing...");
-  const progressRef = React.useRef(0);
-
-  React.useEffect(() => {
-    progressRef.current = progress;
-  }, [progress]);
-
-  React.useEffect(() => {
-    if (!isLoading) {
-      setProgress(100);
-      progressRef.current = 100;
-      setCurrentMessage("Complete!");
-      return undefined;
-    }
-
-    const targetProgress = STAGE_PROGRESS[stage];
-    const targetMessage = STAGE_MESSAGES[stage];
-    setCurrentMessage(targetMessage);
-
-    const currentProgressSnapshot = progressRef.current;
-    const diff = targetProgress - currentProgressSnapshot;
-    const steps = 20;
-    const stepDuration = 100;
-    let step = 0;
-
-    const interval = setInterval(() => {
-      step += 1;
-      const easedStep = step / steps;
-      const easedProgress = diff * easedStep;
-      const nextProgress = Math.min(
-        currentProgressSnapshot + easedProgress,
-        targetProgress,
-      );
-      progressRef.current = nextProgress;
-      setProgress(nextProgress);
-
-      if (step >= steps) {
-        clearInterval(interval);
-      }
-    }, stepDuration);
-
-    return () => clearInterval(interval);
-  }, [isLoading, stage]);
-
-  return { progress, message: currentMessage };
 }

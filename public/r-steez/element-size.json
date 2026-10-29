@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "element-size",
+  "type": "registry:lib",
+  "title": "element-size",
+  "description": "Shared implementation dependency.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/hooks/useElementSize.ts",
+      "type": "registry:file",
+      "target": "components/hooks/useElementSize.ts",
+      "content": "import React from \"react\";\n\nexport interface ElementSize {\n  width: number;\n  height: number;\n}\n\nconst NO_SIZE: ElementSize = { width: 0, height: 0 };\n\n/**\n * Tracks an element's client size (content plus padding) with ResizeObserver.\n * Keeps `fallback` until the element has a non-zero size, and keeps the last\n * good size if it later collapses to zero.\n */\nexport function useElementSize(\n  ref: React.RefObject<HTMLElement | null>,\n  fallback: ElementSize = NO_SIZE,\n): ElementSize {\n  const [size, setSize] = React.useState(fallback);\n\n  React.useEffect(() => {\n    const element = ref.current;\n    if (!element || typeof ResizeObserver === \"undefined\") return undefined;\n\n    const observer = new ResizeObserver(() => {\n      const width = ref.current?.clientWidth ?? 0;\n      const height = ref.current?.clientHeight ?? 0;\n      if (width <= 0 || height <= 0) return;\n      setSize((current) =>\n        current.width === width && current.height === height ? current : { width, height },\n      );\n    });\n    observer.observe(element);\n    return () => observer.disconnect();\n  }, [ref]);\n\n  return size;\n}\n",
+      "source": "packages/ui/src/hooks/useElementSize.ts"
+    }
+  ]
+}

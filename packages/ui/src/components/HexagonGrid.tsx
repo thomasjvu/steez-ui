@@ -2,6 +2,7 @@
 
 import React from "react";
 
+import { useElementSize } from "../hooks/useElementSize";
 import { useMotionActivity } from "../hooks/useMotionActivity";
 import styles from "./HexagonGrid.module.css";
 import {
@@ -31,28 +32,6 @@ export interface HexagonGridProps {
 const POINTER_THROTTLE_MS = 90;
 const EMPTY_GRID: HexGrid = { cells: [], radius: 0 };
 
-/** Tracks the container's size, starting from the given fallback. */
-function useElementSize(
-  ref: React.RefObject<HTMLElement | null>,
-  initialWidth: number,
-  initialHeight: number,
-) {
-  const [size, setSize] = React.useState({ width: initialWidth, height: initialHeight });
-  React.useEffect(() => {
-    const element = ref.current;
-    if (!element || typeof ResizeObserver === "undefined") return undefined;
-    const observer = new ResizeObserver(([entry]) => {
-      const { width, height } = entry?.contentRect ?? { width: 0, height: 0 };
-      if (width > 0 && height > 0) {
-        setSize({ width: Math.floor(width), height: Math.floor(height) });
-      }
-    });
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, [ref]);
-  return size;
-}
-
 export function HexagonGrid({
   width: initialWidth = 800,
   height: initialHeight = 600,
@@ -67,7 +46,10 @@ export function HexagonGrid({
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const gridRef = React.useRef<HexGrid>(EMPTY_GRID);
   const lastPointerRef = React.useRef(0);
-  const { width, height } = useElementSize(containerRef, initialWidth, initialHeight);
+  const { width, height } = useElementSize(containerRef, {
+    width: initialWidth,
+    height: initialHeight,
+  });
 
   const paint = React.useCallback(() => {
     const ctx = canvasRef.current?.getContext("2d");

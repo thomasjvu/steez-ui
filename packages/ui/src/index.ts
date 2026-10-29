@@ -60,12 +60,11 @@ export {
   LoadingProgressBar,
   type LoadingProgressBarProps,
 } from "./components/LoadingProgressBar.tsx";
+export { LoadingScreen, type LoadingScreenProps } from "./components/LoadingScreen.tsx";
 export {
-  LoadingScreen,
-  type LoadingScreenProps,
   type LoadingStage,
   useLoadingProgress,
-} from "./components/LoadingScreen.tsx";
+} from "./components/LoadingScreen.progress.ts";
 export { MarqueeStrip, type MarqueeStripProps } from "./components/MarqueeStrip.tsx";
 export {
   KineticSwipeText,

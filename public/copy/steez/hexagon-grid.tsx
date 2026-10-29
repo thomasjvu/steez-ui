@@ -48,6 +48,43 @@ function __injectSteezStandaloneStyles() {
 
 __injectSteezStandaloneStyles();
 
+export interface ElementSize {
+  width: number;
+  height: number;
+}
+
+const NO_SIZE: ElementSize = { width: 0, height: 0 };
+
+/**
+ * Tracks an element's client size (content plus padding) with ResizeObserver.
+ * Keeps `fallback` until the element has a non-zero size, and keeps the last
+ * good size if it later collapses to zero.
+ */
+export function useElementSize(
+  ref: React.RefObject<HTMLElement | null>,
+  fallback: ElementSize = NO_SIZE,
+): ElementSize {
+  const [size, setSize] = React.useState(fallback);
+
+  React.useEffect(() => {
+    const element = ref.current;
+    if (!element || typeof ResizeObserver === "undefined") return undefined;
+
+    const observer = new ResizeObserver(() => {
+      const width = ref.current?.clientWidth ?? 0;
+      const height = ref.current?.clientHeight ?? 0;
+      if (width <= 0 || height <= 0) return;
+      setSize((current) =>
+        current.width === width && current.height === height ? current : { width, height },
+      );
+    });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [ref]);
+
+  return size;
+}
+
 const QUERY = "(prefers-reduced-motion: reduce)";
 
 /** Live `prefers-reduced-motion` value; false where matchMedia is unavailable. */
@@ -393,28 +430,6 @@ export interface HexagonGridProps {
 const POINTER_THROTTLE_MS = 90;
 const EMPTY_GRID: HexGrid = { cells: [], radius: 0 };
 
-/** Tracks the container's size, starting from the given fallback. */
-function useElementSize(
-  ref: React.RefObject<HTMLElement | null>,
-  initialWidth: number,
-  initialHeight: number,
-) {
-  const [size, setSize] = React.useState({ width: initialWidth, height: initialHeight });
-  React.useEffect(() => {
-    const element = ref.current;
-    if (!element || typeof ResizeObserver === "undefined") return undefined;
-    const observer = new ResizeObserver(([entry]) => {
-      const { width, height } = entry?.contentRect ?? { width: 0, height: 0 };
-      if (width > 0 && height > 0) {
-        setSize({ width: Math.floor(width), height: Math.floor(height) });
-      }
-    });
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, [ref]);
-  return size;
-}
-
 export function HexagonGrid({
   width: initialWidth = 800,
   height: initialHeight = 600,
@@ -429,7 +444,10 @@ export function HexagonGrid({
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const gridRef = React.useRef<HexGrid>(EMPTY_GRID);
   const lastPointerRef = React.useRef(0);
-  const { width, height } = useElementSize(containerRef, initialWidth, initialHeight);
+  const { width, height } = useElementSize(containerRef, {
+    width: initialWidth,
+    height: initialHeight,
+  });
 
   const paint = React.useCallback(() => {
     const ctx = canvasRef.current?.getContext("2d");
