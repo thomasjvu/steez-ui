@@ -33,8 +33,12 @@ function fromPreviewModule<T extends object>(
     }));
 }
 
-const fromContent = (name: keyof typeof import("./previews/preview-content")) =>
-  fromPreviewModule(() => import("./previews/preview-content"), name);
+const fromSurfaces = (name: keyof typeof import("./previews/preview-surfaces")) =>
+  fromPreviewModule(() => import("./previews/preview-surfaces"), name);
+const fromText = (name: keyof typeof import("./previews/preview-text")) =>
+  fromPreviewModule(() => import("./previews/preview-text"), name);
+const fromFilters = (name: keyof typeof import("./previews/preview-filters")) =>
+  fromPreviewModule(() => import("./previews/preview-filters"), name);
 const fromControls = (
   name: keyof typeof import("./previews/preview-controls"),
 ) => fromPreviewModule(() => import("./previews/preview-controls"), name);
@@ -53,26 +57,26 @@ const fromFeedback = (
  * statically imports the complete `@steez-ui/ui` surface.
  */
 const PREVIEW_MAP: Record<string, ComponentType> = {
-  "boiling-lines": makePreview(fromContent("BoilingLinesPreview")),
+  "boiling-lines": makePreview(fromSurfaces("BoilingLinesPreview")),
   "accordion-feature-card": makePreview(
-    fromContent("AccordionFeatureCardPreview"),
+    fromSurfaces("AccordionFeatureCardPreview"),
   ),
-  "ascii-ripple-text": makePreview(fromContent("AsciiRippleTextPreview")),
-  "avatar-stage": makePreview(fromContent("AvatarStagePreview")),
+  "ascii-ripple-text": makePreview(fromText("AsciiRippleTextPreview")),
+  "avatar-stage": makePreview(fromSurfaces("AvatarStagePreview")),
   "character-afterimage": makePreview(
-    fromContent("CharacterAfterimagePreview"),
+    fromSurfaces("CharacterAfterimagePreview"),
   ),
-  "blink-text": makePreview(fromContent("BlinkTextPreview")),
-  "kinetic-text-ramp": makePreview(fromContent("KineticTextRampPreview")),
-  "kinetic-text-ring": makePreview(fromContent("KineticTextRingPreview")),
-  "kinetic-text-globe": makePreview(fromContent("KineticTextGlobePreview")),
-  "kinetic-text-volume": makePreview(fromContent("KineticTextVolumePreview")),
-  "kinetic-swipe-text": makePreview(fromContent("KineticSwipeTextPreview")),
-  "kinetic-glyph": makePreview(fromContent("KineticGlyphPreview")),
-  "chromatic-aberration-filter": makePreview(fromContent("ChromaticAberrationFilterPreview")),
-  "glow-filter": makePreview(fromContent("GlowFilterPreview")),
-  "grain-filter": makePreview(fromContent("GrainFilterPreview")),
-  "displacement-filter": makePreview(fromContent("DisplacementFilterPreview")),
+  "blink-text": makePreview(fromText("BlinkTextPreview")),
+  "kinetic-text-ramp": makePreview(fromText("KineticTextRampPreview")),
+  "kinetic-text-ring": makePreview(fromText("KineticTextRingPreview")),
+  "kinetic-text-globe": makePreview(fromText("KineticTextGlobePreview")),
+  "kinetic-text-volume": makePreview(fromText("KineticTextVolumePreview")),
+  "kinetic-swipe-text": makePreview(fromText("KineticSwipeTextPreview")),
+  "kinetic-glyph": makePreview(fromSurfaces("KineticGlyphPreview")),
+  "chromatic-aberration-filter": makePreview(fromFilters("ChromaticAberrationFilterPreview")),
+  "glow-filter": makePreview(fromFilters("GlowFilterPreview")),
+  "grain-filter": makePreview(fromFilters("GrainFilterPreview")),
+  "displacement-filter": makePreview(fromFilters("DisplacementFilterPreview")),
   "quartz-crystal": makePreview(
     () => import("./previews/quartz-crystal-preview"),
   ),
@@ -84,11 +88,11 @@ const PREVIEW_MAP: Record<string, ComponentType> = {
   "checkbox": makePreview(fromForms("CheckboxPreview")),
   "radio": makePreview(fromForms("RadioPreview")),
   "slider": makePreview(fromForms("SliderPreview")),
-  "themed-card": makePreview(fromContent("ThemedCardPreview")),
-  "cyberpunk-tile": makePreview(fromContent("CyberpunkTilePreview")),
+  "themed-card": makePreview(fromSurfaces("ThemedCardPreview")),
+  "cyberpunk-tile": makePreview(fromSurfaces("CyberpunkTilePreview")),
   "fui-button-tile": makePreview(fromControls("FUIButtonTilePreview")),
-  "corner-bracket-card": makePreview(fromContent("CornerBracketCardPreview")),
-  "dotted-halo-card": makePreview(fromContent("DottedHaloCardPreview")),
+  "corner-bracket-card": makePreview(fromSurfaces("CornerBracketCardPreview")),
+  "dotted-halo-card": makePreview(fromSurfaces("DottedHaloCardPreview")),
   "segmented-control": makePreview(fromForms("SegmentedControlPreview")),
   "tabbed-panel": makePreview(fromNavigation("TabbedPanelPreview")),
   "page-header": makePreview(fromControls("PageHeaderPreview")),
@@ -123,7 +127,7 @@ const PREVIEW_MAP: Record<string, ComponentType> = {
   "stat-card": makePreview(fromFeedback("StatCardPreview")),
   "status-message": makePreview(fromFeedback("StatusMessagePreview")),
   "error-message": makePreview(fromFeedback("ErrorMessagePreview")),
-  "stroked-text": makePreview(fromContent("StrokedTextPreview")),
+  "stroked-text": makePreview(fromText("StrokedTextPreview")),
   "widget-card": makePreview(fromFeedback("WidgetCardPreview")),
 };
 
