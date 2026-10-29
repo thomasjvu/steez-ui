@@ -155,6 +155,75 @@ export function transformCssModule(css, { classPrefix, tokenValues }) {
   };
 }
 
+export function isRelativeImport(source) {
+  return source.startsWith(".");
+}
+
+export function isStyleImport(source) {
+  return source.endsWith(".css") || source.endsWith(".module.css");
+}
+
+export function parseDefaultBinding(clause) {
+  const match = clause.match(/^(?:type\s+)?([A-Za-z_$][\w$]*)/);
+  return match?.[1] ?? null;
+}
+
+export function isIconTypeOnlyImport(clause) {
+  if (clause.trim().startsWith("type ")) {
+    return true;
+  }
+
+  const namedStart = clause.indexOf("{");
+  if (namedStart === -1) {
+    return false;
+  }
+
+  return clause
+    .slice(namedStart)
+    .replace(/^\{/, "")
+    .replace(/\}$/, "")
+    .split(",")
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .every((part) => part.startsWith("type "));
+}
+
+export function toCssObjectName(prefix) {
+  return `__styles_${prefix.replace(/[^A-Za-z0-9_$]/g, "_")}`;
+}
+
+export function extractStyleBinding(imported) {
+  if (!isStyleImport(imported.source)) {
+    return null;
+  }
+
+  return {
+    binding: parseDefaultBinding(imported.clause),
+    source: imported.source,
+  };
+}
+
+/**
+ * Relative `export { a, type B } from "./x"` lines. The standalone copy inlines
+ * ./x, whose own exports stay exported, so the line itself can simply be
+ * dropped. Renames and package re-exports would need real rewriting, so they
+ * are rejected instead of silently producing a broken copy.
+ */
+const REEXPORT_PATTERN = /(^|\n)[ \t]*export\s+((?:type\s+)?\{[^}]*\})\s+from\s+["']([^"']+)["'];?[ \t]*(?=\n|$)/g;
+
+export function parseRelativeReexports(source) {
+  return [...source.matchAll(REEXPORT_PATTERN)].map((match) => {
+    const [, , clause, specifier] = match;
+    if (!isRelativeImport(specifier)) {
+      throw new Error(`Standalone copies cannot re-export a package: ${match[0].trim()}`);
+    }
+    if (/\sas\s/.test(clause)) {
+      throw new Error(`Standalone copies cannot rename re-exports: ${match[0].trim()}`);
+    }
+    return specifier;
+  });
+}
+
 export function parseModuleImports(source) {
   return [...source.matchAll(IMPORT_PATTERN)].map((match) => ({
     clause: match[2].trim(),
@@ -197,7 +266,8 @@ export function transformSource({
 }) {
   let transformed = source
     .replace(/^\s*["']use client["'];?\s*/m, "")
-    .replace(IMPORT_PATTERN, "\n");
+    .replace(IMPORT_PATTERN, "\n")
+    .replace(REEXPORT_PATTERN, "\n");
 
   for (const [binding, variableName] of styleBindings) {
     transformed = transformed.replace(new RegExp(`\\b${escapeRegExp(binding)}\\b`, "g"), variableName);

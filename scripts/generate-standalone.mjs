@@ -5,10 +5,16 @@ import { fileURLToPath } from "node:url";
 import { COMPONENT_MANIFEST } from "../lib/docs/component-manifest.mjs";
 import {
   collectPortableImports,
+  extractStyleBinding,
+  isIconTypeOnlyImport,
+  isRelativeImport,
+  isStyleImport,
   makeReactImportSource,
   makeStyleBootstrap,
   parseModuleImports,
+  parseRelativeReexports,
   parseTokenValues,
+  toCssObjectName,
   transformCssModule,
   transformSource,
 } from "./lib/standalone-transform.mjs";
@@ -20,39 +26,6 @@ const ICON_TYPE_SOURCE = "packages/icons/src/types.ts";
 const ICON_PROVIDER_SOURCE = "packages/icons/src/IconProvider.tsx";
 const ICONS_SOURCE = "packages/icons/src/icons.tsx";
 const ICON_COMPONENT_SOURCE = "packages/icons/src/Icon.tsx";
-
-function isRelativeImport(source) {
-  return source.startsWith(".");
-}
-
-function isStyleImport(source) {
-  return source.endsWith(".css") || source.endsWith(".module.css");
-}
-
-function parseDefaultBinding(clause) {
-  const match = clause.match(/^(?:type\s+)?([A-Za-z_$][\w$]*)/);
-  return match?.[1] ?? null;
-}
-
-function isIconTypeOnlyImport(clause) {
-  if (clause.trim().startsWith("type ")) {
-    return true;
-  }
-
-  const namedStart = clause.indexOf("{");
-  if (namedStart === -1) {
-    return false;
-  }
-
-  return clause
-    .slice(namedStart)
-    .replace(/^\{/, "")
-    .replace(/\}$/, "")
-    .split(",")
-    .map((part) => part.trim())
-    .filter(Boolean)
-    .every((part) => part.startsWith("type "));
-}
 
 async function resolveSourceFile(repoRoot, importerPath, specifier) {
   const importerDirectory = path.dirname(importerPath);
@@ -84,21 +57,6 @@ async function resolveSourceFile(repoRoot, importerPath, specifier) {
 
 function sourceKey(repoRoot, absolutePath) {
   return path.relative(repoRoot, absolutePath).split(path.sep).join("/");
-}
-
-function toCssObjectName(prefix) {
-  return `__styles_${prefix.replace(/[^A-Za-z0-9_$]/g, "_")}`;
-}
-
-function extractStyleBinding(imported) {
-  if (!isStyleImport(imported.source)) {
-    return null;
-  }
-
-  return {
-    binding: parseDefaultBinding(imported.clause),
-    source: imported.source,
-  };
 }
 
 async function makeStandaloneForComponent({ repoRoot, component, tokenValues }) {
@@ -149,6 +107,14 @@ async function makeStandaloneForComponent({ repoRoot, component, tokenValues }) 
     const source = await readSource(absolutePath);
     const imports = parseModuleImports(source);
     visitedSources.add(absolutePath);
+
+    for (const specifier of parseRelativeReexports(source)) {
+      const dependencyPath = await resolveSourceFile(repoRoot, absolutePath, specifier);
+      if (!dependencyPath) {
+        throw new Error(`Could not resolve standalone re-export: ${sourceKey(repoRoot, absolutePath)} -> ${specifier}`);
+      }
+      await visit(dependencyPath);
+    }
 
     for (const imported of imports) {
       if (imported.source === "@steez-ui/icons") {
