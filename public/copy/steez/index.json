@@ -122,6 +122,7 @@
       "packages/icons/src/types.ts",
       "packages/icons/src/IconProvider.tsx",
       "packages/icons/src/icons.tsx",
+      "packages/icons/src/icons.data.ts",
       "packages/icons/src/Icon.tsx",
       "packages/ui/src/utils/numbers.ts"
     ],
@@ -422,6 +423,7 @@
       "packages/icons/src/types.ts",
       "packages/icons/src/IconProvider.tsx",
       "packages/icons/src/icons.tsx",
+      "packages/icons/src/icons.data.ts",
       "packages/icons/src/Icon.tsx"
     ],
     "styleFiles": [
@@ -446,6 +448,7 @@
       "packages/icons/src/types.ts",
       "packages/icons/src/IconProvider.tsx",
       "packages/icons/src/icons.tsx",
+      "packages/icons/src/icons.data.ts",
       "packages/icons/src/Icon.tsx",
       "packages/ui/src/components/TabList.tsx"
     ],
@@ -487,6 +490,7 @@
       "packages/icons/src/types.ts",
       "packages/icons/src/IconProvider.tsx",
       "packages/icons/src/icons.tsx",
+      "packages/icons/src/icons.data.ts",
       "packages/icons/src/Icon.tsx",
       "packages/ui/src/components/NotchedViewportFrame.tsx",
       "packages/ui/src/components/RadialMenuOverlay.focus.ts",
@@ -512,6 +516,7 @@
       "packages/icons/src/types.ts",
       "packages/icons/src/IconProvider.tsx",
       "packages/icons/src/icons.tsx",
+      "packages/icons/src/icons.data.ts",
       "packages/icons/src/Icon.tsx"
     ],
     "styleFiles": [
@@ -534,6 +539,7 @@
       "packages/icons/src/types.ts",
       "packages/icons/src/IconProvider.tsx",
       "packages/icons/src/icons.tsx",
+      "packages/icons/src/icons.data.ts",
       "packages/icons/src/Icon.tsx",
       "packages/ui/src/hooks/useElementSize.ts",
       "packages/ui/src/components/LoadingProgressBar.tsx",
@@ -782,6 +788,7 @@
       "packages/icons/src/types.ts",
       "packages/icons/src/IconProvider.tsx",
       "packages/icons/src/icons.tsx",
+      "packages/icons/src/icons.data.ts",
       "packages/icons/src/Icon.tsx"
     ],
     "styleFiles": [
@@ -838,6 +845,7 @@
       "packages/icons/src/types.ts",
       "packages/icons/src/IconProvider.tsx",
       "packages/icons/src/icons.tsx",
+      "packages/icons/src/icons.data.ts",
       "packages/icons/src/Icon.tsx",
       "packages/ui/src/components/Button.tsx"
     ],

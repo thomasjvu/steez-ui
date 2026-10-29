@@ -21,6 +21,7 @@ export default defineConfig({
     include: [
       "packages/ui/src/**/*.test.ts",
       "packages/ui/src/**/*.test.tsx",
+      "packages/icons/src/**/*.test.tsx",
       "lib/**/*.test.ts",
       "lib/**/*.test.tsx",
       "scripts/**/*.test.mjs",

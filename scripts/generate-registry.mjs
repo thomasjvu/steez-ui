@@ -53,6 +53,7 @@ const itemDefinitions = [
       { source: "packages/icons/src/Icon.tsx", target: "lib/steez/icons/Icon.tsx", type: "registry:file" },
       { source: "packages/icons/src/IconProvider.tsx", target: "lib/steez/icons/IconProvider.tsx", type: "registry:file" },
       { source: "packages/icons/src/icons.tsx", target: "lib/steez/icons/icons.tsx", type: "registry:file" },
+      { source: "packages/icons/src/icons.data.ts", target: "lib/steez/icons/icons.data.ts", type: "registry:file" },
       { source: "packages/icons/src/types.ts", target: "lib/steez/icons/types.ts", type: "registry:file" },
     ],
   },
