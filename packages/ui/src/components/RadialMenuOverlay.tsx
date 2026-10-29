@@ -5,28 +5,20 @@ import React from "react";
 import { CloseIcon } from "@steez-ui/icons";
 
 import { NotchedViewportFrame } from "./NotchedViewportFrame.tsx";
+import { useModalOverlay } from "./RadialMenuOverlay.focus";
+import {
+  closestNodeIndex,
+  JOYSTICK_ACTIVATION_RATIO,
+  JOYSTICK_COMMIT_RATIO,
+  nodeAngle,
+  padOrdinal,
+  readStick,
+  stickAngleDegrees,
+} from "./RadialMenuOverlay.geometry";
 import styles from "./RadialMenuOverlay.module.css";
 
-const FULL_CIRCLE_DEGREES = 360;
-const JOYSTICK_MAX_RADIUS_RATIO = 0.28;
-const JOYSTICK_ACTIVATION_RATIO = 0.34;
-const JOYSTICK_COMMIT_RATIO = 0.78;
 const EMPTY_ITEMS: readonly RadialMenuItem[] = [];
-
-const FOCUSABLE_SELECTOR = [
-  'a[href]',
-  "button:not([disabled])",
-  'input:not([disabled]):not([type="hidden"])',
-  "select:not([disabled])",
-  "textarea:not([disabled])",
-  '[tabindex]:not([tabindex="-1"])',
-].join(",");
-
-function getFocusableElements(root: HTMLElement): HTMLElement[] {
-  return Array.from(root.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(
-    (element) => element.tabIndex >= 0,
-  );
-}
+const CENTERED = { x: 0, y: 0 };
 
 export interface RadialMenuItem {
   id: string;
@@ -52,6 +44,20 @@ export interface RadialMenuOverlayProps {
   ariaLabel?: string;
 }
 
+/** Scrolls to an in-page hash target or navigates to the href. */
+function followHref(href: string) {
+  if (!href.startsWith("#")) {
+    window.location.assign(href);
+    return;
+  }
+  const target = document.querySelector<HTMLElement>(href);
+  if (target) {
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+  } else {
+    window.location.hash = href;
+  }
+}
+
 export function RadialMenuOverlay({
   open,
   items,
@@ -69,7 +75,7 @@ export function RadialMenuOverlay({
   const [isPending, startTransition] = React.useTransition();
   const [activeId, setActiveId] = React.useState(safeItems[0]?.id ?? "");
   const [isDragging, setIsDragging] = React.useState(false);
-  const [stickOffset, setStickOffset] = React.useState({ x: 0, y: 0 });
+  const [stickOffset, setStickOffset] = React.useState(CENTERED);
   const overlayRef = React.useRef<HTMLDivElement | null>(null);
   const closeButtonRef = React.useRef<HTMLButtonElement | null>(null);
   const wheelRef = React.useRef<HTMLDivElement | null>(null);
@@ -81,196 +87,73 @@ export function RadialMenuOverlay({
   itemsRef.current = items;
   onCloseRef.current = onClose;
 
+  useModalOverlay({ open, contained, overlayRef, initialFocusRef: closeButtonRef, onClose });
+
   React.useEffect(() => {
     activeIdRef.current = activeId;
   }, [activeId]);
 
-  React.useEffect(() => {
-    if (!open) {
-      return undefined;
-    }
-
-    setActiveId(safeItems[0]?.id ?? "");
-    setStickOffset({ x: 0, y: 0 });
-    setIsDragging(false);
-    dragPointerIdRef.current = null;
-    return undefined;
-  }, [open, safeItems]);
-
-  React.useEffect(() => {
-    if (!open || typeof window === "undefined") {
-      return undefined;
-    }
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    const shouldTrapFocus = !contained;
-    const previousFocus =
-      shouldTrapFocus && document.activeElement instanceof HTMLElement
-        ? document.activeElement
-        : null;
-
-    if (shouldTrapFocus) {
-      const focusTarget =
-        closeButtonRef.current ??
-        (overlayRef.current ? getFocusableElements(overlayRef.current)[0] : undefined);
-      focusTarget?.focus();
-    }
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onCloseRef.current();
-        return;
-      }
-
-      if (!shouldTrapFocus || event.key !== "Tab") {
-        return;
-      }
-
-      const root = overlayRef.current;
-      if (!root) {
-        return;
-      }
-
-      const focusable = getFocusableElements(root);
-      if (focusable.length === 0) {
-        event.preventDefault();
-        return;
-      }
-
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      const active = document.activeElement;
-
-      if (event.shiftKey) {
-        if (active === first || !active || !root.contains(active)) {
-          event.preventDefault();
-          last.focus();
-        }
-      } else if (active === last || !active || !root.contains(active)) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
-
-    window.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", onKeyDown);
-      if (
-        previousFocus &&
-        typeof previousFocus.focus === "function" &&
-        document.contains(previousFocus)
-      ) {
-        previousFocus.focus();
-      }
-    };
-  }, [contained, open]);
-
-  const getClosestItem = React.useCallback((angle: number) => {
-    const currentItems = itemsRef.current;
-    const firstItem = currentItems[0];
-
-    if (!firstItem) {
-      return undefined;
-    }
-
-    let closest = firstItem;
-    let closestDistance = Number.POSITIVE_INFINITY;
-
-    currentItems.forEach((item, index) => {
-      const itemAngle =
-        -90 + (FULL_CIRCLE_DEGREES / Math.max(currentItems.length, 1)) * index;
-      const normalizedDistance = Math.abs(
-        ((((angle - itemAngle) % FULL_CIRCLE_DEGREES) + 540) % FULL_CIRCLE_DEGREES) - 180,
-      );
-
-      if (normalizedDistance < closestDistance) {
-        closest = item;
-        closestDistance = normalizedDistance;
-      }
-    });
-
-    return closest;
-  }, []);
-
   const resetStick = React.useCallback(() => {
     dragPointerIdRef.current = null;
     setIsDragging(false);
-    setStickOffset({ x: 0, y: 0 });
+    setStickOffset(CENTERED);
   }, []);
+
+  React.useEffect(() => {
+    if (open) {
+      setActiveId(safeItems[0]?.id ?? "");
+      resetStick();
+    }
+  }, [open, resetStick, safeItems]);
 
   const triggerItem = React.useCallback((item: RadialMenuItem) => {
     item.onSelect?.();
-
     if (item.href && typeof window !== "undefined") {
-      if (item.href.startsWith("#")) {
-        const target = document.querySelector<HTMLElement>(item.href);
-        if (target) {
-          target.scrollIntoView({ behavior: "smooth", block: "start" });
-        } else {
-          window.location.hash = item.href;
-        }
-      } else {
-        window.location.assign(item.href);
-      }
+      followHref(item.href);
     }
-
     onCloseRef.current();
   }, []);
 
-  const updateStickFromPointer = React.useCallback(
-    (clientX: number, clientY: number) => {
-      const wheel = wheelRef.current;
-      if (!wheel) {
-        return 0;
+  /** Moves the stick to the pointer and returns how far it reached. */
+  const updateStickFromPointer = React.useCallback((clientX: number, clientY: number) => {
+    const wheel = wheelRef.current;
+    if (!wheel) {
+      return 0;
+    }
+
+    const { x, y, progress } = readStick(wheel.getBoundingClientRect(), clientX, clientY);
+    setStickOffset({ x, y });
+
+    if (progress >= JOYSTICK_ACTIVATION_RATIO) {
+      const currentItems = itemsRef.current;
+      const nextItem = currentItems[closestNodeIndex(stickAngleDegrees(x, y), currentItems.length)];
+      if (nextItem && nextItem.id !== activeIdRef.current) {
+        activeIdRef.current = nextItem.id;
+        startTransition(() => {
+          setActiveId(nextItem.id);
+        });
       }
+    }
 
-      const rect = wheel.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const deltaX = clientX - centerX;
-      const deltaY = clientY - centerY;
-      const distance = Math.hypot(deltaX, deltaY);
-      const maxDistance = Math.min(rect.width, rect.height) * JOYSTICK_MAX_RADIUS_RATIO;
-      const clampRatio = distance > maxDistance && distance > 0 ? maxDistance / distance : 1;
-      const x = deltaX * clampRatio;
-      const y = deltaY * clampRatio;
-      const normalizedDistance = maxDistance > 0 ? distance / maxDistance : 0;
-
-      setStickOffset({ x, y });
-
-      if (normalizedDistance >= JOYSTICK_ACTIVATION_RATIO) {
-        const nextItem = getClosestItem((Math.atan2(y, x) * 180) / Math.PI);
-        if (nextItem && nextItem.id !== activeIdRef.current) {
-          activeIdRef.current = nextItem.id;
-          startTransition(() => {
-            setActiveId(nextItem.id);
-          });
-        }
-      }
-
-      return normalizedDistance;
-    },
-    [getClosestItem],
-  );
+    return progress;
+  }, []);
 
   React.useEffect(() => {
     if (!isDragging || typeof window === "undefined") {
       return undefined;
     }
 
-    const handlePointerMove = (event: PointerEvent) => {
-      if (dragPointerIdRef.current !== null && event.pointerId !== dragPointerIdRef.current) {
-        return;
-      }
+    const isDragPointer = (event: PointerEvent) =>
+      dragPointerIdRef.current === null || event.pointerId === dragPointerIdRef.current;
 
-      updateStickFromPointer(event.clientX, event.clientY);
+    const handlePointerMove = (event: PointerEvent) => {
+      if (isDragPointer(event)) {
+        updateStickFromPointer(event.clientX, event.clientY);
+      }
     };
 
     const handlePointerEnd = (event: PointerEvent) => {
-      if (dragPointerIdRef.current !== null && event.pointerId !== dragPointerIdRef.current) {
+      if (!isDragPointer(event)) {
         return;
       }
 
@@ -305,7 +188,6 @@ export function RadialMenuOverlay({
     0,
     safeItems.findIndex((item) => item.id === activeItem.id),
   );
-  const angleStep = FULL_CIRCLE_DEGREES / Math.max(safeItems.length, 1);
   const stickLength = Math.hypot(stickOffset.x, stickOffset.y);
   const stickAngle = Math.atan2(stickOffset.y, stickOffset.x);
 
@@ -351,8 +233,7 @@ export function RadialMenuOverlay({
 
               <div className={styles.detailPanel}>
                 <div className={styles.detailMeta}>
-                  {String(activeIndex + 1).padStart(2, "0")} /{" "}
-                  {String(safeItems.length).padStart(2, "0")}
+                  {padOrdinal(activeIndex + 1)} / {padOrdinal(safeItems.length)}
                 </div>
                 <div className={styles.detailTitle}>{activeItem.label}</div>
                 <p className={styles.detailBody}>{activeItem.body}</p>
@@ -375,7 +256,6 @@ export function RadialMenuOverlay({
                 <div className={styles.radarTicks} aria-hidden="true" />
 
                 {safeItems.map((item, index) => {
-                  const angle = -90 + angleStep * index;
                   const isActive = item.id === activeItem.id;
 
                   return (
@@ -385,7 +265,7 @@ export function RadialMenuOverlay({
                       className={`${styles.node} ${isActive ? styles.nodeActive : ""}`}
                       style={
                         {
-                          "--wheel-angle": `${angle}deg`,
+                          "--wheel-angle": `${nodeAngle(index, safeItems.length)}deg`,
                         } as React.CSSProperties
                       }
                       onMouseEnter={() => {
@@ -402,7 +282,7 @@ export function RadialMenuOverlay({
                     >
                       <span className={styles.nodeConnector} aria-hidden="true" />
                       <span className={styles.nodeMarker}>
-                        {item.shortLabel ?? String(index + 1).padStart(2, "0")}
+                        {item.shortLabel ?? padOrdinal(index + 1)}
                       </span>
                       <span className={styles.nodeLabel}>{item.label}</span>
                     </button>

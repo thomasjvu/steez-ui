@@ -488,7 +488,9 @@
       "packages/icons/src/IconProvider.tsx",
       "packages/icons/src/icons.tsx",
       "packages/icons/src/Icon.tsx",
-      "packages/ui/src/components/NotchedViewportFrame.tsx"
+      "packages/ui/src/components/NotchedViewportFrame.tsx",
+      "packages/ui/src/components/RadialMenuOverlay.focus.ts",
+      "packages/ui/src/components/RadialMenuOverlay.geometry.ts"
     ],
     "styleFiles": [
       "packages/ui/src/components/NotchedViewportFrame.module.css",
