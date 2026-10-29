@@ -1,0 +1,112 @@
+/* Live preview frame, toolbar, stage and preview options. */
+.preview-frame {
+  border: 1px solid var(--site-border);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+.preview-toolbar {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--site-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--site-muted);
+  gap: 8px;
+}
+.preview-toolbar button {
+  font-size: 11px;
+  padding: 4px 8px;
+}
+.preview-stage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 30px;
+  min-height: 320px;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  overflow: hidden;
+}
+.preview-stage > div {
+  max-width: 100%;
+}
+.preview-options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--site-border);
+  background: var(--site-panel);
+  font-size: 11px;
+  line-height: 1.3;
+}
+.preview-option { display: inline-flex; align-items: center; gap: 8px; min-height: 28px; }
+.preview-option > span, .preview-corners legend { color: var(--site-muted); }
+.preview-options select {
+  width: auto;
+  max-width: 150px;
+  min-height: 28px;
+  padding: 3px 22px 3px 7px;
+  border: 0;
+  border-radius: 4px;
+  background-color: transparent;
+  color: var(--site-text);
+  font: inherit;
+}
+.preview-options select:hover { background-color: var(--site-hover); }
+.preview-options select option { background: var(--site-bg); color: var(--site-text); }
+.preview-options input[type="range"] { width: 84px; height: 16px; margin: 0; accent-color: var(--site-text); }
+.preview-options output { min-width: 4ch; font-variant-numeric: tabular-nums; color: var(--site-muted); }
+.preview-toggle { cursor: pointer; }
+.preview-toggle input {
+  appearance: none;
+  width: 24px;
+  height: 14px;
+  margin: 0;
+  border: 1px solid var(--site-border);
+  border-radius: 10px;
+  background: var(--site-hover);
+  cursor: pointer;
+  position: relative;
+}
+.preview-toggle input::before {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  top: 2px;
+  left: 2px;
+  border-radius: 50%;
+  background: var(--site-muted);
+}
+.preview-toggle input:checked { background: var(--site-text); border-color: var(--site-text); }
+.preview-toggle input:checked::before { left: 12px; background: var(--site-bg); }
+.preview-corners { border: 0; padding: 0; margin: 0; display: flex; align-items: center; gap: 4px; }
+.preview-corners legend { float: left; margin-right: 8px; padding: 6px 0; }
+.preview-corners label { position: relative; display: grid; place-items: center; width: 28px; height: 28px; cursor: pointer; border-radius: 4px; }
+.preview-corners label:hover { background: var(--site-hover); }
+.preview-corners input { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.preview-corners label:has(:checked) { background: var(--site-hover); }
+.preview-corners label:has(:focus-visible) { outline: 2px solid var(--site-text); outline-offset: 2px; }
+.corner-mark { width: 13px; height: 13px; border: 1px solid var(--site-muted); pointer-events: none; }
+.preview-corners input:checked ~ .corner-mark { border-color: var(--site-text); background: var(--site-text); }
+.corner-mark[data-corner="top-left"] { clip-path: polygon(5px 0, 100% 0, 100% 100%, 0 100%, 0 5px); }
+.corner-mark[data-corner="top-right"] { clip-path: polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 0 100%); }
+.corner-mark[data-corner="bottom-right"] { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%); }
+.corner-mark[data-corner="bottom-left"] { clip-path: polygon(0 0, 100% 0, 100% 100%, 5px 100%, 0 calc(100% - 5px)); }
+.preview-stage > [data-variant="hp"] { width: min(100%, 360px); }
+
+.preview-stage[data-component="error-message"] { transform: translateZ(0); min-height: 280px; }
+.preview-stage[data-component="quartz-crystal"] { min-height: 440px; overflow: hidden; }
+@media (max-width: 760px) {
+  .preview-stage {
+    min-height: 280px;
+    padding: 28px 16px;
+  }
+  .preview-toolbar {
+    flex-wrap: wrap;
+  }
+}

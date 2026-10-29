@@ -1,0 +1,121 @@
+/* Component catalog: search, filters and the component grid. */
+.catalog-tools {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+.catalog-search {
+  border: 1px solid var(--site-border);
+  background: var(--site-bg);
+  padding: 8px 11px;
+  border-radius: 5px;
+  color: var(--site-text);
+  width: 230px;
+}
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+.filter-bar button {
+  font-size: 12px;
+  padding: 5px 9px;
+  border-color: transparent;
+  color: var(--site-muted);
+}
+.filter-bar button[aria-pressed="true"] {
+  color: var(--site-text);
+  background: var(--site-hover);
+}
+.catalog-group {
+  margin-bottom: 36px;
+}
+.catalog-group h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.catalog-group h2 span {
+  font-size: 11px;
+  color: var(--site-muted);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.catalog-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--site-border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.catalog-list li {
+  border-bottom: 1px solid var(--site-border);
+}
+.catalog-list li:nth-child(odd) {
+  border-right: 1px solid var(--site-border);
+}
+.catalog-list li:nth-last-child(1),
+.catalog-list li:nth-last-child(2):nth-child(odd) {
+  border-bottom: 0;
+}
+.catalog-list a {
+  display: block;
+  padding: 20px 22px;
+  min-height: 124px;
+  height: 100%;
+  text-decoration: none;
+}
+.catalog-list a:hover {
+  background: var(--site-panel);
+}
+.catalog-name {
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 7px;
+}
+.catalog-name span {
+  color: var(--site-muted);
+  font-weight: 400;
+}
+.catalog-list p {
+  color: var(--site-muted);
+  font-size: 12px;
+  line-height: 1.65;
+  margin: 0;
+  max-width: 46ch;
+}
+@media (max-width: 1000px) {
+  .catalog-tools {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .catalog-search {
+    width: 100%;
+  }
+}
+@media (max-width: 760px) {
+  .catalog-list {
+    grid-template-columns: 1fr;
+  }
+  .catalog-list li:nth-child(odd) {
+    border-right: 0;
+  }
+  .catalog-list li:nth-last-child(2):nth-child(odd) {
+    border-bottom: 1px solid var(--site-border);
+  }
+  .catalog-list a {
+    min-height: 0;
+    padding: 18px;
+  }
+}
