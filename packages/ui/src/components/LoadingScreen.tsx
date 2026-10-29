@@ -10,6 +10,8 @@ import { useProgressBeep } from "./LoadingScreen.audio";
 import { useFallingCrosses } from "./LoadingScreen.crosses";
 import styles from "./LoadingScreen.module.css";
 
+export { useLoadingProgress, type LoadingStage } from "./LoadingScreen.progress";
+
 export interface LoadingScreenProps {
   progress: number;
   message?: string;

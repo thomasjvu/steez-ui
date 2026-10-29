@@ -536,6 +536,7 @@
     ],
     "sourceFiles": [
       "packages/ui/src/components/LoadingScreen.tsx",
+      "packages/ui/src/components/LoadingScreen.progress.ts",
       "packages/icons/src/types.ts",
       "packages/icons/src/IconProvider.tsx",
       "packages/icons/src/icons.tsx",
