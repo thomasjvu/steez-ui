@@ -21,10 +21,11 @@
  */
 
 import { execFileSync, spawnSync } from "node:child_process";
-import { existsSync, mkdtempSync, writeFileSync, rmSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { existsSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+
+import { createPrivateTempDir } from "../../../scripts/lib/private-temp-dir.mjs";
 
 const pkgRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
 const base = (process.env.FORGEJO_BASE_URL || "https://forgejo.thomasjvu.com").replace(
@@ -126,26 +127,30 @@ function build() {
 function publishWithNpm() {
   if (!token) fail("FORGEJO_TOKEN / FORGEJO_ADMIN_TOKEN is required");
 
-  const npmrcDir = mkdtempSync(join(tmpdir(), "steez-npmrc-"));
-  const npmrc = join(npmrcDir, ".npmrc");
-  const hostPath = registry.replace(/^https?:\/\//, "");
-  writeFileSync(
-    npmrc,
-    [
-      `@steez-ui:registry=${registry}`,
-      `//${hostPath}:_authToken=${token}`,
-      `always-auth=true`,
-      "",
-    ].join("\n"),
-    { mode: 0o600 },
-  );
-
-  // Preload injects CF Access service-token headers on every HTTPS request to the host.
-  const preload = join(npmrcDir, "cf-access-preload.cjs");
-  if (process.env.CF_ACCESS_CLIENT_ID) {
+  // Holds the auth token (.npmrc) and CF Access secret (preload). Removed in
+  // the finally below, and on exit or SIGINT/SIGTERM/SIGHUP if we never get there.
+  const { dir: npmrcDir, cleanup } = createPrivateTempDir("steez-npmrc-");
+  let result;
+  try {
+    const npmrc = join(npmrcDir, ".npmrc");
+    const hostPath = registry.replace(/^https?:\/\//, "");
     writeFileSync(
-      preload,
-      `
+      npmrc,
+      [
+        `@steez-ui:registry=${registry}`,
+        `//${hostPath}:_authToken=${token}`,
+        `always-auth=true`,
+        "",
+      ].join("\n"),
+      { mode: 0o600 },
+    );
+
+    // Preload injects CF Access service-token headers on every HTTPS request to the host.
+    const preload = join(npmrcDir, "cf-access-preload.cjs");
+    if (process.env.CF_ACCESS_CLIENT_ID) {
+      writeFileSync(
+        preload,
+        `
 const https = require("https");
 const http = require("http");
 const { URL } = require("url");
@@ -169,43 +174,44 @@ function wrap(mod) {
 wrap(https);
 wrap(http);
 `,
-      { mode: 0o600 },
+        { mode: 0o600 },
+      );
+    }
+
+    const env = {
+      ...process.env,
+      npm_config_userconfig: npmrc,
+    };
+    if (process.env.CF_ACCESS_CLIENT_ID) {
+      env.NODE_OPTIONS = [process.env.NODE_OPTIONS, `--require ${preload}`]
+        .filter(Boolean)
+        .join(" ");
+    }
+
+    console.log(`[publish-forgejo] publishing to ${registry} (tag=${tag})`);
+    // --ignore-scripts: dist is already built; avoid prepublish hooks that re-run pnpm.
+    result = spawnSync(
+      "npm",
+      [
+        "publish",
+        "--access",
+        "public",
+        "--tag",
+        tag,
+        "--registry",
+        registry,
+        "--ignore-scripts",
+      ],
+      {
+        cwd: pkgRoot,
+        env,
+        stdio: "inherit",
+        shell: false,
+      },
     );
+  } finally {
+    cleanup();
   }
-
-  const env = {
-    ...process.env,
-    npm_config_userconfig: npmrc,
-  };
-  if (process.env.CF_ACCESS_CLIENT_ID) {
-    env.NODE_OPTIONS = [process.env.NODE_OPTIONS, `--require ${preload}`]
-      .filter(Boolean)
-      .join(" ");
-  }
-
-  console.log(`[publish-forgejo] publishing to ${registry} (tag=${tag})`);
-  // --ignore-scripts: dist is already built; avoid prepublish hooks that re-run pnpm.
-  const result = spawnSync(
-    "npm",
-    [
-      "publish",
-      "--access",
-      "public",
-      "--tag",
-      tag,
-      "--registry",
-      registry,
-      "--ignore-scripts",
-    ],
-    {
-      cwd: pkgRoot,
-      env,
-      stdio: "inherit",
-      shell: false,
-    },
-  );
-
-  rmSync(npmrcDir, { recursive: true, force: true });
 
   if (result.status !== 0) {
     fail(`npm publish failed with exit ${result.status}`);
