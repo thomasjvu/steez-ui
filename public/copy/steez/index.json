@@ -600,7 +600,8 @@
     ],
     "sourceFiles": [
       "packages/ui/src/components/HeartbeatPulse.tsx",
-      "packages/ui/src/hooks/usePrefersReducedMotion.ts"
+      "packages/ui/src/hooks/usePrefersReducedMotion.ts",
+      "packages/ui/src/components/HeartbeatPulse.geometry.ts"
     ],
     "styleFiles": [
       "packages/ui/src/components/HeartbeatPulse.module.css"

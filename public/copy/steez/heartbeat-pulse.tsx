@@ -89,6 +89,63 @@ export function usePrefersReducedMotion() {
   return reduced;
 }
 
+/** Pure sizes, timings and paths for HeartbeatPulse. Units are viewBox units. */
+
+export type HeartbeatVariant = "orb" | "line";
+
+export const LINE_VIEWBOX = { width: 200, height: 100 } as const;
+export const LINE_BASELINE_Y = 58.7;
+/** One ECG beat across the 200x100 line viewBox. */
+export const LINE_TRACE_POINTS =
+  "2.4,58.7 70.8,58.7 76.1,46.2 81.1,58.7 89.9,58.7 93.8,66.5 102.8,22.7 110.6,78.7 115.3,58.7 126.4,58.7 134.4,54.7 142.4,58.7 197.8,58.7";
+
+export const ORB_VIEWBOX = 100;
+
+/** Seconds per beat: the line follows the interval within 1.9s-2.4s; the orb is fixed. */
+export function beatSeconds(variant: HeartbeatVariant, intervalMinutes: number) {
+  return variant === "line" ? Math.max(1.9, Math.min(2.4, intervalMinutes / 15)) : 1.2;
+}
+
+/** Rendered line size in px; explicit width/height win. */
+export function lineSize(size: number, width?: number, height?: number) {
+  return { width: width ?? Math.max(size * 3, 200), height: height ?? Math.max(size, 72) };
+}
+
+export interface OrbGeometry {
+  center: number;
+  /** Outer ring radius. */
+  radius: number;
+  /** Start radii of the two expanding ripples. */
+  ripples: readonly [number, number];
+  /** Core dot radius at rest and at the top of the beat. */
+  core: number;
+  corePeak: number;
+  /** ECG spike drawn across the orb. */
+  tracePath: string;
+}
+
+export function orbGeometry(size: number): OrbGeometry {
+  const center = ORB_VIEWBOX / 2;
+  const radius = size / 2 - 4;
+  const trace: Array<[number, number]> = [
+    [0, center],
+    [center * 0.3, center],
+    [center * 0.4, center],
+    [center * 0.5, center * 0.2],
+    [center * 0.6, center * 1.8],
+    [center * 0.7, center],
+    [ORB_VIEWBOX, center],
+  ];
+  return {
+    center,
+    radius,
+    ripples: [radius * 0.8, radius * 0.5],
+    core: radius * 0.25,
+    corePeak: radius * 0.3,
+    tracePath: trace.map(([x, y], index) => `${index === 0 ? "M" : "L"} ${x} ${y}`).join(" "),
+  };
+}
+
 export interface HeartbeatPulseProps {
   intervalMinutes?: number;
   size?: number;
@@ -96,9 +153,19 @@ export interface HeartbeatPulseProps {
   height?: number;
   color?: string;
   active?: boolean;
-  variant?: "orb" | "line";
+  variant?: HeartbeatVariant;
   className?: string;
 }
+
+interface PulseShapeProps {
+  active: boolean;
+  color: string;
+  /** Shared by every <animate>: loops forever at the beat duration. */
+  loop: { dur: string; repeatCount: "indefinite" };
+  clipId: string;
+}
+
+const MUTED = "var(--text-muted)";
 
 export function HeartbeatPulse({
   intervalMinutes = 30,
@@ -110,216 +177,137 @@ export function HeartbeatPulse({
   variant = "orb",
   className = "",
 }: HeartbeatPulseProps) {
-  const baseDuration =
-    variant === "line"
-      ? Math.max(1.9, Math.min(2.4, intervalMinutes / 15))
-      : 1.2;
   const instanceId = React.useId().replace(/:/g, "-");
   const prefersReducedMotion = usePrefersReducedMotion();
-
   const motionActive = active && !prefersReducedMotion;
-  const animationDuration = motionActive ? `${baseDuration}s` : "0s";
+  const shape: PulseShapeProps = {
+    active,
+    color,
+    loop: { dur: motionActive ? `${beatSeconds(variant, intervalMinutes)}s` : "0s", repeatCount: "indefinite" },
+    clipId: `heartbeat-${variant === "line" ? "line-" : ""}clip-${instanceId}`,
+  };
 
   if (variant === "line") {
-    const lineWidth = width ?? Math.max(size * 3, 200);
-    const lineHeight = height ?? Math.max(size, 72);
-    const clipId = `heartbeat-line-clip-${instanceId}`;
-
     return (
       <div className={`${__styles_steez_heartbeat_pulse_0.pulseRoot} ${__styles_steez_heartbeat_pulse_0.lineRoot} ${className}`.trim()}>
-        <svg
-          viewBox="0 0 200 100"
-          width={lineWidth}
-          height={lineHeight}
-          className={__styles_steez_heartbeat_pulse_0.svg}
-          aria-hidden="true"
-        >
-          <defs>
-            <clipPath id={clipId}>
-              <rect x="0" y="0" width="0" height="100">
-                <animate
-                  attributeName="width"
-                  values="0;200;200;0"
-                  dur={animationDuration}
-                  repeatCount="indefinite"
-                  calcMode="linear"
-                  keyTimes="0;0.48;0.52;1"
-                />
-                <animate
-                  attributeName="x"
-                  values="0;0;0;200"
-                  dur={animationDuration}
-                  repeatCount="indefinite"
-                  calcMode="linear"
-                  keyTimes="0;0.48;0.52;1"
-                />
-              </rect>
-            </clipPath>
-          </defs>
-
-          <line
-            x1="2"
-            y1="58.7"
-            x2="198"
-            y2="58.7"
-            stroke={color}
-            strokeWidth="3"
-            strokeOpacity={active ? "0.18" : "0.08"}
-            strokeLinecap="round"
-          />
-
-          <g clipPath={`url(#${clipId})`}>
-            <polyline
-              fill="none"
-              strokeWidth="3"
-              stroke={active ? color : "var(--text-muted)"}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              points="2.4,58.7 70.8,58.7 76.1,46.2 81.1,58.7 89.9,58.7 93.8,66.5 102.8,22.7 110.6,78.7 115.3,58.7 126.4,58.7 134.4,54.7 142.4,58.7 197.8,58.7"
-              opacity={active ? "1" : "0.35"}
-            />
-          </g>
-        </svg>
+        <HeartbeatLine {...shape} {...lineSize(size, width, height)} />
       </div>
     );
   }
 
-  const viewBoxSize = 100;
-  const center = viewBoxSize / 2;
-  const radius = size / 2 - 4;
-  const clipId = `heartbeat-clip-${instanceId}`;
-
   return (
     <div className={`${__styles_steez_heartbeat_pulse_0.pulseRoot} ${className}`.trim()}>
-      <svg
-        viewBox={`0 0 ${viewBoxSize} ${viewBoxSize}`}
-        width={size}
-        height={size}
-        className={__styles_steez_heartbeat_pulse_0.svg}
-        aria-hidden="true"
-      >
-        <defs>
-          <clipPath id={clipId}>
-            <rect x="0" y="0" width={viewBoxSize} height={viewBoxSize}>
-              <animate
-                attributeName="x"
-                values={`${viewBoxSize};0;0;${viewBoxSize}`}
-                dur={animationDuration}
-                repeatCount="indefinite"
-                calcMode="spline"
-                keySplines="0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1"
-                keyTimes="0;0.5;0.5;1"
-              />
-            </rect>
-          </clipPath>
-        </defs>
-
-        <circle
-          cx={center}
-          cy={center}
-          r={radius}
-          fill="none"
-          stroke={color}
-          strokeWidth="2"
-          opacity="0.3"
-        />
-
-        {active ? (
-          <>
-            <circle
-              cx={center}
-              cy={center}
-              r={radius}
-              fill="none"
-              stroke={color}
-              strokeWidth="2"
-              opacity="0"
-            >
-              <animate
-                attributeName="r"
-                values={`${radius * 0.8};${radius}`}
-                dur={animationDuration}
-                repeatCount="indefinite"
-              />
-              <animate
-                attributeName="opacity"
-                values="0.6;0"
-                dur={animationDuration}
-                repeatCount="indefinite"
-              />
-            </circle>
-
-            <circle
-              cx={center}
-              cy={center}
-              r={radius}
-              fill="none"
-              stroke={color}
-              strokeWidth="1"
-              opacity="0"
-            >
-              <animate
-                attributeName="r"
-                values={`${radius * 0.5};${radius}`}
-                dur={animationDuration}
-                repeatCount="indefinite"
-                begin="0.2s"
-              />
-              <animate
-                attributeName="opacity"
-                values="0.4;0"
-                dur={animationDuration}
-                repeatCount="indefinite"
-                begin="0.2s"
-              />
-            </circle>
-          </>
-        ) : null}
-
-        <circle
-          cx={center}
-          cy={center}
-          r={radius * 0.25}
-          fill={active ? color : "var(--text-muted)"}
-        >
-          {active ? (
-            <animate
-              attributeName="r"
-              values={`${radius * 0.25};${radius * 0.3};${radius * 0.25}`}
-              dur={animationDuration}
-              repeatCount="indefinite"
-            />
-          ) : null}
-        </circle>
-
-        {active ? (
-          <g clipPath={`url(#${clipId})`}>
-            <path
-              d={`M 0 ${center}
-                  L ${center * 0.3} ${center}
-                  L ${center * 0.4} ${center}
-                  L ${center * 0.5} ${center * 0.2}
-                  L ${center * 0.6} ${center * 1.8}
-                  L ${center * 0.7} ${center}
-                  L ${viewBoxSize} ${center}`}
-              fill="none"
-              stroke={color}
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              opacity="0.7"
-            >
-              <animate
-                attributeName="opacity"
-                values="0;0.7;0"
-                dur={animationDuration}
-                repeatCount="indefinite"
-              />
-            </path>
-          </g>
-        ) : null}
-      </svg>
+      <HeartbeatOrb {...shape} size={size} />
     </div>
+  );
+}
+
+function HeartbeatLine({ active, color, loop, clipId, width, height }: PulseShapeProps & { width: number; height: number }) {
+  const sweep = { ...loop, calcMode: "linear", keyTimes: "0;0.48;0.52;1" } as const;
+  return (
+    <svg
+      viewBox={`0 0 ${LINE_VIEWBOX.width} ${LINE_VIEWBOX.height}`}
+      width={width}
+      height={height}
+      className={__styles_steez_heartbeat_pulse_0.svg}
+      aria-hidden="true"
+    >
+      <defs>
+        <clipPath id={clipId}>
+          <rect x="0" y="0" width="0" height={LINE_VIEWBOX.height}>
+            <animate attributeName="width" values="0;200;200;0" {...sweep} />
+            <animate attributeName="x" values="0;0;0;200" {...sweep} />
+          </rect>
+        </clipPath>
+      </defs>
+
+      <line
+        x1="2"
+        y1={LINE_BASELINE_Y}
+        x2="198"
+        y2={LINE_BASELINE_Y}
+        stroke={color}
+        strokeWidth="3"
+        strokeOpacity={active ? "0.18" : "0.08"}
+        strokeLinecap="round"
+      />
+
+      <g clipPath={`url(#${clipId})`}>
+        <polyline
+          fill="none"
+          strokeWidth="3"
+          stroke={active ? color : MUTED}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          points={LINE_TRACE_POINTS}
+          opacity={active ? "1" : "0.35"}
+        />
+      </g>
+    </svg>
+  );
+}
+
+function HeartbeatOrb({ active, color, loop, clipId, size }: PulseShapeProps & { size: number }) {
+  const { center, radius, ripples, core, corePeak, tracePath } = orbGeometry(size);
+  const ring = { cx: center, cy: center, r: radius, fill: "none", stroke: color };
+  return (
+    <svg
+      viewBox={`0 0 ${ORB_VIEWBOX} ${ORB_VIEWBOX}`}
+      width={size}
+      height={size}
+      className={__styles_steez_heartbeat_pulse_0.svg}
+      aria-hidden="true"
+    >
+      <defs>
+        <clipPath id={clipId}>
+          <rect x="0" y="0" width={ORB_VIEWBOX} height={ORB_VIEWBOX}>
+            <animate
+              attributeName="x"
+              values={`${ORB_VIEWBOX};0;0;${ORB_VIEWBOX}`}
+              {...loop}
+              calcMode="spline"
+              keySplines="0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1"
+              keyTimes="0;0.5;0.5;1"
+            />
+          </rect>
+        </clipPath>
+      </defs>
+
+      <circle {...ring} strokeWidth="2" opacity="0.3" />
+
+      {active ? (
+        <>
+          <circle {...ring} strokeWidth="2" opacity="0">
+            <animate attributeName="r" values={`${ripples[0]};${radius}`} {...loop} />
+            <animate attributeName="opacity" values="0.6;0" {...loop} />
+          </circle>
+          <circle {...ring} strokeWidth="1" opacity="0">
+            <animate attributeName="r" values={`${ripples[1]};${radius}`} {...loop} begin="0.2s" />
+            <animate attributeName="opacity" values="0.4;0" {...loop} begin="0.2s" />
+          </circle>
+        </>
+      ) : null}
+
+      <circle cx={center} cy={center} r={core} fill={active ? color : MUTED}>
+        {active ? <animate attributeName="r" values={`${core};${corePeak};${core}`} {...loop} /> : null}
+      </circle>
+
+      {active ? (
+        <g clipPath={`url(#${clipId})`}>
+          <path
+            d={tracePath}
+            fill="none"
+            stroke={color}
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            opacity="0.7"
+          >
+            <animate attributeName="opacity" values="0;0.7;0" {...loop} />
+          </path>
+        </g>
+      ) : null}
+    </svg>
   );
 }
 
