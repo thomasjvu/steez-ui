@@ -653,23 +653,25 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/Notched
   }
 }
 
+/* Spin only: rings centre with the \`translate\` property, which composes with
+   \`rotate\`, so the keyframes must not translate again. */
 @keyframes steez-radial-menu-overlay-1-orbitSpinClockwise {
   from {
-    transform: translate(-50%, -50%) rotate(0deg);
+    rotate: 0deg;
   }
 
   to {
-    transform: translate(-50%, -50%) rotate(360deg);
+    rotate: 360deg;
   }
 }
 
 @keyframes steez-radial-menu-overlay-1-orbitSpinCounter {
   from {
-    transform: translate(-50%, -50%) rotate(360deg);
+    rotate: 360deg;
   }
 
   to {
-    transform: translate(-50%, -50%) rotate(0deg);
+    rotate: 0deg;
   }
 }
 
