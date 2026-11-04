@@ -4,14 +4,16 @@ import React from "react";
 
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
 import styles from "./AsciiRippleText.module.css";
-
-const WAVE_THRESHOLD = 3;
-const CHARACTER_MULTIPLIER = 3;
-const ANIMATION_STEP_MS = 40;
-const WAVE_BUFFER = 5;
-const MAX_ACTIVE_WAVES = 8;
-const DEFAULT_CHARACTER_SET =
-  ".,·-─~+:;=*π\"\"┐┌┘┴┬╗╔╝╚╬╠╣╩╦║░▒▓█▄▀▌▐■!?&#$@0123456789*";
+import {
+  DEFAULT_CHARACTER_SET,
+  addWave,
+  focusIndex,
+  liveWaves,
+  pointerIndex,
+  rippleFrame,
+  safeRippleOptions,
+  type Wave,
+} from "./AsciiRippleText.waves";
 
 export interface AsciiRippleTextProps
   extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children"> {
@@ -22,11 +24,6 @@ export interface AsciiRippleTextProps
   spread?: number;
   disabled?: boolean;
   wrap?: boolean;
-}
-
-interface WaveState {
-  startPos: number;
-  startTime: number;
 }
 
 export function AsciiRippleText({
@@ -62,18 +59,15 @@ export function AsciiRippleText({
       return undefined;
     }
 
-    let originalText = text;
-    let originalChars = originalText.split("");
     let isAnimating = false;
     let isHovering = false;
     let cursorPosition = 0;
-    let waves: WaveState[] = [];
+    let waves: Wave[] = [];
     let animationId: number | null = null;
     let queuedWaveFrame: number | null = null;
     let queuedWavePosition: number | null = null;
     let lockedWidth: number | null = null;
-    const safeCharacterSet = characterSet.length > 0 ? characterSet : DEFAULT_CHARACTER_SET;
-    const safeDurationMs = Number.isFinite(durationMs) ? Math.max(durationMs, 1) : 900;
+    const options = safeRippleOptions({ characterSet, durationMs, preserveSpaces, spread });
 
     const setRenderedText = (nextText: string) => {
       if (element.textContent !== nextText) {
@@ -82,54 +76,8 @@ export function AsciiRippleText({
     };
 
     const updateCursorPosition = (event: MouseEvent) => {
-      const rect = element.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const nextPosition = Math.round((x / Math.max(rect.width, 1)) * originalText.length);
-      cursorPosition = Math.max(0, Math.min(nextPosition, Math.max(originalText.length - 1, 0)));
+      cursorPosition = pointerIndex(event.clientX, element.getBoundingClientRect(), text.length);
     };
-
-    const cleanupWaves = (timestamp: number) => {
-      waves = waves.filter((wave) => timestamp - wave.startTime < safeDurationMs);
-    };
-
-    const calculateWaveEffect = (characterIndex: number, timestamp: number) => {
-      let shouldAnimate = false;
-      let nextCharacter = originalChars[characterIndex];
-
-      for (const wave of waves) {
-        const age = timestamp - wave.startTime;
-        const progress = Math.min(age / safeDurationMs, 1);
-        const distance = Math.abs(characterIndex - wave.startPos);
-        const maxDistance = Math.max(wave.startPos, originalChars.length - wave.startPos - 1);
-        const radius = (progress * (maxDistance + WAVE_BUFFER)) / Math.max(spread, 0.001);
-
-        if (distance <= radius) {
-          shouldAnimate = true;
-          const intensity = Math.max(0, radius - distance);
-
-          if (intensity <= WAVE_THRESHOLD && intensity > 0) {
-            const glyphIndex =
-              (distance * CHARACTER_MULTIPLIER + Math.floor(age / ANIMATION_STEP_MS)) %
-              safeCharacterSet.length;
-            nextCharacter = safeCharacterSet[glyphIndex] ?? nextCharacter;
-          }
-        }
-      }
-
-      return { shouldAnimate, nextCharacter };
-    };
-
-    const generateRippleFrame = (timestamp: number) =>
-      originalChars
-        .map((character, index) => {
-          if (preserveSpaces && character === " ") {
-            return " ";
-          }
-
-          const { shouldAnimate, nextCharacter } = calculateWaveEffect(index, timestamp);
-          return shouldAnimate ? nextCharacter : character;
-        })
-        .join("");
 
     const stop = () => {
       if (animationId !== null) {
@@ -137,7 +85,7 @@ export function AsciiRippleText({
         animationId = null;
       }
 
-      setRenderedText(originalText);
+      setRenderedText(text);
       element.classList.remove(styles.active);
       element.style.width = "";
       lockedWidth = null;
@@ -158,15 +106,15 @@ export function AsciiRippleText({
       element.classList.add(styles.active);
 
       const animate = () => {
-        const timestamp = Date.now();
-        cleanupWaves(timestamp);
+        const now = Date.now();
+        waves = liveWaves(waves, now, options.durationMs);
 
         if (waves.length === 0) {
           stop();
           return;
         }
 
-        setRenderedText(generateRippleFrame(timestamp));
+        setRenderedText(rippleFrame(text, waves, now, options));
         animationId = requestAnimationFrame(animate);
       };
 
@@ -174,13 +122,7 @@ export function AsciiRippleText({
     };
 
     const appendWave = (startPos: number) => {
-      waves = [
-        ...waves.slice(-(MAX_ACTIVE_WAVES - 1)),
-        {
-          startPos,
-          startTime: Date.now(),
-        },
-      ];
+      waves = addWave(waves, startPos, Date.now());
       if (!isAnimating) {
         start();
       }
@@ -229,7 +171,7 @@ export function AsciiRippleText({
     };
 
     const handleFocus = () => {
-      cursorPosition = Math.max(0, Math.floor(originalChars.length / 2));
+      cursorPosition = focusIndex(text.length);
       startWave();
     };
 
@@ -255,8 +197,6 @@ export function AsciiRippleText({
       }
       queuedWavePosition = null;
       stop();
-      originalText = text;
-      originalChars = text.split("");
       waves = [];
     };
   }, [characterSet, disabled, durationMs, preserveSpaces, reducedMotion, spread, text]);

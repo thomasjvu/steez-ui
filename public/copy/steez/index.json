@@ -31,7 +31,8 @@
     ],
     "sourceFiles": [
       "packages/ui/src/components/AsciiRippleText.tsx",
-      "packages/ui/src/hooks/usePrefersReducedMotion.ts"
+      "packages/ui/src/hooks/usePrefersReducedMotion.ts",
+      "packages/ui/src/components/AsciiRippleText.waves.ts"
     ],
     "styleFiles": [
       "packages/ui/src/components/AsciiRippleText.module.css"
