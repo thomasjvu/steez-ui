@@ -4,8 +4,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { AsciiRippleText } from "./AsciiRippleText";
 
-// Pinned with fake Date + animation frames (16ms) before the wave logic
-// moved out of the component. Failure modes:
+// Pinned before the wave logic moved out of the component. Time is fully
+// deterministic: Date is faked from 0 and requestAnimationFrame is a manual
+// queue, so a frame at time T runs exactly the callbacks requested before it,
+// with Date.now() === T. Nothing depends on the wall clock or timer phase.
+// Failure modes:
 // - a frame renders different glyphs at the same time and position
 // - spaces stop being preserved (or are preserved when they should not be)
 // - focus does not start from the middle character
@@ -15,14 +18,28 @@ import { AsciiRippleText } from "./AsciiRippleText";
 // - disabled text animates
 
 const TEXT = "Hi there you";
+const FRAME_MS = 16;
+
+let frames = new Map<number, FrameRequestCallback>();
+let nextFrameId = 1;
 
 beforeEach(() => {
-  vi.useFakeTimers({ toFake: ["Date", "requestAnimationFrame", "cancelAnimationFrame"] });
-  vi.setSystemTime(0);
+  vi.useFakeTimers({ now: 0, toFake: ["Date"] });
+  frames = new Map();
+  nextFrameId = 1;
+  vi.stubGlobal("requestAnimationFrame", (callback: FrameRequestCallback) => {
+    const id = nextFrameId++;
+    frames.set(id, callback);
+    return id;
+  });
+  vi.stubGlobal("cancelAnimationFrame", (id: number) => {
+    frames.delete(id);
+  });
 });
 
 afterEach(() => {
   cleanup();
+  vi.unstubAllGlobals();
   vi.useRealTimers();
   vi.restoreAllMocks();
 });
@@ -36,17 +53,29 @@ function mount(element: ReactElement) {
   return visual;
 }
 
-/** Advance one 16ms frame at a time; record text at the requested times. */
+/** Move the clock one frame and run the callbacks that were due for it. */
+function stepFrame() {
+  vi.setSystemTime(Date.now() + FRAME_MS);
+  const due = [...frames.keys()];
+  act(() => {
+    for (const id of due) {
+      const callback = frames.get(id);
+      if (!callback) continue; // cancelled by an earlier callback this frame
+      frames.delete(id);
+      callback(Date.now());
+    }
+  });
+}
+
+/** Step frame by frame; record text at the requested times. */
 function framesAt(visual: HTMLElement, times: number[], onFrame?: (now: number) => void) {
-  const frames: Record<number, string> = {};
+  const recorded: Record<number, string> = {};
   while (Date.now() < Math.max(...times)) {
     onFrame?.(Date.now());
-    act(() => {
-      vi.advanceTimersByTime(16);
-    });
-    if (times.includes(Date.now())) frames[Date.now()] = visual.textContent ?? "";
+    stepFrame();
+    if (times.includes(Date.now())) recorded[Date.now()] = visual.textContent ?? "";
   }
-  return times.map((time) => frames[time]);
+  return times.map((time) => recorded[time]);
 }
 
 const ripple = (props: object = {}) => (
@@ -58,9 +87,10 @@ describe("AsciiRippleText timing", () => {
     const visual = mount(ripple());
     fireEvent.mouseEnter(visual, { clientX: 30 });
 
-    expect(framesAt(visual, [32, 48, 112, 160, 224, 288, 352, 400])).toEqual([
-      TEXT, "Hi ahere you", "Ha cfare you", "eb thbeh you",
-      "Hi thera gou", "Hi there adg", "Hi there yoa", "Hi there you",
+    // The queued wave starts on the first frame (16ms) and paints from the next.
+    expect(framesAt(visual, [16, 32, 48, 112, 160, 224, 288, 352, 400])).toEqual([
+      TEXT, "Hi ahere you", "Hi adere you", "da tfade you", "eb thbeh you",
+      "Hi therb hou", "Hi there adg", "Hi there yoa", "Hi there you",
     ]);
     expect(visual.className).toContain("active");
     expect(visual.style.width).toBe("120px");
@@ -74,21 +104,21 @@ describe("AsciiRippleText timing", () => {
   it("scrambles spaces when preserveSpaces is off", () => {
     const visual = mount(ripple({ preserveSpaces: false }));
     fireEvent.mouseEnter(visual, { clientX: 30 });
-    expect(framesAt(visual, [64, 112, 192])).toEqual(["Hidadere you", "Hafcfare you", "fi thefadyou"]);
+    expect(framesAt(visual, [64, 112, 192])).toEqual(["Hiebeere you", "daftfade you", "fi thefadyou"]);
   });
 
   it("starts a focus ripple from the middle character", () => {
     const visual = mount(ripple());
     fireEvent.focus(visual);
     expect(framesAt(visual, [48, 112, 160, 224])).toEqual([
-      "Hi theae you", "Hi tafcf you", "Hi ebgrg eou", "Hd fhere fad",
+      "Hi theae you", "Hi tafcf you", "Hi ebgrg eou", "He ghere gbe",
     ]);
   });
 
   it("slows the ring as spread grows", () => {
     const visual = mount(ripple({ spread: 2 }));
     fireEvent.mouseEnter(visual, { clientX: 30 });
-    expect(framesAt(visual, [96, 160, 224])).toEqual(["Hi beere you", "Hb dgbre you", "fc thcfe you"]);
+    expect(framesAt(visual, [96, 160, 224])).toEqual(["Hi cfere you", "Hb dgbre you", "gd tadge you"]);
   });
 
   it("overlaps a second wave and stops only after the last one ends", () => {
@@ -98,7 +128,7 @@ describe("AsciiRippleText timing", () => {
       if (now === 80) fireEvent.mouseMove(visual, { clientX: 110 });
     });
     expect(frames).toEqual([
-      "da tfade yoa", "eb thbeh heb", "Hi thgda adu", "af there you", "bi there you", TEXT,
+      "da tfade yda", "fi thefa afu", "Hi tbgde adg", "af there you", TEXT, TEXT,
     ]);
     expect(visual.className).toContain("active");
     framesAt(visual, [512]);
