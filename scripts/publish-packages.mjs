@@ -14,11 +14,15 @@ const npmTag =
   npmTagIndex >= 0 && process.argv.length > npmTagIndex + 1
     ? process.argv[npmTagIndex + 1]
     : undefined;
-const otpIndex = process.argv.indexOf("--otp");
-const npmOtp =
-  otpIndex >= 0 && process.argv.length > otpIndex + 1
-    ? process.argv[otpIndex + 1]
-    : process.env.NPM_CONFIG_OTP;
+// A one-time password on the command line is visible to every process on the
+// machine (ps, shell history). npm reads NPM_CONFIG_OTP from the environment,
+// and prompts for the code itself when it is unset and 2FA is required.
+if (process.argv.includes("--otp")) {
+  console.error(
+    "--otp is not accepted: set NPM_CONFIG_OTP instead, or leave it unset and npm will prompt for the code.",
+  );
+  process.exit(1);
+}
 
 const packageDirs = [
   path.join(repoRoot, "packages/theme"),
@@ -143,10 +147,7 @@ for (const packageDir of packageDirs) {
     publishArgs.push("--tag", npmTag);
   }
 
-  if (npmOtp) {
-    publishArgs.push("--otp", npmOtp);
-  }
-
+  // env carries NPM_CONFIG_OTP through to npm when it is set.
   run("npm", publishArgs, { cwd: stagingDir, env: process.env });
 }
 
