@@ -8,9 +8,8 @@ import {
   makeRegistryContentPortable,
   toAbsoluteRegistryDependency,
 } from "./lib/registry-transform.mjs";
+import { buildRegistryItems } from "./lib/registry-items.mjs";
 import { generateStandaloneComponents } from "./generate-standalone.mjs";
-import { COMPONENT_MANIFEST } from "../lib/docs/component-manifest.mjs";
-import { SHARED_REGISTRY_HELPERS } from "../lib/docs/registry-helpers.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const registryDir = path.join(repoRoot, "public/r-steez");
@@ -19,167 +18,10 @@ const registryBaseUrl = (
   process.env.STEEZ_REGISTRY_BASE_URL?.trim() || DEFAULT_REGISTRY_BASE_URL
 ).replace(/\/$/, "");
 
-const publicComponentDefinitions = COMPONENT_MANIFEST.map((component) => ({
-  name: component.slug,
-  type: "registry:component",
-  title: component.title,
-  description: component.description,
-  dependencies: [...component.dependencies],
-  registryDependencies: [...component.registryDependencies],
-  files: component.registryFiles.map((file) => ({ ...file })),
-}));
+const INSTALL_DOCS =
+  "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.";
 
-const itemDefinitions = [
-  {
-    name: "theme-tokens",
-    type: "registry:style",
-    title: "Theme Tokens",
-    description: "Shared CSS tokens and compatibility aliases for Steez UI consumers.",
-    dependencies: ["@steez-ui/theme"],
-    registryDependencies: [],
-    files: [
-      { source: "packages/theme/src/tokens.css", target: "styles/steez/tokens.css", type: "registry:file" },
-    ],
-  },
-  {
-    name: "icon-provider",
-    type: "registry:lib",
-    title: "Icon Provider",
-    description: "Shared icon provider and icon surface used by Steez primitives.",
-    dependencies: ["@steez-ui/icons"],
-    registryDependencies: [],
-    files: [
-      { source: "packages/icons/src/index.ts", target: "lib/steez/icons/index.ts", type: "registry:file" },
-      { source: "packages/icons/src/Icon.tsx", target: "lib/steez/icons/Icon.tsx", type: "registry:file" },
-      { source: "packages/icons/src/IconProvider.tsx", target: "lib/steez/icons/IconProvider.tsx", type: "registry:file" },
-      { source: "packages/icons/src/icons.tsx", target: "lib/steez/icons/icons.tsx", type: "registry:file" },
-      { source: "packages/icons/src/icons.data.ts", target: "lib/steez/icons/icons.data.ts", type: "registry:file" },
-      { source: "packages/icons/src/types.ts", target: "lib/steez/icons/types.ts", type: "registry:file" },
-    ],
-  },
-  {
-    name: "field-frame", index: false, type: "registry:lib", title: "Field Frame",
-    description: "Shared field label, control frame, and validation descriptions.",
-    dependencies: [], registryDependencies: ["field-description", "theme-tokens"],
-    files: [
-      { source: "packages/ui/src/components/Field.tsx", target: "components/steez/Field.tsx", type: "registry:file" },
-      { source: "packages/ui/src/components/Field.module.css", target: "components/steez/Field.module.css", type: "registry:file" },
-    ],
-  },
-  ...publicComponentDefinitions,
-  {
-    name: "foundation",
-    type: "registry:block",
-    title: "Foundation Preset",
-    description: "Install theme tokens, icon provider, buttons, and core form primitives together.",
-    dependencies: ["@steez-ui/theme", "@steez-ui/icons"],
-    registryDependencies: [
-      "theme-tokens",
-      "icon-provider",
-      "button",
-      "copy-button",
-      "input",
-      "select",
-      "textarea",
-      "checkbox",
-      "radio",
-      "slider",
-    ],
-    files: [],
-  },
-  {
-    name: "phantasy-fui",
-    type: "registry:block",
-    title: "Phantasy FUI Preset",
-    description: "Theme, tiles, and loading primitives used by Phantasy admin FUI chrome.",
-    dependencies: ["@steez-ui/theme", "@steez-ui/icons"],
-    registryDependencies: [
-      "theme-tokens",
-      "icon-provider",
-      "cyberpunk-tile",
-      "fui-button-tile",
-      "loading-progress-bar",
-    ],
-    files: [],
-  },
-  {
-    name: "surfaces",
-    type: "registry:block",
-    title: "Surface Preset",
-    description: "Signature tiles, quiet cards, and compact metrics for a coherent Steez surface language.",
-    dependencies: [],
-    registryDependencies: [
-      "theme-tokens",
-      "cyberpunk-tile",
-      "themed-card",
-      "corner-bracket-card",
-      "dotted-halo-card",
-      "stat-card",
-      "widget-card",
-    ],
-    files: [],
-  },
-  {
-    name: "motion",
-    type: "registry:block",
-    title: "Motion Preset",
-    description: "Small, composable text and surface motion treatments with reduced-motion support.",
-    dependencies: [],
-    registryDependencies: [
-      "quartz-crystal",
-      "theme-tokens",
-      "boiling-lines",
-      "displacement-filter",
-      "ascii-ripple-text",
-      "blink-text",
-      "kinetic-glyph",
-      "kinetic-swipe-text",
-      "kinetic-text-ramp",
-      "kinetic-text-ring",
-      "kinetic-text-globe",
-      "kinetic-text-volume",
-      "stroked-text",
-      "heartbeat-pulse",
-      "marquee-strip",
-    ],
-    files: [],
-  },
-  {
-    name: "app-shell",
-    type: "registry:block",
-    title: "App Shell Preset",
-    description: "Navigation, layout, feedback, and loading primitives for a complete Steez app shell.",
-    dependencies: [],
-    registryDependencies: [
-      "theme-tokens",
-      "icon-provider",
-      "button",
-      "page-header",
-      "page-template",
-      "section",
-      "section-header",
-      "tabbed-panel",
-      "status-message",
-      "error-message",
-      "loading-progress-bar",
-      "loading-screen",
-    ],
-    files: [],
-  },
-];
-
-for (const { name, source, target } of SHARED_REGISTRY_HELPERS) {
-  for (const item of itemDefinitions) {
-    if (item.files.some((file) => file.source === source)) {
-      item.files = item.files.filter((file) => file.source !== source);
-      item.registryDependencies.push(name);
-    }
-  }
-  itemDefinitions.push({ name, type: "registry:lib", title: name, index: false,
-    description: "Shared implementation dependency.", dependencies: [], registryDependencies: [],
-    files: [{ source, target, type: "registry:file" }] });
-}
-
+const itemDefinitions = buildRegistryItems();
 const owners = buildSourceOwners(itemDefinitions);
 
 function validateItem(item) {
@@ -197,48 +39,28 @@ function validateItem(item) {
   }
 }
 
-async function readFileContent(relativePath) {
-  const absolutePath = path.join(repoRoot, relativePath);
-  return {
-    absolutePath,
-    content: await fs.readFile(absolutePath, "utf8"),
-  };
+/** Point bare @steez-ui/icons imports at the installed icon provider. */
+function localizeIconImports(content, target) {
+  return content.replace(/(["'])@steez-ui\/icons\1/g, (_match, quote) => {
+    let relative = path.posix.relative(path.posix.dirname(target), "lib/steez/icons/index");
+    if (!relative.startsWith(".")) relative = `./${relative}`;
+    return `${quote}${relative}${quote}`;
+  });
 }
 
-await fs.mkdir(registryDir, { recursive: true });
-
-const indexItems = [];
-
-for (const item of itemDefinitions) {
-  validateItem(item);
-
-  const files = [];
-
-  for (const file of item.files) {
-    const fileData = await readFileContent(file.source);
-    files.push({
-      path: file.target,
-      type: "registry:file",
-      target: file.target,
-      content: makeRegistryContentPortable(
-        fileData.content.replace(/(["'])@steez-ui\/icons\1/g, (_match, quote) => {
-          let relative = path.posix.relative(path.posix.dirname(file.target), "lib/steez/icons/index");
-          if (!relative.startsWith(".")) relative = `./${relative}`;
-          return `${quote}${relative}${quote}`;
-        }),
-      ),
-      source: file.source,
-    });
-  }
-
-  const sourceContents = await Promise.all(
+async function buildPayload(item) {
+  const sources = await Promise.all(
     item.files.map(async (file) => ({
-      sourcePath: file.source,
-      content: (await readFileContent(file.source)).content,
+      file,
+      content: await fs.readFile(path.join(repoRoot, file.source), "utf8"),
     })),
   );
-  const registryDependencies = collectRegistryDependencies(item, sourceContents, owners);
-  const payload = {
+  const registryDependencies = collectRegistryDependencies(
+    item,
+    sources.map(({ file, content }) => ({ sourcePath: file.source, content })),
+    owners,
+  );
+  return {
     $schema: "https://ui.shadcn.com/schema/registry-item.json",
     name: item.name,
     type: item.type,
@@ -248,32 +70,36 @@ for (const item of itemDefinitions) {
     registryDependencies: registryDependencies.map((dependency) =>
       toAbsoluteRegistryDependency(dependency, registryBaseUrl),
     ),
-    docs: "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
-    files,
+    docs: INSTALL_DOCS,
+    files: sources.map(({ file, content }) => ({
+      path: file.target,
+      type: "registry:file",
+      target: file.target,
+      content: makeRegistryContentPortable(localizeIconImports(content, file.target)),
+      source: file.source,
+    })),
   };
-
-  await fs.writeFile(
-    path.join(registryDir, `${item.name}.json`),
-    `${JSON.stringify(payload, null, 2)}\n`,
-  );
-
-  if (item.index !== false) {
-    indexItems.push({
-      name: item.name,
-      type: item.type,
-      title: item.title,
-      description: item.description,
-    });
-  }
 }
 
-await fs.writeFile(
-  path.join(registryDir, "index.json"),
-  `${JSON.stringify(indexItems, null, 2)}\n`,
+const writeJson = (name, value) =>
+  fs.writeFile(path.join(registryDir, name), `${JSON.stringify(value, null, 2)}\n`);
+
+await fs.mkdir(registryDir, { recursive: true });
+
+for (const item of itemDefinitions) {
+  validateItem(item);
+  await writeJson(`${item.name}.json`, await buildPayload(item));
+}
+
+await writeJson(
+  "index.json",
+  itemDefinitions
+    .filter((item) => item.index !== false)
+    .map(({ name, type, title, description }) => ({ name, type, title, description })),
 );
 
 // Generated payloads have no compatibility aliases; prune removed/renamed items.
-const expectedPayloads = new Set(["index.json", ...itemDefinitions.map(item => `${item.name}.json`)]);
+const expectedPayloads = new Set(["index.json", ...itemDefinitions.map((item) => `${item.name}.json`)]);
 for (const file of await fs.readdir(registryDir)) {
   if (file.endsWith(".json") && !expectedPayloads.has(file)) {
     await fs.rm(path.join(registryDir, file));
