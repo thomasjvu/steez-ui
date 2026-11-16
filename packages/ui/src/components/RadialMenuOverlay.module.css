@@ -561,6 +561,19 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .chrome,
+  .outerRing,
+  .innerRing,
+  .outerRing::after,
+  .innerRing::after,
+  .sweepRingOuter,
+  .sweepRingInner,
+  .radarTicks {
+    animation: none;
+  }
+}
+
 @media (max-width: 980px) {
   .layout {
     grid-template-columns: 1fr;

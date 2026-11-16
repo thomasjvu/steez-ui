@@ -675,6 +675,19 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/Notched
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .steez-radial-menu-overlay-1-chrome,
+  .steez-radial-menu-overlay-1-outerRing,
+  .steez-radial-menu-overlay-1-innerRing,
+  .steez-radial-menu-overlay-1-outerRing::after,
+  .steez-radial-menu-overlay-1-innerRing::after,
+  .steez-radial-menu-overlay-1-sweepRingOuter,
+  .steez-radial-menu-overlay-1-sweepRingInner,
+  .steez-radial-menu-overlay-1-radarTicks {
+    animation: none;
+  }
+}
+
 @media (max-width: 980px) {
   .steez-radial-menu-overlay-1-layout {
     grid-template-columns: 1fr;
