@@ -94,8 +94,7 @@ visual variations belong as props.
 
 `BoilingLines` accepts children, intensity, speedMs, scale, paused, and native div
 attributes. It preserves artwork alt text and disables animation for reduced motion.
-The older `/r/boiling-lines-*` demos remain archival; use `/r-steez/boiling-lines.json`
-for new projects.
+Install it from `/r-steez/boiling-lines.json`.
 
 `CharacterAfterimage` wraps an image with decorative, aria-hidden holographic copies.
 Its optional entrance motion and persistent color cycling respect reduced-motion
@@ -142,7 +141,6 @@ Open one primitive at a time:
 | `/registry` | Registry endpoints |
 | `/r-steez/*.json` | Package registry payloads |
 | `/copy/steez/*.tsx` | Generated standalone files for manual copy/paste |
-| `/r/*.json` | Legacy Boston / motion blocks |
 
 Components to try first:
 
@@ -194,7 +192,6 @@ packages/
 src/        # Vite + React docs frontend
 public/r-steez/  # generated registry JSON for package primitives
 public/copy/steez/ # generated single-file standalone copies
-public/r/        # archival Boston motion / demo blocks (frozen)
 scripts/    # build helpers
 ```
 
@@ -280,7 +277,7 @@ worker cap.
 
 Typecheck and lint caches live in ignored `.cache/`. Site typechecking includes
 canonical sources and tests; generated standalone copies are checked separately
-by `test:standalone-smoke`, and archival sources are outside the site gate.
+by `test:standalone-smoke`.
 Registry smoke checks retain independent consumer folders and compile batches
 of eight sequentially to bound peak memory. Run those install checks when
 primitives or generators change, and before publishing. Avoid parallel validation

@@ -23,7 +23,7 @@ Plans **001–027** completed earlier. Batch **028–035** residual (HEAD was `d
 | 038 | Soft sunset @steez-ui/react | DONE |
 | 039 | new-york removal + Boston archive docs | DONE |
 
-Still product-gated: hard delete `packages/react` / `public/r` Boston content; TW preset expansion.
+Still product-gated: hard delete `packages/react`; TW preset expansion. (`public/r` Boston content was removed in Nov 2026.)
 
 ## Slimming audit plans (2026-09-21)
 

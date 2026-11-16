@@ -12,7 +12,3 @@
 /r-steez/*
   Content-Type: application/json
   Access-Control-Allow-Origin: *
-
-/r/*
-  Content-Type: application/json
-  Access-Control-Allow-Origin: *

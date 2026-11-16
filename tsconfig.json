@@ -77,7 +77,6 @@
     "packages/*/dist",
     "packages/react",
     "public",
-    "registry",
     ".cache"
   ]
 }

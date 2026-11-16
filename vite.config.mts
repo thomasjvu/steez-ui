@@ -38,7 +38,7 @@ export default defineConfig({
     watch: {
       ignored: [
         "**/.cache/**", "**/tmp/**", "**/dist/**", "**/.site-ssr/**",
-        "**/public/copy/**", "**/public/r-steez/**", "**/registry/**",
+        "**/public/copy/**", "**/public/r-steez/**",
       ],
     },
   },

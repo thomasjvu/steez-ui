@@ -16,7 +16,6 @@ export default tseslint.config(
       "**/.next/**",
       "**/out/**",
       "public/copy/steez/**",
-      "registry/boston/**",
     ],
   },
   js.configs.recommended,

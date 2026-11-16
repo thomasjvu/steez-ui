@@ -21,8 +21,7 @@ src/           # Vite + React docs site (minimal shell + routes)
 components/    # Site-local components (not published packages)
 lib/           # Docs catalog, registry helpers, utilities
 public/r-steez/  # Registry JSON for package primitives (shadcn install path)
-public/r/        # ARCHIVAL Boston / motion demo blocks (frozen)
-registry/boston/ # ARCHIVAL shadcn sources for /r demos only
+public/copy/steez/ # Standalone single-file copies (manual copy path)
 scripts/       # Build helpers, registry generators, publish scripts
 plans/         # Execution plans (advisor work)
 ```
@@ -82,7 +81,6 @@ pnpm test                 # vitest run
 pnpm test:registry-smoke  # registry install smoke script
 pnpm registry:generate    # → public/r-steez (canonical)
 pnpm deploy:pages         # builds and deploys Cloudflare Pages (needs wrangler auth / CF token)
-pnpm registry:build       # archival only — Boston /r demos (do not extend)
 ```
 
 `build:packages` and `typecheck:packages` name only the canonical theme, icons,
@@ -125,7 +123,6 @@ pnpm --dir packages/react typecheck   # legacy package only
 | Command | Output |
 | --- | --- |
 | `pnpm registry:generate` | Package primitives → `public/r-steez` and standalone copies → `public/copy/steez` (`scripts/generate-registry.mjs`, `scripts/generate-standalone.mjs`) |
-| `pnpm registry:build` | **Archival** Boston demos → `public/r` only; do not add new blocks |
 | `pnpm test:registry-smoke` | Smoke-check install paths for generated r-steez payloads |
 | `pnpm test:standalone-smoke` | Compile-check every generated single-file copy without Steez package imports |
 
@@ -161,7 +158,6 @@ Committed `public/r-steez/*.json` should use the production default base. Re-gen
 | --- | --- |
 | `/r-steez/*.json` | **Package primitives** — install path for `@steez-ui/ui` components (`public/r-steez/`) |
 | `/copy/steez/*.tsx` | **Standalone primitives** — single-file manual copy path (`public/copy/steez/`) |
-| `/r/*.json` | **Archival** Boston / motion demos (`public/r/` + `registry/boston/`) — freeze; empty `new-york` style tree removed |
 
 Install example (canonical) — local dev or production (`SITE_URL` in `lib/docs/site-data.ts`):
 
@@ -173,7 +169,7 @@ pnpm dlx shadcn@latest add http://localhost:5173/r-steez/cyberpunk-tile.json
 pnpm dlx shadcn@latest add https://steez-ui-6v5.pages.dev/r-steez/cyberpunk-tile.json
 ```
 
-Do not mix `/r` and `/r-steez` when documenting new work.
+The legacy Boston `/r` registry was removed in Nov 2026; document `/r-steez` only.
 
 ## Consumer install (canonical)
 
@@ -224,7 +220,7 @@ worker cap.
 
 Typecheck and lint caches live in ignored `.cache/`. Site typechecking includes
 canonical sources and tests; generated standalone copies are checked separately
-by `test:standalone-smoke`, and archival sources are outside the site gate.
+by `test:standalone-smoke`.
 Registry smoke checks retain independent consumer folders and compile batches
 of eight sequentially to bound peak memory. Run those install checks when
 primitives or generators change, and before publishing. Avoid parallel validation
