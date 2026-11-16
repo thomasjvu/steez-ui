@@ -1,0 +1,186 @@
+/* Decorative orbit, sweep and tick rings behind the radial menu wheel.
+   Colours come from the --wheel-* custom properties set on .wheel. */
+
+.outerRing,
+.innerRing,
+.sweepRingOuter,
+.sweepRingInner,
+.radarTicks {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  pointer-events: none;
+}
+
+.outerRing,
+.innerRing {
+  border-radius: 50%;
+}
+
+.outerRing {
+  width: 72%;
+  height: 72%;
+  border: 1px solid color-mix(in srgb, var(--wheel-accent) 24%, transparent);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.018),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.018);
+  animation: orbitSpinClockwise 26s linear infinite;
+}
+
+.innerRing {
+  width: 48%;
+  height: 48%;
+  border: 1px solid color-mix(in srgb, var(--wheel-accent-dim) 22%, transparent);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.014);
+  animation: orbitSpinCounter 18s linear infinite;
+}
+
+.outerRing::before,
+.outerRing::after,
+.innerRing::before,
+.innerRing::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.outerRing::after,
+.innerRing::after {
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+}
+
+.outerRing::before {
+  inset: 0.72rem;
+  border: 1px dashed color-mix(in srgb, var(--wheel-accent-dim) 16%, transparent);
+  opacity: 0.54;
+}
+
+.outerRing::after {
+  inset: 0.88rem;
+  background:
+    conic-gradient(
+      from 92deg,
+      transparent 0deg 32deg,
+      color-mix(in srgb, var(--wheel-accent) 40%, transparent) 32deg 66deg,
+      transparent 66deg 174deg,
+      color-mix(in srgb, var(--wheel-accent-dim) 30%, transparent) 174deg 208deg,
+      transparent 208deg 292deg,
+      color-mix(in srgb, var(--wheel-accent) 44%, transparent) 292deg 326deg,
+      transparent 326deg 360deg
+    );
+  opacity: 0.8;
+  animation: orbitSpinCounter 16s linear infinite;
+}
+
+.innerRing::before {
+  inset: 0.58rem;
+  border: 1px dashed color-mix(in srgb, var(--wheel-accent-dim) 14%, transparent);
+  opacity: 0.42;
+}
+
+.innerRing::after {
+  inset: 0.72rem;
+  background:
+    conic-gradient(
+      from -72deg,
+      transparent 0deg 44deg,
+      color-mix(in srgb, var(--wheel-accent) 34%, transparent) 44deg 78deg,
+      transparent 78deg 228deg,
+      color-mix(in srgb, var(--wheel-accent-dim) 28%, transparent) 228deg 258deg,
+      transparent 258deg 360deg
+    );
+  opacity: 0.74;
+  animation: orbitSpinClockwise 14s linear infinite;
+}
+
+.sweepRingOuter,
+.sweepRingInner {
+  border-radius: 50%;
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+}
+
+.sweepRingOuter {
+  width: 62%;
+  height: 62%;
+  background:
+    conic-gradient(
+      from 18deg,
+      transparent 0deg 82deg,
+      color-mix(in srgb, var(--wheel-accent) 14%, transparent) 82deg 148deg,
+      transparent 148deg 232deg,
+      color-mix(in srgb, var(--wheel-accent-dim) 11%, transparent) 232deg 292deg,
+      transparent 292deg 360deg
+    );
+  opacity: 0.88;
+  animation: orbitSpinClockwise 20s linear infinite;
+}
+
+.sweepRingInner {
+  width: 36%;
+  height: 36%;
+  background:
+    conic-gradient(
+      from 214deg,
+      transparent 0deg 96deg,
+      color-mix(in srgb, var(--wheel-accent-dim) 16%, transparent) 96deg 150deg,
+      transparent 150deg 276deg,
+      color-mix(in srgb, var(--wheel-accent) 12%, transparent) 276deg 320deg,
+      transparent 320deg 360deg
+    );
+  opacity: 0.72;
+  animation: orbitSpinCounter 12s linear infinite;
+}
+
+.radarTicks {
+  width: 54%;
+  height: 54%;
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(
+      from -6deg,
+      color-mix(in srgb, var(--wheel-accent-dim) 12%, transparent) 0deg 1.2deg,
+      transparent 1.2deg 22deg
+    );
+  -webkit-mask: radial-gradient(circle, transparent 0 57%, #000 57% 58.3%, transparent 58.3%);
+  mask: radial-gradient(circle, transparent 0 57%, #000 57% 58.3%, transparent 58.3%);
+  opacity: 0.5;
+  animation: orbitSpinClockwise 32s linear infinite;
+}
+
+/* Spin only: rings centre with the `translate` property, which composes with
+   `rotate`, so the keyframes must not translate again. */
+@keyframes orbitSpinClockwise {
+  from {
+    rotate: 0deg;
+  }
+
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes orbitSpinCounter {
+  from {
+    rotate: 360deg;
+  }
+
+  to {
+    rotate: 0deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .outerRing,
+  .innerRing,
+  .outerRing::after,
+  .innerRing::after,
+  .sweepRingOuter,
+  .sweepRingInner,
+  .radarTicks {
+    animation: none;
+  }
+}

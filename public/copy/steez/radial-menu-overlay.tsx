@@ -50,22 +50,29 @@ const __styles_steez_radial_menu_overlay_1: Record<string, string> = {
   "detailPanel": "steez-radial-menu-overlay-1-detailPanel",
   "wheelWrap": "steez-radial-menu-overlay-1-wheelWrap",
   "wheel": "steez-radial-menu-overlay-1-wheel",
-  "outerRing": "steez-radial-menu-overlay-1-outerRing",
-  "innerRing": "steez-radial-menu-overlay-1-innerRing",
-  "sweepRingOuter": "steez-radial-menu-overlay-1-sweepRingOuter",
-  "sweepRingInner": "steez-radial-menu-overlay-1-sweepRingInner",
-  "radarTicks": "steez-radial-menu-overlay-1-radarTicks",
   "core": "steez-radial-menu-overlay-1-core",
   "node": "steez-radial-menu-overlay-1-node",
   "nodeActive": "steez-radial-menu-overlay-1-nodeActive",
   "nodeConnector": "steez-radial-menu-overlay-1-nodeConnector",
   "nodeMarker": "steez-radial-menu-overlay-1-nodeMarker",
-  "stickZone": "steez-radial-menu-overlay-1-stickZone",
-  "stickStem": "steez-radial-menu-overlay-1-stickStem",
-  "stickKnob": "steez-radial-menu-overlay-1-stickKnob",
-  "stickKnobDragging": "steez-radial-menu-overlay-1-stickKnobDragging",
-  "stickKnobPending": "steez-radial-menu-overlay-1-stickKnobPending",
   "footerContent": "steez-radial-menu-overlay-1-footerContent",
+};
+
+const __styles_steez_radial_menu_overlay_2: Record<string, string> = {
+  "wheel": "steez-radial-menu-overlay-2-wheel",
+  "outerRing": "steez-radial-menu-overlay-2-outerRing",
+  "innerRing": "steez-radial-menu-overlay-2-innerRing",
+  "sweepRingOuter": "steez-radial-menu-overlay-2-sweepRingOuter",
+  "sweepRingInner": "steez-radial-menu-overlay-2-sweepRingInner",
+  "radarTicks": "steez-radial-menu-overlay-2-radarTicks",
+};
+
+const __styles_steez_radial_menu_overlay_3: Record<string, string> = {
+  "stickZone": "steez-radial-menu-overlay-3-stickZone",
+  "stickStem": "steez-radial-menu-overlay-3-stickStem",
+  "stickKnob": "steez-radial-menu-overlay-3-stickKnob",
+  "stickKnobDragging": "steez-radial-menu-overlay-3-stickKnobDragging",
+  "stickKnobPending": "steez-radial-menu-overlay-3-stickKnobPending",
 };
 
 const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/NotchedViewportFrame.module.css */
@@ -290,156 +297,6 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/Notched
   --wheel-deep-shadow: rgba(0, 0, 0, 0.54);
 }
 
-.steez-radial-menu-overlay-1-outerRing,
-.steez-radial-menu-overlay-1-innerRing,
-.steez-radial-menu-overlay-1-sweepRingOuter,
-.steez-radial-menu-overlay-1-sweepRingInner,
-.steez-radial-menu-overlay-1-radarTicks {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  translate: -50% -50%;
-  pointer-events: none;
-}
-
-.steez-radial-menu-overlay-1-outerRing,
-.steez-radial-menu-overlay-1-innerRing {
-  border-radius: 50%;
-}
-
-.steez-radial-menu-overlay-1-outerRing {
-  width: 72%;
-  height: 72%;
-  border: 1px solid color-mix(in srgb, var(--wheel-accent) 24%, transparent);
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.018),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.018);
-  animation: steez-radial-menu-overlay-1-orbitSpinClockwise 26s linear infinite;
-}
-
-.steez-radial-menu-overlay-1-innerRing {
-  width: 48%;
-  height: 48%;
-  border: 1px solid color-mix(in srgb, var(--wheel-accent-dim) 22%, transparent);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.014);
-  animation: steez-radial-menu-overlay-1-orbitSpinCounter 18s linear infinite;
-}
-
-.steez-radial-menu-overlay-1-outerRing::before,
-.steez-radial-menu-overlay-1-outerRing::after,
-.steez-radial-menu-overlay-1-innerRing::before,
-.steez-radial-menu-overlay-1-innerRing::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-}
-
-.steez-radial-menu-overlay-1-outerRing::after,
-.steez-radial-menu-overlay-1-innerRing::after {
-  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
-  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
-}
-
-.steez-radial-menu-overlay-1-outerRing::before {
-  inset: 0.72rem;
-  border: 1px dashed color-mix(in srgb, var(--wheel-accent-dim) 16%, transparent);
-  opacity: 0.54;
-}
-
-.steez-radial-menu-overlay-1-outerRing::after {
-  inset: 0.88rem;
-  background:
-    conic-gradient(
-      from 92deg,
-      transparent 0deg 32deg,
-      color-mix(in srgb, var(--wheel-accent) 40%, transparent) 32deg 66deg,
-      transparent 66deg 174deg,
-      color-mix(in srgb, var(--wheel-accent-dim) 30%, transparent) 174deg 208deg,
-      transparent 208deg 292deg,
-      color-mix(in srgb, var(--wheel-accent) 44%, transparent) 292deg 326deg,
-      transparent 326deg 360deg
-    );
-  opacity: 0.8;
-  animation: steez-radial-menu-overlay-1-orbitSpinCounter 16s linear infinite;
-}
-
-.steez-radial-menu-overlay-1-innerRing::before {
-  inset: 0.58rem;
-  border: 1px dashed color-mix(in srgb, var(--wheel-accent-dim) 14%, transparent);
-  opacity: 0.42;
-}
-
-.steez-radial-menu-overlay-1-innerRing::after {
-  inset: 0.72rem;
-  background:
-    conic-gradient(
-      from -72deg,
-      transparent 0deg 44deg,
-      color-mix(in srgb, var(--wheel-accent) 34%, transparent) 44deg 78deg,
-      transparent 78deg 228deg,
-      color-mix(in srgb, var(--wheel-accent-dim) 28%, transparent) 228deg 258deg,
-      transparent 258deg 360deg
-    );
-  opacity: 0.74;
-  animation: steez-radial-menu-overlay-1-orbitSpinClockwise 14s linear infinite;
-}
-
-.steez-radial-menu-overlay-1-sweepRingOuter,
-.steez-radial-menu-overlay-1-sweepRingInner {
-  border-radius: 50%;
-  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
-  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
-}
-
-.steez-radial-menu-overlay-1-sweepRingOuter {
-  width: 62%;
-  height: 62%;
-  background:
-    conic-gradient(
-      from 18deg,
-      transparent 0deg 82deg,
-      color-mix(in srgb, var(--wheel-accent) 14%, transparent) 82deg 148deg,
-      transparent 148deg 232deg,
-      color-mix(in srgb, var(--wheel-accent-dim) 11%, transparent) 232deg 292deg,
-      transparent 292deg 360deg
-    );
-  opacity: 0.88;
-  animation: steez-radial-menu-overlay-1-orbitSpinClockwise 20s linear infinite;
-}
-
-.steez-radial-menu-overlay-1-sweepRingInner {
-  width: 36%;
-  height: 36%;
-  background:
-    conic-gradient(
-      from 214deg,
-      transparent 0deg 96deg,
-      color-mix(in srgb, var(--wheel-accent-dim) 16%, transparent) 96deg 150deg,
-      transparent 150deg 276deg,
-      color-mix(in srgb, var(--wheel-accent) 12%, transparent) 276deg 320deg,
-      transparent 320deg 360deg
-    );
-  opacity: 0.72;
-  animation: steez-radial-menu-overlay-1-orbitSpinCounter 12s linear infinite;
-}
-
-.steez-radial-menu-overlay-1-radarTicks {
-  width: 54%;
-  height: 54%;
-  border-radius: 50%;
-  background:
-    repeating-conic-gradient(
-      from -6deg,
-      color-mix(in srgb, var(--wheel-accent-dim) 12%, transparent) 0deg 1.2deg,
-      transparent 1.2deg 22deg
-    );
-  -webkit-mask: radial-gradient(circle, transparent 0 57%, #000 57% 58.3%, transparent 58.3%);
-  mask: radial-gradient(circle, transparent 0 57%, #000 57% 58.3%, transparent 58.3%);
-  opacity: 0.5;
-  animation: steez-radial-menu-overlay-1-orbitSpinClockwise 32s linear infinite;
-}
-
 .steez-radial-menu-overlay-1-core {
   position: absolute;
   top: 50%;
@@ -547,83 +404,6 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/Notched
   color: #050505;
 }
 
-.steez-radial-menu-overlay-1-stickZone {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  z-index: 2;
-  width: 46%;
-  height: 46%;
-  translate: -50% -50%;
-  border-radius: 50%;
-  touch-action: none;
-}
-
-.steez-radial-menu-overlay-1-stickStem {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: max(var(--stick-length), 0px);
-  height: 1px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, rgba(244, 244, 244, 0.08) 0%, rgba(244, 244, 244, 0.68) 100%);
-  transform-origin: left center;
-  transform: rotate(var(--stick-angle));
-}
-
-.steez-radial-menu-overlay-1-stickKnob {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 3.7rem;
-  height: 3.7rem;
-  translate: calc(-50% + var(--stick-x, 0px)) calc(-50% + var(--stick-y, 0px));
-  border-radius: 50%;
-  border: 1px solid rgba(244, 244, 244, 0.28);
-  background:
-    radial-gradient(circle at 50% 50%, rgba(245, 245, 245, 0.14) 0%, transparent 42%),
-    radial-gradient(circle at 50% 50%, rgba(7, 7, 7, 0.98) 0%, rgba(5, 5, 5, 1) 72%);
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.018),
-    0 20px 38px rgba(0, 0, 0, 0.4);
-  transition:
-    translate 160ms ease,
-    border-color 160ms ease,
-    background 160ms ease,
-    transform 160ms ease;
-}
-
-.steez-radial-menu-overlay-1-stickKnob::before,
-.steez-radial-menu-overlay-1-stickKnob::after {
-  content: "";
-  position: absolute;
-  inset: 50%;
-  translate: -50% -50%;
-  border-radius: 50%;
-}
-
-.steez-radial-menu-overlay-1-stickKnob::before {
-  width: 64%;
-  height: 64%;
-  border: 1px solid rgba(244, 244, 244, 0.2);
-}
-
-.steez-radial-menu-overlay-1-stickKnob::after {
-  width: 28%;
-  height: 28%;
-  border: 1px solid rgba(244, 244, 244, 0.38);
-  background: rgba(244, 244, 244, 0.86);
-}
-
-.steez-radial-menu-overlay-1-stickKnobDragging,
-.steez-radial-menu-overlay-1-stickKnobPending {
-  border-color: rgba(255, 255, 255, 0.54);
-}
-
-.steez-radial-menu-overlay-1-stickKnobDragging {
-  transform: scale(1.04);
-}
-
 .steez-radial-menu-overlay-1-footer {
   align-items: end;
 }
@@ -653,37 +433,8 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/Notched
   }
 }
 
-/* Spin only: rings centre with the \`translate\` property, which composes with
-   \`rotate\`, so the keyframes must not translate again. */
-@keyframes steez-radial-menu-overlay-1-orbitSpinClockwise {
-  from {
-    rotate: 0deg;
-  }
-
-  to {
-    rotate: 360deg;
-  }
-}
-
-@keyframes steez-radial-menu-overlay-1-orbitSpinCounter {
-  from {
-    rotate: 360deg;
-  }
-
-  to {
-    rotate: 0deg;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .steez-radial-menu-overlay-1-chrome,
-  .steez-radial-menu-overlay-1-outerRing,
-  .steez-radial-menu-overlay-1-innerRing,
-  .steez-radial-menu-overlay-1-outerRing::after,
-  .steez-radial-menu-overlay-1-innerRing::after,
-  .steez-radial-menu-overlay-1-sweepRingOuter,
-  .steez-radial-menu-overlay-1-sweepRingInner,
-  .steez-radial-menu-overlay-1-radarTicks {
+  .steez-radial-menu-overlay-1-chrome {
     animation: none;
   }
 }
@@ -758,6 +509,277 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/Notched
     flex-direction: column;
     align-items: start;
   }
+}
+
+
+/* packages/ui/src/components/RadialMenuOverlay.rings.module.css */
+/* Decorative orbit, sweep and tick rings behind the radial menu wheel.
+   Colours come from the --wheel-* custom properties set on .steez-radial-menu-overlay-2-wheel. */
+
+.steez-radial-menu-overlay-2-outerRing,
+.steez-radial-menu-overlay-2-innerRing,
+.steez-radial-menu-overlay-2-sweepRingOuter,
+.steez-radial-menu-overlay-2-sweepRingInner,
+.steez-radial-menu-overlay-2-radarTicks {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  pointer-events: none;
+}
+
+.steez-radial-menu-overlay-2-outerRing,
+.steez-radial-menu-overlay-2-innerRing {
+  border-radius: 50%;
+}
+
+.steez-radial-menu-overlay-2-outerRing {
+  width: 72%;
+  height: 72%;
+  border: 1px solid color-mix(in srgb, var(--wheel-accent) 24%, transparent);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.018),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.018);
+  animation: steez-radial-menu-overlay-2-orbitSpinClockwise 26s linear infinite;
+}
+
+.steez-radial-menu-overlay-2-innerRing {
+  width: 48%;
+  height: 48%;
+  border: 1px solid color-mix(in srgb, var(--wheel-accent-dim) 22%, transparent);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.014);
+  animation: steez-radial-menu-overlay-2-orbitSpinCounter 18s linear infinite;
+}
+
+.steez-radial-menu-overlay-2-outerRing::before,
+.steez-radial-menu-overlay-2-outerRing::after,
+.steez-radial-menu-overlay-2-innerRing::before,
+.steez-radial-menu-overlay-2-innerRing::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.steez-radial-menu-overlay-2-outerRing::after,
+.steez-radial-menu-overlay-2-innerRing::after {
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+}
+
+.steez-radial-menu-overlay-2-outerRing::before {
+  inset: 0.72rem;
+  border: 1px dashed color-mix(in srgb, var(--wheel-accent-dim) 16%, transparent);
+  opacity: 0.54;
+}
+
+.steez-radial-menu-overlay-2-outerRing::after {
+  inset: 0.88rem;
+  background:
+    conic-gradient(
+      from 92deg,
+      transparent 0deg 32deg,
+      color-mix(in srgb, var(--wheel-accent) 40%, transparent) 32deg 66deg,
+      transparent 66deg 174deg,
+      color-mix(in srgb, var(--wheel-accent-dim) 30%, transparent) 174deg 208deg,
+      transparent 208deg 292deg,
+      color-mix(in srgb, var(--wheel-accent) 44%, transparent) 292deg 326deg,
+      transparent 326deg 360deg
+    );
+  opacity: 0.8;
+  animation: steez-radial-menu-overlay-2-orbitSpinCounter 16s linear infinite;
+}
+
+.steez-radial-menu-overlay-2-innerRing::before {
+  inset: 0.58rem;
+  border: 1px dashed color-mix(in srgb, var(--wheel-accent-dim) 14%, transparent);
+  opacity: 0.42;
+}
+
+.steez-radial-menu-overlay-2-innerRing::after {
+  inset: 0.72rem;
+  background:
+    conic-gradient(
+      from -72deg,
+      transparent 0deg 44deg,
+      color-mix(in srgb, var(--wheel-accent) 34%, transparent) 44deg 78deg,
+      transparent 78deg 228deg,
+      color-mix(in srgb, var(--wheel-accent-dim) 28%, transparent) 228deg 258deg,
+      transparent 258deg 360deg
+    );
+  opacity: 0.74;
+  animation: steez-radial-menu-overlay-2-orbitSpinClockwise 14s linear infinite;
+}
+
+.steez-radial-menu-overlay-2-sweepRingOuter,
+.steez-radial-menu-overlay-2-sweepRingInner {
+  border-radius: 50%;
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+}
+
+.steez-radial-menu-overlay-2-sweepRingOuter {
+  width: 62%;
+  height: 62%;
+  background:
+    conic-gradient(
+      from 18deg,
+      transparent 0deg 82deg,
+      color-mix(in srgb, var(--wheel-accent) 14%, transparent) 82deg 148deg,
+      transparent 148deg 232deg,
+      color-mix(in srgb, var(--wheel-accent-dim) 11%, transparent) 232deg 292deg,
+      transparent 292deg 360deg
+    );
+  opacity: 0.88;
+  animation: steez-radial-menu-overlay-2-orbitSpinClockwise 20s linear infinite;
+}
+
+.steez-radial-menu-overlay-2-sweepRingInner {
+  width: 36%;
+  height: 36%;
+  background:
+    conic-gradient(
+      from 214deg,
+      transparent 0deg 96deg,
+      color-mix(in srgb, var(--wheel-accent-dim) 16%, transparent) 96deg 150deg,
+      transparent 150deg 276deg,
+      color-mix(in srgb, var(--wheel-accent) 12%, transparent) 276deg 320deg,
+      transparent 320deg 360deg
+    );
+  opacity: 0.72;
+  animation: steez-radial-menu-overlay-2-orbitSpinCounter 12s linear infinite;
+}
+
+.steez-radial-menu-overlay-2-radarTicks {
+  width: 54%;
+  height: 54%;
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(
+      from -6deg,
+      color-mix(in srgb, var(--wheel-accent-dim) 12%, transparent) 0deg 1.2deg,
+      transparent 1.2deg 22deg
+    );
+  -webkit-mask: radial-gradient(circle, transparent 0 57%, #000 57% 58.3%, transparent 58.3%);
+  mask: radial-gradient(circle, transparent 0 57%, #000 57% 58.3%, transparent 58.3%);
+  opacity: 0.5;
+  animation: steez-radial-menu-overlay-2-orbitSpinClockwise 32s linear infinite;
+}
+
+/* Spin only: rings centre with the \`translate\` property, which composes with
+   \`rotate\`, so the keyframes must not translate again. */
+@keyframes steez-radial-menu-overlay-2-orbitSpinClockwise {
+  from {
+    rotate: 0deg;
+  }
+
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes steez-radial-menu-overlay-2-orbitSpinCounter {
+  from {
+    rotate: 360deg;
+  }
+
+  to {
+    rotate: 0deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .steez-radial-menu-overlay-2-outerRing,
+  .steez-radial-menu-overlay-2-innerRing,
+  .steez-radial-menu-overlay-2-outerRing::after,
+  .steez-radial-menu-overlay-2-innerRing::after,
+  .steez-radial-menu-overlay-2-sweepRingOuter,
+  .steez-radial-menu-overlay-2-sweepRingInner,
+  .steez-radial-menu-overlay-2-radarTicks {
+    animation: none;
+  }
+}
+
+
+/* packages/ui/src/components/RadialMenuOverlay.stick.module.css */
+/* Joystick in the centre of the radial menu wheel: drag zone, stem and knob.
+   Geometry arrives as --stick-* custom properties from the component. */
+
+.steez-radial-menu-overlay-3-stickZone {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  width: 46%;
+  height: 46%;
+  translate: -50% -50%;
+  border-radius: 50%;
+  touch-action: none;
+}
+
+.steez-radial-menu-overlay-3-stickStem {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(var(--stick-length), 0px);
+  height: 1px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(244, 244, 244, 0.08) 0%, rgba(244, 244, 244, 0.68) 100%);
+  transform-origin: left center;
+  transform: rotate(var(--stick-angle));
+}
+
+.steez-radial-menu-overlay-3-stickKnob {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3.7rem;
+  height: 3.7rem;
+  translate: calc(-50% + var(--stick-x, 0px)) calc(-50% + var(--stick-y, 0px));
+  border-radius: 50%;
+  border: 1px solid rgba(244, 244, 244, 0.28);
+  background:
+    radial-gradient(circle at 50% 50%, rgba(245, 245, 245, 0.14) 0%, transparent 42%),
+    radial-gradient(circle at 50% 50%, rgba(7, 7, 7, 0.98) 0%, rgba(5, 5, 5, 1) 72%);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.018),
+    0 20px 38px rgba(0, 0, 0, 0.4);
+  transition:
+    translate 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+.steez-radial-menu-overlay-3-stickKnob::before,
+.steez-radial-menu-overlay-3-stickKnob::after {
+  content: "";
+  position: absolute;
+  inset: 50%;
+  translate: -50% -50%;
+  border-radius: 50%;
+}
+
+.steez-radial-menu-overlay-3-stickKnob::before {
+  width: 64%;
+  height: 64%;
+  border: 1px solid rgba(244, 244, 244, 0.2);
+}
+
+.steez-radial-menu-overlay-3-stickKnob::after {
+  width: 28%;
+  height: 28%;
+  border: 1px solid rgba(244, 244, 244, 0.38);
+  background: rgba(244, 244, 244, 0.86);
+}
+
+.steez-radial-menu-overlay-3-stickKnobDragging,
+.steez-radial-menu-overlay-3-stickKnobPending {
+  border-color: rgba(255, 255, 255, 0.54);
+}
+
+.steez-radial-menu-overlay-3-stickKnobDragging {
+  transform: scale(1.04);
 }
 `;
 const __steezStandaloneStyleKey = "radial-menu-overlay";
@@ -1593,11 +1615,11 @@ export function RadialMenuOverlay({
 
             <div className={__styles_steez_radial_menu_overlay_1.wheelWrap}>
               <div ref={wheelRef} className={__styles_steez_radial_menu_overlay_1.wheel}>
-                <div className={__styles_steez_radial_menu_overlay_1.outerRing} aria-hidden="true" />
-                <div className={__styles_steez_radial_menu_overlay_1.innerRing} aria-hidden="true" />
-                <div className={__styles_steez_radial_menu_overlay_1.sweepRingOuter} aria-hidden="true" />
-                <div className={__styles_steez_radial_menu_overlay_1.sweepRingInner} aria-hidden="true" />
-                <div className={__styles_steez_radial_menu_overlay_1.radarTicks} aria-hidden="true" />
+                <div className={__styles_steez_radial_menu_overlay_2.outerRing} aria-hidden="true" />
+                <div className={__styles_steez_radial_menu_overlay_2.innerRing} aria-hidden="true" />
+                <div className={__styles_steez_radial_menu_overlay_2.sweepRingOuter} aria-hidden="true" />
+                <div className={__styles_steez_radial_menu_overlay_2.sweepRingInner} aria-hidden="true" />
+                <div className={__styles_steez_radial_menu_overlay_2.radarTicks} aria-hidden="true" />
 
                 {safeItems.map((item, index) => {
                   const isActive = item.id === activeItem.id;
@@ -1635,7 +1657,7 @@ export function RadialMenuOverlay({
 
                 <div className={__styles_steez_radial_menu_overlay_1.core} aria-hidden="true" />
                 <div
-                  className={__styles_steez_radial_menu_overlay_1.stickZone}
+                  className={__styles_steez_radial_menu_overlay_3.stickZone}
                   onPointerDown={(event) => {
                     dragPointerIdRef.current = event.pointerId;
                     setIsDragging(true);
@@ -1643,7 +1665,7 @@ export function RadialMenuOverlay({
                   }}
                 >
                   <div
-                    className={__styles_steez_radial_menu_overlay_1.stickStem}
+                    className={__styles_steez_radial_menu_overlay_3.stickStem}
                     style={
                       {
                         "--stick-angle": `${stickAngle}rad`,
@@ -1653,8 +1675,8 @@ export function RadialMenuOverlay({
                     aria-hidden="true"
                   />
                   <div
-                    className={`${__styles_steez_radial_menu_overlay_1.stickKnob} ${isDragging ? __styles_steez_radial_menu_overlay_1.stickKnobDragging : ""} ${
-                      isPending ? __styles_steez_radial_menu_overlay_1.stickKnobPending : ""
+                    className={`${__styles_steez_radial_menu_overlay_3.stickKnob} ${isDragging ? __styles_steez_radial_menu_overlay_3.stickKnobDragging : ""} ${
+                      isPending ? __styles_steez_radial_menu_overlay_3.stickKnobPending : ""
                     }`}
                     style={
                       {

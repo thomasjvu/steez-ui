@@ -1,0 +1,79 @@
+/* Joystick in the centre of the radial menu wheel: drag zone, stem and knob.
+   Geometry arrives as --stick-* custom properties from the component. */
+
+.stickZone {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  width: 46%;
+  height: 46%;
+  translate: -50% -50%;
+  border-radius: 50%;
+  touch-action: none;
+}
+
+.stickStem {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(var(--stick-length), 0px);
+  height: 1px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(244, 244, 244, 0.08) 0%, rgba(244, 244, 244, 0.68) 100%);
+  transform-origin: left center;
+  transform: rotate(var(--stick-angle));
+}
+
+.stickKnob {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3.7rem;
+  height: 3.7rem;
+  translate: calc(-50% + var(--stick-x, 0px)) calc(-50% + var(--stick-y, 0px));
+  border-radius: 50%;
+  border: 1px solid rgba(244, 244, 244, 0.28);
+  background:
+    radial-gradient(circle at 50% 50%, rgba(245, 245, 245, 0.14) 0%, transparent 42%),
+    radial-gradient(circle at 50% 50%, rgba(7, 7, 7, 0.98) 0%, rgba(5, 5, 5, 1) 72%);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.018),
+    0 20px 38px rgba(0, 0, 0, 0.4);
+  transition:
+    translate 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+.stickKnob::before,
+.stickKnob::after {
+  content: "";
+  position: absolute;
+  inset: 50%;
+  translate: -50% -50%;
+  border-radius: 50%;
+}
+
+.stickKnob::before {
+  width: 64%;
+  height: 64%;
+  border: 1px solid rgba(244, 244, 244, 0.2);
+}
+
+.stickKnob::after {
+  width: 28%;
+  height: 28%;
+  border: 1px solid rgba(244, 244, 244, 0.38);
+  background: rgba(244, 244, 244, 0.86);
+}
+
+.stickKnobDragging,
+.stickKnobPending {
+  border-color: rgba(255, 255, 255, 0.54);
+}
+
+.stickKnobDragging {
+  transform: scale(1.04);
+}

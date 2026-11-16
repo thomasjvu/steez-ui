@@ -16,6 +16,8 @@ import {
   stickAngleDegrees,
 } from "./RadialMenuOverlay.geometry";
 import styles from "./RadialMenuOverlay.module.css";
+import ringStyles from "./RadialMenuOverlay.rings.module.css";
+import stickStyles from "./RadialMenuOverlay.stick.module.css";
 
 const EMPTY_ITEMS: readonly RadialMenuItem[] = [];
 const CENTERED = { x: 0, y: 0 };
@@ -249,11 +251,11 @@ export function RadialMenuOverlay({
 
             <div className={styles.wheelWrap}>
               <div ref={wheelRef} className={styles.wheel}>
-                <div className={styles.outerRing} aria-hidden="true" />
-                <div className={styles.innerRing} aria-hidden="true" />
-                <div className={styles.sweepRingOuter} aria-hidden="true" />
-                <div className={styles.sweepRingInner} aria-hidden="true" />
-                <div className={styles.radarTicks} aria-hidden="true" />
+                <div className={ringStyles.outerRing} aria-hidden="true" />
+                <div className={ringStyles.innerRing} aria-hidden="true" />
+                <div className={ringStyles.sweepRingOuter} aria-hidden="true" />
+                <div className={ringStyles.sweepRingInner} aria-hidden="true" />
+                <div className={ringStyles.radarTicks} aria-hidden="true" />
 
                 {safeItems.map((item, index) => {
                   const isActive = item.id === activeItem.id;
@@ -291,7 +293,7 @@ export function RadialMenuOverlay({
 
                 <div className={styles.core} aria-hidden="true" />
                 <div
-                  className={styles.stickZone}
+                  className={stickStyles.stickZone}
                   onPointerDown={(event) => {
                     dragPointerIdRef.current = event.pointerId;
                     setIsDragging(true);
@@ -299,7 +301,7 @@ export function RadialMenuOverlay({
                   }}
                 >
                   <div
-                    className={styles.stickStem}
+                    className={stickStyles.stickStem}
                     style={
                       {
                         "--stick-angle": `${stickAngle}rad`,
@@ -309,8 +311,8 @@ export function RadialMenuOverlay({
                     aria-hidden="true"
                   />
                   <div
-                    className={`${styles.stickKnob} ${isDragging ? styles.stickKnobDragging : ""} ${
-                      isPending ? styles.stickKnobPending : ""
+                    className={`${stickStyles.stickKnob} ${isDragging ? stickStyles.stickKnobDragging : ""} ${
+                      isPending ? stickStyles.stickKnobPending : ""
                     }`}
                     style={
                       {

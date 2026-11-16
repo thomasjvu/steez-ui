@@ -499,7 +499,9 @@
     ],
     "styleFiles": [
       "packages/ui/src/components/NotchedViewportFrame.module.css",
-      "packages/ui/src/components/RadialMenuOverlay.module.css"
+      "packages/ui/src/components/RadialMenuOverlay.module.css",
+      "packages/ui/src/components/RadialMenuOverlay.rings.module.css",
+      "packages/ui/src/components/RadialMenuOverlay.stick.module.css"
     ]
   },
   {
