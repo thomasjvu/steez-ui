@@ -89,7 +89,27 @@ export function usePrefersReducedMotion() {
   return reduced;
 }
 
+/** Clamp finite inputs; malformed values use the component's documented default. */
+export function clampFinite(
+  value: number,
+  min: number,
+  max: number,
+  fallback: number,
+) {
+  return Number.isFinite(value)
+    ? Math.min(max, Math.max(min, value))
+    : fallback;
+}
+
+/** Percentage shared by range inputs and progress displays. */
+export function progressPercentage(value: number, min = 0, max = 100) {
+  if (!Number.isFinite(min) || !Number.isFinite(max) || max <= min) return 0;
+  return clampFinite(((value - min) / (max - min)) * 100, 0, 100, 0);
+}
+
 /** Pure sizes, timings and paths for HeartbeatPulse. Units are viewBox units. */
+
+
 
 export type HeartbeatVariant = "orb" | "line";
 
@@ -100,6 +120,7 @@ export const LINE_TRACE_POINTS =
   "2.4,58.7 70.8,58.7 76.1,46.2 81.1,58.7 89.9,58.7 93.8,66.5 102.8,22.7 110.6,78.7 115.3,58.7 126.4,58.7 134.4,54.7 142.4,58.7 197.8,58.7";
 
 export const ORB_VIEWBOX = 100;
+const MIN_ORB_RADIUS = 1;
 
 /** Seconds per beat: the line follows the interval within 1.9s-2.4s; the orb is fixed. */
 export function beatSeconds(variant: HeartbeatVariant, intervalMinutes: number) {
@@ -126,7 +147,8 @@ export interface OrbGeometry {
 
 export function orbGeometry(size: number): OrbGeometry {
   const center = ORB_VIEWBOX / 2;
-  const radius = size / 2 - 4;
+  // Sizes under 10 would give a zero or negative ring; NaN falls back to the default 24.
+  const radius = clampFinite(size / 2 - 4, MIN_ORB_RADIUS, Number.POSITIVE_INFINITY, 8);
   const trace: Array<[number, number]> = [
     [0, center],
     [center * 0.3, center],

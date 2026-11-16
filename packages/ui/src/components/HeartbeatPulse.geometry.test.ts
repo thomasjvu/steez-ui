@@ -14,6 +14,7 @@ import {
 // - the line beat drifts outside its 1.9s-2.4s band or the orb off 1.2s
 // - default line sizes change or ignore explicit width/height
 // - the orb radii stop tracking size
+// - tiny or malformed sizes produce negative or NaN radii (invalid SVG)
 // - the orb trace or line spikes leave their viewBox
 
 const numbers = (value: string) => value.match(/-?\d+(\.\d+)?/g)!.map(Number);
@@ -46,6 +47,16 @@ describe("orbGeometry", () => {
   it("derives ring, ripple and core radii from size", () => {
     const orb = orbGeometry(48);
     expect(orb).toMatchObject({ center: 50, radius: 20, ripples: [16, 10], core: 5, corePeak: 6 });
+  });
+
+  it("keeps every radius positive for tiny or malformed sizes", () => {
+    for (const size of [0, 4, 7.9, -10]) {
+      const { radius, ripples, core, corePeak } = orbGeometry(size);
+      expect(radius).toBe(1);
+      for (const value of [...ripples, core, corePeak]) expect(value).toBeGreaterThan(0);
+    }
+    expect(orbGeometry(Number.NaN).radius).toBe(orbGeometry(24).radius);
+    expect(orbGeometry(10).radius).toBe(1);
   });
 
   it("keeps the trace inside the viewBox", () => {
