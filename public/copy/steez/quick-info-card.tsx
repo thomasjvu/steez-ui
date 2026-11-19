@@ -12,37 +12,76 @@
 import * as React from "react";
 
 const __styles_steez_quick_info_card_0: Record<string, string> = {
-  "success": "steez-quick-info-card-0-success",
-  "warning": "steez-quick-info-card-0-warning",
-  "danger": "steez-quick-info-card-0-danger",
+  "brackets": "steez-quick-info-card-0-brackets",
 };
 
 const __styles_steez_quick_info_card_1: Record<string, string> = {
-  "card": "steez-quick-info-card-1-card",
-  "cardWithBrackets": "steez-quick-info-card-1-cardWithBrackets",
-  "item": "steez-quick-info-card-1-item",
-  "icon": "steez-quick-info-card-1-icon",
-  "info": "steez-quick-info-card-1-info",
-  "label": "steez-quick-info-card-1-label",
-  "value": "steez-quick-info-card-1-value",
-  "valueMono": "steez-quick-info-card-1-valueMono",
-  "storageProgress": "steez-quick-info-card-1-storageProgress",
-  "storageProgressLabel": "steez-quick-info-card-1-storageProgressLabel",
-  "storageProgressValue": "steez-quick-info-card-1-storageProgressValue",
-  "storageProgressBar": "steez-quick-info-card-1-storageProgressBar",
-  "storageProgressFill": "steez-quick-info-card-1-storageProgressFill",
-  "storageWarning": "steez-quick-info-card-1-storageWarning",
-  "storageDanger": "steez-quick-info-card-1-storageDanger",
+  "success": "steez-quick-info-card-1-success",
+  "warning": "steez-quick-info-card-1-warning",
+  "danger": "steez-quick-info-card-1-danger",
 };
 
-const __steezStandaloneStyles = String.raw`/* packages/ui/src/styles/ValueTone.module.css */
-.steez-quick-info-card-0-success { color: var(--color-status-success, #00ff88); }
-.steez-quick-info-card-0-warning { color: var(--color-status-warning, #ff9800); }
-.steez-quick-info-card-0-danger { color: var(--color-status-error, #ee1401); }
+const __styles_steez_quick_info_card_2: Record<string, string> = {
+  "card": "steez-quick-info-card-2-card",
+  "item": "steez-quick-info-card-2-item",
+  "icon": "steez-quick-info-card-2-icon",
+  "info": "steez-quick-info-card-2-info",
+  "label": "steez-quick-info-card-2-label",
+  "value": "steez-quick-info-card-2-value",
+  "valueMono": "steez-quick-info-card-2-valueMono",
+  "storageProgress": "steez-quick-info-card-2-storageProgress",
+  "storageProgressLabel": "steez-quick-info-card-2-storageProgressLabel",
+  "storageProgressValue": "steez-quick-info-card-2-storageProgressValue",
+  "storageProgressBar": "steez-quick-info-card-2-storageProgressBar",
+  "storageProgressFill": "steez-quick-info-card-2-storageProgressFill",
+  "storageWarning": "steez-quick-info-card-2-storageWarning",
+  "storageDanger": "steez-quick-info-card-2-storageDanger",
+};
+
+const __steezStandaloneStyles = String.raw`/* packages/ui/src/styles/CornerBrackets.module.css */
+/*
+ * Shared card treatment: offset L-brackets outside the top-left and
+ * bottom-right corners. Used by Card (variant="brackets"), QuickInfoCard and
+ * StatCard. Override --bracket-size / --bracket-color per surface.
+ */
+.steez-quick-info-card-0-brackets {
+  position: relative;
+  overflow: visible;
+}
+
+.steez-quick-info-card-0-brackets::before,
+.steez-quick-info-card-0-brackets::after {
+  content: "";
+  position: absolute;
+  width: var(--bracket-size, 0.5rem);
+  height: var(--bracket-size, 0.5rem);
+  border: 0 solid var(--bracket-color, var(--border-color, rgba(203, 203, 204, 0.2)));
+  pointer-events: none;
+}
+
+.steez-quick-info-card-0-brackets::before {
+  top: calc(var(--bracket-size, 0.5rem) * -1);
+  left: calc(var(--bracket-size, 0.5rem) * -1);
+  border-top-width: 1px;
+  border-left-width: 1px;
+}
+
+.steez-quick-info-card-0-brackets::after {
+  right: calc(var(--bracket-size, 0.5rem) * -1);
+  bottom: calc(var(--bracket-size, 0.5rem) * -1);
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+}
+
+
+/* packages/ui/src/styles/ValueTone.module.css */
+.steez-quick-info-card-1-success { color: var(--color-status-success, #00ff88); }
+.steez-quick-info-card-1-warning { color: var(--color-status-warning, #ff9800); }
+.steez-quick-info-card-1-danger { color: var(--color-status-error, #ee1401); }
 
 
 /* packages/ui/src/components/QuickInfoCard.module.css */
-.steez-quick-info-card-1-card {
+.steez-quick-info-card-2-card {
   display: flex;
   gap: 1.5rem;
   padding: 1rem 1.5rem;
@@ -51,32 +90,9 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/styles/ValueTone.m
   border: 1px solid var(--border-color, rgba(203, 203, 204, 0.2));
   flex-wrap: wrap;
   position: relative;
-  overflow: visible;
 }
 
-.steez-quick-info-card-1-cardWithBrackets::before {
-  content: "";
-  position: absolute;
-  top: -0.5rem;
-  left: -0.5rem;
-  width: 0.5rem;
-  height: 0.5rem;
-  border-top: 1px solid var(--border-color, rgba(203, 203, 204, 0.2));
-  border-left: 1px solid var(--border-color, rgba(203, 203, 204, 0.2));
-}
-
-.steez-quick-info-card-1-cardWithBrackets::after {
-  content: "";
-  position: absolute;
-  bottom: -0.5rem;
-  right: -0.5rem;
-  width: 0.5rem;
-  height: 0.5rem;
-  border-bottom: 1px solid var(--border-color, rgba(203, 203, 204, 0.2));
-  border-right: 1px solid var(--border-color, rgba(203, 203, 204, 0.2));
-}
-
-.steez-quick-info-card-1-item {
+.steez-quick-info-card-2-item {
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -84,26 +100,26 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/styles/ValueTone.m
   min-width: 150px;
 }
 
-.steez-quick-info-card-1-icon {
+.steez-quick-info-card-2-icon {
   display: grid;
   place-items: center;
   flex-shrink: 0;
   color: var(--accent-primary, #ee1401);
 }
 
-.steez-quick-info-card-1-icon :global(svg) {
+.steez-quick-info-card-2-icon :global(svg) {
   width: 1.25rem;
   height: 1.25rem;
 }
 
-.steez-quick-info-card-1-info {
+.steez-quick-info-card-2-info {
   display: flex;
   flex-direction: column;
   gap: 0.125rem;
   flex: 1;
 }
 
-.steez-quick-info-card-1-label {
+.steez-quick-info-card-2-label {
   color: var(--text-secondary, #999999);
   font-size: 0.6875rem;
   font-weight: 500;
@@ -111,17 +127,17 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/styles/ValueTone.m
   letter-spacing: 0.05em;
 }
 
-.steez-quick-info-card-1-value {
+.steez-quick-info-card-2-value {
   color: var(--text-primary, #cbcbcc);
   font-size: 1rem;
   font-weight: 600;
 }
 
-.steez-quick-info-card-1-valueMono {
+.steez-quick-info-card-2-valueMono {
   font-family: var(--font-mono, "Maple Mono", "SF Mono", "Cascadia Code", "Fira Code", Monaco, monospace);
 }
 
-.steez-quick-info-card-1-storageProgress {
+.steez-quick-info-card-2-storageProgress {
   flex: 1;
   min-width: 200px;
   display: flex;
@@ -129,7 +145,7 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/styles/ValueTone.m
   gap: 0.375rem;
 }
 
-.steez-quick-info-card-1-storageProgressLabel {
+.steez-quick-info-card-2-storageProgressLabel {
   display: flex;
   justify-content: space-between;
   color: var(--text-secondary, #999999);
@@ -139,13 +155,13 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/styles/ValueTone.m
   letter-spacing: 0.05em;
 }
 
-.steez-quick-info-card-1-storageProgressValue {
+.steez-quick-info-card-2-storageProgressValue {
   color: var(--text-primary, #cbcbcc);
   font-family: var(--font-mono, "Maple Mono", "SF Mono", "Cascadia Code", "Fira Code", Monaco, monospace);
   font-weight: 600;
 }
 
-.steez-quick-info-card-1-storageProgressBar {
+.steez-quick-info-card-2-storageProgressBar {
   height: 8px;
   background: color-mix(in srgb, var(--bg-primary, #010607) 82%, transparent);
   border-radius: 4px;
@@ -153,7 +169,7 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/styles/ValueTone.m
   border: 1px solid var(--border-color, rgba(203, 203, 204, 0.2));
 }
 
-.steez-quick-info-card-1-storageProgressFill {
+.steez-quick-info-card-2-storageProgressFill {
   height: 100%;
   width: var(--storage-progress-width, 0%);
   background: var(--accent-primary, #ee1401);
@@ -161,11 +177,11 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/styles/ValueTone.m
   transition: width 220ms ease;
 }
 
-.steez-quick-info-card-1-storageWarning {
+.steez-quick-info-card-2-storageWarning {
   background: var(--color-warning, #f59e0b);
 }
 
-.steez-quick-info-card-1-storageDanger {
+.steez-quick-info-card-2-storageDanger {
   background: var(--color-error, #ef4444);
 }
 `;
@@ -251,19 +267,19 @@ export function QuickInfoCard({
     : 0;
   const storageToneClass =
     storageRatio > 0.9
-      ? __styles_steez_quick_info_card_1.storageDanger
+      ? __styles_steez_quick_info_card_2.storageDanger
       : storageRatio > 0.7
-        ? __styles_steez_quick_info_card_1.storageWarning
+        ? __styles_steez_quick_info_card_2.storageWarning
         : "";
 
   const getValueToneClass = (color?: QuickInfoItem["valueColor"]) => {
     switch (color) {
       case "success":
-        return __styles_steez_quick_info_card_0.success;
+        return __styles_steez_quick_info_card_1.success;
       case "warning":
-        return __styles_steez_quick_info_card_0.warning;
+        return __styles_steez_quick_info_card_1.warning;
       case "danger":
-        return __styles_steez_quick_info_card_0.danger;
+        return __styles_steez_quick_info_card_1.danger;
       default:
         return "";
     }
@@ -271,16 +287,16 @@ export function QuickInfoCard({
 
   return (
     <div
-      className={`${__styles_steez_quick_info_card_1.card} ${showCornerBrackets ? __styles_steez_quick_info_card_1.cardWithBrackets : ""} ${className}`.trim()}
+      className={`${__styles_steez_quick_info_card_2.card} ${showCornerBrackets ? __styles_steez_quick_info_card_0.brackets : ""} ${className}`.trim()}
       {...props}
     >
       {items.map((item, index) => (
-        <div key={`${item.label}-${index}`} className={__styles_steez_quick_info_card_1.item}>
-          {item.icon ? <div className={__styles_steez_quick_info_card_1.icon}>{item.icon}</div> : null}
-          <div className={__styles_steez_quick_info_card_1.info}>
-            <span className={__styles_steez_quick_info_card_1.label}>{item.label}</span>
+        <div key={`${item.label}-${index}`} className={__styles_steez_quick_info_card_2.item}>
+          {item.icon ? <div className={__styles_steez_quick_info_card_2.icon}>{item.icon}</div> : null}
+          <div className={__styles_steez_quick_info_card_2.info}>
+            <span className={__styles_steez_quick_info_card_2.label}>{item.label}</span>
             <span
-              className={`${__styles_steez_quick_info_card_1.value} ${item.mono ? __styles_steez_quick_info_card_1.valueMono : ""} ${getValueToneClass(item.valueColor)}`.trim()}
+              className={`${__styles_steez_quick_info_card_2.value} ${item.mono ? __styles_steez_quick_info_card_2.valueMono : ""} ${getValueToneClass(item.valueColor)}`.trim()}
             >
               {item.value}
             </span>
@@ -288,16 +304,16 @@ export function QuickInfoCard({
         </div>
       ))}
       {storageProgress ? (
-        <div className={__styles_steez_quick_info_card_1.storageProgress}>
-          <div className={__styles_steez_quick_info_card_1.storageProgressLabel}>
+        <div className={__styles_steez_quick_info_card_2.storageProgress}>
+          <div className={__styles_steez_quick_info_card_2.storageProgressLabel}>
             <span>Storage</span>
-            <span className={__styles_steez_quick_info_card_1.storageProgressValue}>
+            <span className={__styles_steez_quick_info_card_2.storageProgressValue}>
               {formatFileSize(storageProgress.used)} /{" "}
               {formatFileSize(storageProgress.limit)}
             </span>
           </div>
           <div
-            className={__styles_steez_quick_info_card_1.storageProgressBar}
+            className={__styles_steez_quick_info_card_2.storageProgressBar}
             role="progressbar"
             aria-label="Storage used"
             aria-valuemin={0}
@@ -305,7 +321,7 @@ export function QuickInfoCard({
             aria-valuenow={storageRatio * 100}
           >
             <div
-              className={`${__styles_steez_quick_info_card_1.storageProgressFill} ${storageToneClass}`.trim()}
+              className={`${__styles_steez_quick_info_card_2.storageProgressFill} ${storageToneClass}`.trim()}
               style={
                 {
                   "--storage-progress-width": `${Math.min(storageRatio * 100, 100)}%`,

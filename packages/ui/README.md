@@ -380,7 +380,8 @@ same; specialized artwork may remain separate while sharing lifecycle policy.
 | --- | --- | --- |
 | Input, select, textarea | Field frame, label, focus, and descriptions | Plain/notched label; select icons are an option |
 | Buttons and error actions | Button sizing, disabled state, and native button defaults | Use shape-specific actions only when the shape matters |
-| Themed, bracket, and halo cards | CardFrame title/body structure | Surface decoration stays local to each card |
+| Card, bracket, and halo cards | CardFrame title/body structure | Surface decoration stays local to each card |
+| Card, QuickInfoCard, StatCard | `styles/CornerBrackets.module.css` offset corner brackets | `variant="brackets"`, `showCornerBrackets`, `brackets` |
 | Tabs and page tabs | TabList and roving focus | Content shell and appearance stay local |
 | Ring, globe, volume, ramp, swipe, marquee, boiling lines, quartz | Shared motion lifecycle | `paused` freezes motion; offscreen, hidden tabs, and reduced motion pause automatically |
 | Slider, loading bar, storage meter | Finite percentage bounds | Presentation varies; invalid values never create invalid widths |
@@ -406,6 +407,16 @@ Card, CornerBracketCard, and DottedHaloCard share `title`, `titleAs`,
 `titleClassName`, `bodyClassName`, `actions`, and `headerClassName`. Actions sit
 beside the title in a wrapping header; cards without actions retain their layout.
 Use `titleAs="h3"` (or another supported value) to choose appropriate semantics.
+
+`Card` takes `variant`: `default`, `featured` (accent border), `brackets` (the
+offset corner brackets shared with QuickInfoCard and StatCard) or `ghost`
+(dashed, transparent). The bracket treatment lives in one shared stylesheet;
+tune it with `--bracket-size` and `--bracket-color`.
+
+```tsx
+<Card variant="brackets" title="Uplink">Online</Card>
+<StatCard label="Errors" value={0} brackets />
+```
 
 Button accepts `iconOnly`. Setting it to `true`
 requires `aria-label` or `aria-labelledby` in TypeScript and hides the decorative

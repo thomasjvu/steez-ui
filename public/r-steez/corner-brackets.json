@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "corner-brackets",
+  "type": "registry:lib",
+  "title": "corner-brackets",
+  "description": "Shared implementation dependency.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
+  "files": [
+    {
+      "path": "components/styles/CornerBrackets.module.css",
+      "type": "registry:file",
+      "target": "components/styles/CornerBrackets.module.css",
+      "content": "/*\n * Shared card treatment: offset L-brackets outside the top-left and\n * bottom-right corners. Used by Card (variant=\"brackets\"), QuickInfoCard and\n * StatCard. Override --bracket-size / --bracket-color per surface.\n */\n.brackets {\n  position: relative;\n  overflow: visible;\n}\n\n.brackets::before,\n.brackets::after {\n  content: \"\";\n  position: absolute;\n  width: var(--bracket-size, 0.5rem);\n  height: var(--bracket-size, 0.5rem);\n  border: 0 solid var(--bracket-color, var(--border-color));\n  pointer-events: none;\n}\n\n.brackets::before {\n  top: calc(var(--bracket-size, 0.5rem) * -1);\n  left: calc(var(--bracket-size, 0.5rem) * -1);\n  border-top-width: 1px;\n  border-left-width: 1px;\n}\n\n.brackets::after {\n  right: calc(var(--bracket-size, 0.5rem) * -1);\n  bottom: calc(var(--bracket-size, 0.5rem) * -1);\n  border-right-width: 1px;\n  border-bottom-width: 1px;\n}\n",
+      "source": "packages/ui/src/styles/CornerBrackets.module.css"
+    }
+  ]
+}

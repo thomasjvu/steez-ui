@@ -39,7 +39,7 @@ export const SURFACE_DOCS = [
   {
     slug: "card",
     summary:
-      "Base content container with optional title and featured emphasis.",
+      "Base content container in default, featured, brackets, and ghost styles.",
     tags: ["card", "container"],
   },
   {

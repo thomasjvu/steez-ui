@@ -3,6 +3,7 @@
 import React from "react";
 
 import { clampFinite, progressPercentage } from "../utils/numbers.ts";
+import bracketStyles from "../styles/CornerBrackets.module.css";
 import toneStyles from "../styles/ValueTone.module.css";
 import styles from "./QuickInfoCard.module.css";
 
@@ -75,7 +76,7 @@ export function QuickInfoCard({
 
   return (
     <div
-      className={`${styles.card} ${showCornerBrackets ? styles.cardWithBrackets : ""} ${className}`.trim()}
+      className={`${styles.card} ${showCornerBrackets ? bracketStyles.brackets : ""} ${className}`.trim()}
       {...props}
     >
       {items.map((item, index) => (

@@ -3,6 +3,10 @@
   transition: color 220ms ease;
 }
 
+.bracketed {
+  padding: 0.75rem 1rem;
+}
+
 .interactive {
   cursor: pointer;
 }

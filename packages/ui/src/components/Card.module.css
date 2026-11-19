@@ -12,6 +12,18 @@
   box-shadow: var(--shadow-md);
 }
 
+/* Square corners so the offset brackets read as part of the frame. */
+.bracketed {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.ghost {
+  border-style: dashed;
+  background: transparent;
+  box-shadow: none;
+}
+
 .title {
   margin-bottom: 0.75rem;
   color: var(--text-primary);

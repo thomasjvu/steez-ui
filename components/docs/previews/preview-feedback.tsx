@@ -154,7 +154,7 @@ export function StatCardPreview() {
     <div className={styles.statPreviewGrid}>
       <StatCard label="Messages" value="1,248" subvalue="+12% this week" />
       <StatCard label="Queue" value="3" color="warning" />
-      <StatCard label="Errors" value="0" color="success" />
+      <StatCard label="Errors" value="0" color="success" brackets />
     </div>
   );
 }

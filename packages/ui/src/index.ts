@@ -121,7 +121,7 @@ export { StatCard, type StatCardProps } from "./components/StatCard.tsx";
 export { StatusMessage, type StatusMessageProps } from "./components/StatusMessage.tsx";
 export { StrokedText, type StrokedTextProps } from "./components/StrokedText.tsx";
 export { TabbedPanel, type TabbedPanelProps, type TabbedPanelTab } from "./components/TabbedPanel.tsx";
-export { Card, type CardProps } from "./components/Card.tsx";
+export { Card, type CardProps, type CardVariant } from "./components/Card.tsx";
 export { ThemeToggle, type ThemeToggleProps } from "./components/ThemeToggle.tsx";
 
 

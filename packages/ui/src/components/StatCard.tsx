@@ -2,6 +2,7 @@
 
 import React from "react";
 
+import bracketStyles from "../styles/CornerBrackets.module.css";
 import toneStyles from "../styles/ValueTone.module.css";
 import styles from "./StatCard.module.css";
 
@@ -11,6 +12,8 @@ export interface StatCardProps extends React.HTMLAttributes<HTMLDivElement> {
   subvalue?: string;
   onClick?: () => void;
   color?: "default" | "success" | "danger" | "warning";
+  /** Offset corner brackets shared with Card and QuickInfoCard. */
+  brackets?: boolean;
 }
 
 export function StatCard({
@@ -19,6 +22,7 @@ export function StatCard({
   subvalue,
   onClick,
   color = "default",
+  brackets = false,
   className = "",
   onKeyDown: onKeyDownProp,
   role: roleProp,
@@ -52,7 +56,7 @@ export function StatCard({
   return (
     <div
       {...props}
-      className={`${styles.root} ${onClick ? styles.interactive : ""} ${className}`.trim()}
+      className={`${styles.root} ${onClick ? styles.interactive : ""} ${brackets ? `${styles.bracketed} ${bracketStyles.brackets}` : ""} ${className}`.trim()}
       role={onClick ? (roleProp ?? "button") : roleProp}
       tabIndex={onClick ? (tabIndexProp ?? 0) : tabIndexProp}
       onClick={onClick}

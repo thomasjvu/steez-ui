@@ -7,29 +7,6 @@
   border: 1px solid var(--border-color);
   flex-wrap: wrap;
   position: relative;
-  overflow: visible;
-}
-
-.cardWithBrackets::before {
-  content: "";
-  position: absolute;
-  top: -0.5rem;
-  left: -0.5rem;
-  width: 0.5rem;
-  height: 0.5rem;
-  border-top: 1px solid var(--border-color);
-  border-left: 1px solid var(--border-color);
-}
-
-.cardWithBrackets::after {
-  content: "";
-  position: absolute;
-  bottom: -0.5rem;
-  right: -0.5rem;
-  width: 0.5rem;
-  height: 0.5rem;
-  border-bottom: 1px solid var(--border-color);
-  border-right: 1px solid var(--border-color);
 }
 
 .item {

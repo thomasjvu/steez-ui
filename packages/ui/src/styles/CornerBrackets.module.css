@@ -1,0 +1,33 @@
+/*
+ * Shared card treatment: offset L-brackets outside the top-left and
+ * bottom-right corners. Used by Card (variant="brackets"), QuickInfoCard and
+ * StatCard. Override --bracket-size / --bracket-color per surface.
+ */
+.brackets {
+  position: relative;
+  overflow: visible;
+}
+
+.brackets::before,
+.brackets::after {
+  content: "";
+  position: absolute;
+  width: var(--bracket-size, 0.5rem);
+  height: var(--bracket-size, 0.5rem);
+  border: 0 solid var(--bracket-color, var(--border-color));
+  pointer-events: none;
+}
+
+.brackets::before {
+  top: calc(var(--bracket-size, 0.5rem) * -1);
+  left: calc(var(--bracket-size, 0.5rem) * -1);
+  border-top-width: 1px;
+  border-left-width: 1px;
+}
+
+.brackets::after {
+  right: calc(var(--bracket-size, 0.5rem) * -1);
+  bottom: calc(var(--bracket-size, 0.5rem) * -1);
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+}

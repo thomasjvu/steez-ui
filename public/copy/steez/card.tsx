@@ -18,9 +18,15 @@ const __styles_steez_card_0: Record<string, string> = {
 };
 
 const __styles_steez_card_1: Record<string, string> = {
-  "card": "steez-card-1-card",
-  "featured": "steez-card-1-featured",
-  "title": "steez-card-1-title",
+  "brackets": "steez-card-1-brackets",
+};
+
+const __styles_steez_card_2: Record<string, string> = {
+  "card": "steez-card-2-card",
+  "featured": "steez-card-2-featured",
+  "bracketed": "steez-card-2-bracketed",
+  "ghost": "steez-card-2-ghost",
+  "title": "steez-card-2-title",
 };
 
 const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/CardFrame.module.css */
@@ -34,8 +40,44 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/CardFra
 .steez-card-0-header > :first-child { margin-block: 0; }
 
 
+/* packages/ui/src/styles/CornerBrackets.module.css */
+/*
+ * Shared card treatment: offset L-brackets outside the top-left and
+ * bottom-right corners. Used by Card (variant="brackets"), QuickInfoCard and
+ * StatCard. Override --bracket-size / --bracket-color per surface.
+ */
+.steez-card-1-brackets {
+  position: relative;
+  overflow: visible;
+}
+
+.steez-card-1-brackets::before,
+.steez-card-1-brackets::after {
+  content: "";
+  position: absolute;
+  width: var(--bracket-size, 0.5rem);
+  height: var(--bracket-size, 0.5rem);
+  border: 0 solid var(--bracket-color, var(--border-color, rgba(203, 203, 204, 0.2)));
+  pointer-events: none;
+}
+
+.steez-card-1-brackets::before {
+  top: calc(var(--bracket-size, 0.5rem) * -1);
+  left: calc(var(--bracket-size, 0.5rem) * -1);
+  border-top-width: 1px;
+  border-left-width: 1px;
+}
+
+.steez-card-1-brackets::after {
+  right: calc(var(--bracket-size, 0.5rem) * -1);
+  bottom: calc(var(--bracket-size, 0.5rem) * -1);
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+}
+
+
 /* packages/ui/src/components/Card.module.css */
-.steez-card-1-card {
+.steez-card-2-card {
   position: relative;
   border: 1px solid var(--border-color, rgba(203, 203, 204, 0.2));
   background: color-mix(in srgb, var(--bg-secondary, #0a0a0a) 88%, transparent);
@@ -44,12 +86,24 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/CardFra
   box-shadow: var(--shadow-sm, 0 2px 4px rgba(0, 0, 0, 0.5));
 }
 
-.steez-card-1-featured {
+.steez-card-2-featured {
   border-color: var(--accent-primary, #ee1401);
   box-shadow: var(--shadow-md, 0 4px 8px rgba(0, 0, 0, 0.5));
 }
 
-.steez-card-1-title {
+/* Square corners so the offset brackets read as part of the frame. */
+.steez-card-2-bracketed {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.steez-card-2-ghost {
+  border-style: dashed;
+  background: transparent;
+  box-shadow: none;
+}
+
+.steez-card-2-title {
   margin-bottom: 0.75rem;
   color: var(--text-primary, #cbcbcc);
   font-family: var(--font-mono, "Maple Mono", "SF Mono", "Cascadia Code", "Fira Code", Monaco, monospace);
@@ -123,10 +177,20 @@ export function CardFrame({
   );
 }
 
+export type CardVariant = "default" | "featured" | "brackets" | "ghost";
+
 export interface CardProps
   extends CardCompositionProps, Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
-  variant?: "default" | "featured";
+  /** `featured` adds accent emphasis, `brackets` offset corner brackets, `ghost` a dashed transparent outline. */
+  variant?: CardVariant;
 }
+
+const VARIANT_CLASSES: Record<CardVariant, string> = {
+  default: "",
+  featured: __styles_steez_card_2.featured,
+  brackets: `${__styles_steez_card_2.bracketed} ${__styles_steez_card_1.brackets}`,
+  ghost: __styles_steez_card_2.ghost,
+};
 
 export function Card({
   title,
@@ -139,10 +203,11 @@ export function Card({
 }: CardProps) {
   return (
     <CardFrame
-      className={`${__styles_steez_card_1.card} ${variant === "featured" ? __styles_steez_card_1.featured : ""} ${className}`}
+      className={`${__styles_steez_card_2.card} ${VARIANT_CLASSES[variant] ?? ""} ${className}`}
+      data-variant={variant}
       title={title}
       titleAs={titleAs}
-      titleClassName={`${__styles_steez_card_1.title} ${titleClassName}`.trim()}
+      titleClassName={`${__styles_steez_card_2.title} ${titleClassName}`.trim()}
       {...props}
     >
       {children}

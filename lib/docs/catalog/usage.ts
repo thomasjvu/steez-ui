@@ -115,7 +115,11 @@ export const COMPONENT_USAGE: Record<string, string> = {
   <CopyButton value="pnpm deploy:pages" title="Copy deploy command" />
 }>
   <p>Point the companion at a public URL and publish.</p>
-</Card>`,
+</Card>
+
+<Card variant="featured">...</Card>
+<Card variant="brackets">...</Card>
+<Card variant="ghost">...</Card>`,
   "cyberpunk-tile": `<CyberpunkTile>
   <strong>Site runtime</strong>
   <p>Deploy pages, media, and publishing flows.</p>
@@ -231,6 +235,7 @@ export const COMPONENT_USAGE: Record<string, string> = {
   label="Messages"
   value="1,248"
   subvalue="+12% this week"
+  brackets
 />`,
   "stroked-text": `<StrokedText color="#ff7a72" animateOnMount>
   SPELLBINDING

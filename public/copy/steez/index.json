@@ -277,6 +277,7 @@
     ],
     "styleFiles": [
       "packages/ui/src/components/CardFrame.module.css",
+      "packages/ui/src/styles/CornerBrackets.module.css",
       "packages/ui/src/components/Card.module.css"
     ]
   },
@@ -638,6 +639,7 @@
       "packages/ui/src/utils/numbers.ts"
     ],
     "styleFiles": [
+      "packages/ui/src/styles/CornerBrackets.module.css",
       "packages/ui/src/styles/ValueTone.module.css",
       "packages/ui/src/components/QuickInfoCard.module.css"
     ]
@@ -727,6 +729,7 @@
       "packages/ui/src/components/StatCard.tsx"
     ],
     "styleFiles": [
+      "packages/ui/src/styles/CornerBrackets.module.css",
       "packages/ui/src/styles/ValueTone.module.css",
       "packages/ui/src/components/StatCard.module.css"
     ]

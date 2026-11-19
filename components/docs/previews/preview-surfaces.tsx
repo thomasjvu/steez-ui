@@ -162,10 +162,22 @@ export function KineticGlyphPreview() {
   );
 }
 
+const CARD_VARIANTS = ["default", "featured", "brackets", "ghost"] as const;
+
 export function CardPreview() {
   return (
-    <Card title="Deployment" titleAs="h3" actions={<CopyButton value="pnpm deploy:pages" title="Copy deploy command" />}>
-      <p className={styles.previewText}>Point the companion at a public URL and publish.</p>
-    </Card>
+    <div className={styles.cardVariantGrid}>
+      {CARD_VARIANTS.map((variant) => (
+        <Card
+          key={variant}
+          variant={variant}
+          title={variant}
+          titleAs="h3"
+          actions={variant === "default" ? <CopyButton value="pnpm deploy:pages" title="Copy deploy command" /> : undefined}
+        >
+          <p className={styles.previewText}>Point the companion at a public URL and publish.</p>
+        </Card>
+      ))}
+    </div>
   );
 }

@@ -93,7 +93,7 @@
     "name": "card",
     "type": "registry:component",
     "title": "Card",
-    "description": "Default Steez card surface."
+    "description": "Default Steez card surface with featured, brackets, and ghost variants."
   },
   {
     "name": "cyberpunk-tile",
