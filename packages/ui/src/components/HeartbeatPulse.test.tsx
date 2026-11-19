@@ -19,7 +19,7 @@ describe("HeartbeatPulse", () => {
     expect(durations(container)).toEqual(["2.4s"]);
     const svg = container.querySelector("svg")!;
     expect([svg.getAttribute("width"), svg.getAttribute("height"), svg.getAttribute("viewBox")])
-      .toEqual(["300", "100", "0 0 200 100"]);
+      .toEqual(["400", "150", "0 0 200 100"]);
   });
 
   it("stops and dims an inactive line", () => {
@@ -28,12 +28,15 @@ describe("HeartbeatPulse", () => {
     expect(container.querySelector("polyline")!.getAttribute("opacity")).toBe("0.35");
   });
 
-  it("draws the orb ring, ripples and core from size", () => {
-    const { container } = render(<HeartbeatPulse size={48} />);
+  it("renders a 64px orb by default and scales the whole orb with size", () => {
+    const { container } = render(<><HeartbeatPulse /><HeartbeatPulse size={160} /></>);
+    const [small, large] = [...container.querySelectorAll("svg")];
+    expect(small!.getAttribute("width")).toBe("64");
+    expect(large!.getAttribute("width")).toBe("160");
     expect(durations(container)).toEqual(["1.2s"]);
-    const circles = [...container.querySelectorAll("circle")];
-    expect(circles.map((node) => node.getAttribute("r"))).toEqual(["20", "20", "20", "5"]);
-    expect(circles[1]!.querySelector("animate")!.getAttribute("values")).toBe("16;20");
+    const circles = [...small!.querySelectorAll("circle")];
+    expect(circles.map((node) => node.getAttribute("r"))).toEqual(["40", "40", "40", "10"]);
+    expect(circles[1]!.querySelector("animate")!.getAttribute("values")).toBe("32;40");
     expect(container.querySelector("path")).not.toBeNull();
   });
 

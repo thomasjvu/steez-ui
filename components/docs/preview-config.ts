@@ -28,7 +28,7 @@ export const PREVIEW_EXAMPLES: Record<string, Example> = {
   radio: { name: "RadioGroup", props: { label: "Runtime mode", name: "runtime-mode", defaultValue: "hosted", options: [{ value: "hosted", label: "Hosted" }, { value: "self-hosted", label: "Self-hosted" }], labelStyle: "plain" }, controls: [labelControl] },
   slider: { name: "Slider", props: { label: "Volume", defaultValue: 62, labelStyle: "plain", variant: "default" }, controls: [labelControl, { prop: "variant", label: "Thumb", choices: ["default", "diamond"] }] },
   "loading-progress-bar": { name: "LoadingProgressBar", props: { progress: 72, variant: "default" }, controls: [{ prop: "variant", label: "Style", choices: ["default", "hp"] }, { prop: "progress", label: "Progress", min: 0, max: 100 }] },
-  "heartbeat-pulse": { name: "HeartbeatPulse", props: { variant: "orb" }, controls: [{ prop: "variant", label: "Style", choices: ["orb", "line"] }] },
+  "heartbeat-pulse": { name: "HeartbeatPulse", props: { variant: "orb", size: 120 }, controls: [{ prop: "variant", label: "Style", choices: ["orb", "line"] }, { prop: "size", label: "Size", min: 24, max: 200 }] },
   "status-message": { name: "StatusMessage", props: { type: "success", message: "Packages are ready to install." }, controls: [{ prop: "type", label: "Status", choices: ["success", "info", "error"] }] },
   "stat-card": { name: "StatCard", props: { label: "Messages", value: "1,248", color: "default", brackets: false }, controls: [{ prop: "color", label: "Color", choices: ["default", "success", "warning", "danger"] }, { prop: "brackets", label: "Brackets" }] },
 };

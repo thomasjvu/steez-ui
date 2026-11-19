@@ -8,9 +8,11 @@ import {
   LINE_TRACE_POINTS,
   LINE_VIEWBOX,
   ORB_VIEWBOX,
+  DEFAULT_SIZE,
   beatSeconds,
   lineSize,
   orbGeometry,
+  pulseSize,
   type HeartbeatVariant,
 } from "./HeartbeatPulse.geometry";
 import styles from "./HeartbeatPulse.module.css";
@@ -38,7 +40,7 @@ const MUTED = "var(--text-muted)";
 
 export function HeartbeatPulse({
   intervalMinutes = 30,
-  size = 24,
+  size = DEFAULT_SIZE,
   width,
   height,
   color = "var(--accent-primary)",
@@ -66,7 +68,7 @@ export function HeartbeatPulse({
 
   return (
     <div className={`${styles.pulseRoot} ${className}`.trim()}>
-      <HeartbeatOrb {...shape} size={size} />
+      <HeartbeatOrb {...shape} size={pulseSize(size)} />
     </div>
   );
 }
@@ -117,7 +119,7 @@ function HeartbeatLine({ active, color, loop, clipId, width, height }: PulseShap
 }
 
 function HeartbeatOrb({ active, color, loop, clipId, size }: PulseShapeProps & { size: number }) {
-  const { center, radius, ripples, core, corePeak, tracePath } = orbGeometry(size);
+  const { center, radius, ripples, core, corePeak, tracePath } = orbGeometry();
   const ring = { cx: center, cy: center, r: radius, fill: "none", stroke: color };
   return (
     <svg

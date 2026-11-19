@@ -202,7 +202,8 @@ export const COMPONENT_USAGE: Record<string, string> = {
   details={stderr}
   onRetry={handleRetry}
 />`,
-  "heartbeat-pulse": `<HeartbeatPulse variant="line" width={240} height={84} color="var(--accent-primary)" />`,
+  "heartbeat-pulse": `<HeartbeatPulse size={96} />
+<HeartbeatPulse variant="line" width={360} height={120} color="var(--accent-primary)" />`,
   "hexagon-grid": `<div style={{ position: "relative", minHeight: "18rem" }}>
   <HexagonGrid pointerReactive backgroundOpacity={0.12} />
 </div>`,

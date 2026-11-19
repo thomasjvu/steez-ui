@@ -11,16 +11,25 @@ export const LINE_TRACE_POINTS =
   "2.4,58.7 70.8,58.7 76.1,46.2 81.1,58.7 89.9,58.7 93.8,66.5 102.8,22.7 110.6,78.7 115.3,58.7 126.4,58.7 134.4,54.7 142.4,58.7 197.8,58.7";
 
 export const ORB_VIEWBOX = 100;
-const MIN_ORB_RADIUS = 1;
+/** Default rendered size in px; the orb and line both scale from it. */
+export const DEFAULT_SIZE = 64;
+/** Ring radius in viewBox units: the orb fills 80% of its box at any size. */
+const ORB_RADIUS = 40;
 
 /** Seconds per beat: the line follows the interval within 1.9s-2.4s; the orb is fixed. */
 export function beatSeconds(variant: HeartbeatVariant, intervalMinutes: number) {
   return variant === "line" ? Math.max(1.9, Math.min(2.4, intervalMinutes / 15)) : 1.2;
 }
 
-/** Rendered line size in px; explicit width/height win. */
+/** Rendered px size for the orb; malformed sizes fall back to the default. */
+export function pulseSize(size: number) {
+  return clampFinite(size, 8, 512, DEFAULT_SIZE);
+}
+
+/** Rendered line size in px with a 280x96 floor; explicit width/height win. */
 export function lineSize(size: number, width?: number, height?: number) {
-  return { width: width ?? Math.max(size * 3, 200), height: height ?? Math.max(size, 72) };
+  const base = pulseSize(size);
+  return { width: width ?? Math.max(base * 4, 280), height: height ?? Math.max(base * 1.5, 96) };
 }
 
 export interface OrbGeometry {
@@ -36,10 +45,10 @@ export interface OrbGeometry {
   tracePath: string;
 }
 
-export function orbGeometry(size: number): OrbGeometry {
+/** Orb geometry in viewBox units; the SVG scales it to the rendered size. */
+export function orbGeometry(): OrbGeometry {
   const center = ORB_VIEWBOX / 2;
-  // Sizes under 10 would give a zero or negative ring; NaN falls back to the default 24.
-  const radius = clampFinite(size / 2 - 4, MIN_ORB_RADIUS, Number.POSITIVE_INFINITY, 8);
+  const radius = ORB_RADIUS;
   const trace: Array<[number, number]> = [
     [0, center],
     [center * 0.3, center],

@@ -74,8 +74,8 @@ export function ErrorMessagePreview() {
 export function HeartbeatPulsePreview() {
   return (
     <div className={styles.previewColumn}>
-      <HeartbeatPulse variant="orb" />
-      <HeartbeatPulse variant="line" width={220} height={80} />
+      <HeartbeatPulse variant="orb" size={120} />
+      <HeartbeatPulse variant="line" width={360} height={120} />
     </div>
   );
 }

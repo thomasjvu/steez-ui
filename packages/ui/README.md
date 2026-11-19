@@ -14,6 +14,9 @@ Not yet published; the next release should be a minor bump (0.x).
   types) from `@steez-ui/ui/blocks`, with its registry item and standalone copy.
 - Removed `OverlayButton` / `OverlayButtonProps` from `@steez-ui/ui`. Use
   `<Button iconOnly variant="secondary" size="small">` instead.
+- `HeartbeatPulse` defaults to `size={64}` (was 24) and the orb now fills its
+  box at every size; the line variant's default floor is 280×96. Pass an
+  explicit `size` to keep a compact pulse.
 - Renamed `ThemedCard` / `ThemedCardProps` to `Card` / `CardProps`; the registry
   item and docs page moved from `themed-card` to `card` (old URLs redirect).
 
