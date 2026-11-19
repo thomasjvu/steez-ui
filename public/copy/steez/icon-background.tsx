@@ -34,6 +34,7 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/IconBac
 .steez-icon-background-0-icon { display: grid; place-items: center; width: 100%; height: 100%; font-size: min(var(--icon-size, 40px), 100cqw); line-height: 1; transform-origin: center; }
 .steez-icon-background-0-icon > svg, .steez-icon-background-0-icon > img { width: 100%; height: 100%; object-fit: contain; }
 .steez-icon-background-0-square { width: 100%; height: 100%; background: currentColor; }
+.steez-icon-background-0-root[data-variant="shrink"] .steez-icon-background-0-icon, .steez-icon-background-0-root[data-variant="grow"] .steez-icon-background-0-icon { transition: transform 180ms ease-out; }
 @media (prefers-reduced-motion: reduce) { .steez-icon-background-0-icon { transform: none !important; } }
 `;
 const __steezStandaloneStyleKey = "icon-background";
@@ -117,10 +118,22 @@ export function progressPercentage(value: number, min = 0, max = 100) {
   return clampFinite(((value - min) / (max - min)) * 100, 0, 100, 0);
 }
 
+export type IconBackgroundVariant = "static" | "magnetic" | "shrink" | "grow";
+
+/** Pointer influence radius, in cell widths, and peak scale change for proximity variants. */
+const SCALE_RADIUS = 3;
+const SCALE_AMOUNT = { shrink: -0.7, grow: 0.5 } as const;
+
+function proximityScale(variant: keyof typeof SCALE_AMOUNT, distance: number, cellSize: number) {
+  const falloff = Math.max(0, 1 - distance / Math.max(cellSize * SCALE_RADIUS, 1));
+  return Math.round((1 + SCALE_AMOUNT[variant] * falloff) * 1000) / 1000;
+}
+
 export interface IconBackgroundProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "color" | "role" | "aria-hidden" | "tabIndex"> {
   /** Decorative artwork repeated in each cell. Defaults to a solid square. */
   icon?: React.ReactNode;
-  variant?: "static" | "magnetic";
+  /** `magnetic` rotates cells toward the pointer; `shrink` / `grow` scale cells near it. */
+  variant?: IconBackgroundVariant;
   columns?: number;
   rows?: number;
   size?: number;
@@ -129,7 +142,7 @@ export interface IconBackgroundProps extends Omit<React.HTMLAttributes<HTMLDivEl
   paused?: boolean;
 }
 
-/** Decorative icon grid; magnetic cells point toward the viewport pointer. */
+/** Decorative icon grid; cells can rotate toward, or shrink / grow near, the viewport pointer. */
 export function IconBackground({
   icon, variant = "static", columns = 9, rows = 7, size = 40, gap = 24,
   color, paused = false, className = "", style, ...props
@@ -142,43 +155,55 @@ export function IconBackground({
 
   React.useEffect(() => {
     const root = ref.current;
-    if (!root || variant !== "magnetic" || !running) return;
+    if (!root || variant === "static" || !running) return;
+    const mode = variant;
     const cells = Array.from(root.querySelectorAll<HTMLElement>(`[data-icon-cell]`));
     const icons = cells.map(cell => cell.firstElementChild as HTMLElement);
     const rotations = cells.map(() => 0);
     let frame: number | null = null;
     let pointer = { x: 0, y: 0 };
+    function paint() {
+      frame = null;
+      // Read unrotated cell geometry before writing transforms; scroll stays accurate.
+      const offsets = cells.map(cell => {
+        const rect = cell.getBoundingClientRect();
+        return { dx: pointer.x - rect.left - rect.width / 2, dy: pointer.y - rect.top - rect.height / 2, size: rect.width };
+      });
+      icons.forEach((element, index) => {
+        const { dx, dy, size: cellSize } = offsets[index];
+        if (mode === "magnetic") {
+          const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+          const previous = rotations[index];
+          rotations[index] = previous + ((angle - previous) % 360 + 540) % 360 - 180;
+          element.style.transform = `rotate(${rotations[index]}deg)`;
+        } else {
+          element.style.transform = `scale(${proximityScale(mode, Math.hypot(dx, dy), cellSize)})`;
+        }
+      });
+    }
     function move(event: PointerEvent) {
       if (event.pointerType === "touch") return;
       pointer = { x: event.clientX, y: event.clientY };
-      if (frame !== null) return;
-      frame = requestAnimationFrame(() => {
-        frame = null;
-        // Read unrotated cell geometry before writing transforms; scroll stays accurate.
-        const angles = cells.map(cell => {
-          const rect = cell.getBoundingClientRect();
-          return Math.atan2(pointer.y - rect.top - rect.height / 2,
-            pointer.x - rect.left - rect.width / 2) * 180 / Math.PI;
-        });
-        icons.forEach((element, index) => {
-          const previous = rotations[index];
-          const delta = ((angles[index] - previous) % 360 + 540) % 360 - 180;
-          rotations[index] = previous + delta;
-          element.style.transform = `rotate(${rotations[index]}deg)`;
-        });
-      });
+      if (frame === null) frame = requestAnimationFrame(paint);
     }
+    function reset() {
+      if (frame !== null) cancelAnimationFrame(frame);
+      frame = null;
+      icons.forEach(element => { element.style.transform = ""; });
+    }
+    const page = document.documentElement;
     window.addEventListener("pointermove", move, { passive: true });
+    if (mode !== "magnetic") page.addEventListener("pointerleave", reset);
     return () => {
       window.removeEventListener("pointermove", move);
-      if (frame !== null) cancelAnimationFrame(frame);
-      icons.forEach(element => { element.style.transform = ""; });
+      page.removeEventListener("pointerleave", reset);
+      reset();
     };
   }, [variant, running, columnCount, rowCount, icon, ref]);
 
   return (
     <div {...props} ref={ref} aria-hidden="true" data-variant={variant}
-      data-running={variant === "magnetic" && running ? "true" : "false"}
+      data-running={variant !== "static" && running ? "true" : "false"}
       className={`${__styles_steez_icon_background_0.root} ${className}`.trim()}
       style={{
         "--icon-columns": columnCount, "--icon-size": `${iconSize}px`,

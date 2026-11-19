@@ -55,3 +55,28 @@ it("ignores touch and keeps reduced-motion grids still", () => {
   act(() => window.dispatchEvent(new MouseEvent("pointermove")));
   expect(request).not.toHaveBeenCalled();
 });
+
+it("scales cells near the pointer down for shrink and up for grow, then resets", () => {
+  let frame: FrameRequestCallback = () => {};
+  vi.stubGlobal("requestAnimationFrame", vi.fn((callback: FrameRequestCallback) => { frame = callback; return 1; }));
+  vi.stubGlobal("cancelAnimationFrame", vi.fn());
+  const scales = (variant: "shrink" | "grow") => {
+    const { container, unmount } = render(<IconBackground variant={variant} columns={3} rows={1} />);
+    const cells = Array.from(container.querySelectorAll<HTMLElement>("[data-icon-cell]"));
+    cells.forEach((cell, index) => vi.spyOn(cell, "getBoundingClientRect").mockReturnValue({
+      left: index * 200, top: 0, width: 40, height: 40,
+    } as DOMRect));
+    act(() => window.dispatchEvent(new MouseEvent("pointermove", { clientX: 20, clientY: 20 })));
+    act(() => frame(0));
+    const values = cells.map(cell => (cell.firstElementChild as HTMLElement).style.transform);
+    act(() => document.documentElement.dispatchEvent(new MouseEvent("pointerleave")));
+    const reset = cells.map(cell => (cell.firstElementChild as HTMLElement).style.transform);
+    unmount();
+    return { values, reset };
+  };
+  const shrink = scales("shrink");
+  expect(shrink.values[0]).toBe("scale(0.3)");
+  expect(shrink.values.slice(1)).toEqual(["scale(1)", "scale(1)"]);
+  expect(shrink.reset).toEqual(["", "", ""]);
+  expect(scales("grow").values[0]).toBe("scale(1.5)");
+});

@@ -44,7 +44,7 @@ PREVIEW_EXAMPLES["duotone-filter"].controls.push(
 Object.assign(PREVIEW_EXAMPLES["duotone-filter"].props, { shadowColor: "#222244", highlightColor: "#ffb87a" });
 const extraExamples: Record<string, Example> = {
   "icon-background": { name: "IconBackground", props: { variant: "magnetic", columns: 9, rows: 7, size: 40, gap: 24, color: "#fece00", icon: "square", paused: false }, controls: [
-    { prop: "variant", label: "Style", choices: ["static", "magnetic"] },
+    { prop: "variant", label: "Style", choices: ["static", "magnetic", "shrink", "grow"] },
     { prop: "icon", label: "Icon", choices: ["square", "✦", "→"] },
     { prop: "columns", label: "Columns", min: 1, max: 12 },
     { prop: "rows", label: "Rows", min: 1, max: 9 },

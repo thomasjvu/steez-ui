@@ -345,7 +345,7 @@
     "name": "icon-background",
     "type": "registry:component",
     "title": "Icon Background",
-    "description": "A decorative icon grid with optional pointer-facing magnetic rotation."
+    "description": "A decorative icon grid with magnetic rotation or shrink / grow pointer styles."
   },
   {
     "name": "foundation",

@@ -499,7 +499,9 @@ They default to a static effect and share `intensity`, `trigger`, `paused`, and
 
 A decorative grid of squares or repeated custom artwork. `variant="magnetic"`
 rotates every cell toward the pointer, including when the grid sits behind other
-content. `variant="static"` is the default. The grid ignores pointer input and is
+content. `variant="shrink"` scales cells near the pointer down and
+`variant="grow"` scales them up, easing back when the pointer leaves.
+`variant="static"` is the default. The grid ignores pointer input and is
 hidden from assistive technology; pass decorative icons, not interactive content.
 Pointer updates share one animation frame and stop when paused, offscreen, in a
 hidden tab, or under reduced motion. Touch input leaves the grid still.
@@ -508,6 +510,8 @@ hidden tab, or under reduced motion. Touch input leaves the grid still.
 <IconBackground variant="magnetic" columns={9} rows={7}
   size={40} gap={24} color="#fece00" />
 <IconBackground icon={<LightCrossIcon />} variant="magnetic" />
+<IconBackground variant="shrink" />
+<IconBackground variant="grow" icon="✦" />
 ```
 
 The grid fits its container. `size` and `gap` are in pixels. Columns and rows are

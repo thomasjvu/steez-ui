@@ -12,4 +12,5 @@
 .icon { display: grid; place-items: center; width: 100%; height: 100%; font-size: min(var(--icon-size, 40px), 100cqw); line-height: 1; transform-origin: center; }
 .icon > svg, .icon > img { width: 100%; height: 100%; object-fit: contain; }
 .square { width: 100%; height: 100%; background: currentColor; }
+.root[data-variant="shrink"] .icon, .root[data-variant="grow"] .icon { transition: transform 180ms ease-out; }
 @media (prefers-reduced-motion: reduce) { .icon { transform: none !important; } }

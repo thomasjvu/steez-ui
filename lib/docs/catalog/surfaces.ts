@@ -27,7 +27,7 @@ export const SURFACE_DOCS = [
   },
   {
     slug: "icon-background",
-    summary: "A repeating icon grid that can rotate each cell toward the pointer.",
+    summary: "A repeating icon grid whose cells rotate toward, shrink, or grow near the pointer.",
     tags: ["background", "grid", "pointer", "motion"],
   },
   {
