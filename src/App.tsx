@@ -9,14 +9,11 @@ import {
 } from "react-router";
 import { ComponentsCatalog } from "../components/docs/components-catalog";
 import { ComponentDetail } from "../components/docs/component-detail";
-import {
-  COMPONENT_DOCS,
-  COMPONENT_FILTERS,
-} from "../lib/docs/component-catalog";
 import { Appearance } from "./theme";
 import { Guide, Packages, Registry } from "./pages";
 import { pageMetadata } from "./page-metadata";
 import { SiteFooter } from "./site-footer";
+import { ComponentNav } from "./sidebar-nav";
 
 function DetailRoute() {
   const { slug = "" } = useParams();
@@ -76,11 +73,6 @@ export function App() {
     window.addEventListener("keydown", shortcut);
     return () => window.removeEventListener("keydown", shortcut);
   }, []);
-  const matches = COMPONENT_DOCS.filter((item) =>
-    `${item.title} ${item.slug} ${item.tags.join(" ")}`
-      .toLowerCase()
-      .includes(query.toLowerCase().trim()),
-  );
   return (
     <>
       <a className="skip-link" href="#content">
@@ -124,28 +116,7 @@ export function App() {
           <NavLink to="/packages">Packages</NavLink>
           <NavLink to="/registry">Registry</NavLink>
         </nav>
-        <nav aria-label="Component library" className="component-nav">
-          {COMPONENT_FILTERS.filter(({ value }) => value !== "all").map(
-            ({ value, label }) => {
-              const items = matches.filter((item) => item.category === value);
-              return (
-                items.length > 0 && (
-                  <section key={value}>
-                    <h2>{label}</h2>
-                    {items.map((item) => (
-                      <NavLink key={item.slug} to={`/components/${item.slug}`}>
-                        {item.title}
-                      </NavLink>
-                    ))}
-                  </section>
-                )
-              );
-            },
-          )}
-          {matches.length === 0 && (
-            <p className="muted">No components found.</p>
-          )}
-        </nav>
+        <ComponentNav query={query} />
         <div className="sidebar-footer">
           <Appearance />
         </div>
