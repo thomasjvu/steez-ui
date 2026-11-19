@@ -101,10 +101,6 @@ export {
   NotchedViewportFrame,
   type NotchedViewportFrameProps,
 } from "./components/NotchedViewportFrame.tsx";
-export {
-  OverlayButton,
-  type OverlayButtonProps,
-} from "./components/OverlayButton.tsx";
 export { PageHeader, type PageHeaderProps } from "./components/PageHeader.tsx";
 export { PageTemplate, type PageTemplateProps } from "./components/PageTemplate.tsx";
 export {

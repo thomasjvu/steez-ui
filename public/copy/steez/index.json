@@ -606,26 +606,6 @@
     ]
   },
   {
-    "name": "overlay-button",
-    "title": "Overlay Button",
-    "path": "/copy/steez/overlay-button.tsx",
-    "exports": [
-      "OverlayButton"
-    ],
-    "dependencies": [
-      "react"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/components/OverlayButton.tsx",
-      "packages/ui/src/components/Button.tsx"
-    ],
-    "styleFiles": [
-      "packages/ui/src/styles/Buttons.module.css",
-      "packages/ui/src/components/ButtonShape.module.css",
-      "packages/ui/src/components/OverlayButton.module.css"
-    ]
-  },
-  {
     "name": "pixel-tooltip",
     "title": "Pixel Tooltip",
     "path": "/copy/steez/pixel-tooltip.tsx",

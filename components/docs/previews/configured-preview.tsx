@@ -4,7 +4,7 @@ import {
   LoadingProgressBar, HeartbeatPulse, StatusMessage, StatCard, ThemedCard,
   DisplacementFilter, GlowFilter, GrainFilter, ChromaticAberrationFilter,
   BoilingLines, BlinkText, KineticSwipeText, CyberpunkTile, QuartzCrystal,
-  StrokedText, ErrorMessage, OverlayButton, CharacterAfterimage, PixelTooltip,
+  StrokedText, ErrorMessage, CharacterAfterimage, PixelTooltip,
   DuotoneFilter, PosterizeFilter, EmbossFilter, IconBackground,
 } from "@steez-ui/ui";
 import { AccordionFeatureCard } from "@steez-ui/ui/blocks";
@@ -15,7 +15,7 @@ const components = {
   LoadingProgressBar, HeartbeatPulse, StatusMessage, StatCard, ThemedCard,
   DisplacementFilter, GlowFilter, GrainFilter, ChromaticAberrationFilter,
   BoilingLines, BlinkText, KineticSwipeText, CyberpunkTile, QuartzCrystal,
-  StrokedText, ErrorMessage, OverlayButton, CharacterAfterimage, PixelTooltip,
+  StrokedText, ErrorMessage, CharacterAfterimage, PixelTooltip,
   DuotoneFilter, PosterizeFilter, EmbossFilter, IconBackground, AccordionFeatureCard,
 };
 

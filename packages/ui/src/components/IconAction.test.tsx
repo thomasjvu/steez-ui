@@ -1,7 +1,6 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, expect, it } from "vitest";
 import { Button, type ButtonProps } from "./Button";
-import { OverlayButton } from "./OverlayButton";
 
 afterEach(cleanup);
 
@@ -9,8 +8,8 @@ afterEach(cleanup);
 const unnamed: ButtonProps = { iconOnly: true, children: "x" };
 void unnamed;
 
-it.each([Button, OverlayButton])("names icon-only actions independently of decorative content", (Action) => {
-  render(<Action iconOnly aria-label="Refresh"><svg><title>Decoration</title></svg></Action>);
+it("names icon-only actions independently of decorative content", () => {
+  render(<Button iconOnly aria-label="Refresh"><svg><title>Decoration</title></svg></Button>);
   const button = screen.getByRole("button", { name: "Refresh" });
   expect(button.querySelector("svg")?.closest('[aria-hidden="true"]')).toBeTruthy();
   expect(button).not.toHaveAttribute("iconOnly");

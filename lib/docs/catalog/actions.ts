@@ -17,10 +17,4 @@ export const ACTION_DOCS = [
     summary: "Square HUD tile button with icon, label, and corner chevron.",
     tags: ["fui", "tile", "hud", "icon"],
   },
-  {
-    slug: "overlay-button",
-    summary:
-      "Compact floating control button for viewer tools and absolute-positioned UI.",
-    tags: ["overlay", "viewer", "control"],
-  },
 ] satisfies ComponentDocDetails[];

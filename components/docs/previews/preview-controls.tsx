@@ -6,7 +6,6 @@ import {
   Button,
   CopyButton,
   FUIButtonTile,
-  OverlayButton,
   PageHeader,
   PixelTooltip,
   SectionHeader,
@@ -100,37 +99,18 @@ export function ThemeTogglePreview() {
   );
 }
 
-export function OverlayButtonPreview() {
-  const [active, setActive] = React.useState(true);
-
-  return (
-    <div className={styles.previewRow}>
-      <OverlayButton
-        aria-label="Toggle viewer"
-        active={active}
-        onClick={() => setActive((current) => !current)}
-      >
-        <EyeIcon width={16} height={16} />
-      </OverlayButton>
-      <OverlayButton iconOnly aria-label="Refresh">
-        <RefreshIcon width={16} height={16} />
-      </OverlayButton>
-    </div>
-  );
-}
-
 export function PixelTooltipPreview() {
   return (
     <div className={styles.previewRow}>
       <PixelTooltip content="Save configuration" position="top">
-        <OverlayButton iconOnly aria-label="Save">
+        <Button iconOnly variant="secondary" size="small" aria-label="Save">
           <CheckIcon width={16} height={16} />
-        </OverlayButton>
+        </Button>
       </PixelTooltip>
       <PixelTooltip content="Open viewer details" position="bottom">
-        <OverlayButton iconOnly aria-label="Inspect">
+        <Button iconOnly variant="secondary" size="small" aria-label="Inspect">
           <InfoIcon width={16} height={16} />
-        </OverlayButton>
+        </Button>
       </PixelTooltip>
     </div>
   );

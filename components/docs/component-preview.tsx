@@ -113,7 +113,6 @@ const PREVIEW_MAP: Record<string, ComponentType> = {
     () => import("./previews/loading-screen-preview"),
   ),
   "marquee-strip": makePreview(fromFeedback("MarqueeStripPreview")),
-  "overlay-button": makePreview(fromControls("OverlayButtonPreview")),
   "pixel-tooltip": makePreview(fromControls("PixelTooltipPreview")),
   "quick-info-card": makePreview(fromFeedback("QuickInfoCardPreview")),
   "runtime-orbit-diagram": makePreview(

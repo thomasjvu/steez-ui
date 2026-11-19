@@ -12,6 +12,8 @@ Not yet published; the next release should be a minor bump (0.x).
 
 - Removed `RadialMenuOverlay` (and the `RadialMenuItem` / `RadialMenuOverlayProps`
   types) from `@steez-ui/ui/blocks`, with its registry item and standalone copy.
+- Removed `OverlayButton` / `OverlayButtonProps` from `@steez-ui/ui`. Use
+  `<Button iconOnly variant="secondary" size="small">` instead.
 
 ## Standalone copy
 
@@ -77,7 +79,7 @@ family that matches the job and compose it before introducing a new wrapper:
 
 | Family | Exports |
 | --- | --- |
-| Actions | `Button`, `CopyButton`, `OverlayButton`, `FUIButtonTile` |
+| Actions | `Button`, `CopyButton`, `FUIButtonTile` |
 | Forms | `Input`, `Select`, `Textarea`, `Checkbox`, `Radio`, `RadioGroup`, `Slider`, `SegmentedControl` |
 | Surfaces | `CyberpunkTile`, `ThemedCard`, `CornerBracketCard`, `DottedHaloCard`, `StatCard`, `AvatarStage`, `NotchedViewportFrame` |
 | Layout | `Section`, `SectionHeader`, `PageHeader`, `PageTemplate`, `TabbedPanel` |
@@ -403,7 +405,7 @@ ThemedCard, CornerBracketCard, and DottedHaloCard share `title`, `titleAs`,
 beside the title in a wrapping header; cards without actions retain their layout.
 Use `titleAs="h3"` (or another supported value) to choose appropriate semantics.
 
-Button and OverlayButton accept `iconOnly`. Setting it to `true`
+Button accepts `iconOnly`. Setting it to `true`
 requires `aria-label` or `aria-labelledby` in TypeScript and hides the decorative
 content from assistive technology. Existing text buttons remain unchanged.
 

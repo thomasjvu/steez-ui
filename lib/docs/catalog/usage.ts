@@ -208,7 +208,7 @@ export const COMPONENT_USAGE: Record<string, string> = {
     { label: "Requests", value: "1,024", mono: true },
   ]}
 />`,
-  "widget-card": `<WidgetCard title="Scene" size="sm-b" overlay={<OverlayButton>+</OverlayButton>}>
+  "widget-card": `<WidgetCard title="Scene" size="sm-b" overlay={<Button iconOnly aria-label="Add" size="small">+</Button>}>
   <div>Widget body</div>
 </WidgetCard>`,
   "marquee-strip": `<MarqueeStrip
@@ -219,11 +219,8 @@ export const COMPONENT_USAGE: Record<string, string> = {
   section: `<Section title="Browse services">
   <ThemedCard>...</ThemedCard>
 </Section>`,
-  "overlay-button": `<OverlayButton iconOnly aria-label="Expand viewer" active>
-  <EyeIcon width={16} height={16} />
-</OverlayButton>`,
   "pixel-tooltip": `<PixelTooltip content="Save configuration" position="top">
-  <OverlayButton aria-label="Save">S</OverlayButton>
+  <Button size="small">Save</Button>
 </PixelTooltip>`,
   "section-header": `<SectionHeader
   title="Appearance Configuration"

@@ -192,12 +192,6 @@
     "description": "Animated hex field backdrop for avatars, hero surfaces, and ambient panels."
   },
   {
-    "name": "overlay-button",
-    "type": "registry:component",
-    "title": "Overlay Button",
-    "description": "Compact floating control button for viewer and media overlays."
-  },
-  {
     "name": "pixel-tooltip",
     "type": "registry:component",
     "title": "Pixel Tooltip",
