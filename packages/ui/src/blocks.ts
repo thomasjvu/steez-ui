@@ -13,11 +13,6 @@ export {
   type StorageProgress,
 } from "./components/QuickInfoCard.tsx";
 export {
-  RadialMenuOverlay,
-  type RadialMenuItem,
-  type RadialMenuOverlayProps,
-} from "./components/RadialMenuOverlay.tsx";
-export {
   RuntimeOrbitDiagram,
   type RuntimeOrbitDiagramProps,
   type RuntimeOrbitNode,

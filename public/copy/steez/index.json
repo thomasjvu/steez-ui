@@ -477,34 +477,6 @@
     ]
   },
   {
-    "name": "radial-menu-overlay",
-    "title": "Radial Menu Overlay",
-    "path": "/copy/steez/radial-menu-overlay.tsx",
-    "exports": [
-      "RadialMenuOverlay"
-    ],
-    "dependencies": [
-      "react"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/components/RadialMenuOverlay.tsx",
-      "packages/icons/src/types.ts",
-      "packages/icons/src/IconProvider.tsx",
-      "packages/icons/src/icons.tsx",
-      "packages/icons/src/icons.data.ts",
-      "packages/icons/src/Icon.tsx",
-      "packages/ui/src/components/NotchedViewportFrame.tsx",
-      "packages/ui/src/components/RadialMenuOverlay.focus.ts",
-      "packages/ui/src/components/RadialMenuOverlay.geometry.ts"
-    ],
-    "styleFiles": [
-      "packages/ui/src/components/NotchedViewportFrame.module.css",
-      "packages/ui/src/components/RadialMenuOverlay.module.css",
-      "packages/ui/src/components/RadialMenuOverlay.rings.module.css",
-      "packages/ui/src/components/RadialMenuOverlay.stick.module.css"
-    ]
-  },
-  {
     "name": "theme-toggle",
     "title": "Theme Toggle",
     "path": "/copy/steez/theme-toggle.tsx",

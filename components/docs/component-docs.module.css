@@ -132,24 +132,6 @@
 .notchedFrameCard {
   padding: 24px;
 }
-/* The contained overlay fills this box absolutely and clips to it, so the box
-   must be tall enough for the whole wheel. Breakpoints mirror the overlay's
-   own single-column (980px) and compact (720px) layouts. */
-.radialMenuPreview {
-  position: relative;
-  min-height: 680px;
-  width: 100%;
-}
-@media (max-width: 980px) {
-  .radialMenuPreview {
-    min-height: 960px;
-  }
-}
-@media (max-width: 720px) {
-  .radialMenuPreview {
-    min-height: 820px;
-  }
-}
 .loadingOverlayPreview {
   position: relative;
   width: 100%;

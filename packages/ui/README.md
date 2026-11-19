@@ -6,6 +6,13 @@ Pair with `@steez-ui/theme` (tokens) and `@steez-ui/icons` (icon surface).
 
 > **Not** `@steez-ui/react` — that package is legacy (Tailwind/CVA portable bundle). Prefer this package for all new work. See the [root README](../../README.md) and [AGENTS.md](../../AGENTS.md).
 
+## Unreleased breaking changes
+
+Not yet published; the next release should be a minor bump (0.x).
+
+- Removed `RadialMenuOverlay` (and the `RadialMenuItem` / `RadialMenuOverlayProps`
+  types) from `@steez-ui/ui/blocks`, with its registry item and standalone copy.
+
 ## Standalone copy
 
 Each public component also has a generated single-file copy at
@@ -83,7 +90,7 @@ Product-shaped compositions live behind the `@steez-ui/ui/blocks` entrypoint:
 | Family | Exports |
 | --- | --- |
 | Feature surfaces | `AccordionFeatureCard`, `QuickInfoCard`, `WidgetCard` |
-| Navigation and topology | `RadialMenuOverlay`, `RuntimeOrbitDiagram` |
+| Topology | `RuntimeOrbitDiagram` |
 | Loading overlays | `LoadingOverlayCrystalline` |
 
 ```tsx
@@ -91,7 +98,6 @@ import {
   AccordionFeatureCard,
   LoadingOverlayCrystalline,
   QuickInfoCard,
-  RadialMenuOverlay,
   RuntimeOrbitDiagram,
   WidgetCard,
 } from "@steez-ui/ui/blocks";

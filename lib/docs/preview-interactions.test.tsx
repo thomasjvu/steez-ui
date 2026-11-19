@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import { ErrorMessagePreview } from "../../components/docs/previews/preview-feedback";
 import { PageHeaderPreview } from "../../components/docs/previews/preview-controls";
 
-import { PageTemplatePreview, RadialMenuOverlayPreview } from "../../components/docs/previews/preview-navigation";
+import { PageTemplatePreview } from "../../components/docs/previews/preview-navigation";
 
 afterEach(cleanup);
 
@@ -33,12 +33,5 @@ describe("interactive docs previews", () => {
     expect(screen.getByText(/This card sits inside/)).toBeInTheDocument();
   });
 
-  it("closes and reopens the radial navigation demo", () => {
-    render(<RadialMenuOverlayPreview />);
-    fireEvent.click(screen.getByTitle("Close navigation"));
-    expect(screen.queryByRole("dialog", { name: "Site navigation" })).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Open navigation" }));
-    expect(screen.getByTitle("Close navigation")).toBeInTheDocument();
-  });
 
 });

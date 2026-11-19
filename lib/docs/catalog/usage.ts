@@ -176,14 +176,6 @@ export const COMPONENT_USAGE: Record<string, string> = {
   "notched-viewport-frame": `<div style={{ position: "relative", minHeight: "28rem" }}>
   <NotchedViewportFrame tone="strong" />
 </div>`,
-  "radial-menu-overlay": `<RadialMenuOverlay
-  open={open}
-  onClose={() => setOpen(false)}
-  items={[
-    { id: "studio", label: "Studio", eyebrow: "Creative studio", body: "Launch media and site assets.", href: "#studio" },
-    { id: "runtime", label: "Runtime", eyebrow: "One runtime", body: "Five workspaces keep the illusion intact.", href: "#system" },
-  ]}
-/>`,
   "theme-toggle": `<ThemeToggle storageKey="steez-ui-theme" defaultTheme="dark" />`,
   "loading-progress-bar": `<LoadingProgressBar progress={72} valueLabel="72% synced" />`,
   "loading-screen": `<LoadingScreen

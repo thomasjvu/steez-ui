@@ -3,7 +3,6 @@
 import React from "react";
 
 import {
-  Button,
   NotchedViewportFrame,
   PageTemplate,
   Section,
@@ -11,8 +10,6 @@ import {
   ThemedCard,
   ThemeToggle,
 } from "@steez-ui/ui";
-import { RadialMenuOverlay } from "@steez-ui/ui/blocks";
-import { MenuIcon } from "@steez-ui/icons";
 
 import styles from "../component-docs.module.css";
 
@@ -75,57 +72,6 @@ export function NotchedViewportFramePreview() {
           A notched outline frames the viewport without covering its content.
         </p>
       </div>
-    </div>
-  );
-}
-
-export function RadialMenuOverlayPreview() {
-  const [open, setOpen] = React.useState(true);
-
-  return (
-    <div className={styles.radialMenuPreview}>
-      {!open && (
-        <Button onClick={() => setOpen(true)}>Open navigation</Button>
-      )}
-      <RadialMenuOverlay
-        open={open}
-        contained
-        title="Explore Steez UI"
-        description="Choose components, read the docs, or install the packages."
-        brand={
-          <span className={styles.previewRow}>
-            <MenuIcon width={14} height={14} />
-            Menu
-          </span>
-        }
-        onClose={() => setOpen(false)}
-        items={[
-          {
-            id: "components",
-            label: "Components",
-            shortLabel: "01",
-            eyebrow: "Browse",
-            body: "Preview components and copy usage examples.",
-            href: "/components",
-          },
-          {
-            id: "docs",
-            label: "Docs",
-            shortLabel: "02",
-            eyebrow: "Contribute",
-            body: "Learn how to add and document a component.",
-            href: "/docs",
-          },
-          {
-            id: "packages",
-            label: "Packages",
-            shortLabel: "03",
-            eyebrow: "Get started",
-            body: "Install components, icons, and design tokens.",
-            href: "/packages",
-          },
-        ]}
-      />
     </div>
   );
 }

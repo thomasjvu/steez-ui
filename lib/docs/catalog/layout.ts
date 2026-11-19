@@ -30,12 +30,6 @@ export const LAYOUT_DOCS = [
     tags: ["frame", "viewport", "shell"],
   },
   {
-    slug: "radial-menu-overlay",
-    summary:
-      "Full-screen radial navigation surface built around the notched viewport shell.",
-    tags: ["overlay", "menu", "navigation"],
-  },
-  {
     slug: "theme-toggle",
     summary:
       "Shared light and dark mode switch with document-level persistence.",

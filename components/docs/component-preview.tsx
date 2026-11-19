@@ -100,9 +100,6 @@ const PREVIEW_MAP: Record<string, ComponentType> = {
   "notched-viewport-frame": makePreview(
     fromNavigation("NotchedViewportFramePreview"),
   ),
-  "radial-menu-overlay": makePreview(
-    fromNavigation("RadialMenuOverlayPreview"),
-  ),
   "theme-toggle": makePreview(fromControls("ThemeTogglePreview")),
   "heartbeat-pulse": makePreview(fromFeedback("HeartbeatPulsePreview")),
   "hexagon-grid": makePreview(() => import("./previews/hexagon-grid-preview")),
