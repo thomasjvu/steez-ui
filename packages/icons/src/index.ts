@@ -16,6 +16,7 @@ export {
   IntegrationsTileIcon,
   LightCrossIcon,
   MenuIcon,
+  MonitorIcon,
   MoonIcon,
   RefreshIcon,
   SlidersIcon,

@@ -99,6 +99,7 @@ export const ChevronLeftIcon = strokeIcon(STROKE_ICON_NODES.chevronLeft);
 export const SlidersIcon = strokeIcon(STROKE_ICON_NODES.sliders);
 export const EyeIcon = strokeIcon(STROKE_ICON_NODES.eye);
 export const SunIcon = strokeIcon(STROKE_ICON_NODES.sun);
+export const MonitorIcon = strokeIcon(STROKE_ICON_NODES.monitor);
 export const GlobeIcon = strokeIcon(STROKE_ICON_NODES.globe);
 export const CompanionIcon = strokeIcon(STROKE_ICON_NODES.companion);
 export const StatusIcon = strokeIcon(STROKE_ICON_NODES.status);

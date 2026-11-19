@@ -120,6 +120,7 @@ export type SteezIconName =
   | "eye"
   | "sun"
   | "moon"
+  | "monitor"
   | "lightCross"
   | "github"
   | "twitter"
@@ -240,6 +241,11 @@ export const STROKE_ICON_NODES = {
     ["path", { d: "M20 12h2" }],
     ["path", { d: "m6.34 17.66-1.41 1.41" }],
     ["path", { d: "m19.07 4.93-1.41 1.41" }],
+  ],
+  monitor: [
+    ["rect", { x: "2", y: "3", width: "20", height: "14", rx: "2", ry: "2" }],
+    ["line", { x1: "8", y1: "21", x2: "16", y2: "21" }],
+    ["line", { x1: "12", y1: "17", x2: "12", y2: "21" }],
   ],
   globe: [
     ["circle", { cx: "12", cy: "12", r: "10" }],
@@ -372,6 +378,7 @@ export const ChevronLeftIcon = strokeIcon(STROKE_ICON_NODES.chevronLeft);
 export const SlidersIcon = strokeIcon(STROKE_ICON_NODES.sliders);
 export const EyeIcon = strokeIcon(STROKE_ICON_NODES.eye);
 export const SunIcon = strokeIcon(STROKE_ICON_NODES.sun);
+export const MonitorIcon = strokeIcon(STROKE_ICON_NODES.monitor);
 export const GlobeIcon = strokeIcon(STROKE_ICON_NODES.globe);
 export const CompanionIcon = strokeIcon(STROKE_ICON_NODES.companion);
 export const StatusIcon = strokeIcon(STROKE_ICON_NODES.status);
@@ -439,6 +446,7 @@ const ICONS: Record<SteezIconName, React.ComponentType<SteezIconProps>> = {
   integrationsTile: IntegrationsTileIcon,
   lightCross: LightCrossIcon,
   menu: MenuIcon,
+  monitor: MonitorIcon,
   moon: MoonIcon,
   refresh: RefreshIcon,
   sliders: SlidersIcon,

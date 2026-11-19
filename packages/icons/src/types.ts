@@ -22,6 +22,7 @@ export type SteezIconName =
   | "eye"
   | "sun"
   | "moon"
+  | "monitor"
   | "lightCross"
   | "github"
   | "twitter"
