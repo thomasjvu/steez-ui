@@ -90,9 +90,9 @@
     "description": "Native range input with progress and value display. The diamond variant has a slim track and a solid square thumb that rotates while held; both variants retain native keyboard controls."
   },
   {
-    "name": "themed-card",
+    "name": "card",
     "type": "registry:component",
-    "title": "Themed Card",
+    "title": "Card",
     "description": "Default Steez card surface."
   },
   {

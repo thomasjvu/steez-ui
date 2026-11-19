@@ -111,11 +111,11 @@ export const COMPONENT_USAGE: Record<string, string> = {
   value={volume}
   onChange={(event) => setVolume(Number(event.target.value))}
 />`,
-  "themed-card": `<ThemedCard title="Deployment" titleAs="h3" actions={
+  "card": `<Card title="Deployment" titleAs="h3" actions={
   <CopyButton value="pnpm deploy:pages" title="Copy deploy command" />
 }>
   <p>Point the companion at a public URL and publish.</p>
-</ThemedCard>`,
+</Card>`,
   "cyberpunk-tile": `<CyberpunkTile>
   <strong>Site runtime</strong>
   <p>Deploy pages, media, and publishing flows.</p>
@@ -171,7 +171,7 @@ export const COMPONENT_USAGE: Record<string, string> = {
     { id: "tokens", label: "Tokens" },
   ]}
 >
-  <ThemedCard title="Overview">...</ThemedCard>
+  <Card title="Overview">...</Card>
 </PageTemplate>`,
   "notched-viewport-frame": `<div style={{ position: "relative", minHeight: "28rem" }}>
   <NotchedViewportFrame tone="strong" />
@@ -217,7 +217,7 @@ export const COMPONENT_USAGE: Record<string, string> = {
   renderItem={(provider) => <span>{provider}</span>}
 />`,
   section: `<Section title="Browse services">
-  <ThemedCard>...</ThemedCard>
+  <Card>...</Card>
 </Section>`,
   "pixel-tooltip": `<PixelTooltip content="Save configuration" position="top">
   <Button size="small">Save</Button>

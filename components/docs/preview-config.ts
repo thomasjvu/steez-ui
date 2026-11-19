@@ -5,7 +5,7 @@ import type * as Blocks from "@steez-ui/ui/blocks";
 type Components = typeof UI & typeof Blocks;
 export type PreviewValues = Record<string, string | number | boolean | string[]>;
 export type PreviewControl = { prop: string; label: string; choices?: string[]; min?: number; max?: number; multiple?: boolean };
-type ExampleName = "Button" | "Input" | "Textarea" | "Select" | "Checkbox" | "RadioGroup" | "Slider" | "LoadingProgressBar" | "HeartbeatPulse" | "StatusMessage" | "StatCard" | "ThemedCard" | "DisplacementFilter" | "GlowFilter" | "GrainFilter" | "ChromaticAberrationFilter" | "BoilingLines" | "BlinkText" | "KineticSwipeText" | "CyberpunkTile" | "QuartzCrystal" | "StrokedText" | "ErrorMessage" | "AccordionFeatureCard" | "CharacterAfterimage" | "PixelTooltip" | "DuotoneFilter" | "PosterizeFilter" | "EmbossFilter" | "IconBackground";
+type ExampleName = "Button" | "Input" | "Textarea" | "Select" | "Checkbox" | "RadioGroup" | "Slider" | "LoadingProgressBar" | "HeartbeatPulse" | "StatusMessage" | "StatCard" | "Card" | "DisplacementFilter" | "GlowFilter" | "GrainFilter" | "ChromaticAberrationFilter" | "BoilingLines" | "BlinkText" | "KineticSwipeText" | "CyberpunkTile" | "QuartzCrystal" | "StrokedText" | "ErrorMessage" | "AccordionFeatureCard" | "CharacterAfterimage" | "PixelTooltip" | "DuotoneFilter" | "PosterizeFilter" | "EmbossFilter" | "IconBackground";
 type Example = { [Name in ExampleName]: { name: Name; props: Omit<ComponentProps<Components[Name]>, "children">; children?: string; childButton?: boolean; childImage?: string; controls: PreviewControl[] } }[ExampleName];
 const labelControl = { prop: "labelStyle", label: "Label", choices: ["plain", "notch"] };
 const widthControl = { prop: "variant", label: "Width", choices: ["default", "long", "full"] };
@@ -31,7 +31,7 @@ export const PREVIEW_EXAMPLES: Record<string, Example> = {
   "heartbeat-pulse": { name: "HeartbeatPulse", props: { variant: "orb" }, controls: [{ prop: "variant", label: "Style", choices: ["orb", "line"] }] },
   "status-message": { name: "StatusMessage", props: { type: "success", message: "Packages are ready to install." }, controls: [{ prop: "type", label: "Status", choices: ["success", "info", "error"] }] },
   "stat-card": { name: "StatCard", props: { label: "Messages", value: "1,248", color: "default" }, controls: [{ prop: "color", label: "Color", choices: ["default", "success", "warning", "danger"] }] },
-  "themed-card": { name: "ThemedCard", props: { variant: "default" }, children: "Your content", controls: [{ prop: "variant", label: "Style", choices: ["default", "featured"] }] },
+  "card": { name: "Card", props: { variant: "default" }, children: "Your content", controls: [{ prop: "variant", label: "Style", choices: ["default", "featured"] }] },
 };
 const intensity = { prop: "intensity", label: "Intensity", choices: ["subtle", "default", "intense"] };
 for (const [slug, name] of Object.entries({ "displacement-filter": "DisplacementFilter", "glow-filter": "GlowFilter", "grain-filter": "GrainFilter", "chromatic-aberration-filter": "ChromaticAberrationFilter", "duotone-filter": "DuotoneFilter", "posterize-filter": "PosterizeFilter", "emboss-filter": "EmbossFilter" } as const)) {

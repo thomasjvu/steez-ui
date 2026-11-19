@@ -7,7 +7,7 @@ import {
   PageTemplate,
   Section,
   TabbedPanel,
-  ThemedCard,
+  Card,
   ThemeToggle,
 } from "@steez-ui/ui";
 
@@ -51,13 +51,13 @@ export function PageTemplatePreview() {
       onSubTabChange={setTab}
       extra={<ThemeToggle storageKey="steez-component-preview-theme" />}
     >
-      <ThemedCard title={tab === "tokens" ? "Tokens" : "Overview"}>
+      <Card title={tab === "tokens" ? "Tokens" : "Overview"}>
         <p className={styles.previewText}>
           {tab === "tokens"
             ? "Import @steez-ui/theme/tokens.css once to share colors, spacing, and typography."
             : "This card sits inside a page with a header, tabs, and a theme toggle."}
         </p>
-      </ThemedCard>
+      </Card>
     </PageTemplate>
   );
 }
@@ -79,11 +79,11 @@ export function NotchedViewportFramePreview() {
 export function SectionPreview() {
   return (
     <Section title="Browse services">
-      <ThemedCard title="Directory">
+      <Card title="Directory">
         <p className={styles.previewText}>
           The section provides a heading and spacing around this card.
         </p>
-      </ThemedCard>
+      </Card>
     </Section>
   );
 }

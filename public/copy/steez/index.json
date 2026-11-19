@@ -262,22 +262,22 @@
     ]
   },
   {
-    "name": "themed-card",
-    "title": "Themed Card",
-    "path": "/copy/steez/themed-card.tsx",
+    "name": "card",
+    "title": "Card",
+    "path": "/copy/steez/card.tsx",
     "exports": [
-      "ThemedCard"
+      "Card"
     ],
     "dependencies": [
       "react"
     ],
     "sourceFiles": [
-      "packages/ui/src/components/ThemedCard.tsx",
+      "packages/ui/src/components/Card.tsx",
       "packages/ui/src/components/CardFrame.tsx"
     ],
     "styleFiles": [
       "packages/ui/src/components/CardFrame.module.css",
-      "packages/ui/src/components/ThemedCard.module.css"
+      "packages/ui/src/components/Card.module.css"
     ]
   },
   {

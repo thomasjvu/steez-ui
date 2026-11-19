@@ -1,10 +1,10 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, expect, it } from "vitest";
-import { ThemedCard } from "./ThemedCard";
+import { Card } from "./Card";
 
 afterEach(cleanup);
 
 it("preserves numeric card titles instead of hiding zero", () => {
-  render(<ThemedCard title={0}>Body</ThemedCard>);
+  render(<Card title={0}>Body</Card>);
   expect(screen.getByText("0")).toHaveClass("title");
 });

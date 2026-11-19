@@ -1,7 +1,7 @@
 import { createElement, type ComponentType } from "react";
 import {
   Button, Input, Textarea, Select, Checkbox, RadioGroup, Slider,
-  LoadingProgressBar, HeartbeatPulse, StatusMessage, StatCard, ThemedCard,
+  LoadingProgressBar, HeartbeatPulse, StatusMessage, StatCard, Card,
   DisplacementFilter, GlowFilter, GrainFilter, ChromaticAberrationFilter,
   BoilingLines, BlinkText, KineticSwipeText, CyberpunkTile, QuartzCrystal,
   StrokedText, ErrorMessage, CharacterAfterimage, PixelTooltip,
@@ -12,7 +12,7 @@ import { exampleChildren, exampleProps, PREVIEW_EXAMPLES, type PreviewValues } f
 
 const components = {
   Button, Input, Textarea, Select, Checkbox, RadioGroup, Slider,
-  LoadingProgressBar, HeartbeatPulse, StatusMessage, StatCard, ThemedCard,
+  LoadingProgressBar, HeartbeatPulse, StatusMessage, StatCard, Card,
   DisplacementFilter, GlowFilter, GrainFilter, ChromaticAberrationFilter,
   BoilingLines, BlinkText, KineticSwipeText, CyberpunkTile, QuartzCrystal,
   StrokedText, ErrorMessage, CharacterAfterimage, PixelTooltip,

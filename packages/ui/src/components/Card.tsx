@@ -3,14 +3,14 @@
 import React from "react";
 
 import { CardFrame, type CardCompositionProps } from "./CardFrame.tsx";
-import styles from "./ThemedCard.module.css";
+import styles from "./Card.module.css";
 
-export interface ThemedCardProps
+export interface CardProps
   extends CardCompositionProps, Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   variant?: "default" | "featured";
 }
 
-export function ThemedCard({
+export function Card({
   title,
   titleAs,
   titleClassName = "",
@@ -18,7 +18,7 @@ export function ThemedCard({
   className = "",
   children,
   ...props
-}: ThemedCardProps) {
+}: CardProps) {
   return (
     <CardFrame
       className={`${styles.card} ${variant === "featured" ? styles.featured : ""} ${className}`}

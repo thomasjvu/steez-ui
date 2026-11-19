@@ -170,6 +170,8 @@ pnpm dlx shadcn@latest add https://steez-ui-6v5.pages.dev/r-steez/cyberpunk-tile
 ```
 
 The legacy Boston `/r` registry was removed in Nov 2026; document `/r-steez` only.
+When a component is renamed or removed, keep its old docs, registry and copy URLs
+working with 301s in `public/_redirects` (e.g. `themed-card` → `card`).
 
 ## Consumer install (canonical)
 

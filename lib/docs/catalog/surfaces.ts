@@ -37,7 +37,7 @@ export const SURFACE_DOCS = [
     tags: ["motion", "character", "holographic"],
   },
   {
-    slug: "themed-card",
+    slug: "card",
     summary:
       "Base content container with optional title and featured emphasis.",
     tags: ["card", "container"],

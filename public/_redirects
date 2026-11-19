@@ -1,0 +1,5 @@
+# Cloudflare Pages redirects. ThemedCard was renamed to Card in Nov 2026.
+/components/themed-card /components/card 301
+/components/themed-card/ /components/card/ 301
+/r-steez/themed-card.json /r-steez/card.json 301
+/copy/steez/themed-card.tsx /copy/steez/card.tsx 301

@@ -10,7 +10,7 @@ import {
   CyberpunkTile,
   DottedHaloCard,
   KineticGlyph,
-  ThemedCard,
+  Card,
 } from "@steez-ui/ui";
 import { AccordionFeatureCard } from "@steez-ui/ui/blocks";
 
@@ -162,10 +162,10 @@ export function KineticGlyphPreview() {
   );
 }
 
-export function ThemedCardPreview() {
+export function CardPreview() {
   return (
-    <ThemedCard title="Deployment" titleAs="h3" actions={<CopyButton value="pnpm deploy:pages" title="Copy deploy command" />}>
+    <Card title="Deployment" titleAs="h3" actions={<CopyButton value="pnpm deploy:pages" title="Copy deploy command" />}>
       <p className={styles.previewText}>Point the companion at a public URL and publish.</p>
-    </ThemedCard>
+    </Card>
   );
 }

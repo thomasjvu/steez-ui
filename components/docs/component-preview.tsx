@@ -88,7 +88,7 @@ const PREVIEW_MAP: Record<string, ComponentType> = {
   "checkbox": makePreview(fromForms("CheckboxPreview")),
   "radio": makePreview(fromForms("RadioPreview")),
   "slider": makePreview(fromForms("SliderPreview")),
-  "themed-card": makePreview(fromSurfaces("ThemedCardPreview")),
+  "card": makePreview(fromSurfaces("CardPreview")),
   "cyberpunk-tile": makePreview(fromSurfaces("CyberpunkTilePreview")),
   "fui-button-tile": makePreview(fromControls("FUIButtonTilePreview")),
   "corner-bracket-card": makePreview(fromSurfaces("CornerBracketCardPreview")),

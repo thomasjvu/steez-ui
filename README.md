@@ -74,7 +74,7 @@ where the host framework uses one.
 | --- | --- | --- |
 | Signature cut-corner surface | `CyberpunkTile` | Use the surface directly. |
 | Interactive launcher | `FUIButtonTile` | Use a button for an action; tiles frame content. |
-| Quiet content surface | `ThemedCard` | Use `CornerBracketCard` or `DottedHaloCard` when that framing serves the design. |
+| Quiet content surface | `Card` | Use `CornerBracketCard` or `DottedHaloCard` when that framing serves the design. |
 | Hand-drawn motion | `BoilingLines` | One component with `subtle`, `default`, and `intense` presets. |
 | Character art | `CharacterAfterimage` | Rainbow holographic silhouettes with an optional entrance trail. |
 | Text accents | `StrokedText`, `AsciiRippleText`, `BlinkText` | Choose one treatment for a focal point; keep body text readable. |

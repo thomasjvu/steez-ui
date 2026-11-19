@@ -59,7 +59,7 @@ const PRESETS = [
   ["surfaces", "Surface Preset",
     "Signature tiles, quiet cards, and compact metrics for a coherent Steez surface language.",
     [],
-    ["theme-tokens", "cyberpunk-tile", "themed-card", "corner-bracket-card", "dotted-halo-card", "stat-card", "widget-card"]],
+    ["theme-tokens", "cyberpunk-tile", "card", "corner-bracket-card", "dotted-halo-card", "stat-card", "widget-card"]],
   ["motion", "Motion Preset",
     "Small, composable text and surface motion treatments with reduced-motion support.",
     [],

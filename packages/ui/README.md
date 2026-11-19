@@ -14,6 +14,8 @@ Not yet published; the next release should be a minor bump (0.x).
   types) from `@steez-ui/ui/blocks`, with its registry item and standalone copy.
 - Removed `OverlayButton` / `OverlayButtonProps` from `@steez-ui/ui`. Use
   `<Button iconOnly variant="secondary" size="small">` instead.
+- Renamed `ThemedCard` / `ThemedCardProps` to `Card` / `CardProps`; the registry
+  item and docs page moved from `themed-card` to `card` (old URLs redirect).
 
 ## Standalone copy
 
@@ -81,7 +83,7 @@ family that matches the job and compose it before introducing a new wrapper:
 | --- | --- |
 | Actions | `Button`, `CopyButton`, `FUIButtonTile` |
 | Forms | `Input`, `Select`, `Textarea`, `Checkbox`, `Radio`, `RadioGroup`, `Slider`, `SegmentedControl` |
-| Surfaces | `CyberpunkTile`, `ThemedCard`, `CornerBracketCard`, `DottedHaloCard`, `StatCard`, `AvatarStage`, `NotchedViewportFrame` |
+| Surfaces | `CyberpunkTile`, `Card`, `CornerBracketCard`, `DottedHaloCard`, `StatCard`, `AvatarStage`, `NotchedViewportFrame` |
 | Layout | `Section`, `SectionHeader`, `PageHeader`, `PageTemplate`, `TabbedPanel` |
 | Content filters | `DisplacementFilter`, `ChromaticAberrationFilter`, `GlowFilter`, `GrainFilter` |
 | Motion and text | `QuartzCrystal`, `CharacterAfterimage`, `BoilingLines`, `KineticGlyph`, `KineticSwipeText`, `KineticTextRamp`, `KineticTextRing`, `KineticTextGlobe`, `KineticTextVolume`, `AsciiRippleText`, `BlinkText`, `StrokedText`, `HeartbeatPulse`, `MarqueeStrip` |
@@ -110,7 +112,7 @@ bundle. Every export has a matching reference page at
 `/components/[slug]` in the documentation site.
 
 The card and tile exports are intentionally related, not interchangeable aliases: use
-`CyberpunkTile` for the signature cut-corner treatment, `ThemedCard` for a quiet content
+`CyberpunkTile` for the signature cut-corner treatment, `Card` for a quiet content
 surface, and the specialized card variants only when their framing communicates meaning.
 
 ## Registry install (docs site)
@@ -400,7 +402,7 @@ and now supports disabled options. Invalid or disabled selections display the
 first enabled tab without firing callbacks. Callbacks report user changes only;
 reselecting the current tab does not emit a change. TabbedPanel reports selection through `onTabChange` only.
 
-ThemedCard, CornerBracketCard, and DottedHaloCard share `title`, `titleAs`,
+Card, CornerBracketCard, and DottedHaloCard share `title`, `titleAs`,
 `titleClassName`, `bodyClassName`, `actions`, and `headerClassName`. Actions sit
 beside the title in a wrapping header; cards without actions retain their layout.
 Use `titleAs="h3"` (or another supported value) to choose appropriate semantics.
@@ -410,11 +412,11 @@ requires `aria-label` or `aria-labelledby` in TypeScript and hides the decorativ
 content from assistive technology. Existing text buttons remain unchanged.
 
 ```tsx
-<ThemedCard title="Activity" titleAs="h3" actions={
+<Card title="Activity" titleAs="h3" actions={
   <Button iconOnly aria-label="Refresh activity"><RefreshIcon /></Button>
 }>
   <TabbedPanel tabs={tabs} defaultTab="recent" onTabChange={setTab} />
-</ThemedCard>
+</Card>
 ```
 
 Specialized widget sizing and canvas scheduling stay separate from these shared

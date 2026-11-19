@@ -1,7 +1,7 @@
 /**
- * Standalone Steez UI copy of Themed Card.
+ * Standalone Steez UI copy of Card.
  *
- * Generated from packages/ui/src/components/ThemedCard.tsx by pnpm registry:generate.
+ * Generated from packages/ui/src/components/Card.tsx by pnpm registry:generate.
  * This file is intentionally self-contained: its CSS, local helpers, and icon
  * implementations are embedded so it can be pasted into a React project.
  * Do not edit this generated copy; edit the canonical package source instead.
@@ -11,31 +11,31 @@
 
 import * as React from "react";
 
-const __styles_steez_themed_card_0: Record<string, string> = {
-  "body": "steez-themed-card-0-body",
-  "header": "steez-themed-card-0-header",
-  "actions": "steez-themed-card-0-actions",
+const __styles_steez_card_0: Record<string, string> = {
+  "body": "steez-card-0-body",
+  "header": "steez-card-0-header",
+  "actions": "steez-card-0-actions",
 };
 
-const __styles_steez_themed_card_1: Record<string, string> = {
-  "card": "steez-themed-card-1-card",
-  "featured": "steez-themed-card-1-featured",
-  "title": "steez-themed-card-1-title",
+const __styles_steez_card_1: Record<string, string> = {
+  "card": "steez-card-1-card",
+  "featured": "steez-card-1-featured",
+  "title": "steez-card-1-title",
 };
 
 const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/CardFrame.module.css */
-.steez-themed-card-0-body {
+.steez-card-0-body {
   min-width: 0;
 }
 
-.steez-themed-card-0-header { margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
-.steez-themed-card-0-actions { display: flex; align-items: center; gap: 0.5rem; margin-inline-start: auto; }
+.steez-card-0-header { margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.steez-card-0-actions { display: flex; align-items: center; gap: 0.5rem; margin-inline-start: auto; }
 
-.steez-themed-card-0-header > :first-child { margin-block: 0; }
+.steez-card-0-header > :first-child { margin-block: 0; }
 
 
-/* packages/ui/src/components/ThemedCard.module.css */
-.steez-themed-card-1-card {
+/* packages/ui/src/components/Card.module.css */
+.steez-card-1-card {
   position: relative;
   border: 1px solid var(--border-color, rgba(203, 203, 204, 0.2));
   background: color-mix(in srgb, var(--bg-secondary, #0a0a0a) 88%, transparent);
@@ -44,12 +44,12 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/CardFra
   box-shadow: var(--shadow-sm, 0 2px 4px rgba(0, 0, 0, 0.5));
 }
 
-.steez-themed-card-1-featured {
+.steez-card-1-featured {
   border-color: var(--accent-primary, #ee1401);
   box-shadow: var(--shadow-md, 0 4px 8px rgba(0, 0, 0, 0.5));
 }
 
-.steez-themed-card-1-title {
+.steez-card-1-title {
   margin-bottom: 0.75rem;
   color: var(--text-primary, #cbcbcc);
   font-family: var(--font-mono, "Maple Mono", "SF Mono", "Cascadia Code", "Fira Code", Monaco, monospace);
@@ -58,7 +58,7 @@ const __steezStandaloneStyles = String.raw`/* packages/ui/src/components/CardFra
 }
 
 `;
-const __steezStandaloneStyleKey = "themed-card";
+const __steezStandaloneStyleKey = "card";
 
 function __injectSteezStandaloneStyles() {
   if (typeof document === "undefined" || document.querySelector(`style[data-steez-standalone="${__steezStandaloneStyleKey}"]`)) {
@@ -113,22 +113,22 @@ export function CardFrame({
     <div className={className.trim()} {...props}>
       {decoration}
       {actions !== undefined && actions !== null ? (
-        <div className={`${__styles_steez_themed_card_0.header} ${headerClassName}`.trim()}>
+        <div className={`${__styles_steez_card_0.header} ${headerClassName}`.trim()}>
           {heading}
-          <div className={__styles_steez_themed_card_0.actions}>{actions}</div>
+          <div className={__styles_steez_card_0.actions}>{actions}</div>
         </div>
       ) : heading}
-      <div className={`${__styles_steez_themed_card_0.body} ${bodyClassName}`.trim()}>{children}</div>
+      <div className={`${__styles_steez_card_0.body} ${bodyClassName}`.trim()}>{children}</div>
     </div>
   );
 }
 
-export interface ThemedCardProps
+export interface CardProps
   extends CardCompositionProps, Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   variant?: "default" | "featured";
 }
 
-export function ThemedCard({
+export function Card({
   title,
   titleAs,
   titleClassName = "",
@@ -136,13 +136,13 @@ export function ThemedCard({
   className = "",
   children,
   ...props
-}: ThemedCardProps) {
+}: CardProps) {
   return (
     <CardFrame
-      className={`${__styles_steez_themed_card_1.card} ${variant === "featured" ? __styles_steez_themed_card_1.featured : ""} ${className}`}
+      className={`${__styles_steez_card_1.card} ${variant === "featured" ? __styles_steez_card_1.featured : ""} ${className}`}
       title={title}
       titleAs={titleAs}
-      titleClassName={`${__styles_steez_themed_card_1.title} ${titleClassName}`.trim()}
+      titleClassName={`${__styles_steez_card_1.title} ${titleClassName}`.trim()}
       {...props}
     >
       {children}

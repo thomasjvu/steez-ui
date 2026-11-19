@@ -8,7 +8,7 @@
   "registryDependencies": [
     "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json",
     "https://steez-ui-6v5.pages.dev/r-steez/cyberpunk-tile.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/themed-card.json",
+    "https://steez-ui-6v5.pages.dev/r-steez/card.json",
     "https://steez-ui-6v5.pages.dev/r-steez/corner-bracket-card.json",
     "https://steez-ui-6v5.pages.dev/r-steez/dotted-halo-card.json",
     "https://steez-ui-6v5.pages.dev/r-steez/stat-card.json",
