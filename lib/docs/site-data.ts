@@ -1,11 +1,13 @@
 export const SITE_URL = "https://steez-ui-6v5.pages.dev";
 export const REPOSITORY_URL = "https://github.com/thomasjvu/steez-ui";
+export const X_URL = "https://x.com/ultima_gg";
 export const NPM_THEME_URL = "https://www.npmjs.com/package/@steez-ui/theme";
 export const NPM_ICONS_URL = "https://www.npmjs.com/package/@steez-ui/icons";
 export const NPM_UI_URL = "https://www.npmjs.com/package/@steez-ui/ui";
 
 export const SOCIAL_LINKS = [
   { label: "GitHub", href: REPOSITORY_URL, icon: "github" },
+  { label: "X", href: X_URL, icon: "twitter" },
 ] as const;
 
 export const SITE_NAV = [

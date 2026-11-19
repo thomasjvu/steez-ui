@@ -147,6 +147,10 @@ it("keeps social links in the main footer, not the sidebar", () => {
     "href",
     "https://github.com/thomasjvu/steez-ui",
   );
+  expect(within(social).getByRole("link", { name: "X" })).toHaveAttribute(
+    "href",
+    "https://x.com/ultima_gg",
+  );
   expect(screen.getByRole("main")).toContainElement(social);
   expect(
     within(screen.getByRole("complementary")).queryByRole("link", {
