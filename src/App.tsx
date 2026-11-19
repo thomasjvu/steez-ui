@@ -26,7 +26,6 @@ export function NotFound() {
   return (
     <div className="page-header">
       <h1>Page not found</h1>
-      <p>This address doesn’t match a page.</p>
       <Link to="/components">Browse components →</Link>
     </div>
   );

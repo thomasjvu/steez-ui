@@ -81,7 +81,6 @@ export function ComponentDetail({ slug }: { slug: string }) {
         aria-label={`${component.title} preview`}
       >
         <div className="preview-toolbar">
-          <span>Live preview</span>
           <button
             type="button"
             onClick={() => { setPreviewKey((value) => value + 1); setConfiguration({ slug, values: {} }); }}
@@ -134,7 +133,6 @@ export function ComponentDetail({ slug }: { slug: string }) {
       >
         {tab === "Usage" && (
           <>
-            <p>{component.description}</p>
             <CodeBlock>{example ? exampleCode(slug, values) : `${component.packageImport}\n\n${component.usage}`}</CodeBlock>
           </>
         )}
@@ -145,20 +143,12 @@ export function ComponentDetail({ slug }: { slug: string }) {
               {"pnpm add @steez-ui/theme @steez-ui/icons @steez-ui/ui"}
             </CodeBlock>
             <p>
-              Import <code>@steez-ui/theme/tokens.css</code> once in your app.
+              Import <code>@steez-ui/theme/tokens.css</code> once.
             </p>
             <h2>Registry</h2>
             <CodeBlock>{`pnpm dlx shadcn@latest add ${origin}/r-steez/${slug}.json`}</CodeBlock>
-            <p>
-              Import the copied <code>styles/steez/tokens.css</code> once. No
-              Steez npm packages required.
-            </p>
             {registryImport && <CodeBlock>{registryImport}</CodeBlock>}
-            <p>
-              Replace <code>&lt;project-root&gt;</code> with the relative path
-              from your file.
-            </p>
-            <h2>Installed files</h2>
+            <h2>Files</h2>
             <ul className="file-list">
               {manifest?.registryFiles.map((file) => (
                 <li key={file.target}>
@@ -170,10 +160,6 @@ export function ComponentDetail({ slug }: { slug: string }) {
         )}
         {tab === "Source" && (
           <>
-            <p>
-              A complete TSX file with scoped CSS and local helpers. React is
-              the only required dependency.
-            </p>
             <div className="detail-links">
               <a href={standalonePath} download={`${component.title}.tsx`}>
                 Download TSX ↓

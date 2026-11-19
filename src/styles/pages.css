@@ -47,6 +47,10 @@
   color: var(--site-muted);
   margin: 0;
 }
+.page-note {
+  margin-top: 24px;
+  font-size: 13px;
+}
 .registry-list {
   padding: 0;
   list-style: none;

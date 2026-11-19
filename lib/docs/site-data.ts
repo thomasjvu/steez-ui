@@ -19,17 +19,17 @@ export const PACKAGE_ITEMS = [
   {
     title: "@steez-ui/theme",
     href: NPM_THEME_URL,
-    body: "Design tokens, compatibility aliases, and a Tailwind preset.",
+    body: "Design tokens and a Tailwind preset.",
   },
   {
     title: "@steez-ui/icons",
     href: NPM_ICONS_URL,
-    body: "Icons and a provider for shared size and stroke settings.",
+    body: "Icons and an icon provider.",
   },
   {
     title: "@steez-ui/ui",
     href: NPM_UI_URL,
-    body: "React components with CSS Modules, available as packages, registry installs, and standalone files.",
+    body: "React components styled with CSS Modules.",
   },
 ] as const;
 

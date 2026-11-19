@@ -33,10 +33,6 @@ export function ComponentsCatalog() {
     <>
       <header className="page-header">
         <h1>Components</h1>
-        <p>
-          React primitives with a point of view. Preview a component, then bring
-          it into your project.
-        </p>
       </header>
       <div className="catalog-tools">
         <div
@@ -91,7 +87,6 @@ export function ComponentsCatalog() {
       {count === 0 && (
         <div className="page-header">
           <h2>No matching components</h2>
-          <p>Try a different name or category.</p>
           <button
             type="button"
             onClick={() => {

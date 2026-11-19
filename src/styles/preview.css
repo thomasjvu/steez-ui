@@ -10,7 +10,7 @@
   border-bottom: 1px solid var(--site-border);
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   font-size: 11px;
   color: var(--site-muted);
   gap: 8px;
