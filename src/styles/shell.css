@@ -139,10 +139,6 @@
   gap: 12px;
   color: var(--site-muted);
 }
-.sidebar-footer a {
-  width: fit-content;
-  text-decoration: none;
-}
 .appearance {
   display: flex;
   justify-content: space-between;
@@ -190,6 +186,23 @@
   color: var(--site-muted);
   font-size: 11px;
   gap: 16px;
+  align-items: center;
+}
+.social-links {
+  display: flex;
+  gap: 4px;
+}
+.social-links a {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  color: var(--site-muted);
+}
+.social-links a:hover {
+  background: var(--site-hover);
+  color: var(--site-text);
 }
 .mobile-header {
   display: none;

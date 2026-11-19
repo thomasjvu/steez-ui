@@ -13,10 +13,10 @@ import {
   COMPONENT_DOCS,
   COMPONENT_FILTERS,
 } from "../lib/docs/component-catalog";
-import { REPOSITORY_URL } from "../lib/docs/site-data";
 import { Appearance } from "./theme";
 import { Guide, Packages, Registry } from "./pages";
 import { pageMetadata } from "./page-metadata";
+import { SiteFooter } from "./site-footer";
 
 function DetailRoute() {
   const { slug = "" } = useParams();
@@ -150,9 +150,6 @@ export function App() {
         </nav>
         <div className="sidebar-footer">
           <Appearance />
-          <a href={REPOSITORY_URL} target="_blank" rel="noreferrer">
-            GitHub ↗
-          </a>
         </div>
       </aside>
       <main id="content" ref={main} tabIndex={-1} className="main-content">
@@ -165,10 +162,7 @@ export function App() {
           <Route path="/registry" element={<Registry />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
-        <footer className="main-footer">
-          <span>Steez UI</span>
-          <span>React · CSS Modules · MIT</span>
-        </footer>
+        <SiteFooter />
       </main>
     </>
   );

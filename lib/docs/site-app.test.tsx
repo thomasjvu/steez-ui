@@ -112,3 +112,22 @@ it("shows unknown URLs explicitly and filters sidebar navigation", () => {
   expect(links).toHaveLength(1);
   expect(links[0]).toHaveTextContent("Quartz Crystal");
 });
+
+it("keeps social links in the main footer, not the sidebar", () => {
+  render(
+    <MemoryRouter>
+      <App />
+    </MemoryRouter>,
+  );
+  const social = screen.getByRole("navigation", { name: "Social" });
+  expect(within(social).getByRole("link", { name: "GitHub" })).toHaveAttribute(
+    "href",
+    "https://github.com/thomasjvu/steez-ui",
+  );
+  expect(screen.getByRole("main")).toContainElement(social);
+  expect(
+    within(screen.getByRole("complementary")).queryByRole("link", {
+      name: /github/i,
+    }),
+  ).toBeNull();
+});

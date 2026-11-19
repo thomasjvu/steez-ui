@@ -4,6 +4,10 @@ export const NPM_THEME_URL = "https://www.npmjs.com/package/@steez-ui/theme";
 export const NPM_ICONS_URL = "https://www.npmjs.com/package/@steez-ui/icons";
 export const NPM_UI_URL = "https://www.npmjs.com/package/@steez-ui/ui";
 
+export const SOCIAL_LINKS = [
+  { label: "GitHub", href: REPOSITORY_URL, icon: "github" },
+] as const;
+
 export const SITE_NAV = [
   { key: "components", label: "Components", href: "/components" },
   { key: "docs", label: "Docs", href: "/docs" },
