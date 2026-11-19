@@ -79,18 +79,41 @@ it("follows system appearance until overridden and supports returning to system"
   );
   expect(document.documentElement.dataset.theme).toBe("dark");
   matches = false;
-  fireEvent.change(screen.getByRole("combobox", { name: "Appearance" }), {
-    target: { value: "light" },
-  });
+  const appearance = within(screen.getByRole("group", { name: "Appearance" }));
+  expect(appearance.getByRole("button", { name: "System" })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  fireEvent.click(appearance.getByRole("button", { name: "Light" }));
+  expect(appearance.getByRole("button", { name: "Light" })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  expect(appearance.getByRole("button", { name: "System" })).toHaveAttribute(
+    "aria-pressed",
+    "false",
+  );
   expect(document.documentElement.dataset.theme).toBe("light");
   expect(localStorage.getItem("steez-site-theme")).toBe("light");
   matches = true;
   mediaChange();
   expect(document.documentElement.dataset.theme).toBe("light");
-  fireEvent.change(screen.getByRole("combobox", { name: "Appearance" }), {
-    target: { value: "system" },
-  });
+  fireEvent.click(appearance.getByRole("button", { name: "System" }));
   expect(document.documentElement.dataset.theme).toBe("dark");
+});
+
+it("restores a saved appearance as the pressed icon button", () => {
+  localStorage.setItem("steez-site-theme", "light");
+  render(
+    <MemoryRouter>
+      <App />
+    </MemoryRouter>,
+  );
+  expect(screen.getByRole("button", { name: "Light" })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  expect(document.documentElement.dataset.theme).toBe("light");
 });
 
 it("shows unknown URLs explicitly and filters sidebar navigation", () => {

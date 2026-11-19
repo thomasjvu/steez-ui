@@ -172,17 +172,32 @@
 }
 .appearance {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-}
-.appearance select {
-  font-size: 11px;
+  width: fit-content;
+  gap: 2px;
+  padding: 2px;
   border: 1px solid var(--site-border);
+  border-radius: 6px;
+}
+.appearance button {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 24px;
+  padding: 0;
+  border: 0;
   border-radius: 4px;
+  background: transparent;
+  color: var(--site-muted);
+}
+.appearance button:hover {
   color: var(--site-text);
-  background: var(--site-bg);
-  padding: 3px 5px;
+}
+.appearance button[aria-pressed="true"] {
+  background: var(--site-hover);
+  color: var(--site-text);
+}
+.appearance button:focus-visible {
+  outline-offset: 1px;
 }
 .main-content {
   margin-left: 244px;
