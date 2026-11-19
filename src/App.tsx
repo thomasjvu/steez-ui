@@ -25,7 +25,6 @@ function DetailRoute() {
 export function NotFound() {
   return (
     <div className="page-header">
-      <p className="eyebrow">404</p>
       <h1>Page not found</h1>
       <p>This address doesn’t match a page.</p>
       <Link to="/components">Browse components →</Link>

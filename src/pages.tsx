@@ -6,7 +6,6 @@ export function Guide() {
   return (
     <>
       <header className="page-header">
-        <p className="eyebrow">Documentation</p>
         <h1>Getting started</h1>
         <p>
           Use packages for shared updates, registry source for customization, or
@@ -100,7 +99,6 @@ export function Packages() {
   return (
     <>
       <header className="page-header">
-        <p className="eyebrow">Installation</p>
         <h1>Packages</h1>
         <p>Theme tokens, shared icons, and React primitives.</p>
       </header>
@@ -128,7 +126,6 @@ export function Registry() {
   return (
     <>
       <header className="page-header">
-        <p className="eyebrow">Source installation</p>
         <h1>Registry</h1>
         <p>
           Install individual components or a preset. The source becomes part of

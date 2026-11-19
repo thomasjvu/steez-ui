@@ -1,9 +1,6 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { Link } from "react-router";
-import {
-  COMPONENT_CATEGORY_LABELS,
-  getComponentDoc,
-} from "../../lib/docs/component-catalog";
+import { getComponentDoc } from "../../lib/docs/component-catalog";
 import { COMPONENT_MANIFEST } from "../../lib/docs/component-manifest.mjs";
 import { SITE_URL } from "../../lib/docs/site-data";
 import { CodeBlock } from "../../src/code-block";
@@ -58,7 +55,6 @@ export function ComponentDetail({ slug }: { slug: string }) {
   if (!component)
     return (
       <header className="page-header">
-        <p className="eyebrow">404</p>
         <h1>Component not found</h1>
         <Link to="/components">Browse components →</Link>
       </header>
@@ -77,10 +73,6 @@ export function ComponentDetail({ slug }: { slug: string }) {
   return (
     <>
       <header className="page-header">
-        <div className="breadcrumb">
-          <Link to="/components">Components</Link> /{" "}
-          {COMPONENT_CATEGORY_LABELS[component.category]}
-        </div>
         <h1>{component.title}</h1>
         <p>{component.summary}</p>
       </header>

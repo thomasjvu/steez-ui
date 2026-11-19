@@ -101,13 +101,8 @@ button:hover,
 .small-button:hover {
   background: var(--site-hover);
 }
-.muted,
-.eyebrow {
+.muted {
   color: var(--site-muted);
-}
-.eyebrow {
-  font-size: 12px;
-  margin-bottom: 14px;
 }
 .skip-link {
   position: fixed;

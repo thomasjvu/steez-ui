@@ -32,9 +32,6 @@ export function ComponentsCatalog() {
   return (
     <>
       <header className="page-header">
-        <p className="eyebrow">
-          The library · {COMPONENT_DOCS.length} components
-        </p>
         <h1>Components</h1>
         <p>
           React primitives with a point of view. Preview a component, then bring

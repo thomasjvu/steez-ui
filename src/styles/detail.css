@@ -1,12 +1,4 @@
-/* Component detail page: breadcrumb, tabs, code blocks and file lists. */
-.breadcrumb {
-  font-size: 12px;
-  color: var(--site-muted);
-  margin-bottom: 20px;
-}
-.breadcrumb a {
-  text-decoration: none;
-}
+/* Component detail page: tabs, code blocks and file lists. */
 .tabs {
   display: flex;
   gap: 22px;
