@@ -81,6 +81,7 @@ export function ComponentDetail({ slug }: { slug: string }) {
         aria-label={`${component.title} preview`}
       >
         <div className="preview-toolbar">
+          <PreviewOptions slug={slug} values={values} onChange={update} />
           <button
             type="button"
             onClick={() => { setPreviewKey((value) => value + 1); setConfiguration({ slug, values: {} }); }}
@@ -88,7 +89,6 @@ export function ComponentDetail({ slug }: { slug: string }) {
             Reset preview
           </button>
         </div>
-        <PreviewOptions slug={slug} values={values} onChange={update} />
         <div className="preview-stage" data-component={slug}>
           <ComponentPreview key={`${slug}-${previewKey}`} slug={slug} values={values} />
         </div>
