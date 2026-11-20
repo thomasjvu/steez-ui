@@ -38,8 +38,8 @@ Choose one approach per component. Registry and standalone files are generated f
 `packages/ui/src`; do not maintain a second implementation.
 
 ```bash
-pnpm dlx shadcn@latest add https://steez-ui-6v5.pages.dev/r-steez/cyberpunk-tile.json
-pnpm dlx shadcn@latest add https://steez-ui-6v5.pages.dev/r-steez/boiling-lines.json
+pnpm dlx shadcn@latest add https://steez-ui.thomasjvu.com/r-steez/cyberpunk-tile.json
+pnpm dlx shadcn@latest add https://steez-ui.thomasjvu.com/r-steez/boiling-lines.json
 ```
 
 Registry files install in `components/steez`, with shared helpers in
@@ -170,6 +170,12 @@ pnpm start
 pnpm deploy:pages
 ```
 
+The site is served at https://steez-ui.thomasjvu.com (the Pages project `steez-ui`;
+`steez-ui-6v5.pages.dev` still works). Deploys authenticate with
+`CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` from the `STEEZ_UI_CLOUDFLARE_API_TOKEN`
+and `CLOUDFLARE_ACCOUNT_ID` secrets in Infisical (thomasjvu org, Operations, dev), or a
+logged-in `wrangler` session for that account.
+
 ```bash
 # consume in another app (workspace / file link)
 pnpm add @steez-ui/theme @steez-ui/icons @steez-ui/ui
@@ -197,7 +203,7 @@ scripts/    # build helpers
 
 ## Install a registry item
 
-Locally use your dev origin; production registry base is `SITE_URL` (`https://steez-ui-6v5.pages.dev` from `lib/docs/site-data.ts`).
+Locally use your dev origin; production registry base is `SITE_URL` (`https://steez-ui.thomasjvu.com` from `lib/docs/site-data.ts`).
 
 **Foundation preset** (forms starter — inputs, select, checkbox, slider, button):
 
@@ -237,15 +243,15 @@ pnpm dlx shadcn@latest add http://localhost:5173/r-steez/cyberpunk-tile.json
 pnpm dlx shadcn@latest add http://localhost:5173/r-steez/loading-progress-bar.json
 
 # Production
-pnpm dlx shadcn@latest add https://steez-ui-6v5.pages.dev/r-steez/cyberpunk-tile.json
-pnpm dlx shadcn@latest add https://steez-ui-6v5.pages.dev/r-steez/loading-progress-bar.json
+pnpm dlx shadcn@latest add https://steez-ui.thomasjvu.com/r-steez/cyberpunk-tile.json
+pnpm dlx shadcn@latest add https://steez-ui.thomasjvu.com/r-steez/loading-progress-bar.json
 ```
 
 ## Copy a standalone component
 
 Standalone copies are served as plain TypeScript files. For example:
 
-1. Open [`CyberpunkTile.tsx`](https://steez-ui-6v5.pages.dev/copy/steez/cyberpunk-tile.tsx).
+1. Open [`CyberpunkTile.tsx`](https://steez-ui.thomasjvu.com/copy/steez/cyberpunk-tile.tsx).
 2. Copy the entire file.
 3. Paste it into `components/ui/CyberpunkTile.tsx` in a React app.
 4. Import it from that local path and render it.

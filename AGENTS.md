@@ -80,7 +80,7 @@ pnpm typecheck:site       # site tsc --noEmit (source path maps; no dist require
 pnpm test                 # vitest run
 pnpm test:registry-smoke  # registry install smoke script
 pnpm registry:generate    # → public/r-steez (canonical)
-pnpm deploy:pages         # builds and deploys Cloudflare Pages (needs wrangler auth / CF token)
+pnpm deploy:pages         # builds and deploys Cloudflare Pages (CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID; Infisical thomasjvu/Operations/dev STEEZ_UI_CLOUDFLARE_API_TOKEN)
 ```
 
 `build:packages` and `typecheck:packages` name only the canonical theme, icons,
@@ -146,7 +146,7 @@ copies assume React is already installed and provide fallbacks for theme tokens.
 
 **Absolute `registryDependencies`:** `scripts/generate-registry.mjs` writes each dep as a full URL so `shadcn add` can resolve cross-item deps off-host:
 
-- Default base: `https://steez-ui-6v5.pages.dev/r-steez` (matches `SITE_URL` + `/r-steez`)
+- Default base: `https://steez-ui.thomasjvu.com/r-steez` (matches `SITE_URL` + `/r-steez`)
 - Override for local demos: `STEEZ_REGISTRY_BASE_URL=http://localhost:5173/r-steez pnpm registry:generate`
 - Smoke (`test:registry-smoke`) loads deps by basename whether bare or absolute
 
@@ -166,7 +166,7 @@ Install example (canonical) — local dev or production (`SITE_URL` in `lib/docs
 pnpm dlx shadcn@latest add http://localhost:5173/r-steez/cyberpunk-tile.json
 
 # Production
-pnpm dlx shadcn@latest add https://steez-ui-6v5.pages.dev/r-steez/cyberpunk-tile.json
+pnpm dlx shadcn@latest add https://steez-ui.thomasjvu.com/r-steez/cyberpunk-tile.json
 ```
 
 The legacy Boston `/r` registry was removed in Nov 2026; document `/r-steez` only.

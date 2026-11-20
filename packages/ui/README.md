@@ -123,7 +123,7 @@ surface, and the specialized card variants only when their framing communicates 
 
 ## Registry install (docs site)
 
-Local (`pnpm dev` from repo root) or production (`SITE_URL` = `https://steez-ui-6v5.pages.dev`):
+Local (`pnpm dev` from repo root) or production (`SITE_URL` = `https://steez-ui.thomasjvu.com`):
 
 ```bash
 # Local
@@ -131,8 +131,8 @@ pnpm dlx shadcn@latest add http://localhost:3000/r-steez/cyberpunk-tile.json
 pnpm dlx shadcn@latest add http://localhost:3000/r-steez/loading-progress-bar.json
 
 # Production
-pnpm dlx shadcn@latest add https://steez-ui-6v5.pages.dev/r-steez/cyberpunk-tile.json
-pnpm dlx shadcn@latest add https://steez-ui-6v5.pages.dev/r-steez/loading-progress-bar.json
+pnpm dlx shadcn@latest add https://steez-ui.thomasjvu.com/r-steez/cyberpunk-tile.json
+pnpm dlx shadcn@latest add https://steez-ui.thomasjvu.com/r-steez/loading-progress-bar.json
 ```
 
 Use **`/r-steez`**, not legacy `/r`. Registry installs copy the source and shared
