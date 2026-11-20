@@ -57,7 +57,7 @@ it("navigates existing routes, updates metadata, and focuses the new page", () =
   expect(document.title).toBe("Button — Steez UI");
   expect(document.querySelector('link[rel="canonical"]')).toHaveAttribute(
     "href",
-    "https://steez-ui-6v5.pages.dev/components/button",
+    "https://steez-ui.thomasjvu.com/components/button",
   );
   expect(screen.getByRole("main")).toHaveFocus();
   fireEvent.click(

@@ -1,4 +1,4 @@
-export const SITE_URL = "https://steez-ui-6v5.pages.dev";
+export const SITE_URL = "https://steez-ui.thomasjvu.com";
 export const REPOSITORY_URL = "https://github.com/thomasjvu/steez-ui";
 export const X_URL = "https://x.com/ultima_gg";
 export const NPM_THEME_URL = "https://www.npmjs.com/package/@steez-ui/theme";

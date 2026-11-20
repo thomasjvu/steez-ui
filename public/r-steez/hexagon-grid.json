@@ -6,9 +6,9 @@
   "description": "Animated hex field backdrop for avatars, hero surfaces, and ambient panels.",
   "dependencies": [],
   "registryDependencies": [
-    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/element-size.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/motion-activity.json"
+    "https://steez-ui.thomasjvu.com/r-steez/theme-tokens.json",
+    "https://steez-ui.thomasjvu.com/r-steez/element-size.json",
+    "https://steez-ui.thomasjvu.com/r-steez/motion-activity.json"
   ],
   "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
   "files": [

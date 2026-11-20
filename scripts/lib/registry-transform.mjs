@@ -1,7 +1,7 @@
 import path from "node:path";
 
 /** Production default; override with STEEZ_REGISTRY_BASE_URL for localhost demos. */
-export const DEFAULT_REGISTRY_BASE_URL = "https://steez-ui-6v5.pages.dev/r-steez";
+export const DEFAULT_REGISTRY_BASE_URL = "https://steez-ui.thomasjvu.com/r-steez";
 
 /**
  * Bare names become absolute registry URLs so shadcn can resolve deps off-host.

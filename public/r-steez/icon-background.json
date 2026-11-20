@@ -6,8 +6,8 @@
   "description": "A decorative icon grid with magnetic rotation or shrink / grow pointer styles.",
   "dependencies": [],
   "registryDependencies": [
-    "https://steez-ui-6v5.pages.dev/r-steez/motion-activity.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/numeric-bounds.json"
+    "https://steez-ui.thomasjvu.com/r-steez/motion-activity.json",
+    "https://steez-ui.thomasjvu.com/r-steez/numeric-bounds.json"
   ],
   "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
   "files": [

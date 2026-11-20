@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { render, routes } from "../.site-ssr/entry-server.mjs";
+import { render, routes, SITE_URL } from "../.site-ssr/entry-server.mjs";
 
 const dist = path.resolve("dist");
 const template = await fs.readFile(path.join(dist, "index.html"), "utf8");
@@ -22,7 +22,7 @@ function page(url) {
     )
     .replace(
       "<!--page-head-->",
-      `<link rel="canonical" href="https://steez-ui-6v5.pages.dev${url}" />`,
+      `<link rel="canonical" href="${SITE_URL}${url}" />`,
     )
     .replace("<!--app-html-->", html);
 }
@@ -34,6 +34,6 @@ for (const url of routes) {
 await fs.writeFile(path.join(dist, "404.html"), page("/404"));
 await fs.writeFile(
   path.join(dist, "sitemap.xml"),
-  `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${routes.map((url) => `<url><loc>https://steez-ui-6v5.pages.dev${url}</loc></url>`).join("")}</urlset>`,
+  `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${routes.map((url) => `<url><loc>${SITE_URL}${url}</loc></url>`).join("")}</urlset>`,
 );
 console.log(`Prerendered ${routes.length} docs routes and a 404 page.`);

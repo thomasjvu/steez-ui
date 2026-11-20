@@ -6,8 +6,8 @@
   "description": "Monochrome film grain clipped to the content alpha, with optional animated seeds.",
   "dependencies": [],
   "registryDependencies": [
-    "https://steez-ui-6v5.pages.dev/r-steez/numeric-bounds.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/filter-frame.json"
+    "https://steez-ui.thomasjvu.com/r-steez/numeric-bounds.json",
+    "https://steez-ui.thomasjvu.com/r-steez/filter-frame.json"
   ],
   "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
   "files": [

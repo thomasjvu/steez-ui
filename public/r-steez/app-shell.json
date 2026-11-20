@@ -6,17 +6,17 @@
   "description": "Navigation, layout, feedback, and loading primitives for a complete Steez app shell.",
   "dependencies": [],
   "registryDependencies": [
-    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/button.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/page-header.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/page-template.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/section.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/section-header.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/tabbed-panel.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/status-message.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/error-message.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/loading-progress-bar.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/loading-screen.json"
+    "https://steez-ui.thomasjvu.com/r-steez/theme-tokens.json",
+    "https://steez-ui.thomasjvu.com/r-steez/button.json",
+    "https://steez-ui.thomasjvu.com/r-steez/page-header.json",
+    "https://steez-ui.thomasjvu.com/r-steez/page-template.json",
+    "https://steez-ui.thomasjvu.com/r-steez/section.json",
+    "https://steez-ui.thomasjvu.com/r-steez/section-header.json",
+    "https://steez-ui.thomasjvu.com/r-steez/tabbed-panel.json",
+    "https://steez-ui.thomasjvu.com/r-steez/status-message.json",
+    "https://steez-ui.thomasjvu.com/r-steez/error-message.json",
+    "https://steez-ui.thomasjvu.com/r-steez/loading-progress-bar.json",
+    "https://steez-ui.thomasjvu.com/r-steez/loading-screen.json"
   ],
   "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
   "files": []

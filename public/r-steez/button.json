@@ -6,9 +6,9 @@
   "description": "Native button or link with shared variants and an optional crystal shape.",
   "dependencies": [],
   "registryDependencies": [
-    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/button-styles.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/button-shape-styles.json"
+    "https://steez-ui.thomasjvu.com/r-steez/theme-tokens.json",
+    "https://steez-ui.thomasjvu.com/r-steez/button-styles.json",
+    "https://steez-ui.thomasjvu.com/r-steez/button-shape-styles.json"
   ],
   "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
   "files": [

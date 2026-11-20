@@ -13,6 +13,7 @@ import { Appearance } from "./theme";
 import { Guide, Packages, Registry } from "./pages";
 import { pageMetadata } from "./page-metadata";
 import { SiteFooter } from "./site-footer";
+import { SITE_URL } from "../lib/docs/site-data";
 import { ComponentNav } from "./sidebar-nav";
 
 function DetailRoute() {
@@ -49,7 +50,7 @@ export function App() {
       .querySelector('link[rel="canonical"]')
       ?.setAttribute(
         "href",
-        `https://steez-ui-6v5.pages.dev${location.pathname}`,
+        `${SITE_URL}${location.pathname}`,
       );
     if (previousPath.current !== location.pathname) {
       previousPath.current = location.pathname;

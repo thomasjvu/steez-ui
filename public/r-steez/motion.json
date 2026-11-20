@@ -6,15 +6,15 @@
   "description": "Small, composable text and surface motion treatments with reduced-motion support.",
   "dependencies": [],
   "registryDependencies": [
-    "https://steez-ui-6v5.pages.dev/r-steez/quartz-crystal.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/boiling-lines.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/displacement-filter.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/ascii-ripple-text.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/blink-text.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/stroked-text.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/heartbeat-pulse.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/marquee-strip.json"
+    "https://steez-ui.thomasjvu.com/r-steez/quartz-crystal.json",
+    "https://steez-ui.thomasjvu.com/r-steez/theme-tokens.json",
+    "https://steez-ui.thomasjvu.com/r-steez/boiling-lines.json",
+    "https://steez-ui.thomasjvu.com/r-steez/displacement-filter.json",
+    "https://steez-ui.thomasjvu.com/r-steez/ascii-ripple-text.json",
+    "https://steez-ui.thomasjvu.com/r-steez/blink-text.json",
+    "https://steez-ui.thomasjvu.com/r-steez/stroked-text.json",
+    "https://steez-ui.thomasjvu.com/r-steez/heartbeat-pulse.json",
+    "https://steez-ui.thomasjvu.com/r-steez/marquee-strip.json"
   ],
   "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
   "files": []

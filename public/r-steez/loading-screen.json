@@ -6,10 +6,10 @@
   "description": "Fullscreen or contained loading shell with progress, cross field, and neutral branding hooks.",
   "dependencies": [],
   "registryDependencies": [
-    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/icon-provider.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/element-size.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/loading-progress-bar.json"
+    "https://steez-ui.thomasjvu.com/r-steez/theme-tokens.json",
+    "https://steez-ui.thomasjvu.com/r-steez/icon-provider.json",
+    "https://steez-ui.thomasjvu.com/r-steez/element-size.json",
+    "https://steez-ui.thomasjvu.com/r-steez/loading-progress-bar.json"
   ],
   "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
   "files": [

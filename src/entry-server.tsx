@@ -5,6 +5,8 @@ import { App } from "./App";
 import { COMPONENT_DOCS } from "../lib/docs/component-catalog";
 import { pageMetadata } from "./page-metadata";
 
+export { SITE_URL } from "../lib/docs/site-data";
+
 export const routes = [
   "/",
   "/components",

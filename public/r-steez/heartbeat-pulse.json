@@ -6,9 +6,9 @@
   "description": "Orb and line heartbeat indicators for recurring runtime activity.",
   "dependencies": [],
   "registryDependencies": [
-    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/reduced-motion.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/numeric-bounds.json"
+    "https://steez-ui.thomasjvu.com/r-steez/theme-tokens.json",
+    "https://steez-ui.thomasjvu.com/r-steez/reduced-motion.json",
+    "https://steez-ui.thomasjvu.com/r-steez/numeric-bounds.json"
   ],
   "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
   "files": [

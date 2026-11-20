@@ -6,11 +6,11 @@
   "description": "Native range input with progress and value display. The diamond variant has a slim track and a solid square thumb that rotates while held; both variants retain native keyboard controls.",
   "dependencies": [],
   "registryDependencies": [
-    "https://steez-ui-6v5.pages.dev/r-steez/theme-tokens.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/stable-id.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/field-frame.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/field-description.json",
-    "https://steez-ui-6v5.pages.dev/r-steez/numeric-bounds.json"
+    "https://steez-ui.thomasjvu.com/r-steez/theme-tokens.json",
+    "https://steez-ui.thomasjvu.com/r-steez/stable-id.json",
+    "https://steez-ui.thomasjvu.com/r-steez/field-frame.json",
+    "https://steez-ui.thomasjvu.com/r-steez/field-description.json",
+    "https://steez-ui.thomasjvu.com/r-steez/numeric-bounds.json"
   ],
   "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
   "files": [

@@ -6,7 +6,7 @@
   "description": "Shared implementation dependency.",
   "dependencies": [],
   "registryDependencies": [
-    "https://steez-ui-6v5.pages.dev/r-steez/card-frame-styles.json"
+    "https://steez-ui.thomasjvu.com/r-steez/card-frame-styles.json"
   ],
   "docs": "Files install at the project root. Import styles/steez/tokens.css once from your global stylesheet or root layout, then import components from components/steez. No Steez npm packages are required.",
   "files": [
