@@ -3,7 +3,7 @@ import {
   Button, Input, Textarea, Select, Checkbox, RadioGroup, Slider,
   LoadingProgressBar, HeartbeatPulse, StatusMessage, StatCard,
   DisplacementFilter, GlowFilter, GrainFilter, ChromaticAberrationFilter,
-  BoilingLines, BlinkText, KineticSwipeText, CyberpunkTile, QuartzCrystal,
+  BoilingLines, BlinkText, CyberpunkTile, QuartzCrystal,
   StrokedText, ErrorMessage, CharacterAfterimage, PixelTooltip,
   DuotoneFilter, PosterizeFilter, EmbossFilter, IconBackground,
 } from "@steez-ui/ui";
@@ -14,7 +14,7 @@ const components = {
   Button, Input, Textarea, Select, Checkbox, RadioGroup, Slider,
   LoadingProgressBar, HeartbeatPulse, StatusMessage, StatCard,
   DisplacementFilter, GlowFilter, GrainFilter, ChromaticAberrationFilter,
-  BoilingLines, BlinkText, KineticSwipeText, CyberpunkTile, QuartzCrystal,
+  BoilingLines, BlinkText, CyberpunkTile, QuartzCrystal,
   StrokedText, ErrorMessage, CharacterAfterimage, PixelTooltip,
   DuotoneFilter, PosterizeFilter, EmbossFilter, IconBackground, AccordionFeatureCard,
 };

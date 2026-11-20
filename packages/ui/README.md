@@ -19,6 +19,9 @@ Not yet published; the next release should be a minor bump (0.x).
   explicit `size` to keep a compact pulse.
 - Renamed `ThemedCard` / `ThemedCardProps` to `Card` / `CardProps`; the registry
   item and docs page moved from `themed-card` to `card` (old URLs redirect).
+- Removed `KineticGlyph`, `KineticSwipeText`, `KineticTextRamp`, `KineticTextRing`,
+  `KineticTextGlobe`, `KineticTextVolume` and their prop types, registry items and
+  standalone copies.
 
 ## Standalone copy
 
@@ -89,7 +92,7 @@ family that matches the job and compose it before introducing a new wrapper:
 | Surfaces | `CyberpunkTile`, `Card`, `CornerBracketCard`, `DottedHaloCard`, `StatCard`, `AvatarStage`, `NotchedViewportFrame` |
 | Layout | `Section`, `SectionHeader`, `PageHeader`, `PageTemplate`, `TabbedPanel` |
 | Content filters | `DisplacementFilter`, `ChromaticAberrationFilter`, `GlowFilter`, `GrainFilter` |
-| Motion and text | `QuartzCrystal`, `CharacterAfterimage`, `BoilingLines`, `KineticGlyph`, `KineticSwipeText`, `KineticTextRamp`, `KineticTextRing`, `KineticTextGlobe`, `KineticTextVolume`, `AsciiRippleText`, `BlinkText`, `StrokedText`, `HeartbeatPulse`, `MarqueeStrip` |
+| Motion and text | `QuartzCrystal`, `CharacterAfterimage`, `BoilingLines`, `AsciiRippleText`, `BlinkText`, `StrokedText`, `HeartbeatPulse`, `MarqueeStrip` |
 | Feedback and loading | `StatusMessage`, `ErrorMessage`, `PixelTooltip`, `LoadingProgressBar`, `LoadingScreen`, `ThemeToggle` |
 
 Product-shaped compositions live behind the `@steez-ui/ui/blocks` entrypoint:
@@ -152,74 +155,18 @@ it, and `paused` to stop animation. Reduced-motion preferences disable the effec
 Wrap illustrations, SVG strokes, or decorative borders; keep body copy outside.
 This is the canonical replacement for the archived boiling-line demos.
 
-### Kinetic glyphs and displacement filters
+### Displacement filter
 
 ```tsx
-import { DisplacementFilter, KineticGlyph } from "@steez-ui/ui";
-
-<KineticGlyph>D</KineticGlyph>
-<KineticGlyph>9</KineticGlyph>
-<KineticGlyph label="Star icon"><StarIcon /></KineticGlyph>
+import { DisplacementFilter } from "@steez-ui/ui";
 
 <DisplacementFilter intensity="subtle" trigger="hover">
   <Button>Any component can be distorted</Button>
 </DisplacementFilter>
 ```
 
-`KineticGlyph` draws nested outlines for a character or icon and includes a subtle
-displacement ripple. Pass `layers`, `durationMs`, `displacementScale`, or `trigger`
-to tune it. `DisplacementFilter` is also available independently; wrap any text,
-icon, or component and adjust `intensity`, `scale`, `speedMs`, `trigger`, or `paused`.
-Both components respect reduced-motion preferences.
-
-### Kinetic text ring
-
-```tsx
-import { KineticTextRing } from "@steez-ui/ui";
-
-<KineticTextRing>KINETIC</KineticTextRing>
-<KineticTextRing direction="counterclockwise" pauseOnHover>
-  TYPE IN MOTION
-</KineticTextRing>
-```
-
-The repeated label follows a curved SVG path while CSS rotates the ring. Set
-`durationMs` or `direction` to tune the loop; `pauseOnHover` pauses it on hover.
-Reduced-motion preferences leave the ring static.
-
-### Kinetic text globe
-
-```tsx
-import { KineticTextGlobe } from "@steez-ui/ui";
-
-<KineticTextGlobe>HELLO</KineticTextGlobe>
-<KineticTextGlobe direction="counterclockwise" pauseOnHover durationMs={24000}>
-  KEEP MOVING
-</KineticTextGlobe>
-```
-
-`KineticTextGlobe` bends repeated display type across a rotating sphere. Set
-`durationMs` or `direction` to tune the rotation, and `pauseOnHover` to pause it.
-The black and white palette can be changed with the
-`--kinetic-text-globe-background` and `--kinetic-text-globe-color` CSS variables.
-Reduced-motion preferences leave the globe still.
-
-### Kinetic text volume
-
-```tsx
-import { KineticTextVolume } from "@steez-ui/ui";
-
-<KineticTextVolume>ESPACE</KineticTextVolume>
-<KineticTextVolume rows={12} amplitude={8} pauseOnHover>
-  KEEP MOVING
-</KineticTextVolume>
-```
-
-`KineticTextVolume` repeats a short label across a perspective field and animates
-the rows in a traveling wave. Tune `rows`, `amplitude`, `durationMs`, or
-`direction`; set `pauseOnHover` to pause the effect. Reduced-motion preferences
-leave the lettering still. Set `--kinetic-text-volume-background` and
-`--kinetic-text-volume-color` to change its palette.
+Wrap any text, icon, or component and adjust `intensity`, `scale`, `speedMs`,
+`trigger`, or `paused`. Reduced-motion preferences disable the effect.
 
 ### Character afterimage
 
@@ -386,12 +333,10 @@ same; specialized artwork may remain separate while sharing lifecycle policy.
 | Card, bracket, and halo cards | CardFrame title/body structure | Surface decoration stays local to each card |
 | Card, QuickInfoCard, StatCard | `styles/CornerBrackets.module.css` offset corner brackets | `variant="brackets"`, `showCornerBrackets`, `brackets` |
 | Tabs and page tabs | TabList and roving focus | Content shell and appearance stay local |
-| Ring, globe, volume, ramp, swipe, marquee, boiling lines, quartz | Shared motion lifecycle | `paused` freezes motion; offscreen, hidden tabs, and reduced motion pause automatically |
+| Marquee, boiling lines, quartz, filters | Shared motion lifecycle | `paused` freezes motion; offscreen, hidden tabs, and reduced motion pause automatically |
 | Slider, loading bar, storage meter | Finite percentage bounds | Presentation varies; invalid values never create invalid widths |
 | Stat and info values | Semantic success/warning/danger tokens | Layout and value formatting stay local |
 | Status and errors | Live-region semantics and composable actions | Inline status by default; `placement="toast"` opts into viewport positioning |
-
-`MarqueeStrip` uses `durationMs`, consistent with the kinetic components.
 
 `StatusMessage` now defaults to inline placement. Existing consumers that need a
 floating notification should add `placement="toast"`. Stat and info value tones

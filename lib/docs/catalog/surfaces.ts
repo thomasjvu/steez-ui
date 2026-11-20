@@ -20,12 +20,6 @@ export const SURFACE_DOCS = [
     tags: ["avatar", "stage", "shell"],
   },
   {
-    slug: "kinetic-glyph",
-    summary:
-      "Nested contour animation for a letter, number, or icon with a soft displacement ripple.",
-    tags: ["motion", "glyph", "type", "icon"],
-  },
-  {
     slug: "icon-background",
     summary: "A repeating icon grid whose cells rotate toward, shrink, or grow near the pointer.",
     tags: ["background", "grid", "pointer", "motion"],

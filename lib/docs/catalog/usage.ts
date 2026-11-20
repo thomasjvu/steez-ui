@@ -11,10 +11,6 @@ export const COMPONENT_USAGE: Record<string, string> = {
   <img src="/companion.png" alt="Companion preview" />
 </AvatarStage>`,
   "blink-text": `<BlinkText trigger="hover">「 quick jump 」</BlinkText>`,
-  "kinetic-swipe-text": `<KineticSwipeText>SWIPE</KineticSwipeText>
-<KineticSwipeText direction="vertical">SWIPE</KineticSwipeText>`,
-  "kinetic-glyph": `<KineticGlyph>D</KineticGlyph>
-<KineticGlyph label="Compass icon"><CompassIcon /></KineticGlyph>`,
   "chromatic-aberration-filter": `<ChromaticAberrationFilter offset={3} trigger="hover">
   <div>Your content</div>
 </ChromaticAberrationFilter>`,
@@ -35,26 +31,12 @@ export const COMPONENT_USAGE: Record<string, string> = {
   <div>Your content</div>
 </GrainFilter>`,
   "displacement-filter": `<DisplacementFilter intensity="subtle">
-  <KineticGlyph>D</KineticGlyph>
+  <h2>STEEZ</h2>
 </DisplacementFilter>
 
 <DisplacementFilter scale={10} trigger="hover">
   <Button>Distorted action</Button>
 </DisplacementFilter>`,
-  "kinetic-text-ramp": `<KineticTextRamp>STEP IT UP</KineticTextRamp>
-<KineticTextRamp trigger="hover" rows={10}>MAKE SOME NOISE</KineticTextRamp>`,
-  "kinetic-text-ring": `<KineticTextRing>KINETIC</KineticTextRing>
-<KineticTextRing direction="counterclockwise" pauseOnHover>
-  TYPE IN MOTION
-</KineticTextRing>`,
-  "kinetic-text-globe": `<KineticTextGlobe>HELLO</KineticTextGlobe>
-<KineticTextGlobe direction="counterclockwise" pauseOnHover durationMs={24000}>
-  KEEP MOVING
-</KineticTextGlobe>`,
-  "kinetic-text-volume": `<KineticTextVolume>ESPACE</KineticTextVolume>
-<KineticTextVolume rows={12} amplitude={8} pauseOnHover>
-  KEEP MOVING
-</KineticTextVolume>`,
   button: `<Button>Deploy</Button>
 <Button shape="crystal">Open app</Button>
 <Button shape="crystal" orientation="vertical" iconOnly aria-label="New thread">

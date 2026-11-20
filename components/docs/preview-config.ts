@@ -5,7 +5,7 @@ import type * as Blocks from "@steez-ui/ui/blocks";
 type Components = typeof UI & typeof Blocks;
 export type PreviewValues = Record<string, string | number | boolean | string[]>;
 export type PreviewControl = { prop: string; label: string; choices?: string[]; min?: number; max?: number; multiple?: boolean };
-type ExampleName = "Button" | "Input" | "Textarea" | "Select" | "Checkbox" | "RadioGroup" | "Slider" | "LoadingProgressBar" | "HeartbeatPulse" | "StatusMessage" | "StatCard" | "DisplacementFilter" | "GlowFilter" | "GrainFilter" | "ChromaticAberrationFilter" | "BoilingLines" | "BlinkText" | "KineticSwipeText" | "CyberpunkTile" | "QuartzCrystal" | "StrokedText" | "ErrorMessage" | "AccordionFeatureCard" | "CharacterAfterimage" | "PixelTooltip" | "DuotoneFilter" | "PosterizeFilter" | "EmbossFilter" | "IconBackground";
+type ExampleName = "Button" | "Input" | "Textarea" | "Select" | "Checkbox" | "RadioGroup" | "Slider" | "LoadingProgressBar" | "HeartbeatPulse" | "StatusMessage" | "StatCard" | "DisplacementFilter" | "GlowFilter" | "GrainFilter" | "ChromaticAberrationFilter" | "BoilingLines" | "BlinkText" | "CyberpunkTile" | "QuartzCrystal" | "StrokedText" | "ErrorMessage" | "AccordionFeatureCard" | "CharacterAfterimage" | "PixelTooltip" | "DuotoneFilter" | "PosterizeFilter" | "EmbossFilter" | "IconBackground";
 type Example = { [Name in ExampleName]: { name: Name; props: Omit<ComponentProps<Components[Name]>, "children">; children?: string; childButton?: boolean; childImage?: string; controls: PreviewControl[] } }[ExampleName];
 const labelControl = { prop: "labelStyle", label: "Label", choices: ["plain", "notch"] };
 const widthControl = { prop: "variant", label: "Width", choices: ["default", "long", "full"] };
@@ -51,7 +51,6 @@ const extraExamples: Record<string, Example> = {
   ] },
   "boiling-lines": { name: "BoilingLines", props: { intensity: "default" }, children: "BOILING", controls: [intensity] },
   "blink-text": { name: "BlinkText", props: { trigger: "mount" }, children: "SYSTEM ONLINE", controls: [{ prop: "trigger", label: "Trigger", choices: ["mount", "hover"] }] },
-  "kinetic-swipe-text": { name: "KineticSwipeText", props: { direction: "horizontal" }, children: "SWIPE", controls: [{ prop: "direction", label: "Direction", choices: ["horizontal", "vertical"] }] },
   "cyberpunk-tile": { name: "CyberpunkTile", props: { variant: "default", center: false }, children: "Site runtime", controls: [{ prop: "variant", label: "Style", choices: ["default", "small", "big", "scrollable", "ios"] }, { prop: "center", label: "Center content" }] },
   "character-afterimage": { name: "CharacterAfterimage", props: { src: CHARACTER_AFTERIMAGE_PREVIEW_SRC, alt: "Pixel explorer with holographic afterimages", width: 144, height: 220, entrance: false }, controls: [{ prop: "entrance", label: "Entrance trail" }] },
   "pixel-tooltip": { name: "PixelTooltip", props: { content: "Save configuration", position: "top" }, children: "Hover or focus", childButton: true, controls: [{ prop: "position", label: "Position", choices: ["top", "bottom", "left", "right"] }] },

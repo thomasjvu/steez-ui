@@ -67,37 +67,6 @@ export {
 } from "./components/LoadingScreen.progress.ts";
 export { MarqueeStrip, type MarqueeStripProps } from "./components/MarqueeStrip.tsx";
 export {
-  KineticSwipeText,
-  type KineticSwipeTextDirection,
-  type KineticSwipeTextProps,
-  type KineticSwipeTextTrigger,
-} from "./components/KineticSwipeText.tsx";
-export {
-  KineticGlyph,
-  type KineticGlyphProps,
-  type KineticGlyphTrigger,
-} from "./components/KineticGlyph.tsx";
-export {
-  KineticTextRamp,
-  type KineticTextRampProps,
-  type KineticTextRampTrigger,
-} from "./components/KineticTextRamp.tsx";
-export {
-  KineticTextRing,
-  type KineticTextRingDirection,
-  type KineticTextRingProps,
-} from "./components/KineticTextRing.tsx";
-export {
-  KineticTextGlobe,
-  type KineticTextGlobeDirection,
-  type KineticTextGlobeProps,
-} from "./components/KineticTextGlobe.tsx";
-export {
-  KineticTextVolume,
-  type KineticTextVolumeDirection,
-  type KineticTextVolumeProps,
-} from "./components/KineticTextVolume.tsx";
-export {
   NotchedViewportFrame,
   type NotchedViewportFrameProps,
 } from "./components/NotchedViewportFrame.tsx";

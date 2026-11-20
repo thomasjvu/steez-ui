@@ -1,11 +1,6 @@
 import React from "react";
 import { act, cleanup, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
-import { KineticTextRing } from "./KineticTextRing";
-import { KineticTextGlobe } from "./KineticTextGlobe";
-import { KineticTextVolume } from "./KineticTextVolume";
-import { KineticTextRamp } from "./KineticTextRamp";
-import { KineticSwipeText } from "./KineticSwipeText";
 import { MarqueeStrip } from "./MarqueeStrip";
 import { BoilingLines } from "./BoilingLines";
 import { DisplacementFilter } from "./DisplacementFilter";
@@ -52,11 +47,6 @@ const effects = [
   ChromaticAberrationFilter,
   GlowFilter,
   GrainFilter,
-  KineticTextRing,
-  KineticTextGlobe,
-  KineticTextVolume,
-  KineticTextRamp,
-  KineticSwipeText,
 ];
 it.each(effects)("applies lifecycle and explicit pause to %s", (Effect) => {
   const { rerender, unmount } = render(

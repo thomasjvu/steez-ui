@@ -14,35 +14,6 @@ export const FEEDBACK_DOCS = [
     tags: ["motion", "text"],
   },
   {
-    slug: "kinetic-swipe-text",
-    summary:
-      "Bold display type that snaps through a quick horizontal or vertical split.",
-    tags: ["motion", "text", "headline"],
-  },
-  {
-    slug: "kinetic-text-ramp",
-    summary:
-      "Oversized type scrolls across a receding perspective plane with a hard shadow edge.",
-    tags: ["motion", "text", "perspective", "headline"],
-  },
-  {
-    slug: "kinetic-text-ring",
-    summary: "A looping, curved type ring built with SVG and CSS motion.",
-    tags: ["motion", "text", "typography"],
-  },
-  {
-    slug: "kinetic-text-globe",
-    summary:
-      "Bold display type wraps around a high contrast sphere that rotates in place.",
-    tags: ["motion", "text", "typography", "sphere"],
-  },
-  {
-    slug: "kinetic-text-volume",
-    summary:
-      "Repeated type ripples across the three faces of a perspective text volume.",
-    tags: ["motion", "text", "perspective", "field"],
-  },
-  {
     slug: "loading-progress-bar",
     summary:
       "Segmented loading bar for build, deploy, and initialization progress.",

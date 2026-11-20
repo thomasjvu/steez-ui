@@ -264,46 +264,10 @@
     "description": "Hand-drawn line motion with subtle, default, and intense presets."
   },
   {
-    "name": "kinetic-swipe-text",
-    "type": "registry:component",
-    "title": "Kinetic Swipe Text",
-    "description": "Heavy display type that snaps through a looping horizontal or vertical split."
-  },
-  {
     "name": "displacement-filter",
     "type": "registry:component",
     "title": "Displacement Filter",
     "description": "Reusable SVG turbulence displacement for text, icons, and component content."
-  },
-  {
-    "name": "kinetic-glyph",
-    "type": "registry:component",
-    "title": "Kinetic Glyph",
-    "description": "Nested contour animation for a letter, number, or icon with a soft displacement ripple."
-  },
-  {
-    "name": "kinetic-text-ramp",
-    "type": "registry:component",
-    "title": "Kinetic Text Ramp",
-    "description": "Oversized repeated type moves across a receding perspective plane with a hard extruded edge."
-  },
-  {
-    "name": "kinetic-text-ring",
-    "type": "registry:component",
-    "title": "Kinetic Text Ring",
-    "description": "Repeated display type follows a rotating elliptical path using SVG and CSS."
-  },
-  {
-    "name": "kinetic-text-globe",
-    "type": "registry:component",
-    "title": "Kinetic Text Globe",
-    "description": "Bold display type wraps around a rotating, high contrast sphere."
-  },
-  {
-    "name": "kinetic-text-volume",
-    "type": "registry:component",
-    "title": "Kinetic Text Volume",
-    "description": "Repeated type ripples across the three faces of a perspective text volume."
   },
   {
     "name": "chromatic-aberration-filter",

@@ -9,7 +9,6 @@ import {
   CornerBracketCard,
   CyberpunkTile,
   DottedHaloCard,
-  KineticGlyph,
   Card,
 } from "@steez-ui/ui";
 import { AccordionFeatureCard } from "@steez-ui/ui/blocks";
@@ -135,29 +134,6 @@ export function DottedHaloCardPreview() {
           CSS Modules keep component styles local to each file.
         </p>
       </DottedHaloCard>
-    </div>
-  );
-}
-
-export function KineticGlyphPreview() {
-  return (
-    <div
-      role="group"
-      aria-label="Kinetic glyph letter, number, and icon examples"
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 10rem), 1fr))",
-        gap: "0.75rem",
-        width: "100%",
-      }}
-    >
-      <KineticGlyph>D</KineticGlyph>
-      <KineticGlyph>9</KineticGlyph>
-      <KineticGlyph label="Star icon">
-        <svg viewBox="0 0 100 100" role="presentation" aria-hidden="true">
-          <path d="m50 8 12.5 27.3 29.9 3.3-22.2 20.3 6.1 29.4L50 73.4 23.7 88.3l6.1-29.4L7.6 38.6l29.9-3.3L50 8Z" fill="none" stroke="currentColor" strokeWidth="4" strokeLinejoin="round" />
-        </svg>
-      </KineticGlyph>
     </div>
   );
 }
