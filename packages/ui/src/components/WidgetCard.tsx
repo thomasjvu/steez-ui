@@ -56,4 +56,3 @@ export function WidgetCard({
   );
 }
 
-export default WidgetCard;

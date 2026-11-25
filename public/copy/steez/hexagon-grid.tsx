@@ -135,7 +135,7 @@ export function useMotionActivity<T extends HTMLElement = HTMLDivElement>(
 
 /** Pure state for HexagonGrid: layout, hit testing, and the ripple simulation. */
 
-export const HEX_RADIUS = 25;
+const HEX_RADIUS = 25;
 export const DEFAULT_CELL_BUDGET = 512;
 /** Frames a selection takes to fade in; it starts spreading when it finishes. */
 export const COUNT_MIN = 5;
@@ -151,7 +151,7 @@ const HUE_MAX = 220;
 
 export type Random = () => number;
 
-export interface Selection {
+interface Selection {
   count: number;
   hue: number;
 }
@@ -176,7 +176,7 @@ export interface HexGrid {
   radius: number;
 }
 
-export function randomInt(random: Random, min: number, max: number) {
+function randomInt(random: Random, min: number, max: number) {
   return Math.floor(random() * (max - min + 1)) + min;
 }
 
@@ -513,5 +513,3 @@ export function HexagonGrid({
     </div>
   );
 }
-
-export default HexagonGrid;

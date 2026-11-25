@@ -20,7 +20,7 @@ function DetailRoute() {
   const { slug = "" } = useParams();
   return <ComponentDetail key={slug} slug={slug} />;
 }
-export function NotFound() {
+function NotFound() {
   return (
     <div className="page-header">
       <h1>Page not found</h1>

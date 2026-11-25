@@ -124,4 +124,3 @@ export function QuickInfoCard({
   );
 }
 
-export default QuickInfoCard;

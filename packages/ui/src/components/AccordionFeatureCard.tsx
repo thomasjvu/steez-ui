@@ -147,4 +147,3 @@ export function AccordionFeatureCard({
   );
 }
 
-export default AccordionFeatureCard;

@@ -1,20 +1,13 @@
 export const SITE_URL = "https://steez-ui.thomasjvu.com";
-export const REPOSITORY_URL = "https://github.com/thomasjvu/steez-ui";
-export const X_URL = "https://x.com/ultima_gg";
-export const NPM_THEME_URL = "https://www.npmjs.com/package/@steez-ui/theme";
-export const NPM_ICONS_URL = "https://www.npmjs.com/package/@steez-ui/icons";
-export const NPM_UI_URL = "https://www.npmjs.com/package/@steez-ui/ui";
+const REPOSITORY_URL = "https://github.com/thomasjvu/steez-ui";
+const X_URL = "https://x.com/ultima_gg";
+const NPM_THEME_URL = "https://www.npmjs.com/package/@steez-ui/theme";
+const NPM_ICONS_URL = "https://www.npmjs.com/package/@steez-ui/icons";
+const NPM_UI_URL = "https://www.npmjs.com/package/@steez-ui/ui";
 
 export const SOCIAL_LINKS = [
   { label: "GitHub", href: REPOSITORY_URL, icon: "github" },
   { label: "X", href: X_URL, icon: "twitter" },
-] as const;
-
-export const SITE_NAV = [
-  { key: "components", label: "Components", href: "/components" },
-  { key: "docs", label: "Docs", href: "/docs" },
-  { key: "packages", label: "Packages", href: "/packages" },
-  { key: "registry", label: "Registry", href: "/registry" },
 ] as const;
 
 export const PACKAGE_ITEMS = [

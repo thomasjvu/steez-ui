@@ -163,7 +163,7 @@ export function isStyleImport(source) {
   return source.endsWith(".css") || source.endsWith(".module.css");
 }
 
-export function parseDefaultBinding(clause) {
+function parseDefaultBinding(clause) {
   const match = clause.match(/^(?:type\s+)?([A-Za-z_$][\w$]*)/);
   return match?.[1] ?? null;
 }
@@ -284,7 +284,7 @@ export function transformSource({
   return `${localStyleDeclarations}${localStyleDeclarations ? "\n\n" : ""}${transformed.trim()}`;
 }
 
-export function escapeStandaloneTemplateLiteral(value) {
+function escapeStandaloneTemplateLiteral(value) {
   return value.replace(/`/g, "\\`").replace(/\$\{/g, "\\${");
 }
 

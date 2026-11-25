@@ -54,4 +54,3 @@ export function Button({
   const { type = "button", ...buttonProps } = props;
   return <button {...buttonProps} {...appearance} type={type} disabled={disabled}>{content}</button>;
 }
-export default Button;

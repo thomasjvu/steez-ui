@@ -534,5 +534,3 @@ export function AccordionFeatureCard({
     </article>
   );
 }
-
-export default AccordionFeatureCard;

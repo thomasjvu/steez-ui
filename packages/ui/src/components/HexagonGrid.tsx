@@ -116,4 +116,3 @@ export function HexagonGrid({
   );
 }
 
-export default HexagonGrid;

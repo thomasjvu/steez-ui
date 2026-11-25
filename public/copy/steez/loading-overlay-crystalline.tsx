@@ -102,5 +102,3 @@ export function LoadingOverlayCrystalline({
     </div>
   );
 }
-
-export default LoadingOverlayCrystalline;

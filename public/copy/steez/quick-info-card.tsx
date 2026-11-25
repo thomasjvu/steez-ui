@@ -334,5 +334,3 @@ export function QuickInfoCard({
     </div>
   );
 }
-
-export default QuickInfoCard;

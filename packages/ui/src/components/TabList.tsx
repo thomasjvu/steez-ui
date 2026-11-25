@@ -4,7 +4,7 @@ import React from "react";
 
 import styles from "./TabList.module.css";
 
-export interface TabListRecord {
+interface TabListRecord {
   id: string;
   label: React.ReactNode;
   disabled?: boolean;

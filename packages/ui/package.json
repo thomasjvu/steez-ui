@@ -15,8 +15,7 @@
     "react-dom": ">=18"
   },
   "dependencies": {
-    "@steez-ui/icons": "workspace:*",
-    "@steez-ui/theme": "workspace:*"
+    "@steez-ui/icons": "workspace:*"
   },
   "exports": {
     ".": {

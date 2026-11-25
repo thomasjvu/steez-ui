@@ -33,4 +33,3 @@ export function FUIButtonTile({
   );
 }
 
-export default FUIButtonTile;

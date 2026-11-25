@@ -118,7 +118,7 @@ export function progressPercentage(value: number, min = 0, max = 100) {
   return clampFinite(((value - min) / (max - min)) * 100, 0, 100, 0);
 }
 
-export type IconBackgroundVariant = "static" | "magnetic" | "shrink" | "grow";
+type IconBackgroundVariant = "static" | "magnetic" | "shrink" | "grow";
 
 /** Pointer influence radius, in cell widths, and peak scale change for proximity variants. */
 const SCALE_RADIUS = 3;

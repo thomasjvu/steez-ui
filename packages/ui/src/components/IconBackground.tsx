@@ -5,7 +5,7 @@ import { useMotionActivity } from "../hooks/useMotionActivity.ts";
 import { clampFinite } from "../utils/numbers.ts";
 import styles from "./IconBackground.module.css";
 
-export type IconBackgroundVariant = "static" | "magnetic" | "shrink" | "grow";
+type IconBackgroundVariant = "static" | "magnetic" | "shrink" | "grow";
 
 /** Pointer influence radius, in cell widths, and peak scale change for proximity variants. */
 const SCALE_RADIUS = 3;

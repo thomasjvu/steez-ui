@@ -32,4 +32,3 @@ export function LoadingOverlayCrystalline({
   );
 }
 
-export default LoadingOverlayCrystalline;

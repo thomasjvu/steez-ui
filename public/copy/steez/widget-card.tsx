@@ -166,5 +166,3 @@ export function WidgetCard({
     </div>
   );
 }
-
-export default WidgetCard;

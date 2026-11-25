@@ -135,4 +135,3 @@ export function PixelTooltip({
   );
 }
 
-export default PixelTooltip;

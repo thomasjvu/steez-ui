@@ -214,4 +214,3 @@ export function AsciiRippleText({
   );
 }
 
-export default AsciiRippleText;

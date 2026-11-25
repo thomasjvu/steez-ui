@@ -185,5 +185,3 @@ export function DottedHaloCard({
     </CardFrame>
   );
 }
-
-export default DottedHaloCard;

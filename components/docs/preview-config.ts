@@ -4,12 +4,12 @@ import type * as UI from "@steez-ui/ui";
 import type * as Blocks from "@steez-ui/ui/blocks";
 type Components = typeof UI & typeof Blocks;
 export type PreviewValues = Record<string, string | number | boolean | string[]>;
-export type PreviewControl = { prop: string; label: string; choices?: string[]; min?: number; max?: number; multiple?: boolean };
+type PreviewControl = { prop: string; label: string; choices?: string[]; min?: number; max?: number; multiple?: boolean };
 type ExampleName = "Button" | "Input" | "Textarea" | "Select" | "Checkbox" | "RadioGroup" | "Slider" | "LoadingProgressBar" | "HeartbeatPulse" | "StatusMessage" | "StatCard" | "DisplacementFilter" | "GlowFilter" | "GrainFilter" | "ChromaticAberrationFilter" | "BoilingLines" | "BlinkText" | "CyberpunkTile" | "QuartzCrystal" | "StrokedText" | "ErrorMessage" | "AccordionFeatureCard" | "CharacterAfterimage" | "PixelTooltip" | "DuotoneFilter" | "PosterizeFilter" | "EmbossFilter" | "IconBackground";
 type Example = { [Name in ExampleName]: { name: Name; props: Omit<ComponentProps<Components[Name]>, "children">; children?: string; childButton?: boolean; childImage?: string; controls: PreviewControl[] } }[ExampleName];
 const labelControl = { prop: "labelStyle", label: "Label", choices: ["plain", "notch"] };
 const widthControl = { prop: "variant", label: "Width", choices: ["default", "long", "full"] };
-export const corners = ["top-left", "top-right", "bottom-right", "bottom-left"];
+const corners = ["top-left", "top-right", "bottom-right", "bottom-left"];
 const options = [{ value: "fast", label: "Fast" }, { value: "balanced", label: "Balanced" }, { value: "quality", label: "Quality" }];
 export const PREVIEW_EXAMPLES: Record<string, Example> = {
   button: { name: "Button", props: { variant: "primary", shape: "default", size: "medium", orientation: "horizontal", cutCorners: ["top-right", "bottom-left"], cutSize: "12px", disabled: false }, children: "Deploy", controls: [

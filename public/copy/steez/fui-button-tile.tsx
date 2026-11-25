@@ -147,5 +147,3 @@ export function FUIButtonTile({
     </button>
   );
 }
-
-export default FUIButtonTile;

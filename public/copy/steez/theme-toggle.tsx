@@ -131,7 +131,7 @@ export function useSteezIconDefaults() {
  * Icon artwork, kept apart from the React wrappers in icons.tsx.
  * Each outline icon is a list of SVG elements drawn on a 24×24 grid.
  */
-export type IconNodeTag = "circle" | "line" | "path" | "polyline" | "rect";
+type IconNodeTag = "circle" | "line" | "path" | "polyline" | "rect";
 export type IconNode = readonly [tag: IconNodeTag, attributes: Readonly<Record<string, string>>];
 
 /** Outline icons: stroked with the provider stroke width. */

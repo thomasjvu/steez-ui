@@ -230,7 +230,7 @@ export function useStableId(prefix: string, explicitId?: string): string {
   return explicitId || `${prefix}-${reactId}`;
 }
 
-export interface TabListRecord {
+interface TabListRecord {
   id: string;
   label: React.ReactNode;
   disabled?: boolean;

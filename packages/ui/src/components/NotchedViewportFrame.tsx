@@ -59,4 +59,3 @@ export function NotchedViewportFrame({
   );
 }
 
-export default NotchedViewportFrame;

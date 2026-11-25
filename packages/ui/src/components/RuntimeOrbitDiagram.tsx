@@ -118,4 +118,3 @@ export function RuntimeOrbitDiagram({
   );
 }
 
-export default RuntimeOrbitDiagram;

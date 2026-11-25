@@ -378,5 +378,3 @@ export function AsciiRippleText({
     </span>
   );
 }
-
-export default AsciiRippleText;

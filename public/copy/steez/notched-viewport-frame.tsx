@@ -132,5 +132,3 @@ export function NotchedViewportFrame({
     </div>
   );
 }
-
-export default NotchedViewportFrame;

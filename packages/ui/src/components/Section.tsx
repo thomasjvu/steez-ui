@@ -31,4 +31,3 @@ export function Section({
   );
 }
 
-export default Section;
