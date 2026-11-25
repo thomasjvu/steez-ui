@@ -1,0 +1,3 @@
+[submodule "plans"]
+	path = plans
+	url = https://forgejo.thomasjvu.com/steez-ui/plans.git
