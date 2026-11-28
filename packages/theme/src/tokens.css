@@ -105,9 +105,12 @@
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
-  --transition-fast: 150ms ease;
-  --transition-normal: 220ms ease;
-  --transition-slow: 320ms ease;
+  --duration-fast: 150ms;
+  --duration-normal: 220ms;
+  --duration-slow: 320ms;
+  --transition-fast: var(--duration-fast) ease;
+  --transition-normal: var(--duration-normal) ease;
+  --transition-slow: var(--duration-slow) ease;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 
   --z-base: 0;
